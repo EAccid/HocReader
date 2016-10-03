@@ -1,4 +1,4 @@
-package com.eaccid.bookreader;
+package com.eaccid.bookreader.wordview;
 
 
 import android.content.Context;

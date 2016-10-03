@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eaccid.bookreader.fileview.PagesArrayAdapter;
+import com.eaccid.bookreader.readerview.PagesArrayAdapter;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.file.reader.TextFileReader;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -24,9 +24,8 @@ import java.util.ArrayList;
 
 public class PagerActivity extends FragmentActivity {
 
-    private static ArrayList<String> textPagesList = new ArrayList<String>();
+    private static ArrayList<String> pagesList = new ArrayList<String>();
     static final int NUM_ITEMS = 3;
-    static String mfilePath;
     PagerAdapter mPagerAdapter;
     ViewPager mPager;
 
@@ -35,7 +34,10 @@ public class PagerActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
 
-        mfilePath = getIntent().getStringExtra("filePath");
+        //TODO file handler in separate class
+        String mfilePath = getIntent().getStringExtra("filePath");
+        TextFileReader textFileReader = new TextFileReader(this, mfilePath);
+        pagesList = textFileReader.getPages();
 
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -44,13 +46,6 @@ public class PagerActivity extends FragmentActivity {
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         circleIndicator.setViewPager(mPager);
 
-        loadFileInTextPagesList();
-
-    }
-
-    private void loadFileInTextPagesList() {
-        TextFileReader textFileReader = new TextFileReader(this, mfilePath);
-        textPagesList = textFileReader.getPages();
     }
 
     /*******************************************************************************
@@ -59,9 +54,6 @@ public class PagerActivity extends FragmentActivity {
      */
 
     public static class PagerAdapter extends FragmentStatePagerAdapter {
-
-        PagesListFragment pages;
-
 
         public PagerAdapter(FragmentManager fm) {
             super(fm);
@@ -84,8 +76,11 @@ public class PagerActivity extends FragmentActivity {
 
         @Override
         public Parcelable saveState() {
+
+            //TODO save state
+
             Bundle outState = new Bundle();
-            outState.putStringArrayList("textPagesList", textPagesList);
+            outState.putStringArrayList("pagesList", pagesList);
 //            ListView list = getListView();
 //            outState.putInt("someVarB", list.getFirstVisiblePosition());
             return outState;
@@ -97,11 +92,10 @@ public class PagerActivity extends FragmentActivity {
             if (state != null) {
                 Bundle bundle = (Bundle) state;
                 bundle.setClassLoader(loader);
-                textPagesList = bundle.getStringArrayList("textPagesList");
+                pagesList = bundle.getStringArrayList("pagesList");
             }
         }
     }
-
 
     public static class PagesListFragment extends ListFragment {
         int mNum;
@@ -134,11 +128,6 @@ public class PagerActivity extends FragmentActivity {
             switch (mNum) {
                 case 0:
                     ((TextView) tv).setText("Fragment #" + mNum + ": book");
-
-//                    //TODO -ing now
-//                    ListView lv = (ListView) v.findViewById(android.R.id.list);
-//                    lv.setOnTouchListener(this);
-
                     break;
                 case 1:
                     ((TextView) tv).setText("Fragment #" + mNum + ": added words");
@@ -155,21 +144,6 @@ public class PagerActivity extends FragmentActivity {
             return v;
         }
 
-//        @Override
-//        public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//
-////            //TODO just for practice clickableSpann
-////            switch (v.getId()) {
-////                case android.R.id.list:
-////                    ListView lv = (ListView) v;
-//////                    deleteClickableWordsOnTextView((TextView) lv.getChildAt());
-////                    int currentPosition = lv.getFirstVisiblePosition();
-////                    TextSpannHandler.setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(currentPosition));
-////                    if (currentPosition != lv.getCount() - 1)
-////                        TextSpannHandler.setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(lv.getFirstVisiblePosition() + 1));
-////            }
-//        }
-
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
@@ -177,12 +151,11 @@ public class PagerActivity extends FragmentActivity {
             switch (mNum) {
                 case 0:
 
-                    if (textPagesList.size() > 0)
-//                        setListAdapter(new ArrayAdapter<>(getActivity(), R.layout.text_on_page, textPagesList.subList(0,3)));
-
+                    if (pagesList.size() > 0)
                         setListAdapter(
-                                new PagesArrayAdapter(getContext(), R.layout.text_on_page, textPagesList)
+                                new PagesArrayAdapter(getContext(), R.layout.text_on_page, pagesList)
                         );
+
                     break;
                 case 1:
                     break;
@@ -194,47 +167,6 @@ public class PagerActivity extends FragmentActivity {
             }
 
         }
-
-//        @Override
-//        public boolean onTouch(View v, MotionEvent event) {
-//            switch (v.getId()) {
-//                case R.id.text_on_page:
-//                    Toast.makeText(getContext(), "text_on_page clicked", Toast.LENGTH_SHORT).show();
-//                    break;
-//                case android.R.id.list:
-//
-//                    if (event.getAction() == MotionEvent.ACTION_DOWN)
-//                    {
-//
-//                        TextView tv = (TextView) ((ListView) v).getChildAt(0);
-//                        Layout layout = tv.getLayout();
-//
-//                        int x = (int) event.getX();
-//                        int y = (int) event.getY();
-//
-//                        if (layout!=null) {
-//                            int line = layout.getLineForVertical(y);
-//                            int offset = layout.getOffsetForHorizontal(line, x);
-//
-//
-////                            int currentItem = ((PagesArrayAdapter )getListAdapter()).getCurrentItem();
-//
-//
-////                            Toast.makeText(getContext(),"offset: " + offset + " -> x = " + x + ", y = " + y, Toast.LENGTH_SHORT).show();
-//                            System.out.println("offset: " + offset + " -> x = " + x + ", y = " + y);
-//
-//                        }
-//
-//                    }
-//
-//                    break;
-//                default:
-//
-//            }
-//
-//            return false;
-//        }
-
 
     }
 
