@@ -8,17 +8,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eaccid.bookreader.PagesArrayAdapter;
+import com.eaccid.bookreader.fileview.PagesArrayAdapter;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.file.reader.TextFileReader;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -56,7 +52,6 @@ public class PagerActivity extends FragmentActivity {
         TextFileReader textFileReader = new TextFileReader(this, mfilePath);
         textPagesList = textFileReader.getPages();
     }
-
 
     /*******************************************************************************
      * TODO https://developer.android.com/reference/android/support/v13/app/FragmentStatePagerAdapter.html
@@ -108,7 +103,7 @@ public class PagerActivity extends FragmentActivity {
     }
 
 
-    public static class PagesListFragment extends ListFragment implements View.OnScrollChangeListener {
+    public static class PagesListFragment extends ListFragment {
         int mNum;
 
         static PagesListFragment newInstance(int num) {
@@ -140,9 +135,9 @@ public class PagerActivity extends FragmentActivity {
                 case 0:
                     ((TextView) tv).setText("Fragment #" + mNum + ": book");
 
-                    //TODO -ing now
-                    ListView lv = (ListView) v.findViewById(android.R.id.list);
-                    lv.setOnScrollChangeListener(this);
+//                    //TODO -ing now
+//                    ListView lv = (ListView) v.findViewById(android.R.id.list);
+//                    lv.setOnTouchListener(this);
 
                     break;
                 case 1:
@@ -160,20 +155,20 @@ public class PagerActivity extends FragmentActivity {
             return v;
         }
 
-        @Override
-        public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-
-//            //TODO just for practice clickableSpann
-//            switch (v.getId()) {
-//                case android.R.id.list:
-//                    ListView lv = (ListView) v;
-////                    deleteClickableWordsOnTextView((TextView) lv.getChildAt());
-//                    int currentPosition = lv.getFirstVisiblePosition();
-//                    TextSpannHandler.setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(currentPosition));
-//                    if (currentPosition != lv.getCount() - 1)
-//                        TextSpannHandler.setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(lv.getFirstVisiblePosition() + 1));
-//            }
-        }
+//        @Override
+//        public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//
+////            //TODO just for practice clickableSpann
+////            switch (v.getId()) {
+////                case android.R.id.list:
+////                    ListView lv = (ListView) v;
+//////                    deleteClickableWordsOnTextView((TextView) lv.getChildAt());
+////                    int currentPosition = lv.getFirstVisiblePosition();
+////                    TextSpannHandler.setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(currentPosition));
+////                    if (currentPosition != lv.getCount() - 1)
+////                        TextSpannHandler.setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(lv.getFirstVisiblePosition() + 1));
+////            }
+//        }
 
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
@@ -199,6 +194,47 @@ public class PagerActivity extends FragmentActivity {
             }
 
         }
+
+//        @Override
+//        public boolean onTouch(View v, MotionEvent event) {
+//            switch (v.getId()) {
+//                case R.id.text_on_page:
+//                    Toast.makeText(getContext(), "text_on_page clicked", Toast.LENGTH_SHORT).show();
+//                    break;
+//                case android.R.id.list:
+//
+//                    if (event.getAction() == MotionEvent.ACTION_DOWN)
+//                    {
+//
+//                        TextView tv = (TextView) ((ListView) v).getChildAt(0);
+//                        Layout layout = tv.getLayout();
+//
+//                        int x = (int) event.getX();
+//                        int y = (int) event.getY();
+//
+//                        if (layout!=null) {
+//                            int line = layout.getLineForVertical(y);
+//                            int offset = layout.getOffsetForHorizontal(line, x);
+//
+//
+////                            int currentItem = ((PagesArrayAdapter )getListAdapter()).getCurrentItem();
+//
+//
+////                            Toast.makeText(getContext(),"offset: " + offset + " -> x = " + x + ", y = " + y, Toast.LENGTH_SHORT).show();
+//                            System.out.println("offset: " + offset + " -> x = " + x + ", y = " + y);
+//
+//                        }
+//
+//                    }
+//
+//                    break;
+//                default:
+//
+//            }
+//
+//            return false;
+//        }
+
 
     }
 

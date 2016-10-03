@@ -60,11 +60,11 @@ public class TextFileReader extends ContextWrapper {
     private void loadPages() {
 
         //TODO remove comment
-        while (!isLastPageRead) {
-//        int i = 0;
-//        while (!isLastPageRead && i < 10) {
+//        while (!isLastPageRead) {
+        int i = 0;
+        while (!isLastPageRead && i < 10) {
             pagesList.add(getPage());
-//            i++;
+            i++;
         }
     }
 
