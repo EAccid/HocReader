@@ -19,7 +19,7 @@
 
     android:textColor="@color/colorPrimaryDark"
 
-    android:id="@+id/text1"
+    android:id="@+id/text_on_page"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"

@@ -1,9 +1,6 @@
 package com.eaccid.bookreader.activity;
 
-import android.app.ListActivity;
-import android.content.Context;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -11,34 +8,29 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eaccid.bookreader.PagesArrayAdapter;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.WordClickableSpan;
 import com.eaccid.bookreader.file.reader.TextFileReader;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class PagerActivity extends FragmentActivity {
 
     private static ArrayList<String> textPagesList = new ArrayList<String>();
     static final int NUM_ITEMS = 3;
-    static String filePath;
+    static String mfilePath;
     PagerAdapter mPagerAdapter;
     ViewPager mPager;
 
@@ -47,7 +39,7 @@ public class PagerActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
 
-        filePath = getIntent().getStringExtra("filePath");
+        mfilePath = getIntent().getStringExtra("filePath");
 
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -56,7 +48,13 @@ public class PagerActivity extends FragmentActivity {
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         circleIndicator.setViewPager(mPager);
 
+        loadFileInTextPagesList();
 
+    }
+
+    private void loadFileInTextPagesList() {
+        TextFileReader textFileReader = new TextFileReader(this, mfilePath);
+        textPagesList = textFileReader.getPages();
     }
 
 
@@ -108,6 +106,7 @@ public class PagerActivity extends FragmentActivity {
             }
         }
     }
+
 
     public static class PagesListFragment extends ListFragment implements View.OnScrollChangeListener {
         int mNum;
@@ -162,18 +161,33 @@ public class PagerActivity extends FragmentActivity {
         }
 
         @Override
+        public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+//            //TODO just for practice clickableSpann
+//            switch (v.getId()) {
+//                case android.R.id.list:
+//                    ListView lv = (ListView) v;
+////                    deleteClickableWordsOnTextView((TextView) lv.getChildAt());
+//                    int currentPosition = lv.getFirstVisiblePosition();
+//                    TextSpannHandler.setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(currentPosition));
+//                    if (currentPosition != lv.getCount() - 1)
+//                        TextSpannHandler.setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(lv.getFirstVisiblePosition() + 1));
+//            }
+        }
+
+        @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
-            //TODO separate fragment mNum
             switch (mNum) {
                 case 0:
 
-                    TextFileReader textFileReader = new TextFileReader(getContext(), filePath);
-                    textPagesList = textFileReader.getPages();
+                    if (textPagesList.size() > 0)
+//                        setListAdapter(new ArrayAdapter<>(getActivity(), R.layout.text_on_page, textPagesList.subList(0,3)));
 
-                    setListAdapter(new ArrayAdapter<>(getActivity(), R.layout.text_on_page, textPagesList));
-
+                        setListAdapter(
+                                new PagesArrayAdapter(getContext(), R.layout.text_on_page, textPagesList)
+                        );
                     break;
                 case 1:
                     break;
@@ -185,63 +199,6 @@ public class PagerActivity extends FragmentActivity {
             }
 
         }
-
-        @Override
-        public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-
-            //TODO just for practice clickableSpann
-            switch (v.getId()) {
-                case android.R.id.list:
-                    ListView lv = (ListView) v;
-//                    deleteClickableWordsOnTextView((TextView) lv.getChildAt());
-                    int currentPosition = lv.getFirstVisiblePosition();
-                    setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(currentPosition));
-                    if (currentPosition != lv.getCount() - 1)
-                        setClickableWordsOnTextView(getContext(), (TextView) lv.getChildAt(lv.getFirstVisiblePosition() + 1));
-            }
-        }
-    }
-
-
-
-
-    public static void deleteClickableWordsOnTextView(TextView tv) {
-        if (tv == null) return;
-        tv.setText(tv.getText().toString());
-
-
-//            SpannableString ss = getYourSpannableString();
-//            UnderlineSpan[] uspans = ss.getSpans(0, ss.length(), UnderlineSpan.class);
-//            for (UnderlineSpan us : uspans) {
-//                ss.removeSpan(us);
-//            }
-    }
-
-    public static void setClickableWordsOnTextView(Context context, TextView tv) {
-        if (tv == null) return;
-
-        String text = tv.getText().toString();
-        Scanner sc = new Scanner(text);
-        Spannable spanText = new SpannableString(text);
-        int currentCharInText = 0;
-        while (sc.hasNextLine()) {
-            int currentCharInLine = currentCharInText;
-            String line = sc.nextLine();
-            for (String word : line.split(" ")) {
-
-                if (word.length() > 0 && Character.isLetter(word.charAt(0))) {
-                    try {
-                        spanText.setSpan(new WordClickableSpan(context, word, currentCharInLine), 0, currentCharInLine + word.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                currentCharInLine = ++currentCharInLine + word.length();
-            }
-            currentCharInText = currentCharInLine;
-        }
-        tv.setText(spanText, TextView.BufferType.SPANNABLE);
-        tv.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 

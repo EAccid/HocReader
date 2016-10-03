@@ -33,4 +33,5 @@ public class WordClickableSpan extends ClickableSpan {
         super.updateDrawState(ds);
 //        ds.setUnderlineText(false);
     }
+
 }
