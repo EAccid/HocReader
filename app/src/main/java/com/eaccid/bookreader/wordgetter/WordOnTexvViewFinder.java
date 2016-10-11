@@ -1,10 +1,8 @@
-package com.eaccid.bookreader.wordfinder;
+package com.eaccid.bookreader.wordgetter;
 
 import android.text.Layout;
 import android.view.MotionEvent;
 import android.widget.TextView;
-
-import com.eaccid.bookreader.wordfinder.WordFromText;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

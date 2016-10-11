@@ -16,8 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eaccid.bookreader.wordfinder.WordFromText;
-import com.eaccid.translator.lingualeo.translator.WordTranslation;
+import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.translator.translator.TextTranslation;
 
 public class WordTranslatorView {
@@ -96,7 +95,9 @@ public class WordTranslatorView {
                     translatedDictionaryWord.setTranslation(chosenTranscription);
                     translatedDictionaryWord.setContext(wordFromText.getSentence());
 
-                    boolean succeed = ReaderDictionary.addTranslatedWord(translatedDictionaryWord);
+                    ReaderDictionary readerDictionary = new ReaderDictionary(inflater.getContext());
+
+                    boolean succeed = readerDictionary.addTranslatedWord(translatedDictionaryWord);
 
                     //TODO msg
                     if (!succeed) {

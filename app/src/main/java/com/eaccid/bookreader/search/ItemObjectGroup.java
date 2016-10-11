@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.file.searcher;
+package com.eaccid.bookreader.search;
 
 import java.util.ArrayList;
 

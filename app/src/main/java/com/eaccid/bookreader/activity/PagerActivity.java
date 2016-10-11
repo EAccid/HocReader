@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eaccid.bookreader.readerview.PagesArrayAdapter;
-import com.eaccid.bookreader.file.reader.TextFileReader;
+import com.eaccid.bookreader.adapter.PagesArrayAdapter;
+import com.eaccid.bookreader.file.FileToPagesReader;
 import com.eaccid.bookreader.R;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -36,8 +36,8 @@ public class PagerActivity extends FragmentActivity {
 
         //TODO file handler in separate class
         String mfilePath = getIntent().getStringExtra("filePath");
-        TextFileReader textFileReader = new TextFileReader(this, mfilePath);
-        pagesList = textFileReader.getPages();
+        FileToPagesReader fileToPagesReader = new FileToPagesReader(this, mfilePath);
+        pagesList = fileToPagesReader.getPages();
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pager = (ViewPager) findViewById(R.id.pager);

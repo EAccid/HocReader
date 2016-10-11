@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.readerview;
+package com.eaccid.bookreader.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,10 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
-import com.eaccid.bookreader.wordfinder.WordFromText;
+import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.WordTranslatorView;
-import com.eaccid.bookreader.wordfinder.WordOnTexvViewFinder;
+import com.eaccid.bookreader.wordgetter.WordOnTexvViewFinder;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.file.searcher;
+package com.eaccid.bookreader.file;
 
 
 import android.os.Environment;
@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class FileFinder {
+public class FileOnDeviceFinder {
 
     private ArrayList<File> fileList = new ArrayList<>();
 
@@ -18,9 +18,9 @@ public class FileFinder {
         return fileList;
     }
 
-    public FileExtensions[] getFileExtensions() {
-        return FileExtensions.values();
-    }
+//    public FileExtensions[] getFileExtensions() {
+//        return FileExtensions.values();
+//    }
 
     private void fillFileList() {
         if (isExternalStorageReadable())
@@ -48,7 +48,7 @@ public class FileFinder {
 
     }
 
-    // f.e. (txt|pdf)
+    /** f.e. (txt|pdf)*/
     private static String getFormatExtensions(FileExtensions[] values) {
         StringBuilder sb = new StringBuilder();
         int size = values.length;

@@ -12,8 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:name=".file.searcher.SearchSuggestionsProvider"
-            android:authorities="com.eaccid.bookreader.file.searcher.SearchSuggestionsProvider" />
+            android:name=".search.SearchSuggestionsProvider"
+            android:authorities="com.eaccid.bookreader.search.SearchSuggestionsProvider" />
 
         <activity
             android:name=".activity.MainActivity"

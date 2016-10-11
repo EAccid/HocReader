@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.file.reader;
+package com.eaccid.bookreader.file;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -8,17 +8,15 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.eaccid.bookreader.activity.PagerActivity;
 import com.eaccid.bookreader.R;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class TextFileReader extends ContextWrapper {
+public class FileToPagesReader extends ContextWrapper {
 
     private int pageLinesOnScreen;
     private String filePath;
@@ -28,13 +26,17 @@ public class TextFileReader extends ContextWrapper {
     int currentChar = 0;
     boolean isLastPageRead = false;
 
-    public TextFileReader(Context context, String filePath) {
+    public FileToPagesReader(Context context, String filePath) {
         super(context);
         this.filePath = filePath;
         setScreenParameters();
 
         //TODO save and load current char
         loadPages();
+    }
+
+    public ArrayList<String> getPages() {
+        return pagesList;
     }
 
     private void setScreenParameters() {
@@ -68,10 +70,8 @@ public class TextFileReader extends ContextWrapper {
         }
     }
 
-
-    //TODO read to slow
     private String getPage() {
-
+        //TODO read to slow
         StringBuilder sb = new StringBuilder();
         int lineCountOnScreen = 0;
 
@@ -126,27 +126,6 @@ public class TextFileReader extends ContextWrapper {
         }
         isLastPageRead = line == null;
         return line;
-    }
-
-
-    public ArrayList<String> getPages() {
-        return pagesList;
-    }
-
-    public int getPagesAmount() {
-//        int pagesAmount = 0;
-//
-//        try {
-//            LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(filePath));
-//            lineNumberReader.skip(Long.MAX_VALUE);
-//            pagesAmount = (int) (Math.ceil( (lineNumberReader.getLineNumber() + 1) / pageLinesOnScreen));
-//            lineNumberReader.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        //TODO account total pages
-//        return pagesAmount;
-        return pagesList.size();
     }
 
 }

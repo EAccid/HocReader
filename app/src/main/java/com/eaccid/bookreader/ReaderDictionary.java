@@ -1,6 +1,8 @@
 package com.eaccid.bookreader;
 
+import android.content.Context;
 
+import com.eaccid.bookreader.settings.LingualeoServiceCookiesHandler;
 import com.eaccid.translator.lingualeo.dictionary.LingualeoDictionary;
 
 
@@ -9,9 +11,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class ReaderDictionary {
+class ReaderDictionary {
 
-    public static boolean addTranslatedWord(TranslatedDictionaryWord word) {
+    private Context context;
+
+    ReaderDictionary(Context context) {
+        this.context = context;
+    }
+
+    boolean addTranslatedWord(TranslatedDictionaryWord word) {
 
         try {
 
@@ -27,7 +35,7 @@ public class ReaderDictionary {
 
     }
 
-    private static class OuterDictionary implements Callable<Boolean> {
+    private class OuterDictionary implements Callable<Boolean> {
 
         private TranslatedDictionaryWord word;
 
@@ -38,11 +46,8 @@ public class ReaderDictionary {
         @Override
         public Boolean call() throws Exception {
 
-            LingualeoServiceCookiesHandler cookiesHandler = new LingualeoServiceCookiesHandler();
-            LingualeoDictionary lingualeo = new LingualeoDictionary(cookiesHandler);
-            lingualeo.authorize("accidental899@mail.ru","accid899");
-
-            return lingualeo.addWord(word.getWord(), word.getTranslation(), word.getContext());
+           LingualeoDictionary lingualeo = new LingualeoDictionary(new LingualeoServiceCookiesHandler(context));
+           return lingualeo.addWord(word.getWord(), word.getTranslation(), word.getContext());
 
         }
     }

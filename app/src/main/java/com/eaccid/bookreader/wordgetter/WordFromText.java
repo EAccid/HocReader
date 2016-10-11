@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.wordfinder;
+package com.eaccid.bookreader.wordgetter;
 
 import java.io.Serializable;
 

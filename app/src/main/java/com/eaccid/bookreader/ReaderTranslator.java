@@ -1,6 +1,7 @@
 package com.eaccid.bookreader;
 
-import com.eaccid.bookreader.wordfinder.WordFromText;
+import com.eaccid.bookreader.factory.TranslatorFactory;
+import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.translator.translator.TextTranslation;
 import com.eaccid.translator.translator.Translator;
 

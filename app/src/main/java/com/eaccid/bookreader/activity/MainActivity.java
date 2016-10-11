@@ -16,12 +16,13 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ExpandableListView;
 
-import com.eaccid.bookreader.file.searcher.FileFinder;
-import com.eaccid.bookreader.file.searcher.ItemObjectChild;
-import com.eaccid.bookreader.file.searcher.ItemObjectGroup;
+import com.eaccid.bookreader.settings.LingualeoAuthSettings;
+import com.eaccid.bookreader.file.FileOnDeviceFinder;
+import com.eaccid.bookreader.search.ItemObjectChild;
+import com.eaccid.bookreader.search.ItemObjectGroup;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.file.searcher.SearchAdapter;
-import com.eaccid.bookreader.file.searcher.SearchSuggestionsProvider;
+import com.eaccid.bookreader.adapter.SearchAdapter;
+import com.eaccid.bookreader.search.SearchSuggestionsProvider;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,6 +56,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView_main);
         fillExpandableListView();
 
+        setDefaultSettings();
+
+    }
+
+    //TODO store restore settings
+    private void setDefaultSettings() {
+
+        LingualeoAuthSettings lingualeoAuthSettings = new LingualeoAuthSettings(getApplicationContext());
+        lingualeoAuthSettings.setUp();
+
     }
 
     private void fillExpandableListView() {
@@ -63,8 +74,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         //TODO create class to handle files into item objects CRUTCH
         ////////////////////////////////////////////////////////////////////////////////////////////
-        FileFinder fileFinder = new FileFinder();
-        ArrayList<File> foundFiles = fileFinder.findFiles();
+        FileOnDeviceFinder fileOnDeviceFinder = new FileOnDeviceFinder();
+        ArrayList<File> foundFiles = fileOnDeviceFinder.findFiles();
 
         ArrayList<ItemObjectChild> childObjectItemTXT = new ArrayList<>();
         ArrayList<ItemObjectChild> childObjectItemPDF = new ArrayList<>();

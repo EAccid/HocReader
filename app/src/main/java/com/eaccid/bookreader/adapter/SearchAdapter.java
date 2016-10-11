@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.file.searcher;
+package com.eaccid.bookreader.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.eaccid.bookreader.activity.PagerActivity;
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.search.ItemObjectChild;
+import com.eaccid.bookreader.search.ItemObjectGroup;
 
 import java.util.ArrayList;
 
@@ -89,8 +91,6 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         TextView textViewChild = (TextView) convertView.findViewById(R.id.child_text);
         textViewChild.setText(itemObjectChild.getText());
 
-
-        //TODO rewrite load data in activity and creation of activity/ delete final ItemObjectChild
         textViewChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,15 +103,14 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
 
-
-    //TODO delete from here
     public void filterData(String query) {
+
+        //TODO rewrite, from example: com.example.user.searchviewexpandablelistview
         query = query.toLowerCase();
         itemObjectGroupList.clear();
 
@@ -127,18 +126,15 @@ public class SearchAdapter extends BaseExpandableListAdapter {
                     if (childRow.getText().toLowerCase().contains(query)) {
                         newList.add(childRow);
                     }
-                } // end for (com.example.user.searchviewexpandablelistview.ChildRow childRow: childList)
+                }
                 if (newList.size() > 0) {
                     ItemObjectGroup itemObjectGroup = new ItemObjectGroup(parentRow.getName(), newList);
                     itemObjectGroupList.add(itemObjectGroup);
                 }
-            } // end or (com.example.user.searchviewexpandablelistview.ParentRow parentRow : originalList)
-        } // end else
+            }
+        }
 
         notifyDataSetChanged();
     }
-
-
-
 
 }
