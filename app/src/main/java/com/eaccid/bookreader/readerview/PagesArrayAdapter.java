@@ -11,10 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
-import com.eaccid.bookreader.wordview.Word;
+import com.eaccid.bookreader.wordfinder.WordFromText;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.wordview.WordTranslator;
-import com.eaccid.bookreader.wordview.WordOnTexvViewFinder;
+import com.eaccid.bookreader.WordTranslatorView;
+import com.eaccid.bookreader.wordfinder.WordOnTexvViewFinder;
 
 import java.util.List;
 
@@ -52,10 +52,10 @@ public class PagesArrayAdapter extends ArrayAdapter{
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
 
-                    Word word = WordOnTexvViewFinder.getWordByMotionEvent((TextView) v, event);
+                    WordFromText wordFromText = WordOnTexvViewFinder.getWordByMotionEvent((TextView) v, event);
 
-                    WordTranslator wordTranslator = new WordTranslator(getContext());
-                    wordTranslator.showTranslationView(word);
+                    WordTranslatorView wordTranslatorView = new WordTranslatorView(mContext);
+                    wordTranslatorView.showTranslationView(wordFromText);
 
                     return false;
                 }
@@ -77,8 +77,6 @@ public class PagesArrayAdapter extends ArrayAdapter{
     private static class ViewHolderItem {
         TextView textViewItem;
     }
-
-
 
 }
 

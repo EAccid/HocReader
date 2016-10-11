@@ -1,17 +1,19 @@
-package com.eaccid.bookreader.wordview;
+package com.eaccid.bookreader.wordfinder;
 
 import android.text.Layout;
 import android.view.MotionEvent;
 import android.widget.TextView;
+
+import com.eaccid.bookreader.wordfinder.WordFromText;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WordOnTexvViewFinder {
 
-    public static Word getWordByMotionEvent(TextView tv, MotionEvent event) {
+    public static WordFromText getWordByMotionEvent(TextView tv, MotionEvent event) {
 
-        Word word = new Word();
+        WordFromText wordFromText = new WordFromText();
 
         Layout textLayout = tv.getLayout();
         int x = (int) event.getX();
@@ -27,15 +29,16 @@ public class WordOnTexvViewFinder {
             CharSequence text = tv.getText();
 
             String wordFromLine = getWordFromLine(text, startOfLine, charOffsetInLine, endOfLine);
-            word.setText(wordFromLine);
-//            word.setSentance(
+            wordFromText.setText(wordFromLine);
+
+//            wordFromText.setSentence(
 //                    getSentenceFromText(
 //                            text, text.subSequence(startOfLine, endOfLine).toString()));
+            wordFromText.setSentence(text.subSequence(startOfLine, endOfLine).toString());
 
-            word.setSentance(text.subSequence(startOfLine, endOfLine).toString());
         }
 
-        return word;
+        return wordFromText;
     }
 
     private static String getWordFromLine(CharSequence text, int startOfLine, int offset, int endOfLine) {

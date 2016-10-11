@@ -21,7 +21,7 @@ public class LingualeoTranslator implements Translator {
 
     @Override
     public WordTranslation getTranslations() throws NullPointerException {
-        if (translation == null) throw new NullPointerException("Word has not been translated");
+        if (translation == null) throw new NullPointerException("WordFromText has not been translated");
         return translation;
     }
 

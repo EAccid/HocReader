@@ -26,8 +26,8 @@ public class PagerActivity extends FragmentActivity {
 
     private static ArrayList<String> pagesList = new ArrayList<String>();
     static final int NUM_ITEMS = 3;
-    PagerAdapter mPagerAdapter;
-    ViewPager mPager;
+    PagerAdapter pagerAdapter;
+    ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +39,12 @@ public class PagerActivity extends FragmentActivity {
         TextFileReader textFileReader = new TextFileReader(this, mfilePath);
         pagesList = textFileReader.getPages();
 
-        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(mPagerAdapter);
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(pagerAdapter);
 
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
-        circleIndicator.setViewPager(mPager);
+        circleIndicator.setViewPager(pager);
 
     }
 
@@ -167,6 +167,7 @@ public class PagerActivity extends FragmentActivity {
             }
 
         }
+
 
     }
 

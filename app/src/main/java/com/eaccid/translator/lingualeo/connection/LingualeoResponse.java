@@ -1,6 +1,7 @@
 package com.eaccid.translator.lingualeo.connection;
 
 import javax.json.*;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -16,22 +17,34 @@ public class LingualeoResponse {
 
     public String getString(String key) {
         if (isEmpty()) return "";
-        return jsonObject.getString(key, "");
+
+        String returnValue = jsonObject.getString(key, "");
+
+        if (returnValue.isEmpty()) {
+            try {
+                returnValue = getListString(key).get(0);
+            } catch (Exception ignored) {
+            }
+        }
+
+        return returnValue;
+
     }
 
     public ArrayList<String> getListString(String key) {
         ArrayList<String> listResponse = new ArrayList<>();
 
         try {
-            for (JsonValue jv: jsonObject.values()
-                 ) {
-                if (jv.getValueType() == JsonValue.ValueType.ARRAY) for (JsonValue jsonValue : (JsonArray) jv
-                        ) {
-                    JsonObject jsonObject = (JsonObject) jsonValue;
-                    String value = jsonObject.getString(key, "");
-                    if (!value.isEmpty())
-                        listResponse.add(value);
-                }
+            for (JsonValue jv : jsonObject.values()
+                    ) {
+                if (jv.getValueType() == JsonValue.ValueType.ARRAY)
+                    for (JsonValue jsonValue : (JsonArray) jv
+                            ) {
+                        JsonObject jsonObject = (JsonObject) jsonValue;
+                        String value = jsonObject.getString(key, "");
+                        if (!value.isEmpty())
+                            listResponse.add(value);
+                    }
             }
 
         } catch (Exception ignored) {

@@ -11,6 +11,8 @@ public interface TextTranslation {
 
     String getPicUrl();
 
+    String getWord();
+
     boolean isEmpty();
 
     @Override

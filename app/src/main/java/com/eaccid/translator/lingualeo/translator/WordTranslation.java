@@ -2,17 +2,21 @@ package com.eaccid.translator.lingualeo.translator;
 
 import com.eaccid.translator.lingualeo.connection.LingualeoResponse;
 import com.eaccid.translator.translator.TextTranslation;
-
-import java.io.Serializable;
 import java.util.List;
 
-public class WordTranslation implements TextTranslation, Serializable {
+public class WordTranslation implements TextTranslation {
 
     LingualeoResponse lingualeoResponse;
     List<String> translates;
     String transcription;
     String soundUrl;
     String picUrl;
+    String word;
+
+    @Override
+    public String getWord() {
+        return word;
+    }
 
     public WordTranslation (LingualeoResponse lingualeoResponse) {
         initLingualeoResponse(lingualeoResponse);
@@ -57,6 +61,7 @@ public class WordTranslation implements TextTranslation, Serializable {
 
     private void loadTranslateData() {
 
+        word = lingualeoResponse.getString("word");
         translates = lingualeoResponse.getListString("value");
         transcription = lingualeoResponse.getString("transcription");
         soundUrl = lingualeoResponse.getString("sound_url");

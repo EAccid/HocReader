@@ -1,4 +1,4 @@
-package com.eaccid;
+package com.eaccid.bookreader;
 
 import com.eaccid.translator.lingualeo.translator.LingualeoTranslator;
 import com.eaccid.translator.translator.Translator;
