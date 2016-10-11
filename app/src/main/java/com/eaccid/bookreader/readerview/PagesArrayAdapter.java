@@ -11,8 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
-import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.wordview.Word;
+import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.wordview.WordTranslator;
 import com.eaccid.bookreader.wordview.WordOnTexvViewFinder;
 
@@ -51,8 +51,12 @@ public class PagesArrayAdapter extends ArrayAdapter{
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+
                     Word word = WordOnTexvViewFinder.getWordByMotionEvent((TextView) v, event);
-                    WordTranslator.showTranslationView(word);
+
+                    WordTranslator wordTranslator = new WordTranslator(getContext());
+                    wordTranslator.showTranslationView(word);
+
                     return false;
                 }
             });

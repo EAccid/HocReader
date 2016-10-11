@@ -47,6 +47,7 @@ public class TextSpannHandler {
             }
             currentCharInText = currentCharInLine;
         }
+        sc.close();
         tv.setText(spanText, TextView.BufferType.SPANNABLE);
         tv.setMovementMethod(LinkMovementMethod.getInstance());
 

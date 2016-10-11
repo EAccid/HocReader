@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eaccid.bookreader.readerview.PagesArrayAdapter;
-import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.file.reader.TextFileReader;
+import com.eaccid.bookreader.R;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;

@@ -16,10 +16,10 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ExpandableListView;
 
-import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.file.searcher.FileFinder;
 import com.eaccid.bookreader.file.searcher.ItemObjectChild;
 import com.eaccid.bookreader.file.searcher.ItemObjectGroup;
+import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.file.searcher.SearchAdapter;
 import com.eaccid.bookreader.file.searcher.SearchSuggestionsProvider;
 

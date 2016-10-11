@@ -4,7 +4,7 @@ android {
     signingConfigs {
     }
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
     defaultConfig {
         applicationId "com.eaccid.bookreader"
         minSdkVersion 21
@@ -31,9 +31,12 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
+    //    compile files('libs/Translator.jar')
+    compile 'junit:junit:4.12'
+    //    compile files('libs/javax.json-1.0.4.jar')
+    compile files('libs/javax.json-1.0.4.jar')
 }
 

@@ -2,8 +2,17 @@ package com.eaccid.bookreader.wordview;
 
 public class Word {
 
-    String text;
-    String sentance;
+    private String text;
+
+    public String getText() {
+        return text;
+    }
+
+    public String getSentance() {
+        return sentance;
+    }
+
+    private String sentance;
 
     public void setText(String text) {
         this.text = text;

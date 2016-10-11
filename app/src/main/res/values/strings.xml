@@ -12,5 +12,7 @@
     <string name="no_items">No items.</string>
     <string name="hello_world">Hello world</string>
     <string name="under_development">Under development.</string>
+    <string name="transcription">transcription</string>
+    <string name="word">word</string>
 
 </resources>
