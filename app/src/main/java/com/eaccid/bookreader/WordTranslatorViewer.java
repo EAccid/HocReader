@@ -17,8 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eaccid.bookreader.db.entity.Word;
+import com.eaccid.bookreader.db.service.BookDaoService;
+import com.eaccid.bookreader.db.service.DatabaseManager;
+import com.eaccid.bookreader.db.service.WordDaoService;
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.translator.translator.TextTranslation;
+
+import java.sql.SQLException;
 
 public class WordTranslatorViewer {
 
@@ -122,7 +127,13 @@ public class WordTranslatorViewer {
                     //TODO add to inner dictionary
 
 
+                    try {
+                        WordDaoService ws = DatabaseManager.getInstance(view.getContext()).getWordService();
+                        ws.createOrUpdate(word);
 
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 
 
 

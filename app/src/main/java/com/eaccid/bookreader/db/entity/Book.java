@@ -10,34 +10,34 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "books")
 public class Book implements Serializable{
 
-    @DatabaseField(generatedId = true, allowGeneratedIdInsert = true, columnName = "id")
-    int id;
+    @DatabaseField(columnName = "id", canBeNull = false, id = true)
+    private String path;
 
     @DatabaseField
-    String name;
+    private String name;
 
     @DatabaseField
-    int Pages;
+    private int pages;
 
     @ForeignCollectionField(foreignFieldName = "book")
     private ForeignCollection<Word> words;
-
 
     public Book() {
 
     }
 
-    public Book(String name, int pages) {
+    public Book(String path, String name, int pages) {
+        this.path = path;
         this.name = name;
-        Pages = pages;
+        this.pages = pages;
     }
 
-    public int getId() {
-        return id;
+    public String getPath() {
+        return path;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getName() {
@@ -49,19 +49,19 @@ public class Book implements Serializable{
     }
 
     public int getPages() {
-        return Pages;
+        return pages;
     }
 
     public void setPages(int pages) {
-        Pages = pages;
+        this.pages = pages;
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", Pages=" + Pages +
+                "id = '" + path +'\'' +
+                ", name = '" + name + '\'' +
+                ", pages = " + pages +
                 '}';
     }
 }

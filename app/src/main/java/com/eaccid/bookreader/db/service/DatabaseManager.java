@@ -2,8 +2,8 @@ package com.eaccid.bookreader.db.service;
 
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 
-import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -27,6 +27,23 @@ public class DatabaseManager {
         return databaseManager;
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    private DatabaseManager(Context context, String databaseName) {
+        if (databaseHelper == null) {
+            OpenHelperManager.setHelper(new DatabaseHelper(context, databaseName));
+            databaseHelper = OpenHelperManager.getHelper(context, DatabaseHelper.class);
+
+        }
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    private static DatabaseManager getTestInstance(Context context, String databaseName) {
+        if (null == databaseManager) {
+            databaseManager = new DatabaseManager(context, databaseName);
+        }
+        return databaseManager;
+    }
+
     public DatabaseHelper getDatabaseHelper() {
         return databaseHelper;
     }
@@ -38,12 +55,12 @@ public class DatabaseManager {
         }
     }
 
-    public BookService getBookService() throws SQLException{
-       return new BookService(databaseHelper);
+    public BookDaoService getBookService() throws SQLException {
+        return new BookDaoService(databaseHelper);
     }
 
-    public WordService getWordService() throws  SQLException{
-        return new WordService(databaseHelper);
+    public WordDaoService getWordService() throws SQLException {
+        return new WordDaoService(databaseHelper);
     }
 
 }

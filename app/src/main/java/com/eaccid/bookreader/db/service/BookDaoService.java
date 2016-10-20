@@ -10,23 +10,12 @@ import java.util.List;
 
 import java.sql.SQLException;
 
-public class BookService implements Crud {
+public class BookDaoService implements Crud {
 
     private Dao<Book, String> dao = null;
 
-    protected BookService(DatabaseHelper dbHelper) throws SQLException {
+    protected BookDaoService(DatabaseHelper dbHelper) throws SQLException {
         dao = DaoManager.createDao(dbHelper.getConnectionSource(), Book.class);
-    }
-
-    public List<Book> getAll() {
-
-        List<Book> books = new ArrayList<>();
-        try {
-            books = dao.queryForAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return books;
     }
 
     @Override
@@ -55,13 +44,25 @@ public class BookService implements Crud {
     }
 
     @Override
-    public Object getById(int id) {
+    public Object getById(String id) {
         try {
-            return dao.queryForId(String.valueOf(id));
+            return dao.queryForId(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public List<Book> getAll() {
+
+        List<Book> books = new ArrayList<>();
+        try {
+            books = dao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
     }
 
 }

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eaccid.bookreader.adapter.PagesArrayAdapter;
+import com.eaccid.bookreader.db.entity.Book;
+import com.eaccid.bookreader.db.service.BookDaoService;
+import com.eaccid.bookreader.db.service.DatabaseManager;
 import com.eaccid.bookreader.file.FileToPagesReader;
 import com.eaccid.bookreader.R;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PagerActivity extends FragmentActivity {
 
@@ -34,9 +40,12 @@ public class PagerActivity extends FragmentActivity {
         setContentView(R.layout.fragment_pager);
 
         //TODO file handler in separate class
-        String mfilePath = getIntent().getStringExtra("filePath");
-        FileToPagesReader fileToPagesReader = new FileToPagesReader(this, mfilePath);
+        String filePath = getIntent().getStringExtra("filePath");
+        String fileName = getIntent().getStringExtra("fileName");
+        FileToPagesReader fileToPagesReader = new FileToPagesReader(this, filePath);
         pagesList = fileToPagesReader.getPages();
+
+        createOrUpdateBookInDatabase(fileName, filePath, pagesList.size());
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pager = (ViewPager) findViewById(R.id.pager);
@@ -44,6 +53,7 @@ public class PagerActivity extends FragmentActivity {
 
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         circleIndicator.setViewPager(pager);
+
 
     }
 
@@ -165,6 +175,21 @@ public class PagerActivity extends FragmentActivity {
                     break;
             }
 
+        }
+
+
+    }
+
+
+    //TODO create class for work with DB
+    private void createOrUpdateBookInDatabase(String fileName, String filePath, int amountPages) {
+
+        try {
+            BookDaoService bs = DatabaseManager.getInstance(this).getBookService();
+            Book book = new Book(filePath, fileName, amountPages);
+            bs.createOrUpdate(book);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
 

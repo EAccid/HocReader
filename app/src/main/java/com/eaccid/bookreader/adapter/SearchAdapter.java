@@ -97,6 +97,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), PagerActivity.class);
+                intent.putExtra("fileName", itemObjectChild.getFile().getName());
                 intent.putExtra("filePath", itemObjectChild.getFile().getPath());
                 v.getContext().startActivity(intent);
             }

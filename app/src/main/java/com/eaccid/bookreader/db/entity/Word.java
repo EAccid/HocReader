@@ -11,25 +11,25 @@ import java.io.Serializable;
 public class Word implements Serializable {
 
     @DatabaseField(generatedId = true, allowGeneratedIdInsert = true, columnName = "id")
-    int id;
+    private int id;
 
     @DatabaseField
-    String word;
+    private String word;
 
     @DatabaseField
-    String translation;
+    private String translation;
 
     @DatabaseField
-    String context;
+    private String context;
 
     @DatabaseField
-    int page;
+    private int page;
 
-    @DatabaseField(foreign = true)
-    Book book;
+    @DatabaseField(foreign = true, foreignColumnName = "id")
+    private  Book book;
 
     @DatabaseField
-    boolean enabledOnline;
+    private boolean enabledOnline;
 
     public Word() {
 

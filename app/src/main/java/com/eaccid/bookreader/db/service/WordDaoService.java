@@ -8,23 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WordService implements Crud{
+public class WordDaoService implements Crud{
 
     private Dao<Word, String> dao;
 
-    protected WordService(DatabaseHelper dbHelper) throws SQLException {
+    protected WordDaoService(DatabaseHelper dbHelper) throws SQLException {
         dao = DaoManager.createDao(dbHelper.getConnectionSource(), Word.class);
-    }
-
-    public List<Word> getAll() {
-
-        List<Word> words = new ArrayList<>();
-        try {
-            words = dao.queryForAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return words;
     }
 
     @Override
@@ -53,12 +42,24 @@ public class WordService implements Crud{
     }
 
     @Override
-    public Object getById(int id) {
+    public Object getById(String id) {
         try {
-            return dao.queryForId(String.valueOf(id));
+            return dao.queryForId(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public List<Word> getAll() {
+
+        List<Word> words = new ArrayList<>();
+        try {
+            words = dao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return words;
     }
 }

@@ -18,9 +18,9 @@ import android.webkit.MimeTypeMap;
 import android.widget.ExpandableListView;
 
 import com.eaccid.bookreader.db.entity.Book;
-import com.eaccid.bookreader.db.service.BookService;
-import com.eaccid.bookreader.db.service.DatabaseHelper;
+import com.eaccid.bookreader.db.service.BookDaoService;
 import com.eaccid.bookreader.db.service.DatabaseManager;
+import com.eaccid.bookreader.db.service.WordDaoService;
 import com.eaccid.bookreader.settings.LingualeoAuthSettings;
 import com.eaccid.bookreader.file.FileOnDeviceFinder;
 import com.eaccid.bookreader.search.ItemObjectChild;
@@ -38,7 +38,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private SearchAdapter searchAdapter;
     private ExpandableListView expandableListView;
-    DatabaseManager databaseManager;
+    private static DatabaseManager databaseManager;
+
+    public static DatabaseManager getCurrentDatabaseManager() {
+        return databaseManager;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,23 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+
+                try {
+                    BookDaoService bs = databaseManager.getBookService();
+                    WordDaoService ws = databaseManager.getWordService();
+
+                    System.out.println(bs.getAll());
+                    System.out.println(ws.getAll());
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+
             }
         });
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -65,24 +86,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         fillExpandableListView();
 
         setDefaultSettings();
-
-    }
-
-    private void refreshDB(List<String> fileNames) {
-
-        try {
-            BookService bookService = databaseManager.getBookService();
-            List<Book> booksInDB = bookService.getAll();
-            for (Book book : booksInDB
-                    ) {
-                if (!fileNames.contains(book.getName())) {
-                    bookService.delete(book);
-                    Log.i("BookService: ", "book '" + book.getName() + "' has been deleted.");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -138,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         expandableListView.setAdapter(searchAdapter);
 
         expandListViewGroup();
-        refreshDB(readableFiles);
+        refreshBooksInDatabase(readableFiles);
 
     }
 
@@ -216,6 +219,26 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         searchAdapter.filterData(newText);
         expandListViewGroup();
         return false;
+    }
+
+
+    //TODO create class for work with DB
+    private void refreshBooksInDatabase(List<String> fileNames) {
+
+        try {
+            BookDaoService bookDaoService = databaseManager.getBookService();
+            List<Book> booksInDB = bookDaoService.getAll();
+            for (Book book : booksInDB
+                    ) {
+                if (!fileNames.contains(book.getName())) {
+                    bookDaoService.delete(book);
+                    Log.i("BookDaoService: ", "book '" + book.getName() + "' has been deleted.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

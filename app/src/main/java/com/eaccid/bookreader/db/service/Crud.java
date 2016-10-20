@@ -6,7 +6,7 @@ public interface Crud {
 
     public boolean createOrUpdate(Object object);
     public boolean delete(Object object);
-    public Object getById(int id);
+    public Object getById(String id);
     public List<?> getAll();
 
 }
