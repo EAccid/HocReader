@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,10 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ExpandableListView;
 
+import com.eaccid.bookreader.db.entity.Book;
+import com.eaccid.bookreader.db.service.BookService;
+import com.eaccid.bookreader.db.service.DatabaseHelper;
+import com.eaccid.bookreader.db.service.DatabaseManager;
 import com.eaccid.bookreader.settings.LingualeoAuthSettings;
 import com.eaccid.bookreader.file.FileOnDeviceFinder;
 import com.eaccid.bookreader.search.ItemObjectChild;
@@ -25,19 +30,22 @@ import com.eaccid.bookreader.adapter.SearchAdapter;
 import com.eaccid.bookreader.search.SearchSuggestionsProvider;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
-
     private SearchAdapter searchAdapter;
     private ExpandableListView expandableListView;
+    DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        databaseManager = DatabaseManager.getInstance(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,6 +68,30 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
+    private void refreshDB(List<String> fileNames) {
+
+        try {
+            BookService bookService = databaseManager.getBookService();
+            List<Book> booksInDB = bookService.getAll();
+            for (Book book : booksInDB
+                    ) {
+                if (!fileNames.contains(book.getName())) {
+                    bookService.delete(book);
+                    Log.i("BookService: ", "book '" + book.getName() + "' has been deleted.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        databaseManager.releaseConnection();
+    }
+
     //TODO store restore settings
     private void setDefaultSettings() {
 
@@ -70,20 +102,24 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void fillExpandableListView() {
 
-        ArrayList<ItemObjectGroup> itemObjectGroupList = new ArrayList<>();
+        List<ItemObjectGroup> itemObjectGroupList = new ArrayList<>();
+        List<String> readableFiles = new ArrayList<>();
+
 
         //TODO create class to handle files into item objects CRUTCH
         ////////////////////////////////////////////////////////////////////////////////////////////
         FileOnDeviceFinder fileOnDeviceFinder = new FileOnDeviceFinder();
         ArrayList<File> foundFiles = fileOnDeviceFinder.findFiles();
 
-        ArrayList<ItemObjectChild> childObjectItemTXT = new ArrayList<>();
-        ArrayList<ItemObjectChild> childObjectItemPDF = new ArrayList<>();
+
+        List<ItemObjectChild> childObjectItemTXT = new ArrayList<>();
+        List<ItemObjectChild> childObjectItemPDF = new ArrayList<>();
 
         for (File file : foundFiles) {
             String ext = MimeTypeMap.getFileExtensionFromUrl(file.getName());
             if (ext.equalsIgnoreCase("txt")) {
                 childObjectItemTXT.add(new ItemObjectChild(R.mipmap.generic_icon, file.getName(), file));
+                readableFiles.add(file.getName());
             } else {
                 childObjectItemPDF.add(new ItemObjectChild(R.mipmap.generic_icon, file.getName(), file));
             }
@@ -102,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         expandableListView.setAdapter(searchAdapter);
 
         expandListViewGroup();
+        refreshDB(readableFiles);
 
     }
 
@@ -180,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         expandListViewGroup();
         return false;
     }
-
 
 }
 

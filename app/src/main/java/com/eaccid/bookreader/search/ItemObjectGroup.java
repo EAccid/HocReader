@@ -1,13 +1,13 @@
 package com.eaccid.bookreader.search;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ItemObjectGroup {
 
     private String name;
-    private ArrayList<ItemObjectChild> itemObjectChildGroupList;
+    private List<ItemObjectChild> itemObjectChildGroupList;
 
-    public ItemObjectGroup(String name, ArrayList<ItemObjectChild> itemObjectChildGroupList) {
+    public ItemObjectGroup(String name, List<ItemObjectChild> itemObjectChildGroupList) {
         this.name = name;
         this.itemObjectChildGroupList = itemObjectChildGroupList;
     }
@@ -17,7 +17,7 @@ public class ItemObjectGroup {
     }
 
 
-    public ArrayList<ItemObjectChild> getItemObjectChildGroupList() {
+    public List<ItemObjectChild> getItemObjectChildGroupList() {
         return itemObjectChildGroupList;
     }
 }

@@ -15,19 +15,20 @@ import com.eaccid.bookreader.search.ItemObjectChild;
 import com.eaccid.bookreader.search.ItemObjectGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchAdapter extends BaseExpandableListAdapter {
     private LayoutInflater layoutInflater;
     private ArrayList<ItemObjectGroup> itemObjectGroupList;
     private ArrayList<ItemObjectGroup> originalList;
 
-    public SearchAdapter(Context context, ArrayList<ItemObjectGroup> itemObjectGroupList) {
+    public SearchAdapter(Context context, List<ItemObjectGroup> itemObjectGroupList) {
         this.itemObjectGroupList = new ArrayList<>();
         this.itemObjectGroupList.addAll(itemObjectGroupList);
         this.originalList = new ArrayList<>();
         this.originalList.addAll(itemObjectGroupList);
 
-        layoutInflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -83,7 +84,8 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         final ItemObjectChild itemObjectChild = (ItemObjectChild) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.child_list_item, null);}
+            convertView = layoutInflater.inflate(R.layout.child_list_item, null);
+        }
 
         ImageView childIcon = (ImageView) convertView.findViewById(R.id.child_icon);
         childIcon.setImageResource(itemObjectChild.getIcon());
@@ -97,7 +99,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
                 Intent intent = new Intent(v.getContext(), PagerActivity.class);
                 intent.putExtra("filePath", itemObjectChild.getFile().getPath());
                 v.getContext().startActivity(intent);
-           }
+            }
         });
 
         return convertView;
@@ -116,13 +118,12 @@ public class SearchAdapter extends BaseExpandableListAdapter {
 
         if (query.isEmpty()) {
             itemObjectGroupList.addAll(originalList);
-        }
-        else {
+        } else {
             for (ItemObjectGroup parentRow : originalList) {
-                ArrayList<ItemObjectChild> childList = parentRow.getItemObjectChildGroupList();
-                ArrayList<ItemObjectChild> newList = new ArrayList<>();
+                List<ItemObjectChild> childList = parentRow.getItemObjectChildGroupList();
+                List<ItemObjectChild> newList = new ArrayList<>();
 
-                for (ItemObjectChild childRow: childList) {
+                for (ItemObjectChild childRow : childList) {
                     if (childRow.getText().toLowerCase().contains(query)) {
                         newList.add(childRow);
                     }

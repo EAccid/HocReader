@@ -16,14 +16,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eaccid.bookreader.db.entity.Word;
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.translator.translator.TextTranslation;
 
-public class WordTranslatorView {
+public class WordTranslatorViewer {
 
     private Context context;
 
-    public WordTranslatorView(Context context) {
+    public WordTranslatorViewer(Context context) {
         this.context = context;
     }
 
@@ -99,14 +100,31 @@ public class WordTranslatorView {
 
                     boolean succeed = readerDictionary.addTranslatedWord(translatedDictionaryWord);
 
+                    Word word = new Word();
+                    word.setWord(translatedDictionaryWord.getWord());
+                    word.setTranslation(translatedDictionaryWord.getTranslation());
+                    word.setContext(translatedDictionaryWord.getContext());
+                    word.setPage(((ListView) tv.getParent()).getLastVisiblePosition());
+
                     //TODO msg
                     if (!succeed) {
                         Toast.makeText(v.getContext(), " ... FAIL ... ", Toast.LENGTH_SHORT).show();
+
+                        word.setEnabledOnline(false);
+
                     } else {
                         Toast.makeText(v.getContext(), "word has added", Toast.LENGTH_SHORT).show();
+
+                        word.setEnabledOnline(true);
+
                     }
 
                     //TODO add to inner dictionary
+
+
+
+
+
 
                 }
             });

@@ -21,7 +21,6 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 
-
 public class PagerActivity extends FragmentActivity {
 
     private static ArrayList<String> pagesList = new ArrayList<String>();
@@ -48,12 +47,12 @@ public class PagerActivity extends FragmentActivity {
 
     }
 
-    /*******************************************************************************
-     * TODO https://developer.android.com/reference/android/support/v13/app/FragmentStatePagerAdapter.html
-     * When pages are not visible to the user, their entire fragment may be destroyed
-     */
-
     public static class PagerAdapter extends FragmentStatePagerAdapter {
+
+        /*******************************************************************************
+         * TODO https://developer.android.com/reference/android/support/v13/app/FragmentStatePagerAdapter.html
+         * When pages are not visible to the user, their entire fragment may be destroyed
+         */
 
         public PagerAdapter(FragmentManager fm) {
             super(fm);
@@ -172,6 +171,8 @@ public class PagerActivity extends FragmentActivity {
     }
 
 }
+
+
 
 
 

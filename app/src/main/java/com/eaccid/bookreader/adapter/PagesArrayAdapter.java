@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.WordTranslatorView;
+import com.eaccid.bookreader.WordTranslatorViewer;
 import com.eaccid.bookreader.wordgetter.WordOnTexvViewFinder;
 
 import java.util.List;
@@ -54,8 +54,8 @@ public class PagesArrayAdapter extends ArrayAdapter{
 
                     WordFromText wordFromText = WordOnTexvViewFinder.getWordByMotionEvent((TextView) v, event);
 
-                    WordTranslatorView wordTranslatorView = new WordTranslatorView(mContext);
-                    wordTranslatorView.showTranslationView(wordFromText);
+                    WordTranslatorViewer wordTranslatorViewer = new WordTranslatorViewer(mContext);
+                    wordTranslatorViewer.showTranslationView(wordFromText);
 
                     return false;
                 }
