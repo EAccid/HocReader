@@ -38,14 +38,12 @@ public class WordDaoServiceTest {
         databaseManager = (DatabaseManager) method.invoke(method, appContext, "test_hr.db");
 
         DatabaseHelper databaseHelper = databaseManager.getDatabaseHelper();
-        TableUtils.dropTable(databaseHelper.getConnectionSource(), Word.class, true);
-        TableUtils.dropTable(databaseHelper.getConnectionSource(), Book.class, true);
         TableUtils.createTable(databaseHelper.getConnectionSource(), Word.class);
         TableUtils.createTable(databaseHelper.getConnectionSource(), Book.class);
     }
 
     @Test
-    public void testCreateOrUpdateBook() throws Exception {
+    public void testCreateOrUpdateWord() throws Exception {
 
         Book book = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 513);
         Book book3 = new Book("/storage/sdcard/Download/book3 test.txt", "book3 test.txt", 713);
@@ -64,17 +62,17 @@ public class WordDaoServiceTest {
         ws.createOrUpdate(word2);
         ws.createOrUpdate(word3);
 
-        Word word2Created = (Word) ws.getById("2");
+        Word word2Created = (Word) ws.getById("devastate");
         assertEquals("Created word2 should be: '" + word1.getWord() + "'", word2.getWord(), word2Created.getWord());
 
 
-        Word word3Created = (Word) ws.getById("3");
+        Word word3Created = (Word) ws.getById("persist");
         assertEquals("Created word3 should be in book: '" + book3.getName() + "'", book3.getName(), word3Created.getBook().getName());
 
     }
 
     @Test
-    public void testAmountBooks() throws Exception {
+    public void testAmountWords() throws Exception {
 
         Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 1);
         Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt", 2);
@@ -106,7 +104,7 @@ public class WordDaoServiceTest {
     }
 
     @Test
-    public void testDeleteBook() throws Exception {
+    public void testDeleteWord() throws Exception {
 
         Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 1);
         Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt", 2);
@@ -139,21 +137,50 @@ public class WordDaoServiceTest {
         assertEquals("Books amount should  be 3", 3, amountWords);
 
 
-        Word word2Created = (Word) ws.getById("2");
-        assertEquals("Created word2 should be: '" + word1.getWord() + "'", word2.getWord(), word2Created.getWord());
+        Word word2Created = (Word) ws.getById("devastate");
+        assertEquals("Created word2 should be 'devastate'" , word2.getWord(), word2Created.getWord());
 
-        Word word5Created = (Word) ws.getById("5");
+        Word word5Created = (Word) ws.getById("designator");
         assertEquals("Created word5 should be in book: '" + book3.getName() + "'", book3.getName(), word5Created.getBook().getName());
 
 
-        Word word3Created = (Word) ws.getById("3");
+        Word word3Created = (Word) ws.getById("persist");
         assertNull("word3 should be null.", word3Created);
+
+    }
+
+    @Test
+    public void testForeignCollection() throws Exception {
+
+        Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 1);
+        Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt", 2);
+        BookDaoService bs = databaseManager.getBookService();
+        bs.createOrUpdate(book1);
+        bs.createOrUpdate(book2);
+
+
+        Word word1 = new Word("mad", "сумасшедший", "mad in some context", 13, book1, false);
+        WordDaoService ws = databaseManager.getWordService();
+        ws.createOrUpdate(word1);
+
+        bs.delete(book1);
+
+        Word word1Created = (Word) ws.getById("mad");
+
+        assertNull("Book should be null.", word1Created.getBook());
+
+        word1Created.setBook(book2);
+        ws.createOrUpdate(word1Created);
+
+        word1Created = (Word) ws.getById("mad");
+        assertEquals("Created word3 should be in book: '" + book2.getName() + "'", book2.getName(), word1Created.getBook().getName());
 
     }
 
     @After
     public void tearDown() throws Exception {
-        databaseManager.releaseConnection();
+        TableUtils.dropTable(databaseManager.getDatabaseHelper().getConnectionSource(), Word.class, true);
+        TableUtils.dropTable(databaseManager.getDatabaseHelper().getConnectionSource(), Book.class, true);
     }
 
 }

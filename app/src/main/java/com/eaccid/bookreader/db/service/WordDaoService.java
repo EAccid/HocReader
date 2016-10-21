@@ -12,7 +12,7 @@ public class WordDaoService implements Crud{
 
     private Dao<Word, String> dao;
 
-    protected WordDaoService(DatabaseHelper dbHelper) throws SQLException {
+    WordDaoService(DatabaseHelper dbHelper) throws SQLException {
         dao = DaoManager.createDao(dbHelper.getConnectionSource(), Word.class);
     }
 
@@ -50,7 +50,6 @@ public class WordDaoService implements Crud{
         }
         return null;
     }
-
 
     public List<Word> getAll() {
 

@@ -35,11 +35,8 @@ public class BookDaoServiceTest {
         method.setAccessible(true);
         databaseManager = (DatabaseManager) method.invoke(method, appContext, "test_hr.db");
 
-        DatabaseHelper databaseHelper = databaseManager.getDatabaseHelper();
-        TableUtils.dropTable(databaseHelper.getConnectionSource(), Word.class, true);
-        TableUtils.dropTable(databaseHelper.getConnectionSource(), Book.class, true);
-        TableUtils.createTable(databaseHelper.getConnectionSource(), Word.class);
-        TableUtils.createTable(databaseHelper.getConnectionSource(), Book.class);
+        TableUtils.createTable(databaseManager.getDatabaseHelper().getConnectionSource(), Word.class);
+        TableUtils.createTable(databaseManager.getDatabaseHelper().getConnectionSource(), Book.class);
     }
 
     @Test
@@ -120,7 +117,11 @@ public class BookDaoServiceTest {
 
     @After
     public void tearDown() throws Exception {
-        databaseManager.releaseConnection();
+
+        TableUtils.dropTable(databaseManager.getDatabaseHelper().getConnectionSource(), Word.class, true);
+        TableUtils.dropTable(databaseManager.getDatabaseHelper().getConnectionSource(), Book.class, true);
+//        databaseManager.releaseConnection();
+
     }
 
 }

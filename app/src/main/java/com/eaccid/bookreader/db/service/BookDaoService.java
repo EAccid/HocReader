@@ -14,7 +14,7 @@ public class BookDaoService implements Crud {
 
     private Dao<Book, String> dao = null;
 
-    protected BookDaoService(DatabaseHelper dbHelper) throws SQLException {
+    BookDaoService(DatabaseHelper dbHelper) throws SQLException {
         dao = DaoManager.createDao(dbHelper.getConnectionSource(), Book.class);
     }
 
@@ -52,7 +52,6 @@ public class BookDaoService implements Crud {
         }
         return null;
     }
-
 
     public List<Book> getAll() {
 

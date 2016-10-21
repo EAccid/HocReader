@@ -8,6 +8,8 @@ import android.util.Log;
 import com.eaccid.bookreader.db.entity.Book;
 import com.eaccid.bookreader.db.entity.Word;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -37,7 +39,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Book.class);
         }
         catch (SQLException e){
-            Log.e(TAG, "error creating DB " + databaseName);
+            Log.e(TAG, "error creating db " + databaseName);
             throw new RuntimeException(e);
         }
     }
@@ -51,8 +53,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             onCreate(database, connectionSource);
         }
         catch (SQLException e){
-            Log.e(TAG,"error upgrading db "+ databaseName +"from ver "+oldVersion);
+            Log.e(TAG,"error upgrading db " + databaseName + " from version " + oldVersion);
             throw new RuntimeException(e);
         }
+    }
+
+
+
+    @Override
+
+    public void close() {
+        super.close();
+        DaoManager.clearDaoCache();
     }
 }

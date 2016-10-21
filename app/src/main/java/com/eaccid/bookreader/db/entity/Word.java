@@ -10,10 +10,7 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "words")
 public class Word implements Serializable {
 
-    @DatabaseField(generatedId = true, allowGeneratedIdInsert = true, columnName = "id")
-    private int id;
-
-    @DatabaseField
+    @DatabaseField(columnName = "id", canBeNull = false, id = true)
     private String word;
 
     @DatabaseField
@@ -42,14 +39,6 @@ public class Word implements Serializable {
         this.page = page;
         this.book = book;
         this.enabledOnline = enabledOnline;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getWord() {
@@ -103,7 +92,6 @@ public class Word implements Serializable {
     @Override
     public String toString() {
         return "Word{" +
-                "id=" + id +
                 ", word='" + word + '\'' +
                 ", translation='" + translation + '\'' +
                 ", context='" + context + '\'' +

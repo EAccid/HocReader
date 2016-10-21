@@ -21,7 +21,7 @@ public class DatabaseManager {
     }
 
     public static DatabaseManager getInstance(Context context) {
-        if (null == databaseManager) {
+        if (databaseManager == null) {
             databaseManager = new DatabaseManager(context);
         }
         return databaseManager;
