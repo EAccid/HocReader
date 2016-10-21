@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.activity;
+package com.eaccid.bookreader.appactivity;
 
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eaccid.bookreader.adapter.PagesArrayAdapter;
-import com.eaccid.bookreader.db.entity.Book;
-import com.eaccid.bookreader.db.service.BookDaoService;
-import com.eaccid.bookreader.db.service.DatabaseManager;
 import com.eaccid.bookreader.file.FileToPagesReader;
 import com.eaccid.bookreader.R;
 import com.viewpagerindicator.CirclePageIndicator;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PagerActivity extends FragmentActivity {
 
@@ -45,7 +39,8 @@ public class PagerActivity extends FragmentActivity {
         FileToPagesReader fileToPagesReader = new FileToPagesReader(this, filePath);
         pagesList = fileToPagesReader.getPages();
 
-        createOrUpdateBookInDatabase(fileName, filePath, pagesList.size());
+        AppDatabaseManager.createOrUpdateBook(filePath, fileName, pagesList.size());
+        AppDatabaseManager.setCurrentBookForAddingWord(filePath);
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pager = (ViewPager) findViewById(R.id.pager);
@@ -162,9 +157,9 @@ public class PagerActivity extends FragmentActivity {
 
                     if (pagesList.size() > 0)
                         setListAdapter(
-                                new PagesArrayAdapter(getContext(), R.layout.text_on_page, pagesList)
+                                new PagesArrayAdapter(getContext(), R.id.text_on_page, pagesList)
                         );
-
+                    getListView().setItemsCanFocus(true);
                     break;
                 case 1:
                     break;
@@ -180,20 +175,6 @@ public class PagerActivity extends FragmentActivity {
 
     }
 
-
-    //TODO create class for work with DB
-    private void createOrUpdateBookInDatabase(String fileName, String filePath, int amountPages) {
-
-        try {
-            BookDaoService bs = DatabaseManager.getInstance(this).getBookService();
-            Book book = new Book(filePath, fileName, amountPages);
-            bs.createOrUpdate(book);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
 }
 

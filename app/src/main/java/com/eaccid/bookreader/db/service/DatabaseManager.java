@@ -53,6 +53,7 @@ public class DatabaseManager {
             OpenHelperManager.releaseHelper();
             databaseHelper = null;
         }
+        databaseManager = null;
     }
 
     public BookDaoService getBookService() throws SQLException {

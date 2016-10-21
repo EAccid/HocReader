@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eaccid.bookreader.appactivity.AppDatabaseManager;
 import com.eaccid.bookreader.db.entity.Word;
 import com.eaccid.bookreader.db.service.BookDaoService;
 import com.eaccid.bookreader.db.service.DatabaseManager;
@@ -63,7 +64,6 @@ public class WordTranslatorViewer {
             WordFromText wordFromText = (WordFromText) getArguments().getSerializable("WordFromText");
             TextTranslation wordTranslation = ReaderTranslator.translate(wordFromText);
 
-
             View v = inflater.inflate(R.layout.fragment_word_translation, container);
             ImageView imageWordPicture = (ImageView) v.findViewById(R.id.image_word_picture);
             ImageButton imageButtonTranscriptionSpeaker = (ImageButton) v.findViewById(R.id.transcription_speaker);
@@ -72,7 +72,6 @@ public class WordTranslatorViewer {
             ListView listViewTranslations = (ListView) v.findViewById(R.id.list_translations);
             ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(
                     inflater.getContext(), R.layout.translation_item, wordTranslation.getTranslates());
-
 
             getDialog().setTitle(wordTranslation.getWord());
             //imageWordPicture
@@ -104,39 +103,12 @@ public class WordTranslatorViewer {
                     ReaderDictionary readerDictionary = new ReaderDictionary(inflater.getContext());
 
                     boolean succeed = readerDictionary.addTranslatedWord(translatedDictionaryWord);
+                    int currentPage = ((ListView) tv.getParent()).getLastVisiblePosition();
 
-                    Word word = new Word();
-                    word.setWord(translatedDictionaryWord.getWord());
-                    word.setTranslation(translatedDictionaryWord.getTranslation());
-                    word.setContext(translatedDictionaryWord.getContext());
-                    word.setPage(((ListView) tv.getParent()).getLastVisiblePosition());
-
-                    //TODO msg
-                    if (!succeed) {
-                        Toast.makeText(v.getContext(), " ... FAIL ... ", Toast.LENGTH_SHORT).show();
-
-                        word.setEnabledOnline(false);
-
-                    } else {
-                        Toast.makeText(v.getContext(), "word has added", Toast.LENGTH_SHORT).show();
-
-                        word.setEnabledOnline(true);
-
-                    }
-
-                    //TODO add to inner dictionary
-
-
-                    try {
-                        WordDaoService ws = DatabaseManager.getInstance(view.getContext()).getWordService();
-                        ws.createOrUpdate(word);
-
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-
-
-
+                    AppDatabaseManager.createOrUpdateWord(translatedDictionaryWord.getWord(),
+                            translatedDictionaryWord.getTranslation(),
+                            translatedDictionaryWord.getContext(),
+                            succeed);
                 }
             });
 

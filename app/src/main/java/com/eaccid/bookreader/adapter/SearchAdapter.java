@@ -9,7 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.eaccid.bookreader.activity.PagerActivity;
+import com.eaccid.bookreader.appactivity.PagerActivity;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.search.ItemObjectChild;
 import com.eaccid.bookreader.search.ItemObjectGroup;

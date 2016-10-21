@@ -14,5 +14,7 @@
     <string name="under_development">Under development.</string>
     <string name="transcription">transcription</string>
     <string name="word">word</string>
+    <string name="_page_number">0</string>
+    <string name="text_on_page">text on page</string>
 
 </resources>

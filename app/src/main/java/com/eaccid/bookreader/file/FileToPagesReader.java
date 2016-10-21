@@ -8,7 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.eaccid.bookreader.activity.PagerActivity;
+import com.eaccid.bookreader.appactivity.PagerActivity;
 import com.eaccid.bookreader.R;
 import java.io.BufferedReader;
 import java.io.FileInputStream;

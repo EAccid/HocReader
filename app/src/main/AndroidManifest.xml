@@ -17,7 +17,7 @@
             android:authorities="com.eaccid.bookreader.search.SearchSuggestionsProvider" />
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".appactivity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -32,7 +32,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".activity.PagerActivity"
+            android:name=".appactivity.PagerActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
