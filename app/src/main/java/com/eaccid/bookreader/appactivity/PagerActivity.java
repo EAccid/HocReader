@@ -159,7 +159,6 @@ public class PagerActivity extends FragmentActivity {
                         setListAdapter(
                                 new PagesArrayAdapter(getContext(), R.id.text_on_page, pagesList)
                         );
-                    getListView().setItemsCanFocus(true);
                     break;
                 case 1:
                     break;
