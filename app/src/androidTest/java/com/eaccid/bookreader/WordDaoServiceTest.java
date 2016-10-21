@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 import java.lang.reflect.Method;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 
@@ -70,70 +71,83 @@ public class WordDaoServiceTest {
         Word word3Created = (Word) ws.getById("3");
         assertEquals("Created word3 should be in book: '" + book3.getName() + "'", book3.getName(), word3Created.getBook().getName());
 
-
-//
-//        book.setName("same book");
-//        bs.createOrUpdate(book);
-//
-//        Book bookCreated1 = (Book) bs.getById(1);
-//        assertEquals("Created book should be: '" + book.getName() + "'", book.getName(), bookCreated1.getName());
     }
 
     @Test
     public void testAmountBooks() throws Exception {
 
-//        BookDaoService bs = databaseManager.getBookService();
-//
-//        Book book1 = new Book("book test 1 .txt", 1);
-//        Book book2 = new Book("book test 2 .txt", 2);
-//        Book book3 = new Book("book test 3 .txt", 3);
-//        Book book4 = new Book("book test 4 .txt", 4);
-//        Book book5 = new Book("book test 5 .txt", 5);
-//
-//        bs.createOrUpdate(book1);
-//        bs.createOrUpdate(book2);
-//        bs.createOrUpdate(book3);
-//        bs.createOrUpdate(book4);
-//        bs.createOrUpdate(book5);
-//
-//        int amountBooks = bs.getAll().size();
-//
-//        assertEquals("Books amount should  be 5", 5, amountBooks);
+        Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 1);
+        Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt", 2);
+        Book book3 = new Book("/storage/sdcard/Download/book3 test.txt", "book3 test.txt", 3);
+
+        BookDaoService bs = databaseManager.getBookService();
+        bs.createOrUpdate(book1);
+        bs.createOrUpdate(book2);
+        bs.createOrUpdate(book3);
+
+        Word word1 = new Word("mad", "сумасшедший", "mad in some context", 13, book1, false);
+        Word word2 = new Word("devastate", "опустошать", "devastate in some context", 13, book1, false);
+        Word word3 = new Word("persist", "упорствовать", "persist in some context", 103, book2, false);
+        Word word4 = new Word("segregate", "изолировать", "segregate in some context", 103, book2, false);
+        Word word5 = new Word("designator", "указатель или обозначение", "designator in some context", 203, book3, false);
+
+        WordDaoService ws = databaseManager.getWordService();
+
+        ws.createOrUpdate(word1);
+        ws.createOrUpdate(word2);
+        ws.createOrUpdate(word3);
+        ws.createOrUpdate(word4);
+        ws.createOrUpdate(word5);
+
+        int amountWords = ws.getAll().size();
+
+        assertEquals("Books amount should  be 5", 5, amountWords);
 
     }
 
     @Test
     public void testDeleteBook() throws Exception {
 
-//        BookDaoService bs = databaseManager.getBookService();
-//
-//        Book book1 = new Book("book test 1 .txt", 1);
-//        Book book2 = new Book("book test 2 .txt", 2);
-//        Book book3 = new Book("book test 3 .txt", 3);
-//        Book book4 = new Book("book test 4 .txt", 4);
-//        Book book5 = new Book("book test 5 .txt", 5);
-//
-//        bs.createOrUpdate(book1);
-//        bs.createOrUpdate(book2);
-//        bs.createOrUpdate(book3);
-//        bs.createOrUpdate(book4);
-//        bs.createOrUpdate(book5);
-//
-//        bs.delete(book3);
-//        bs.delete(book4);
-//
-//        int amountBooks = bs.getAll().size();
-//
-//        assertEquals("Books amount should  be 3", 3, amountBooks);
-//
-//        Book bookCreated1 = (Book) bs.getById(1);
-//        assertEquals("book1 book should be: '" + book1.getName() + "'", book1.getName(), bookCreated1.getName());
-//
-//        Book bookCreated2 = (Book) bs.getById(2);
-//        assertEquals("book2 book should be: '" + book2.getName() + "'", book2.getName(), bookCreated2.getName());
-//
-//        Book bookCreated5 = (Book) bs.getById(5);
-//        assertEquals("book3 book should be: '" + book5.getName() + "'", book5.getName(), bookCreated5.getName());
+        Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 1);
+        Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt", 2);
+        Book book3 = new Book("/storage/sdcard/Download/book3 test.txt", "book3 test.txt", 3);
+
+        BookDaoService bs = databaseManager.getBookService();
+        bs.createOrUpdate(book1);
+        bs.createOrUpdate(book2);
+        bs.createOrUpdate(book3);
+
+        Word word1 = new Word("mad", "сумасшедший", "mad in some context", 13, book1, false);
+        Word word2 = new Word("devastate", "опустошать", "devastate in some context", 13, book1, false);
+        Word word3 = new Word("persist", "упорствовать", "persist in some context", 103, book2, false);
+        Word word4 = new Word("segregate", "изолировать", "segregate in some context", 103, book2, false);
+        Word word5 = new Word("designator", "указатель или обозначение", "designator in some context", 203, book3, false);
+
+        WordDaoService ws = databaseManager.getWordService();
+
+        ws.createOrUpdate(word1);
+        ws.createOrUpdate(word2);
+        ws.createOrUpdate(word3);
+        ws.createOrUpdate(word4);
+        ws.createOrUpdate(word5);
+
+        ws.delete(word3);
+        ws.delete(word4);
+
+        int amountWords = ws.getAll().size();
+
+        assertEquals("Books amount should  be 3", 3, amountWords);
+
+
+        Word word2Created = (Word) ws.getById("2");
+        assertEquals("Created word2 should be: '" + word1.getWord() + "'", word2.getWord(), word2Created.getWord());
+
+        Word word5Created = (Word) ws.getById("5");
+        assertEquals("Created word5 should be in book: '" + book3.getName() + "'", book3.getName(), word5Created.getBook().getName());
+
+
+        Word word3Created = (Word) ws.getById("3");
+        assertNull("word3 should be null.", word3Created);
 
     }
 
