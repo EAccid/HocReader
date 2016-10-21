@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.appactivity;
+package com.eaccid.bookreader.dev;
 
 import android.content.Context;
 import android.util.Log;
@@ -20,16 +20,16 @@ public class AppDatabaseManager {
     private static Book currentBook;
     private static int currentPage = 0;
 
-    static void loadDatabaseManagerForAllActivities(Context baseContext) {
+    public static void loadDatabaseManagerForAllActivities(Context baseContext) {
         databaseManager = DatabaseManager.getInstance(baseContext);
     }
 
-    static void releaseDatabaseManager() {
+    public static void releaseDatabaseManager() {
         databaseManager.releaseConnection();
         databaseManager = null;
     }
 
-    static void refreshBooks(List<String> filePaths) {
+    public static void refreshBooks(List<String> filePaths) {
 
         try {
             BookDaoService bookDaoService = databaseManager.getBookService();

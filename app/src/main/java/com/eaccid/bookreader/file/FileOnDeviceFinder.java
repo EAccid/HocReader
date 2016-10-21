@@ -38,9 +38,18 @@ public class FileOnDeviceFinder {
 
         System.out.println(dir);
         for (File file : dir.listFiles())
-            if (file.isDirectory())
-                addFilesToList(file, fileExtensions, filenameFilter);
-            else {
+            if (file.isDirectory()) {
+
+                //TODO set user directory names or none. temp condition
+                String dirName = file.getName();
+                if (dirName.equalsIgnoreCase("downloads") ||
+                        dirName.equalsIgnoreCase("books") ||
+                        dirName.equalsIgnoreCase("download") ||
+                        dirName.equalsIgnoreCase("book")) {
+                    addFilesToList(file, fileExtensions, filenameFilter);
+                }
+
+            } else {
                 Pattern pattern = Pattern.compile(".*" + filenameFilter.toLowerCase() + fileExtensions + "");
                 if (pattern.matcher(file.getName().toLowerCase()).matches())
                     fileList.add(file);
@@ -48,7 +57,9 @@ public class FileOnDeviceFinder {
 
     }
 
-    /** f.e. (txt|pdf)*/
+    /**
+     * f.e. (txt|pdf)
+     */
     private static String getFormatExtensions(FileExtensions[] values) {
         StringBuilder sb = new StringBuilder();
         int size = values.length;

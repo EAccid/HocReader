@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.adapter;
+package com.eaccid.bookreader.dev;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.eaccid.bookreader.appactivity.PagerActivity;
+import com.eaccid.bookreader.activity.PagerActivity;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.search.ItemObjectChild;
 import com.eaccid.bookreader.search.ItemObjectGroup;
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends BaseExpandableListAdapter {
+
     private LayoutInflater layoutInflater;
     private ArrayList<ItemObjectGroup> itemObjectGroupList;
     private ArrayList<ItemObjectGroup> originalList;
@@ -112,8 +113,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
     }
 
     public void filterData(String query) {
-
-        //TODO rewrite, from example: com.example.user.searchviewexpandablelistview
+        //example: com.example.user.searchviewexpandablelistview
         query = query.toLowerCase();
         itemObjectGroupList.clear();
 
@@ -135,8 +135,6 @@ public class SearchAdapter extends BaseExpandableListAdapter {
                 }
             }
         }
-
         notifyDataSetChanged();
     }
-
 }

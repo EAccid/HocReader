@@ -4,21 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 
-import com.eaccid.bookreader.appactivity.AppDatabaseManager;
 import com.eaccid.bookreader.wordgetter.OnWordTouchListener;
-import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.WordTranslatorViewer;
-import com.eaccid.bookreader.wordgetter.WordOnTexvViewFinder;
 
 import java.util.List;
 

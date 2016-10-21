@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.appactivity;
+package com.eaccid.bookreader.activity;
 
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eaccid.bookreader.adapter.PagesArrayAdapter;
+import com.eaccid.bookreader.dev.AppDatabaseManager;
 import com.eaccid.bookreader.file.FileToPagesReader;
 import com.eaccid.bookreader.R;
 import com.viewpagerindicator.CirclePageIndicator;

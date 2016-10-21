@@ -1,12 +1,11 @@
 package com.eaccid.bookreader.wordgetter;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.WordTranslatorViewer;
-import com.eaccid.bookreader.appactivity.AppDatabaseManager;
+import com.eaccid.bookreader.dev.AppDatabaseManager;
 
 public class OnWordTouchListener implements View.OnTouchListener {
 
