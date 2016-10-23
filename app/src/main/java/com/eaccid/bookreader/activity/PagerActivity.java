@@ -103,7 +103,7 @@ public class PagerActivity extends FragmentActivity {
     }
 
     public static class PagesListFragment extends ListFragment {
-        int mNum;
+        private int mNum;
 
         static PagesListFragment newInstance(int num) {
             PagesListFragment f = new PagesListFragment();

@@ -41,7 +41,8 @@ public class FileToPagesReader extends ContextWrapper {
 
     private void setScreenParameters() {
 
-        float verticalMargin = getBaseContext().getResources().getDimension(R.dimen.activity_vertical_margin) * 2;
+        float verticalMargin =
+                getBaseContext().getResources().getDimension(R.dimen.activity_vertical_margin) * 2;
         PagerActivity pagerActivity = (PagerActivity) getBaseContext();
         LayoutInflater inflater = pagerActivity.getLayoutInflater();
 
