@@ -1,20 +1,22 @@
 package com.eaccid.bookreader.activity;
 
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eaccid.bookreader.adapter.PagesArrayAdapter;
+import com.eaccid.bookreader.adapter.PagesAdapter;
 import com.eaccid.bookreader.dev.AppDatabaseManager;
 import com.eaccid.bookreader.file.FileToPagesReader;
 import com.eaccid.bookreader.R;
@@ -22,30 +24,22 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 
-public class PagerActivity extends FragmentActivity {
+public class MainFragmentActivity extends FragmentActivity {
 
     private static ArrayList<String> pagesList = new ArrayList<String>();
     static final int NUM_ITEMS = 3;
-    PagerAdapter pagerAdapter;
-    ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_pager);
 
-        //TODO file handler in separate class
-        String filePath = getIntent().getStringExtra("filePath");
-        String fileName = getIntent().getStringExtra("fileName");
-        FileToPagesReader fileToPagesReader = new FileToPagesReader(this, filePath);
-        pagesList = fileToPagesReader.getPages();
 
-        AppDatabaseManager.createOrUpdateBook(filePath, fileName, pagesList.size());
-        AppDatabaseManager.setCurrentBookForAddingWord(filePath);
+        fillPagesListAndRefreshDatabase();
 
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(pagerAdapter);
+        MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(mainPagerAdapter);
 
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         circleIndicator.setViewPager(pager);
@@ -53,14 +47,24 @@ public class PagerActivity extends FragmentActivity {
 
     }
 
-    public static class PagerAdapter extends FragmentStatePagerAdapter {
+    private void fillPagesListAndRefreshDatabase() {
+        String filePath = getIntent().getStringExtra("filePath");
+        String fileName = getIntent().getStringExtra("fileName");
+        FileToPagesReader fileToPagesReader = new FileToPagesReader(this, filePath);
+        pagesList = fileToPagesReader.getPages();
+
+        AppDatabaseManager.createOrUpdateBook(filePath, fileName, pagesList.size());
+        AppDatabaseManager.setCurrentBookForAddingWord(filePath);
+    }
+
+    public static class MainPagerAdapter extends FragmentStatePagerAdapter {
 
         /*******************************************************************************
          * TODO https://developer.android.com/reference/android/support/v13/app/FragmentStatePagerAdapter.html
          * When pages are not visible to the user, their entire fragment may be destroyed
          */
 
-        public PagerAdapter(FragmentManager fm) {
+        MainPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -71,7 +75,7 @@ public class PagerActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return PagesListFragment.newInstance(position);
+            return MainListFragment.newInstance(position);
         }
 
         @Override
@@ -79,34 +83,15 @@ public class PagerActivity extends FragmentActivity {
             return super.getItemPosition(object);
         }
 
-        @Override
-        public Parcelable saveState() {
-
-            //TODO save state
-
-            Bundle outState = new Bundle();
-            outState.putStringArrayList("pagesList", pagesList);
-//            ListView list = getListView();
-//            outState.putInt("someVarB", list.getFirstVisiblePosition());
-            return outState;
-        }
-
-        @Override
-        public void restoreState(Parcelable state, ClassLoader loader) {
-            super.restoreState(state, loader);
-            if (state != null) {
-                Bundle bundle = (Bundle) state;
-                bundle.setClassLoader(loader);
-                pagesList = bundle.getStringArrayList("pagesList");
-            }
-        }
     }
 
-    public static class PagesListFragment extends ListFragment {
-        private int mNum;
 
-        static PagesListFragment newInstance(int num) {
-            PagesListFragment f = new PagesListFragment();
+    public static class MainListFragment extends ListFragment {
+        private int mNum;
+        private int curentBookPage = 0;
+
+        static MainListFragment newInstance(int num) {
+            MainListFragment f = new MainListFragment();
 
             // Supply num input as an argument.
             Bundle args = new Bundle();
@@ -155,11 +140,9 @@ public class PagerActivity extends FragmentActivity {
 
             switch (mNum) {
                 case 0:
-
+                    PagesAdapter pagesAdapter = new PagesAdapter(getContext(), R.id.text_on_page, pagesList);
                     if (pagesList.size() > 0)
-                        setListAdapter(
-                                new PagesArrayAdapter(getContext(), R.id.text_on_page, pagesList)
-                        );
+                        setListAdapter(pagesAdapter);
                     break;
                 case 1:
                     break;
@@ -173,8 +156,14 @@ public class PagerActivity extends FragmentActivity {
         }
 
 
-    }
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            ListView list = getListView();
+            outState.putInt("firstVisiblePosition", list.getFirstVisiblePosition());
+            super.onSaveInstanceState(outState);
+        }
 
+    }
 
 }
 

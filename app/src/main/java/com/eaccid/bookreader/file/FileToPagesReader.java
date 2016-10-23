@@ -8,7 +8,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.eaccid.bookreader.activity.PagerActivity;
+import com.eaccid.bookreader.activity.MainFragmentActivity;
 import com.eaccid.bookreader.R;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -43,11 +43,11 @@ public class FileToPagesReader extends ContextWrapper {
 
         float verticalMargin =
                 getBaseContext().getResources().getDimension(R.dimen.activity_vertical_margin) * 2;
-        PagerActivity pagerActivity = (PagerActivity) getBaseContext();
-        LayoutInflater inflater = pagerActivity.getLayoutInflater();
+        MainFragmentActivity mainFragmentActivity = (MainFragmentActivity) getBaseContext();
+        LayoutInflater inflater = mainFragmentActivity.getLayoutInflater();
 
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_page,
-                (ViewGroup) pagerActivity.getWindow().getDecorView().findViewById(android.R.id.content), false);
+                (ViewGroup) mainFragmentActivity.getWindow().getDecorView().findViewById(android.R.id.content), false);
         TextView textOnPage = (TextView) viewGroup.findViewById(R.id.text);
 
         paint = textOnPage.getPaint();
@@ -55,7 +55,7 @@ public class FileToPagesReader extends ContextWrapper {
         float textSizeHeight = Math.abs(paintFontMetrics.top - paintFontMetrics.bottom);
 
         metrics = new DisplayMetrics();
-        pagerActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        mainFragmentActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         pageLinesOnScreen = (int) (Math.floor((metrics.heightPixels - verticalMargin) / textSizeHeight));
 
     }

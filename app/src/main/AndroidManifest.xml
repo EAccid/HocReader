@@ -32,7 +32,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".activity.PagerActivity"
+            android:name=".activity.MainFragmentActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

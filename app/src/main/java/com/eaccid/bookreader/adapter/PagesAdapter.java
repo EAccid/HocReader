@@ -16,19 +16,22 @@ import com.eaccid.bookreader.R;
 import java.util.List;
 
 
-public class PagesArrayAdapter extends ArrayAdapter {
+public class PagesAdapter extends ArrayAdapter<String> {
 
     private Context mContext;
     private int mTextOnPage;
     private int viewItemLayout;
     private List<String> mPagesList;
+    private List<String> mPagesListAll;
 
-    public PagesArrayAdapter(Context context, int textViewResourceId, List<String> pagesList) {
+
+
+    public PagesAdapter(Context context, int textViewResourceId, List<String> pagesList) {
         super(context, R.layout.text_on_page, textViewResourceId, pagesList);
         this.mContext = context;
         this.mTextOnPage = textViewResourceId;
-        this.mPagesList = pagesList;
         this.viewItemLayout = R.layout.text_on_page;
+        this.mPagesList = pagesList;
     }
 
     @NonNull
@@ -71,6 +74,7 @@ public class PagesArrayAdapter extends ArrayAdapter {
         TextView textViewItem;
         TextView pageNumber;
     }
+
 
 }
 
