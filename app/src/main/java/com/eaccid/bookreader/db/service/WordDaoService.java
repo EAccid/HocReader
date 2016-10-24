@@ -3,12 +3,15 @@ package com.eaccid.bookreader.db.service;
 import com.eaccid.bookreader.db.entity.Word;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WordDaoService implements Crud{
+public class WordDaoService implements Crud {
 
     private Dao<Word, String> dao;
 
@@ -22,8 +25,19 @@ public class WordDaoService implements Crud{
         boolean created = false;
 
         try {
-            Dao.CreateOrUpdateStatus status = dao.createOrUpdate((Word) word);
+
+            Word wordToWright = (Word) word;
+
+            Word existedWord = getWord((Word) word);
+
+            if (existedWord != null) {
+                wordToWright.setId(existedWord.getId());
+            }
+
+            Dao.CreateOrUpdateStatus status = dao.createOrUpdate(wordToWright);
             created = status.isCreated() || status.isUpdated();
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -34,7 +48,15 @@ public class WordDaoService implements Crud{
     @Override
     public boolean delete(Object word) {
         try {
-            return dao.delete((Word) word) == 1;
+
+            Word existedWord = getWord((Word) word);
+
+            if (existedWord != null) {
+                return dao.delete(existedWord) == 1;
+            }
+
+            return false;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,6 +73,44 @@ public class WordDaoService implements Crud{
         return null;
     }
 
+    public List<Word> getByWordName(String word) {
+        try {
+
+            QueryBuilder<Word, String> qb = dao.queryBuilder();
+            qb.where().eq("word", word);
+
+            PreparedQuery<Word> preparedQuery = qb.prepare();
+            List<Word> wordList = dao.query(preparedQuery);
+
+            return wordList;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public List<Word> getByWordNameAndPage(String word, int pageNumber) {
+        try {
+
+            QueryBuilder<Word, String> qb = dao.queryBuilder();
+            Where<Word, String> where = qb.where();
+
+            where.eq("word", word);
+            where.and();
+            where.eq("page", pageNumber);
+
+            PreparedQuery<Word> preparedQuery = qb.prepare();
+            List<Word> wordList = dao.query(preparedQuery);
+
+            return wordList;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
     public List<Word> getAll() {
 
         List<Word> words = new ArrayList<>();
@@ -61,4 +121,30 @@ public class WordDaoService implements Crud{
         }
         return words;
     }
+
+    private Word getWord(Word word) {
+        try {
+
+            QueryBuilder<Word, String> qb = dao.queryBuilder();
+            Where<Word, String> where = qb.where();
+
+            where.eq("word", word.getWord());
+            where.and();
+            where.eq("page", word.getPage());
+            where.and();
+            where.eq("book_id", word.getBook().getPath());
+
+            PreparedQuery<Word> preparedQuery = qb.prepare();
+            List<Word> wordList = dao.query(preparedQuery);
+
+            if (wordList.size() > 0) {
+                return wordList.get(0);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

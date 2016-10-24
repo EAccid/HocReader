@@ -120,7 +120,7 @@ public class MainFragmentActivity extends FragmentActivity {
                     ((TextView) tv).setText("Fragment #" + mNum + ": book");
                     break;
                 case 1:
-                    ((TextView) tv).setText("Fragment #" + mNum + ": added words");
+                    ((TextView) tv).setText("Fragment #" + mNum + ": added words from page");
                     break;
                 case 2:
                     ((TextView) tv).setText("Fragment #" + mNum + ": word training");
