@@ -16,5 +16,11 @@
     <string name="word">word</string>
     <string name="_page_number">0</string>
     <string name="text_on_page">text on page</string>
+    <string name="word_item">word</string>
+    <string name="translation_item">translation</string>
+    <string name="dialog_message_item_pinned">Item pinned! (position = %1$d)</string>
+    <string name="snack_bar_action_undo">UNDO</string>
+    <string name="snack_bar_text_item_removed">1 item removed</string>
+    <string name="activity_title_demo_s_on_longpress">on long press</string>
 
 </resources>

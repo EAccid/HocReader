@@ -1,6 +1,7 @@
 package com.eaccid.bookreader.dev;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 import android.widget.ListView;
 
@@ -9,6 +10,8 @@ import com.eaccid.bookreader.db.entity.Word;
 import com.eaccid.bookreader.db.service.BookDaoService;
 import com.eaccid.bookreader.db.service.DatabaseManager;
 import com.eaccid.bookreader.db.service.WordDaoService;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -60,7 +63,7 @@ public class AppDatabaseManager {
 
     public static void setCurrentPageForAddingWord(int page) {
         currentPage = page;
-       }
+    }
 
     public static List<Word> getAllWords() {
         List<Word> lw = new ArrayList<>();
@@ -116,6 +119,42 @@ public class AppDatabaseManager {
             e.printStackTrace();
         }
 
+    }
+
+
+    public static Cursor getWordCursor() {
+
+        try {
+            WordDaoService ws = databaseManager.getWordService();
+            return ws.getWordCursor();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static PreparedQuery getWordPreparedQuery() {
+        try {
+            WordDaoService ws = databaseManager.getWordService();
+            return ws.getWordPreparedQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Dao<Word, String> getWordDao() {
+
+        try {
+            WordDaoService ws = databaseManager.getWordService();
+            return ws.getWordDao();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

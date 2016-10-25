@@ -1,11 +1,20 @@
 package com.eaccid.bookreader.db.service;
 
+import android.database.Cursor;
+
 import com.eaccid.bookreader.db.entity.Word;
+import com.j256.ormlite.android.AndroidCompiledStatement;
+import com.j256.ormlite.android.AndroidDatabaseResults;
+import com.j256.ormlite.android.apptools.support.OrmLiteCursorLoader;
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
+import com.j256.ormlite.support.DatabaseConnection;
+import com.j256.ormlite.support.DatabaseResults;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -147,4 +156,42 @@ public class WordDaoService implements Crud {
         return null;
     }
 
+    public Cursor getWordCursor() {
+
+        try {
+
+            QueryBuilder<Word, String> qb = dao.queryBuilder();
+            qb.selectColumns("word", "translation");
+
+            CloseableIterator<Word> iterator = dao.iterator(qb.prepare());
+            AndroidDatabaseResults results =
+                    (AndroidDatabaseResults) iterator.getRawResults();
+
+            iterator.closeQuietly();
+
+            return results.getRawCursor();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public PreparedQuery getWordPreparedQuery() {
+
+        try {
+
+            QueryBuilder<Word, String> qb = dao.queryBuilder();
+            qb.selectColumns("word", "translation");
+            return qb.prepare();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Dao<Word, String> getWordDao() {
+        return dao;
+    }
 }

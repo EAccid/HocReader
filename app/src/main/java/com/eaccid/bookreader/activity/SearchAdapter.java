@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.dev;
+package com.eaccid.bookreader.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.eaccid.bookreader.activity.MainFragmentActivity;
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.activity.PagerActivity;
 import com.eaccid.bookreader.search.ItemObjectChild;
 import com.eaccid.bookreader.search.ItemObjectGroup;
 
@@ -97,7 +97,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         textViewChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MainFragmentActivity.class);
+                Intent intent = new Intent(v.getContext(), PagerActivity.class);
                 intent.putExtra("fileName", itemObjectChild.getFile().getName());
                 intent.putExtra("filePath", itemObjectChild.getFile().getPath());
                 v.getContext().startActivity(intent);
