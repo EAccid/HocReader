@@ -18,7 +18,7 @@ public class DrawerRecyclerViewAdapter extends OrmliteCursorRecyclerViewAdapter<
 
     @Override
     public DrawerRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_item_fragment_2, parent, false);
         return new ViewHolder(v);
     }
 

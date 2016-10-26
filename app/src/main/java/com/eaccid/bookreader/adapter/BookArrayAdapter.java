@@ -27,10 +27,10 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
 
 
     public BookArrayAdapter(Context context, int textViewResourceId, List<String> pagesList) {
-        super(context, R.layout.text_on_page, textViewResourceId, pagesList);
+        super(context, R.layout.bookpage_item_fragment_0, textViewResourceId, pagesList);
         this.mContext = context;
         this.mTextOnPage = textViewResourceId;
-        this.viewItemLayout = R.layout.text_on_page;
+        this.viewItemLayout = R.layout.bookpage_item_fragment_0;
         this.mPagesList = pagesList;
     }
 

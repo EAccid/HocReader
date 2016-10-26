@@ -44,7 +44,7 @@ public class BookReaderListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_page, container, false);
+        View v = inflater.inflate(R.layout.fragment_0_bookreader, container, false);
         View tv = v.findViewById(R.id.text);
 
 //        //TODO separate fragment mNum

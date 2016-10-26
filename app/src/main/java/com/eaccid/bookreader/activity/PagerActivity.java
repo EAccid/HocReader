@@ -34,13 +34,14 @@ public class PagerActivity extends FragmentActivity  implements ItemPinnedMessag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_pager);
+        setContentView(R.layout.pager_fragment_activity);
 
 
         fillPagesListAndRefreshDatabase();
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setAdapter(pagerAdapter);
 
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);

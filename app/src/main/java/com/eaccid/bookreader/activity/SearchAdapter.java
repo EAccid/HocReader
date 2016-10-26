@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.activity.PagerActivity;
 import com.eaccid.bookreader.search.ItemObjectChild;
 import com.eaccid.bookreader.search.ItemObjectGroup;
 
@@ -74,7 +73,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
 
         ItemObjectGroup itemObjectGroup = (ItemObjectGroup) getGroup(groupPosition);
         if (convertView == null)
-            convertView = layoutInflater.inflate(R.layout.group_list_item, null);
+            convertView = layoutInflater.inflate(R.layout.book_group_item, null);
         TextView textViewGroup = (TextView) convertView.findViewById(R.id.group_text_view);
         textViewGroup.setText(itemObjectGroup.getName());
         return convertView;
@@ -85,7 +84,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         final ItemObjectChild itemObjectChild = (ItemObjectChild) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.child_list_item, null);
+            convertView = layoutInflater.inflate(R.layout.book_child_item, null);
         }
 
         ImageView childIcon = (ImageView) convertView.findViewById(R.id.child_icon);

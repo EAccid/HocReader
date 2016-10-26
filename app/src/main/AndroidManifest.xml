@@ -39,13 +39,6 @@
                 <action android:name="android.intent.action.OPEN_DOCUMENT" />
             </intent-filter>
         </activity>
-        <activity android:name=".aaaDEL.WordTrainerActivity"></activity>
-
-        <activity
-            android:name=".apagersfragment.CarouselPreviewFragment"
-            android:label="@string/activity_title_demo_s_on_longpress"/>
-
-
     </application>
 
 </manifest>

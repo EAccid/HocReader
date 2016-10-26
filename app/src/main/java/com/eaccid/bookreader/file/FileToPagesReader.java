@@ -46,7 +46,7 @@ public class FileToPagesReader extends ContextWrapper {
         PagerActivity pagerActivity = (PagerActivity) getBaseContext();
         LayoutInflater inflater = pagerActivity.getLayoutInflater();
 
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_page,
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_0_bookreader,
                 (ViewGroup) pagerActivity.getWindow().getDecorView().findViewById(android.R.id.content), false);
         TextView textOnPage = (TextView) viewGroup.findViewById(R.id.text);
 

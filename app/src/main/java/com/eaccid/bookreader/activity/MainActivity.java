@@ -12,11 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.db.entity.Book;
+import com.eaccid.bookreader.db.entity.Word;
 import com.eaccid.bookreader.dev.AppDatabaseManager;
 import com.eaccid.bookreader.dev.MainBookListView;
 import com.eaccid.bookreader.dev.MainSettings;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     MainBookListView bookListViewHandler;
     MainSettings settings;
@@ -38,8 +40,23 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
 
-                Snackbar.make(view, "books: " + AppDatabaseManager.getAllBooks().size() + "\nwords: " +  AppDatabaseManager.getAllWords().size(), Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "books: " + AppDatabaseManager.getAllBooks().size() + "\nwords: " + AppDatabaseManager.getAllWords().size(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+
+                int i = 1;
+                for (Book book : AppDatabaseManager.getAllBooks()
+                        ) {
+                    System.out.println(i + ": " + book + "/n");
+                    i++;
+                }
+
+                i = 1;
+                for (Word word : AppDatabaseManager.getAllWords()
+                        ) {
+                    System.out.println(i + ": " + word + "/n");
+                    i++;
+                }
 
             }
         });

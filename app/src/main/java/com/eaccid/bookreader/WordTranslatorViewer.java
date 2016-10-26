@@ -58,14 +58,14 @@ public class WordTranslatorViewer {
             WordFromText wordFromText = (WordFromText) getArguments().getSerializable("WordFromText");
             TextTranslation wordTranslation = ReaderTranslator.translate(wordFromText);
 
-            View v = inflater.inflate(R.layout.fragment_word_translation, container);
+            View v = inflater.inflate(R.layout.translation_dialog_frame, container);
             ImageView imageWordPicture = (ImageView) v.findViewById(R.id.image_word_picture);
             ImageButton imageButtonTranscriptionSpeaker = (ImageButton) v.findViewById(R.id.transcription_speaker);
             TextView word_from_text = (TextView) v.findViewById(R.id.word_from_text);
             TextView text_transcription = (TextView) v.findViewById(R.id.text_transcription);
             ListView listViewTranslations = (ListView) v.findViewById(R.id.list_translations);
             ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(
-                    inflater.getContext(), R.layout.translation_item, wordTranslation.getTranslates());
+                    inflater.getContext(), R.layout.translation_dialog_item, wordTranslation.getTranslates());
 
             getDialog().setTitle(wordTranslation.getWord());
             //imageWordPicture
