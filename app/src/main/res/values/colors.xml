@@ -24,5 +24,9 @@
     <color name="snackbar_action_color_done">#ffccccff</color>
 
     <color name="expandable_item_indicator_color">#42000000</color>
+    <color name="testColor1">#ffcaf6</color>
+    <color name="testColor2">#b8fae4</color>
+    <color name="colorTest3">#6d79f9</color>
+    <color name="colorTest4">#faeff7</color>
 
 </resources>

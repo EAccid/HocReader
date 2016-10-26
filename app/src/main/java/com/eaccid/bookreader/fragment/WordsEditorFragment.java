@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.apagersfragment;
+package com.eaccid.bookreader.fragment;
 
 
 import android.graphics.drawable.NinePatchDrawable;
@@ -25,7 +25,7 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeMana
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
-public class SwipeOnLongPressExampleFragment extends Fragment  {
+public class WordsEditorFragment extends Fragment  {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -34,23 +34,22 @@ public class SwipeOnLongPressExampleFragment extends Fragment  {
     private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
-    public static SwipeOnLongPressExampleFragment newInstance() {
-        return new SwipeOnLongPressExampleFragment();
+    public static WordsEditorFragment newInstance() {
+        return new WordsEditorFragment();
     }
 
-    public SwipeOnLongPressExampleFragment() {
+    public WordsEditorFragment() {
         super();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.recycler_list_fragment_2, container, false);
+        return inflater.inflate(R.layout.recycler_list_fragment_1, container, false);
     }
 
     @Override
@@ -156,7 +155,6 @@ public class SwipeOnLongPressExampleFragment extends Fragment  {
 
     public ExampleDataProvider getDataProvider() {
         return ((PagerActivity) getActivity()).getDataProvider();
-//        return ((SwipeOnLongPressExampleActivity) getActivity()).getDataProvider();
     }
 
     public void notifyItemChanged(int position) {

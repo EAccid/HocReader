@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.activity;
+package com.eaccid.bookreader.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.activity.PagerActivity;
 import com.eaccid.bookreader.search.ItemObjectChild;
 import com.eaccid.bookreader.search.ItemObjectGroup;
 

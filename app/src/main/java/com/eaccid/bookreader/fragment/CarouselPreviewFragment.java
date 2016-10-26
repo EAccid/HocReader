@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.apagersfragment;
+package com.eaccid.bookreader.fragment;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

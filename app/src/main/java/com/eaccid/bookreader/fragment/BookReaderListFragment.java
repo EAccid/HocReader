@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.apagersfragment;
+package com.eaccid.bookreader.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.adapter.BookArrayAdapter;
+import com.eaccid.bookreader.dev.AppDatabaseManager;
+import com.eaccid.bookreader.file.FileToPagesReader;
 
 import java.util.ArrayList;
 import java.util.List;

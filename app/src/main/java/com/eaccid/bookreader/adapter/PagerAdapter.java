@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.eaccid.bookreader.apagersfragment.CarouselPreviewFragment;
-import com.eaccid.bookreader.apagersfragment.SwipeOnLongPressExampleFragment;
-import com.eaccid.bookreader.apagersfragment.BookReaderListFragment;
+import com.eaccid.bookreader.fragment.CarouselPreviewFragment;
+import com.eaccid.bookreader.fragment.WordsEditorFragment;
+import com.eaccid.bookreader.fragment.BookReaderListFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
@@ -33,7 +33,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return BookReaderListFragment.newInstance(position);
             case 1:
-                return SwipeOnLongPressExampleFragment.newInstance();
+                return WordsEditorFragment.newInstance();
             case 2:
                 return CarouselPreviewFragment.newInstance();
             default:

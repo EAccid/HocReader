@@ -13,7 +13,7 @@ import com.eaccid.bookreader.adapter.PagerAdapter;
 import com.eaccid.bookreader.advancedrecyclerview.ExampleDataProvider;
 import com.eaccid.bookreader.advancedrecyclerview.ExampleDataProviderFragment;
 import com.eaccid.bookreader.advancedrecyclerview.ItemPinnedMessageDialogFragment;
-import com.eaccid.bookreader.apagersfragment.SwipeOnLongPressExampleFragment;
+import com.eaccid.bookreader.fragment.WordsEditorFragment;
 import com.eaccid.bookreader.dev.AppDatabaseManager;
 import com.eaccid.bookreader.file.FileToPagesReader;
 import com.eaccid.bookreader.R;
@@ -25,17 +25,28 @@ public class PagerActivity extends FragmentActivity  implements ItemPinnedMessag
 
     private static ArrayList<String> pagesList = new ArrayList<>();
 
-
     private static final String FRAGMENT_TAG_DATA_PROVIDER = "data provider";
     private static final String FRAGMENT_LIST_VIEW = "list view";
     private static final String FRAGMENT_TAG_ITEM_PINNED_DIALOG = "item pinned dialog";
 
+    private void fillPagesListAndRefreshDatabase() {
+        String filePath = getIntent().getStringExtra("filePath");
+        String fileName = getIntent().getStringExtra("fileName");
+        FileToPagesReader fileToPagesReader = new FileToPagesReader(this, filePath);
+        pagesList = fileToPagesReader.getPages();
+
+        AppDatabaseManager.createOrUpdateBook(filePath, fileName, pagesList.size());
+        AppDatabaseManager.setCurrentBookForAddingWord(filePath);
+    }
+
+    public static ArrayList<String> getPagesList() {
+        return pagesList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_fragment_activity);
-
 
         fillPagesListAndRefreshDatabase();
 
@@ -52,33 +63,12 @@ public class PagerActivity extends FragmentActivity  implements ItemPinnedMessag
                     .add(new ExampleDataProviderFragment(), FRAGMENT_TAG_DATA_PROVIDER)
                     .commit();
             getSupportFragmentManager().beginTransaction()
-                    .add(new SwipeOnLongPressExampleFragment(), FRAGMENT_LIST_VIEW)
+                    .add(new WordsEditorFragment(), FRAGMENT_LIST_VIEW)
                     .commit();
         }
 
     }
 
-    public static ArrayList<String> getPagesList() {
-        return pagesList;
-    }
-
-    private void fillPagesListAndRefreshDatabase() {
-        String filePath = getIntent().getStringExtra("filePath");
-        String fileName = getIntent().getStringExtra("fileName");
-        FileToPagesReader fileToPagesReader = new FileToPagesReader(this, filePath);
-        pagesList = fileToPagesReader.getPages();
-
-        AppDatabaseManager.createOrUpdateBook(filePath, fileName, pagesList.size());
-        AppDatabaseManager.setCurrentBookForAddingWord(filePath);
-    }
-
-    // fromSwipeOnLongPressExampleActivity
-
-    /**
-     * This method will be called when a list item is removed
-     *
-     * @param position The position of the item within data set
-     */
     public void onItemRemoved(int position) {
         Snackbar snackbar = Snackbar.make(
                 findViewById(R.id.container),
@@ -95,11 +85,6 @@ public class PagerActivity extends FragmentActivity  implements ItemPinnedMessag
         snackbar.show();
     }
 
-    /**
-     * This method will be called when a list item is pinned
-     *
-     * @param position The position of the item within data set
-     */
     public void onItemPinned(int position) {
         final DialogFragment dialog = ItemPinnedMessageDialogFragment.newInstance(position);
 
@@ -109,11 +94,6 @@ public class PagerActivity extends FragmentActivity  implements ItemPinnedMessag
                 .commit();
     }
 
-    /**
-     * This method will be called when a list item is clicked
-     *
-     * @param position The position of the item within data set
-     */
     public void onItemClicked(int position) {
         final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_LIST_VIEW);
         ExampleDataProvider.ConcreteData data = getDataProvider().getItem(position);
@@ -121,7 +101,7 @@ public class PagerActivity extends FragmentActivity  implements ItemPinnedMessag
         if (data.isPinned()) {
             // unpin if tapped the pinned item
             data.setPinned(false);
-            ((SwipeOnLongPressExampleFragment) fragment).notifyItemChanged(position);
+            ((WordsEditorFragment) fragment).notifyItemChanged(position);
         }
     }
 
@@ -129,18 +109,16 @@ public class PagerActivity extends FragmentActivity  implements ItemPinnedMessag
         int position = getDataProvider().undoLastRemoval();
         if (position >= 0) {
             final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_LIST_VIEW);
-            ((SwipeOnLongPressExampleFragment) fragment).notifyItemInserted(position);
+            ((WordsEditorFragment) fragment).notifyItemInserted(position);
         }
     }
 
-
-    // implements ItemPinnedMessageDialogFragment.EventListener
     @Override
     public void onNotifyItemPinnedDialogDismissed(int itemPosition, boolean ok) {
         final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_LIST_VIEW);
 
         getDataProvider().getItem(itemPosition).setPinned(ok);
-        ((SwipeOnLongPressExampleFragment) fragment).notifyItemChanged(itemPosition);
+        ((WordsEditorFragment) fragment).notifyItemChanged(itemPosition);
     }
 
     public ExampleDataProvider getDataProvider() {

@@ -30,7 +30,6 @@ public class ExampleDataProvider {
 
     }
 
-
     public int getCount() {
         return mData.size();
     }
