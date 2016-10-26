@@ -1,9 +1,9 @@
 package com.eaccid.bookreader;
 
 
-import com.eaccid.bookreader.settings.LingualeoServiceCookiesHandler;
-import com.eaccid.translator.lingualeo.dictionary.LingualeoDictionary;
-import com.eaccid.translator.lingualeo.translator.LingualeoTranslator;
+import com.eaccid.bookreader.dev.settings.LingualeoServiceCookiesHandler;
+import com.eaccid.libtranslator.lingualeo.dictionary.LingualeoDictionary;
+import com.eaccid.libtranslator.lingualeo.translator.LingualeoTranslator;
 
 import junit.framework.Assert;
 

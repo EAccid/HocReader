@@ -13,11 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:name=".search.SearchSuggestionsProvider"
-            android:authorities="com.eaccid.bookreader.search.SearchSuggestionsProvider" />
+            android:name=".searchbooks.SearchSuggestionsProvider"
+            android:authorities="com.eaccid.bookreader.searchbooks.SearchSuggestionsProvider" />
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -32,7 +32,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".activity.PagerActivity"
+            android:name=".activity.pager.PagerActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
