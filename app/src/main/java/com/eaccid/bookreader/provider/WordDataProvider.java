@@ -1,37 +1,36 @@
-package com.eaccid.bookreader.fragment_1;
+package com.eaccid.bookreader.provider;
 
 import com.eaccid.bookreader.db.entity.Word;
-import com.eaccid.bookreader.dev.AppDatabaseManager;
-import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class ExampleDataProvider {
-    private List<ConcreteData> mData;
-    private ConcreteData mLastRemovedData;
+public class WordDataProvider {
+
+    private List<WordData> mData;
+    private WordData mLastRemovedData;
     private int mLastRemovedPosition = -1;
 
-    public ExampleDataProvider() {
-
-        mData = new LinkedList<>();
-
-        List<Word> words = AppDatabaseManager.getAllWords();
-
-        final int swipeReaction = RecyclerViewSwipeManager.REACTION_CAN_SWIPE_UP | RecyclerViewSwipeManager.REACTION_CAN_SWIPE_DOWN;
-
-        for (Word word: words
-             ) {
-            mData.add(new ConcreteData(word.getId(), word.getWord(), swipeReaction));
-        }
-
+    public WordDataProvider() {
+        fillDataList();
     }
+
+    public void fillDataList() {
+        mData = new LinkedList<>();
+        List<Word> words = AppDatabaseManager.getAllWords(true);
+        for (Word word : words
+                ) {
+            mData.add(new WordData(mData.size(), word));
+        }
+    }
+
+    // work with VIEW LIST
 
     public int getCount() {
         return mData.size();
     }
 
-    public ConcreteData getItem(int index) {
+    public WordData getItem(int index) {
         if (index < 0 || index >= getCount()) {
             throw new IndexOutOfBoundsException("index = " + index);
         }
@@ -61,51 +60,58 @@ public class ExampleDataProvider {
 
     public void removeItem(int position) {
         //noinspection UnnecessaryLocalVariable
-        final ConcreteData removedItem = mData.remove(position);
+        final WordData removedItem = mData.remove(position);
 
         mLastRemovedData = removedItem;
         mLastRemovedPosition = position;
     }
 
-    public static final class ConcreteData {
+    //WORD DATA ITEM
 
-        private final long mId;
-        private final String mText;
-        private boolean mPinned;
+    public static final class WordData {
 
-        ConcreteData(long id, String text, int swipeReaction) {
-            mId = id;
-            mText = makeText(id, text, swipeReaction);
+        private final String text;
+
+        private final long id;
+        private boolean pinned;
+        private Word word;
+
+        WordData(int id, Word word) {
+            this.id = id;
+            this.word = word;
+            text = makeTempTestText(id, word);
         }
 
-        private static String makeText(long id, String text, int swipeReaction) {
+        private static String makeTempTestText(long id, Word word) {
             final StringBuilder sb = new StringBuilder();
-
             sb.append(id);
             sb.append(" - ");
-            sb.append(text);
-
+            sb.append(word.getWord());
+            sb.append(" - p.");
+            sb.append(word.getPage());
             return sb.toString();
         }
 
-        public long getId() {
-            return mId;
+        public String getTempTestText() {
+            return text;
+        }
+
+        public long getItemId() {
+            return id;
         }
 
         public String toString() {
-            return mText;
-        }
-
-        public String getText() {
-            return mText;
+            return text;
         }
 
         public boolean isPinned() {
-            return mPinned;
+            return pinned;
         }
 
         public void setPinned(boolean pinned) {
-            mPinned = pinned;
+            this.pinned = pinned;
         }
+
     }
+
 }

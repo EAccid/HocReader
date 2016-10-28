@@ -2,16 +2,25 @@ package com.eaccid.bookreader.translator;
 
 public class TranslatedWord {
 
-    private String word;
+    private String wordBaseForm;
+    private String wordFromContext;
     private String translation;
-    private String Context;
+    private String context;
 
-    public String getWord() {
-        return word;
+    public String getWordBaseForm() {
+        return wordBaseForm;
     }
 
-    public void setWord(String word) {
-        this.word = word;
+    public void setWordBaseForm(String wordBaseForm) {
+        this.wordBaseForm = wordBaseForm;
+    }
+
+    public String getWordFromContext() {
+        return wordFromContext;
+    }
+
+    public void setWordFromContext(String wordFromContext) {
+        this.wordFromContext = wordFromContext;
     }
 
     public String getTranslation() {
@@ -23,10 +32,10 @@ public class TranslatedWord {
     }
 
     public String getContext() {
-        return Context;
+        return context;
     }
 
     public void setContext(String context) {
-        Context = context;
+        this.context = context;
     }
 }

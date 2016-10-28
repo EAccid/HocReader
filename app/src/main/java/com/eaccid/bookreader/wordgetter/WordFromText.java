@@ -6,6 +6,7 @@ public class WordFromText implements Serializable{
 
     private String text;
     private String sentence;
+    private int pageNumber;
 
     public String getText() {
         return text;
@@ -21,6 +22,14 @@ public class WordFromText implements Serializable{
 
     public void setSentence(String sentence) {
         this.sentence = sentence;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
     @Override

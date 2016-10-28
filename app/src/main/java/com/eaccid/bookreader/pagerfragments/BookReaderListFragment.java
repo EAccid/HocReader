@@ -51,8 +51,8 @@ public class BookReaderListFragment extends ListFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         BookArrayAdapter bookArrayAdapter = new BookArrayAdapter(getContext(), R.id.text_on_page, pagesList);
         if (pagesList.size() > 0)
             setListAdapter(bookArrayAdapter);

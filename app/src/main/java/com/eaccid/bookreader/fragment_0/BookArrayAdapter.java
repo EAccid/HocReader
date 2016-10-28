@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.provider.AppDatabaseManager;
 
 import java.util.List;
 
@@ -54,12 +55,15 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
             viewHolderItem = (ViewHolderItem) convertView.getTag();
         }
 
+        AppDatabaseManager.setCurrentPageForAddingWord(position + 1);
+
         viewHolderItem.textViewItem.setText(textOnPage);
         viewHolderItem.pageNumberViewItem.setText(
                 String.valueOf(position + 1) +
                         " - " +
                         String.valueOf(mPagesList.size())
         );
+
         viewHolderItem.textViewItem.setOnTouchListener(new OnWordFromTextViewTouchListener(pageNumber));
 
         return convertView;

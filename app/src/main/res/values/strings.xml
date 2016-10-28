@@ -13,10 +13,10 @@
     <string name="hello_world">Hello world</string>
     <string name="under_development">Under development.</string>
     <string name="transcription">transcription</string>
-    <string name="word">word</string>
+    <string name="wordFromContext">wordFromContext</string>
     <string name="_page_number">0</string>
     <string name="text_on_page">text on page</string>
-    <string name="word_item">word</string>
+    <string name="word_item">wordFromContext</string>
     <string name="translation_item">translation</string>
     <string name="dialog_message_item_pinned">Item pinned! (position = %1$d)</string>
     <string name="snack_bar_action_undo">UNDO</string>

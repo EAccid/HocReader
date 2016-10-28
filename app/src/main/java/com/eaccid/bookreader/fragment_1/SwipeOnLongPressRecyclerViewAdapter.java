@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.provider.WordDataProvider;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
@@ -22,13 +23,13 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 public class SwipeOnLongPressRecyclerViewAdapter
         extends RecyclerView.Adapter<SwipeOnLongPressRecyclerViewAdapter.MyViewHolder>
         implements SwipeableItemAdapter<SwipeOnLongPressRecyclerViewAdapter.MyViewHolder> {
-    private static final String TAG = "MySwipeableItemAdapter";
+    private static final String TAG = "SwipeableItemAdapter";
 
     // NOTE: Make accessible with short name
     private interface Swipeable extends SwipeableItemConstants {
     }
 
-    private ExampleDataProvider mProvider;
+    private WordDataProvider mProvider;
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
@@ -39,6 +40,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         void onItemPinned(int position);
 
         void onItemViewClicked(View v, boolean pinned);
+
     }
 
     public static class MyViewHolder extends AbstractSwipeableItemViewHolder {
@@ -57,7 +59,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         }
     }
 
-    public SwipeOnLongPressRecyclerViewAdapter(ExampleDataProvider dataProvider) {
+    public SwipeOnLongPressRecyclerViewAdapter(WordDataProvider dataProvider) {
         mProvider = dataProvider;
         mItemViewOnClickListener = new View.OnClickListener() {
             @Override
@@ -91,7 +93,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     @Override
     public long getItemId(int position) {
-        return mProvider.getItem(position).getId();
+        return mProvider.getItem(position).getItemId();
     }
 
     @Override
@@ -103,7 +105,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        final ExampleDataProvider.ConcreteData item = mProvider.getItem(position);
+        final WordDataProvider.WordData item = mProvider.getItem(position);
 
         // set listeners
         // (if the item is *pinned*, click event comes to the itemView)
@@ -112,7 +114,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
 
         // set text
-        holder.mTextView.setText(item.getText());
+        holder.mTextView.setText(item.getTempTestText());
 
         // set background resource (target view ID: container)
         final int swipeState = holder.getSwipeStateFlags();
@@ -216,7 +218,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         protected void onPerformAction() {
             super.onPerformAction();
 
-            ExampleDataProvider.ConcreteData item = mAdapter.mProvider.getItem(mPosition);
+            WordDataProvider.WordData item = mAdapter.mProvider.getItem(mPosition);
 
             if (!item.isPinned()) {
                 item.setPinned(true);
@@ -289,7 +291,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         protected void onPerformAction() {
             super.onPerformAction();
 
-            ExampleDataProvider.ConcreteData item = mAdapter.mProvider.getItem(mPosition);
+            WordDataProvider.WordData item = mAdapter.mProvider.getItem(mPosition);
             if (item.isPinned()) {
                 item.setPinned(false);
                 mAdapter.notifyItemChanged(mPosition);
@@ -303,4 +305,5 @@ public class SwipeOnLongPressRecyclerViewAdapter
             mAdapter = null;
         }
     }
+
 }

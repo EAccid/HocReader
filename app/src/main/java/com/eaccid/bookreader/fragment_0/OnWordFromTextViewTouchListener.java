@@ -12,7 +12,7 @@ public class OnWordFromTextViewTouchListener implements View.OnTouchListener {
     private int pageNumber ;
 
     public interface OnWordFromTextClickListener {
-        void OnWordClicked(WordFromText wordFromText, int position);
+        void OnWordClicked(WordFromText wordFromText);
     }
 
     public OnWordFromTextViewTouchListener(int pageNumber) {
@@ -26,9 +26,10 @@ public class OnWordFromTextViewTouchListener implements View.OnTouchListener {
             case MotionEvent.AXIS_Y:
                 TextView tv = (TextView) view;
                 WordFromText wordFromText = WordOnTexvViewFinder.getWordByMotionEvent(tv, motionEvent);
+                wordFromText.setPageNumber(pageNumber);
                 if (!wordFromText.getText().isEmpty()) {
 
-                    ((OnWordFromTextClickListener) view.getContext()).OnWordClicked(wordFromText, pageNumber);
+                    ((OnWordFromTextClickListener) view.getContext()).OnWordClicked(wordFromText);
                 }
         }
         return true;

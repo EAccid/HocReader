@@ -14,16 +14,16 @@ import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.fragment_2.DrawerRecyclerViewAdapter;
-import com.eaccid.bookreader.dev.AppDatabaseManager;
+import com.eaccid.bookreader.provider.AppDatabaseManager;
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
 
 
-public class CarouselPreviewFragment extends Fragment {
+public class WordsCarouselTrainingFragment extends Fragment {
 
 
-    public static CarouselPreviewFragment newInstance() {
-        return new CarouselPreviewFragment();
+    public static WordsCarouselTrainingFragment newInstance() {
+        return new WordsCarouselTrainingFragment();
     }
 
     @Override

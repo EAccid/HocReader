@@ -4,6 +4,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -12,11 +13,11 @@ import android.view.View;
 import com.eaccid.bookreader.pagerfragments.FragmentTags;
 import com.eaccid.bookreader.fragment_0.OnWordFromTextViewTouchListener;
 import com.eaccid.bookreader.fragment_0.WordOutTranslatorDialogFragment;
-import com.eaccid.bookreader.fragment_1.ExampleDataProvider;
-import com.eaccid.bookreader.fragment_1.ExampleDataProviderFragment;
+import com.eaccid.bookreader.provider.AppDatabaseManager;
+import com.eaccid.bookreader.provider.WordDataProvider;
+import com.eaccid.bookreader.provider.WordDataProviderFragment;
 import com.eaccid.bookreader.fragment_1.ItemPinnedMessageDialogFragment;
-import com.eaccid.bookreader.pagerfragments.WordRecyclerViewFragment;
-import com.eaccid.bookreader.dev.AppDatabaseManager;
+import com.eaccid.bookreader.pagerfragments.WordsFromBookFragment;
 import com.eaccid.bookreader.file.FileToPagesListReader;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.translator.ReaderDictionary;
@@ -29,21 +30,11 @@ import java.util.ArrayList;
 public class PagerActivity extends FragmentActivity implements
         ItemPinnedMessageDialogFragment.ItemPinnedEventListener,
         OnWordFromTextViewTouchListener.OnWordFromTextClickListener,
-        WordOutTranslatorDialogFragment.WordTranslationClickListener
-{
+        WordOutTranslatorDialogFragment.WordTranslationClickListener {
 
     private static ArrayList<String> pagesList = new ArrayList<>();
+    private static PagerAdapter pagerAdapter;
 
-
-    private void fillPagesListAndRefreshDatabase() {
-        String filePath = getIntent().getStringExtra("filePath");
-        String fileName = getIntent().getStringExtra("fileName");
-        FileToPagesListReader fileToPagesListReader = new FileToPagesListReader(this, filePath);
-        pagesList = fileToPagesListReader.getPages();
-
-        AppDatabaseManager.createOrUpdateBook(filePath, fileName, pagesList.size());
-        AppDatabaseManager.setCurrentBookForAddingWord(filePath);
-    }
 
     public static ArrayList<String> getPagesList() {
         return pagesList;
@@ -56,7 +47,7 @@ public class PagerActivity extends FragmentActivity implements
 
         fillPagesListAndRefreshDatabase();
 
-        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setAdapter(pagerAdapter);
@@ -66,19 +57,66 @@ public class PagerActivity extends FragmentActivity implements
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(new ExampleDataProviderFragment(), FragmentTags.FRAGMENT_TAG_DATA_PROVIDER)
+                    .add(new WordDataProviderFragment(), FragmentTags.FRAGMENT_TAG_DATA_PROVIDER)
                     .commit();
             getSupportFragmentManager().beginTransaction()
-                    .add(new WordRecyclerViewFragment(), FragmentTags.FRAGMENT_LIST_VIEW)
+                    .add(new WordsFromBookFragment(), FragmentTags.FRAGMENT_WORDS_LIST_VIEW)
                     .commit();
         }
 
     }
 
+    @Override
+    public void onNotifyItemPinnedDialogDismissed(int itemPosition, boolean ok) {
+        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
 
-//fragment 2 change words
+        getDataProvider().getItem(itemPosition).setPinned(ok);
+        ((WordsFromBookFragment) fragment).notifyItemChanged(itemPosition);
+    }
 
-    public void onItemRemoved(int position) {
+    @Override
+    public void OnWordClicked(WordFromText wordFromText) {
+
+        AppDatabaseManager.setCurrentPageForAddingWord(wordFromText.getPageNumber());
+
+        final DialogFragment dialog = WordOutTranslatorDialogFragment.newInstance(wordFromText);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(dialog, FragmentTags.FRAGMENT_TAG_ITEM_PINNED_DIALOG)
+                .commit();
+
+    }
+
+    public WordDataProvider getDataProvider() {
+        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_TAG_DATA_PROVIDER);
+        return ((WordDataProviderFragment) fragment).getDataProvider();
+    }
+
+    @Override
+    public void onTranslatedWord(TranslatedWord translatedWord) {
+        ReaderDictionary readerDictionary = new ReaderDictionary(getApplicationContext());
+        boolean succeed = readerDictionary.addTranslatedWord(translatedWord);
+
+        //TODO del word updating
+        AppDatabaseManager.createOrUpdateWord(translatedWord.getWordFromContext(),
+                translatedWord.getTranslation(),
+                translatedWord.getContext(),
+                succeed);
+    }
+
+    private void fillPagesListAndRefreshDatabase() {
+        String filePath = getIntent().getStringExtra("filePath");
+        String fileName = getIntent().getStringExtra("fileName");
+        FileToPagesListReader fileToPagesListReader = new FileToPagesListReader(this, filePath);
+        pagesList = fileToPagesListReader.getPages();
+
+        //TODO del book updating
+        AppDatabaseManager.createOrUpdateBook(filePath, fileName, pagesList.size());
+        //TODO set as WordFilter
+        AppDatabaseManager.setCurrentBookForAddingWord(filePath);
+    }
+
+    public void onItemFragment1Removed(int position) {
         Snackbar snackbar = Snackbar.make(
                 findViewById(R.id.container),
                 R.string.snack_bar_text_item_removed,
@@ -87,14 +125,14 @@ public class PagerActivity extends FragmentActivity implements
         snackbar.setAction(R.string.snack_bar_action_undo, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemUndoActionClicked();
+                onItemFragment1UndoActionClicked();
             }
         });
         snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.snackbar_action_color_done));
         snackbar.show();
     }
 
-    public void onItemPinned(int position) {
+    public void onItemFragment1Pinned(int position) {
         final DialogFragment dialog = ItemPinnedMessageDialogFragment.newInstance(position);
 
         getSupportFragmentManager()
@@ -103,63 +141,27 @@ public class PagerActivity extends FragmentActivity implements
                 .commit();
     }
 
-    public void onItemClicked(int position) {
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_LIST_VIEW);
-        ExampleDataProvider.ConcreteData data = getDataProvider().getItem(position);
+    public void onItemFragment1Clicked(int position) {
+        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
+        WordDataProvider.WordData data = getDataProvider().getItem(position);
 
         if (data.isPinned()) {
             // unpin if tapped the pinned item
             data.setPinned(false);
-            ((WordRecyclerViewFragment) fragment).notifyItemChanged(position);
+            ((WordsFromBookFragment) fragment).notifyItemChanged(position);
         }
     }
 
-    private void onItemUndoActionClicked() {
+    private void onItemFragment1UndoActionClicked() {
         int position = getDataProvider().undoLastRemoval();
         if (position >= 0) {
-            final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_LIST_VIEW);
-            ((WordRecyclerViewFragment) fragment).notifyItemInserted(position);
+            final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
+            ((WordsFromBookFragment) fragment).notifyItemInserted(position);
         }
     }
 
-    @Override
-    public void onNotifyItemPinnedDialogDismissed(int itemPosition, boolean ok) {
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_LIST_VIEW);
-
-        getDataProvider().getItem(itemPosition).setPinned(ok);
-        ((WordRecyclerViewFragment) fragment).notifyItemChanged(itemPosition);
-    }
-
-    @Override
-    public void OnWordClicked(WordFromText wordFromText, int position) {
-
-        AppDatabaseManager.setCurrentPageForAddingWord(position);
-
-        final DialogFragment dialog = WordOutTranslatorDialogFragment.newInstance(wordFromText);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(dialog, FragmentTags.FRAGMENT_TAG_ITEM_PINNED_DIALOG)
-                .commit();
-    }
-
-    public ExampleDataProvider getDataProvider() {
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_TAG_DATA_PROVIDER);
-        return ((ExampleDataProviderFragment) fragment).getDataProvider();
-    }
-
-    @Override
-    public void onTranslatedWord(TranslatedWord translatedWord) {
-
-        ReaderDictionary readerDictionary = new ReaderDictionary(this);
-
-        boolean succeed = readerDictionary.addTranslatedWord(translatedWord);
-
-        AppDatabaseManager.createOrUpdateWord(translatedWord.getWord(),
-                translatedWord.getTranslation(),
-                translatedWord.getContext(),
-                succeed);
-    }
 }
+
 
 
 

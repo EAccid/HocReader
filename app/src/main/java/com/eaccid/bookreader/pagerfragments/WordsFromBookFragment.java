@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.activity.pager.PagerActivity;
-import com.eaccid.bookreader.fragment_1.ExampleDataProvider;
+import com.eaccid.bookreader.provider.WordDataProvider;
 import com.eaccid.bookreader.fragment_1.SwipeOnLongPressRecyclerViewAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
@@ -25,23 +25,18 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeMana
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
-public class WordRecyclerViewFragment extends Fragment  {
+public class WordsFromBookFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.Adapter mWrappedAdapter;
-    private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
+    public RecyclerView.Adapter mAdapter;
+    public RecyclerView.Adapter mWrappedAdapter;
+    public RecyclerViewSwipeManager mRecyclerViewSwipeManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
-    public static WordRecyclerViewFragment newInstance() {
-        return new WordRecyclerViewFragment();
-    }
-
-    public WordRecyclerViewFragment() {
+    public WordsFromBookFragment() {
         super();
     }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +68,12 @@ public class WordRecyclerViewFragment extends Fragment  {
         myItemAdapter.setEventListener(new SwipeOnLongPressRecyclerViewAdapter.EventListener() {
             @Override
             public void onItemRemoved(int position) {
-                ((PagerActivity) getActivity()).onItemRemoved(position);
+                ((PagerActivity) getActivity()).onItemFragment1Removed(position);
             }
 
             @Override
             public void onItemPinned(int position) {
-                ((PagerActivity) getActivity()).onItemPinned(position);
+                ((PagerActivity) getActivity()).onItemFragment1Pinned(position);
             }
 
             @Override
@@ -145,7 +140,7 @@ public class WordRecyclerViewFragment extends Fragment  {
     private void onItemViewClick(View v, boolean pinned) {
         int position = mRecyclerView.getChildAdapterPosition(v);
         if (position != RecyclerView.NO_POSITION) {
-            ((PagerActivity) getActivity()).onItemClicked(position);
+            ((PagerActivity) getActivity()).onItemFragment1Clicked(position);
         }
     }
 
@@ -153,7 +148,7 @@ public class WordRecyclerViewFragment extends Fragment  {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
     }
 
-    public ExampleDataProvider getDataProvider() {
+    public WordDataProvider getDataProvider() {
         return ((PagerActivity) getActivity()).getDataProvider();
     }
 
@@ -164,6 +159,10 @@ public class WordRecyclerViewFragment extends Fragment  {
     public void notifyItemInserted(int position) {
         mAdapter.notifyItemInserted(position);
         mRecyclerView.scrollToPosition(position);
+    }
+
+    public void notifyDataChanged() {
+        mAdapter.notifyDataSetChanged();
     }
 
 }

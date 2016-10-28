@@ -1,20 +1,21 @@
-package com.eaccid.bookreader.fragment_1;
+package com.eaccid.bookreader.provider;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-public class ExampleDataProviderFragment extends Fragment {
-    private ExampleDataProvider mDataProvider;
+public class WordDataProviderFragment extends Fragment {
+    private WordDataProvider mDataProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setRetainInstance(true);  // keep the mDataProvider instance
-        mDataProvider = new ExampleDataProvider();
+        mDataProvider = new WordDataProvider();
+
     }
 
-    public ExampleDataProvider getDataProvider() {
+    public WordDataProvider getDataProvider() {
         return mDataProvider;
     }
 }

@@ -1,9 +1,8 @@
-package com.eaccid.bookreader.dev;
+package com.eaccid.bookreader.provider;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
-import android.widget.ListView;
 
 import com.eaccid.bookreader.db.entity.Book;
 import com.eaccid.bookreader.db.entity.Word;
@@ -20,10 +19,8 @@ import java.util.List;
 public class AppDatabaseManager {
 
     private static DatabaseManager databaseManager;
-    private static Book currentBook;
-    private static int currentPage = 0;
 
-    public static void loadDatabaseManagerForAllActivities(Context baseContext) {
+    public static void loadDatabaseManager(Context baseContext) {
         databaseManager = DatabaseManager.getInstance(baseContext);
     }
 
@@ -31,6 +28,17 @@ public class AppDatabaseManager {
         databaseManager.releaseConnection();
         databaseManager = null;
     }
+
+    public static DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    public static void setDatabaseManager(DatabaseManager databaseManager) {
+        AppDatabaseManager.databaseManager = databaseManager;
+    }
+
+
+    // TODO DELETE BOOK: Main activity, Main Book List View
 
     public static void refreshBooks(List<String> filePaths) {
 
@@ -48,33 +56,6 @@ public class AppDatabaseManager {
             e.printStackTrace();
         }
 
-    }
-
-    public static void setCurrentBookForAddingWord(String filePath) {
-
-        try {
-            BookDaoService bs = databaseManager.getBookService();
-            currentBook = (Book) bs.getById(filePath);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void setCurrentPageForAddingWord(int page) {
-        currentPage = page;
-    }
-
-    public static List<Word> getAllWords() {
-        List<Word> lw = new ArrayList<>();
-        try {
-            WordDaoService ws = databaseManager.getWordService();
-            lw = ws.getAll();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return lw;
     }
 
     public static List<Book> getAllBooks() {
@@ -101,8 +82,30 @@ public class AppDatabaseManager {
 
     }
 
-    public static void createOrUpdateWord(String wordname, String translation, String context, boolean enabledOnline) {
 
+    // TODO DELETE WORD
+
+    //TODO create filter filling
+    private static Book currentBook;
+    private static int currentPage;
+
+    public static void setCurrentBookForAddingWord(String filePath) {
+
+        try {
+            BookDaoService bs = databaseManager.getBookService();
+            currentBook = (Book) bs.getById(filePath);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void setCurrentPageForAddingWord(int pageNumber) {
+        currentPage = pageNumber;
+    }
+
+    public static void createOrUpdateWord(String wordname, String translation, String context,
+                                          boolean enabledOnline) {
         Word word = new Word();
         word.setWord(wordname);
         word.setTranslation(translation);
@@ -121,6 +124,27 @@ public class AppDatabaseManager {
 
     }
 
+    //TODO create filter filling temp - boolean
+    public static List<Word> getAllWords(boolean filter) {
+
+        List<Word> lw = new ArrayList<>();
+
+        try {
+            WordDaoService ws = databaseManager.getWordService();
+
+            if (filter) {
+                lw = ws.getByBookidAndPage(currentBook.getPath(), currentPage == 0 ? 1 : currentPage);
+            } else {
+                lw = ws.getAll();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lw;
+    }
+
+    //delete
 
     public static Cursor getWordCursor() {
 
@@ -156,5 +180,4 @@ public class AppDatabaseManager {
         }
         return null;
     }
-
 }
