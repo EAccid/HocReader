@@ -33,8 +33,8 @@ public class PagerActivity extends FragmentActivity implements
         WordOutTranslatorDialogFragment.WordTranslationClickListener {
 
     private static ArrayList<String> pagesList = new ArrayList<>();
-    private static PagerAdapter pagerAdapter;
-
+    private ViewPager pager;
+    private PagerAdapter pagerAdapter;
 
     public static ArrayList<String> getPagesList() {
         return pagesList;
@@ -48,9 +48,44 @@ public class PagerActivity extends FragmentActivity implements
         fillPagesListAndRefreshDatabase();
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager = (ViewPager) findViewById(R.id.pager);
         pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setAdapter(pagerAdapter);
+
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                switch (position) {
+//                    case 0:
+//                    case 2:
+//                        getDataProvider().fillDataList();
+//                        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
+//                        getSupportFragmentManager().beginTransaction()
+//                                .remove(fragment).commit();
+//
+//                        ((WordsFromBookFragment) fragment).notifyDataChanged();
+//
+//
+//                        getSupportFragmentManager().beginTransaction()
+//                                .add(new WordsFromBookFragment(), "RAGMENT_WORDS_LIST_VIEW1")
+//                                .commit();
+////                        final Fragment fragment1 = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
+////                        ((WordsFromBookFragment) fragment1).notifyDataChanged();
+//
+////                        getSupportFragmentManager().beginTransaction().attach(fragment).commit();
+//                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+
+
+        });
 
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         circleIndicator.setViewPager(pager);
@@ -65,6 +100,8 @@ public class PagerActivity extends FragmentActivity implements
         }
 
     }
+
+
 
     @Override
     public void onNotifyItemPinnedDialogDismissed(int itemPosition, boolean ok) {
@@ -102,7 +139,14 @@ public class PagerActivity extends FragmentActivity implements
                 translatedWord.getTranslation(),
                 translatedWord.getContext(),
                 succeed);
+
+        getDataProvider().fillDataList();
+        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
+        ((WordsFromBookFragment) fragment).notifyDataChanged();
+        pagerAdapter.notifyDataSetChanged();
     }
+
+
 
     private void fillPagesListAndRefreshDatabase() {
         String filePath = getIntent().getStringExtra("filePath");
@@ -115,6 +159,8 @@ public class PagerActivity extends FragmentActivity implements
         //TODO set as WordFilter
         AppDatabaseManager.setCurrentBookForAddingWord(filePath);
     }
+
+
 
     public void onItemFragment1Removed(int position) {
         Snackbar snackbar = Snackbar.make(

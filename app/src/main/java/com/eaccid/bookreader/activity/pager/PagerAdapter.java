@@ -44,15 +44,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        if (position == 0) {
-          getItem(1);
-            super.instantiateItem(container, 1);
-        }
-
-        return super.instantiateItem(container, position);
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
-
-
 
 }

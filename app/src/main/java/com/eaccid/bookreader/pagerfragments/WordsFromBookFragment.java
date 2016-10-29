@@ -23,6 +23,7 @@ import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
+import com.h6ah4i.android.widget.advrecyclerview.utils.BaseWrapperAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 public class WordsFromBookFragment extends Fragment {
@@ -85,6 +86,7 @@ public class WordsFromBookFragment extends Fragment {
         mAdapter = myItemAdapter;
 
         mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(myItemAdapter);      // wrap for swiping
+//        mWrappedAdapter = BaseWrapperAdapter(myItemAdapter);
 
         final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
 
