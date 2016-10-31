@@ -28,5 +28,6 @@
     <color name="testColor2">#b8fae4</color>
     <color name="colorTest3">#6d79f9</color>
     <color name="colorTest4">#faeff7</color>
+    <color name="bg_item_session_state">#9cf4d7</color>
 
 </resources>

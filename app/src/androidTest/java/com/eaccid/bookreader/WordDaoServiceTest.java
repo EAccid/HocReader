@@ -64,7 +64,7 @@ public class WordDaoServiceTest {
         ws.createOrUpdate(word3);
 
         Word word2Created =  ws.getByWordName("devastate").get(0);
-        assertEquals("Created word2 should be: '" + word1.getWord() + "'", word2.getWord(), word2Created.getWord());
+        assertEquals("Created word2 should be: '" + word1.getName() + "'", word2.getName(), word2Created.getName());
 
 
         Word word3Created = ws.getByWordName("persist").get(0);
@@ -149,7 +149,7 @@ public class WordDaoServiceTest {
 
 
         Word word2Created =  ws.getByWordName("devastate").get(0);
-        assertEquals("Created word2 should be 'devastate'" , word2.getWord(), word2Created.getWord());
+        assertEquals("Created word2 should be 'devastate'" , word2.getName(), word2Created.getName());
 
         Word word5Created = ws.getByWordName("designator").get(0);
         assertEquals("Created word5 should be in book: '" + book3.getName() + "'", book3.getName(), word5Created.getBook().getName());

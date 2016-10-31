@@ -1,6 +1,5 @@
 package com.eaccid.bookreader.fragment_1;
 
-
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.provider.WordDataProvider;
+import com.eaccid.bookreader.provider.DataProvider;
+import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
@@ -23,13 +23,14 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 public class SwipeOnLongPressRecyclerViewAdapter
         extends RecyclerView.Adapter<SwipeOnLongPressRecyclerViewAdapter.MyViewHolder>
         implements SwipeableItemAdapter<SwipeOnLongPressRecyclerViewAdapter.MyViewHolder> {
+
     private static final String TAG = "SwipeableItemAdapter";
 
     // NOTE: Make accessible with short name
     private interface Swipeable extends SwipeableItemConstants {
     }
 
-    private WordDataProvider mProvider;
+    private DataProvider mProvider;
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
@@ -59,7 +60,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         }
     }
 
-    public SwipeOnLongPressRecyclerViewAdapter(WordDataProvider dataProvider) {
+    public SwipeOnLongPressRecyclerViewAdapter(WordDatabaseDataProvider dataProvider) {
         mProvider = dataProvider;
         mItemViewOnClickListener = new View.OnClickListener() {
             @Override
@@ -105,7 +106,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        final WordDataProvider.WordData item = mProvider.getItem(position);
+        final DataProvider.ItemDataProvider item = mProvider.getItem(position);
 
         // set listeners
         // (if the item is *pinned*, click event comes to the itemView)
@@ -114,7 +115,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
 
         // set text
-        holder.mTextView.setText(item.getTempTestText());
+        holder.mTextView.setText(item.getTestText());
 
         // set background resource (target view ID: container)
         final int swipeState = holder.getSwipeStateFlags();
@@ -148,6 +149,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         return Swipeable.REACTION_CAN_SWIPE_LEFT | Swipeable.REACTION_MASK_START_SWIPE_LEFT |
                 Swipeable.REACTION_CAN_SWIPE_RIGHT | Swipeable.REACTION_MASK_START_SWIPE_RIGHT |
                 Swipeable.REACTION_START_SWIPE_ON_LONG_PRESS;
+
     }
 
     @Override
@@ -218,7 +220,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         protected void onPerformAction() {
             super.onPerformAction();
 
-            WordDataProvider.WordData item = mAdapter.mProvider.getItem(mPosition);
+            DataProvider.ItemDataProvider item = mAdapter.mProvider.getItem(mPosition);
 
             if (!item.isPinned()) {
                 item.setPinned(true);
@@ -291,7 +293,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         protected void onPerformAction() {
             super.onPerformAction();
 
-            WordDataProvider.WordData item = mAdapter.mProvider.getItem(mPosition);
+            DataProvider.ItemDataProvider item = mAdapter.mProvider.getItem(mPosition);
             if (item.isPinned()) {
                 item.setPinned(false);
                 mAdapter.notifyItemChanged(mPosition);
@@ -304,6 +306,10 @@ public class SwipeOnLongPressRecyclerViewAdapter
             // clear the references
             mAdapter = null;
         }
+    }
+
+    public DataProvider getProvider() {
+        return mProvider;
     }
 
 }

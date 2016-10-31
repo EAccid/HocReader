@@ -14,7 +14,7 @@ import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.fragment_2.DrawerRecyclerViewAdapter;
-import com.eaccid.bookreader.provider.AppDatabaseManager;
+import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
 

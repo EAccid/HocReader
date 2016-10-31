@@ -1,7 +1,8 @@
-package com.eaccid.bookreader.provider;
+package com.eaccid.bookreader.db;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.eaccid.bookreader.db.entity.Book;
@@ -39,6 +40,7 @@ public class AppDatabaseManager {
 
 
     // TODO DELETE BOOK: Main activity, Main Book List View
+
 
     public static void refreshBooks(List<String> filePaths) {
 
@@ -83,11 +85,13 @@ public class AppDatabaseManager {
     }
 
 
-    // TODO DELETE WORD
+    // TODO DELETE WORD: DataProvider
 
-    //TODO create filter filling
+
+    //TODO create filter
     private static Book currentBook;
-    private static int currentPage;
+    private static int currentPage = 1;
+    private static WordFilter currentFilter = WordFilter.NONE;
 
     public static void setCurrentBookForAddingWord(String filePath) {
 
@@ -107,7 +111,7 @@ public class AppDatabaseManager {
     public static void createOrUpdateWord(String wordname, String translation, String context,
                                           boolean enabledOnline) {
         Word word = new Word();
-        word.setWord(wordname);
+        word.setName(wordname);
         word.setTranslation(translation);
         word.setContext(context);
         word.setPage(currentPage);
@@ -124,27 +128,70 @@ public class AppDatabaseManager {
 
     }
 
-    //TODO create filter filling temp - boolean
-    public static List<Word> getAllWords(boolean filter) {
+    public static WordFilter clearFilter() {
+        return currentFilter = WordFilter.NONE;
+    }
 
+    public static void setFilter(WordFilter filter) {
+        currentFilter = filter;
+    }
+
+    //TODO create filter /temp solution
+    public static List<Word> getAllWords(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
         List<Word> lw = new ArrayList<>();
-
         try {
             WordDaoService ws = databaseManager.getWordService();
+            switch (currentFilter) {
+                case BY_BOOK:
 
-            if (filter) {
-                lw = ws.getByBookidAndPage(currentBook.getPath(), currentPage == 0 ? 1 : currentPage);
-            } else {
-                lw = ws.getAll();
+                    if (bookIdFilter == null && currentBook == null)
+                        return lw;
+                    lw = ws.getAllByBookId(bookIdFilter == null ? currentBook.getPath() : bookIdFilter);
+
+                    break;
+
+                case BY_PAGE:
+
+                    lw = ws.getAllByBookIdAndPage(bookIdFilter == null ? currentBook.getPath() : bookIdFilter, currentPage);
+                    break;
+
+                case BY_BOOK_AND_WORD_COLLECTION:
+
+                    if (wordsFilter == null)
+                        return lw;
+                    lw = ws.getAllByWordNameCollectionAndBookId(wordsFilter, false,currentBook.getPath());
+                    break;
+
+                case BY_BOOK_AND_EXCLUDED_WORD_COLLECTION:
+
+                    if (wordsFilter == null)
+                        return lw;
+                    lw = ws.getAllByWordNameCollectionAndBookId(wordsFilter, true,currentBook.getPath());
+                    break;
+
+                case BY_WORD_COLLECTION:
+
+                    if (wordsFilter == null)
+                        return lw;
+                    lw = ws.getAllByWordNameCollection(wordsFilter);
+                    break;
+
+                case NONE:
+                    lw = ws.getAll();
+                    break;
+
+                default:
+                    return lw;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return lw;
     }
 
-    //delete
+    //delete st
 
     public static Cursor getWordCursor() {
 
@@ -180,4 +227,20 @@ public class AppDatabaseManager {
         }
         return null;
     }
+
+    //delete en
+
+    @Nullable
+    public static Word getCurrentBooksWordByPage(String wordBaseName) {
+        try {
+            WordDaoService ws = databaseManager.getWordService();
+            return ws.getWordByBookIdAndPage(wordBaseName, currentBook.getPath(), currentPage);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //
+
 }

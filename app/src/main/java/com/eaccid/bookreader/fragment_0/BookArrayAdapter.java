@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.provider.AppDatabaseManager;
+import com.eaccid.bookreader.db.AppDatabaseManager;
 
 import java.util.List;
 
@@ -22,7 +22,6 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
     private int mTextOnPage;
     private int viewItemLayout;
     private List<String> mPagesList;
-    private List<String> mPagesListAll;
 
     public BookArrayAdapter(Context context, int textViewResourceId, List<String> pagesList) {
         super(context, R.layout.bookpage_item_fragment_0, textViewResourceId, pagesList);

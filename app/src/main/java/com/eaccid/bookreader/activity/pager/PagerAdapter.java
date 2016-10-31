@@ -45,7 +45,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        return POSITION_NONE;
+        if (object instanceof WordsFromBookFragment) {
+            return POSITION_NONE;
+        }
+        return super.getItemPosition(object);
     }
 
 }

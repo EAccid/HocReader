@@ -9,7 +9,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.ExpandableListView;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.provider.AppDatabaseManager;
+import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.searchbooks.SearchAdapter;
 import com.eaccid.bookreader.file.FileOnDeviceFinder;
 import com.eaccid.bookreader.searchbooks.ItemObjectChild;

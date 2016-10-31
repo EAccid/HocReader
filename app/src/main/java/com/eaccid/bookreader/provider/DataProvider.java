@@ -5,32 +5,31 @@ import com.eaccid.bookreader.db.entity.Word;
 import java.util.LinkedList;
 import java.util.List;
 
-public class WordDataProvider {
+public abstract class DataProvider {
 
-    private List<WordData> mData;
-    private WordData mLastRemovedData;
+    private List<ItemDataProvider> mData;
+    private ItemDataProvider mLastRemovedData;
     private int mLastRemovedPosition = -1;
 
-    public WordDataProvider() {
-        fillDataList();
-    }
-
-    public void fillDataList() {
+    public DataProvider() {
         mData = new LinkedList<>();
-        List<Word> words = AppDatabaseManager.getAllWords(true);
-        for (Word word : words
-                ) {
-            mData.add(new WordData(mData.size(), word));
-        }
     }
 
-    // work with VIEW LIST
+    public abstract void fillDataList();
+
+    public List<ItemDataProvider> getDataList() {
+        return mData;
+    }
+
+    public void setDataList(List<ItemDataProvider> dataList) {
+        mData = dataList;
+    }
 
     public int getCount() {
         return mData.size();
     }
 
-    public WordData getItem(int index) {
+    public ItemDataProvider getItem(int index) {
         if (index < 0 || index >= getCount()) {
             throw new IndexOutOfBoundsException("index = " + index);
         }
@@ -60,39 +59,42 @@ public class WordDataProvider {
 
     public void removeItem(int position) {
         //noinspection UnnecessaryLocalVariable
-        final WordData removedItem = mData.remove(position);
+        final ItemDataProvider removedItem = mData.remove(position);
 
         mLastRemovedData = removedItem;
         mLastRemovedPosition = position;
     }
 
-    //WORD DATA ITEM
-
-    public static final class WordData {
+    public static final class ItemDataProvider {
 
         private final String text;
-
         private final long id;
         private boolean pinned;
-        private Word word;
+        private boolean lastAdded;
+        private Object object;
 
-        WordData(int id, Word word) {
+        ItemDataProvider(int id, Object object) {
             this.id = id;
-            this.word = word;
-            text = makeTempTestText(id, word);
+            text = makeTestText(id, object);
         }
 
-        private static String makeTempTestText(long id, Word word) {
+        private static String makeTestText(long id, Object object) {
             final StringBuilder sb = new StringBuilder();
             sb.append(id);
             sb.append(" - ");
-            sb.append(word.getWord());
-            sb.append(" - p.");
-            sb.append(word.getPage());
+            if (object instanceof Word) {
+                sb.append(((Word) object).getName());
+                sb.append(" - p.");
+                sb.append(((Word) object).getPage());
+                sb.append("\n book:  ");
+                sb.append(((Word) object).getBook().getName());
+            } else {
+                sb.append(object.toString());
+            }
             return sb.toString();
         }
 
-        public String getTempTestText() {
+        public String getTestText() {
             return text;
         }
 
@@ -112,6 +114,25 @@ public class WordDataProvider {
             this.pinned = pinned;
         }
 
+        public Object getObject() {
+            return object;
+        }
+
+        public void setObject(Object object) {
+            this.object = object;
+        }
+
+        public boolean isLastAdded() {
+            return lastAdded;
+        }
+
+        public void setLastAdded(boolean lastAdded) {
+            this.lastAdded = lastAdded;
+        }
+
     }
 
+    public Object getItemObject(int position) {
+        return mData.get(position).getObject();
+    }
 }

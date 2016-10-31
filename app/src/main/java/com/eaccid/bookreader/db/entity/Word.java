@@ -52,11 +52,11 @@ public class Word implements Serializable {
         this.id = id;
     }
 
-    public String getWord() {
+    public String getName() {
         return word;
     }
 
-    public void setWord(String word) {
+    public void setName(String word) {
         this.word = word;
     }
 
@@ -111,5 +111,25 @@ public class Word implements Serializable {
                 ", book=" + book +
                 ", enabledOnline=" + enabledOnline +
                 '}';
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Word word1 = (Word) o;
+
+        if (!word.equals(word1.word)) return false;
+        return book.equals(word1.book);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = word.hashCode();
+        result = 31 * result + book.hashCode();
+        return result;
     }
 }

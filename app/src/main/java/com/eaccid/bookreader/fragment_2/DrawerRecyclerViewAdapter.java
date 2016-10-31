@@ -24,7 +24,7 @@ public class DrawerRecyclerViewAdapter extends OrmliteCursorRecyclerViewAdapter<
 
     @Override
     public void onBindViewHolder(ViewHolder holder, Word word) {
-        holder.drawerTextView.setText(word.getWord());
+        holder.drawerTextView.setText(word.getName());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

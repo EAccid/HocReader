@@ -14,8 +14,9 @@ import android.view.View;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.db.entity.Book;
 import com.eaccid.bookreader.db.entity.Word;
-import com.eaccid.bookreader.provider.AppDatabaseManager;
+import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.dev.settings.MainSettings;
+import com.eaccid.bookreader.db.WordFilter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,8 +40,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Snackbar.make(view, "books: " + AppDatabaseManager.getAllBooks().size() + "\nwords: " + AppDatabaseManager.getAllWords(false).size(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                AppDatabaseManager.setFilter(WordFilter.NONE);
+
+                Snackbar.make(view, "books: " + AppDatabaseManager.getAllBooks().size() + "\nwords: "
+                        + AppDatabaseManager.getAllWords(null, null).size(),
+                        Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
 
                 int i = 1;
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 i = 1;
-                for (Word word : AppDatabaseManager.getAllWords(false)
+                for (Word word : AppDatabaseManager.getAllWords(null, null)
                         ) {
                     System.out.println(i + ": " + word + "/n");
                     i++;

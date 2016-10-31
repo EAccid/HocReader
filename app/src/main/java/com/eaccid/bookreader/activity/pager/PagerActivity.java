@@ -13,9 +13,10 @@ import android.view.View;
 import com.eaccid.bookreader.pagerfragments.FragmentTags;
 import com.eaccid.bookreader.fragment_0.OnWordFromTextViewTouchListener;
 import com.eaccid.bookreader.fragment_0.WordOutTranslatorDialogFragment;
-import com.eaccid.bookreader.provider.AppDatabaseManager;
-import com.eaccid.bookreader.provider.WordDataProvider;
-import com.eaccid.bookreader.provider.WordDataProviderFragment;
+import com.eaccid.bookreader.db.AppDatabaseManager;
+import com.eaccid.bookreader.provider.DataProvider;
+import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
+import com.eaccid.bookreader.provider.WordDatabaseProviderFragment;
 import com.eaccid.bookreader.fragment_1.ItemPinnedMessageDialogFragment;
 import com.eaccid.bookreader.pagerfragments.WordsFromBookFragment;
 import com.eaccid.bookreader.file.FileToPagesListReader;
@@ -33,7 +34,6 @@ public class PagerActivity extends FragmentActivity implements
         WordOutTranslatorDialogFragment.WordTranslationClickListener {
 
     private static ArrayList<String> pagesList = new ArrayList<>();
-    private ViewPager pager;
     private PagerAdapter pagerAdapter;
 
     public static ArrayList<String> getPagesList() {
@@ -48,7 +48,7 @@ public class PagerActivity extends FragmentActivity implements
         fillPagesListAndRefreshDatabase();
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        pager = (ViewPager) findViewById(R.id.pager);
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setAdapter(pagerAdapter);
 
@@ -92,7 +92,7 @@ public class PagerActivity extends FragmentActivity implements
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(new WordDataProviderFragment(), FragmentTags.FRAGMENT_TAG_DATA_PROVIDER)
+                    .add(new WordDatabaseProviderFragment(), FragmentTags.FRAGMENT_TAG_DATA_PROVIDER)
                     .commit();
             getSupportFragmentManager().beginTransaction()
                     .add(new WordsFromBookFragment(), FragmentTags.FRAGMENT_WORDS_LIST_VIEW)
@@ -100,7 +100,6 @@ public class PagerActivity extends FragmentActivity implements
         }
 
     }
-
 
 
     @Override
@@ -124,9 +123,9 @@ public class PagerActivity extends FragmentActivity implements
 
     }
 
-    public WordDataProvider getDataProvider() {
+    public WordDatabaseDataProvider getDataProvider() {
         final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_TAG_DATA_PROVIDER);
-        return ((WordDataProviderFragment) fragment).getDataProvider();
+        return ((WordDatabaseProviderFragment) fragment).getDataProvider();
     }
 
     @Override
@@ -135,18 +134,16 @@ public class PagerActivity extends FragmentActivity implements
         boolean succeed = readerDictionary.addTranslatedWord(translatedWord);
 
         //TODO del word updating
-        AppDatabaseManager.createOrUpdateWord(translatedWord.getWordFromContext(),
+        AppDatabaseManager.createOrUpdateWord(translatedWord.getWordBaseForm(),
                 translatedWord.getTranslation(),
                 translatedWord.getContext(),
                 succeed);
 
-        getDataProvider().fillDataList();
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
-        ((WordsFromBookFragment) fragment).notifyDataChanged();
+        getDataProvider().addWord(translatedWord.getWordBaseForm());
+        getDataProvider().fillSessionDataList(); //todo / tem refilling
         pagerAdapter.notifyDataSetChanged();
+
     }
-
-
 
     private void fillPagesListAndRefreshDatabase() {
         String filePath = getIntent().getStringExtra("filePath");
@@ -159,8 +156,6 @@ public class PagerActivity extends FragmentActivity implements
         //TODO set as WordFilter
         AppDatabaseManager.setCurrentBookForAddingWord(filePath);
     }
-
-
 
     public void onItemFragment1Removed(int position) {
         Snackbar snackbar = Snackbar.make(
@@ -189,7 +184,7 @@ public class PagerActivity extends FragmentActivity implements
 
     public void onItemFragment1Clicked(int position) {
         final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
-        WordDataProvider.WordData data = getDataProvider().getItem(position);
+        DataProvider.ItemDataProvider data = getDataProvider().getItem(position);
 
         if (data.isPinned()) {
             // unpin if tapped the pinned item
