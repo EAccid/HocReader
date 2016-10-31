@@ -67,6 +67,10 @@ public abstract class DataProvider {
         mLastRemovedPosition = position;
     }
 
+    public ItemDataProvider getmLastRemovedData() {
+        return mLastRemovedData;
+    }
+
     public static final class ItemDataProvider {
 
         private final String TAG = "updating ItemData";
@@ -78,6 +82,7 @@ public abstract class DataProvider {
 
         ItemDataProvider(int id, Object object) {
             this.id = id;
+            this.object = object;
             Log.i("TAG", "Adding new data item (id=" + getItemId() + ")");
             text = makeTestText(id, object);
         }

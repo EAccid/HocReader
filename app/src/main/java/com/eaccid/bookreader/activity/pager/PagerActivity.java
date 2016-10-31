@@ -5,10 +5,15 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.eaccid.bookreader.pagerfragments.FragmentTags;
 import com.eaccid.bookreader.fragment_0.OnWordFromTextViewTouchListener;
@@ -24,6 +29,7 @@ import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.translator.ReaderDictionary;
 import com.eaccid.bookreader.translator.TranslatedWord;
 import com.eaccid.bookreader.wordgetter.WordFromText;
+import com.j256.ormlite.misc.TransactionManager;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
@@ -35,6 +41,7 @@ public class PagerActivity extends FragmentActivity implements
 
     private static ArrayList<String> pagesList = new ArrayList<>();
     private PagerAdapter pagerAdapter;
+    private WordsFromBookFragment wordsFromBookFragment;
 
     public static ArrayList<String> getPagesList() {
         return pagesList;
@@ -94,20 +101,41 @@ public class PagerActivity extends FragmentActivity implements
             getSupportFragmentManager().beginTransaction()
                     .add(new WordDatabaseProviderFragment(), FragmentTags.FRAGMENT_TAG_DATA_PROVIDER)
                     .commit();
-            getSupportFragmentManager().beginTransaction()
-                    .add(new WordsFromBookFragment(), FragmentTags.FRAGMENT_WORDS_LIST_VIEW)
-                    .commit();
+
+            //todo del fragment / add to transaction
+            wordsFromBookFragment = (WordsFromBookFragment) pagerAdapter.getItem(1);
         }
+
+
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if ((positionOffset == 0)
+                        && (position == 0 || position == 2)){
+                    Log.i("words list", "Word list has been filled by session words.");
+                    getDataProvider().fillSessionDataList();
+                    wordsFromBookFragment.notifyItemChanged();
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
 
     @Override
     public void onNotifyItemPinnedDialogDismissed(int itemPosition, boolean ok) {
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
-
         getDataProvider().getItem(itemPosition).setPinned(ok);
-        ((WordsFromBookFragment) fragment).notifyItemChanged(itemPosition);
+        wordsFromBookFragment.notifyItemChanged(itemPosition);
     }
 
     @Override
@@ -140,9 +168,7 @@ public class PagerActivity extends FragmentActivity implements
                 succeed);
 
         getDataProvider().addWord(translatedWord.getWordBaseForm());
-        getDataProvider().fillSessionDataList(); //todo / tem refilling
-        pagerAdapter.notifyDataSetChanged();
-
+        wordsFromBookFragment.notifyItemChanged();
     }
 
     private void fillPagesListAndRefreshDatabase() {
@@ -183,21 +209,18 @@ public class PagerActivity extends FragmentActivity implements
     }
 
     public void onItemFragment1Clicked(int position) {
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
         DataProvider.ItemDataProvider data = getDataProvider().getItem(position);
-
         if (data.isPinned()) {
             // unpin if tapped the pinned item
             data.setPinned(false);
-            ((WordsFromBookFragment) fragment).notifyItemChanged(position);
+            wordsFromBookFragment.notifyItemChanged(position);
         }
     }
 
     private void onItemFragment1UndoActionClicked() {
         int position = getDataProvider().undoLastRemoval();
         if (position >= 0) {
-            final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
-            ((WordsFromBookFragment) fragment).notifyItemInserted(position);
+            wordsFromBookFragment.notifyItemInserted(position);
         }
     }
 

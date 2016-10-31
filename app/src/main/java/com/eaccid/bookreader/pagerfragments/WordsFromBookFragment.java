@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeMana
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
-public class WordsFromBookFragment extends Fragment {
+public class WordsFromBookFragment extends Fragment{
 
     private SwipeRefreshLayout mySwipeRefreshLayout;
     private RecyclerView mRecyclerView;
@@ -69,6 +70,7 @@ public class WordsFromBookFragment extends Fragment {
 
         //adapter
         final SwipeOnLongPressRecyclerViewAdapter myItemAdapter = new SwipeOnLongPressRecyclerViewAdapter(getDataProvider());
+
         myItemAdapter.setEventListener(new SwipeOnLongPressRecyclerViewAdapter.EventListener() {
             @Override
             public void onItemRemoved(int position) {
@@ -84,6 +86,7 @@ public class WordsFromBookFragment extends Fragment {
             public void onItemViewClicked(View v, boolean pinned) {
                 onItemViewClick(v, pinned);
             }
+
         });
 
         mAdapter = myItemAdapter;
@@ -122,6 +125,7 @@ public class WordsFromBookFragment extends Fragment {
                 mySwipeRefreshLayout.setRefreshing(false);
             }
         });
+
     }
 
     @Override
@@ -176,4 +180,7 @@ public class WordsFromBookFragment extends Fragment {
         mRecyclerView.scrollToPosition(position);
     }
 
+    public void notifyItemChanged() {
+        mAdapter.notifyDataSetChanged();
+    }
 }

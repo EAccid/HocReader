@@ -3,8 +3,6 @@ package com.eaccid.bookreader.activity.pager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.ViewGroup;
 
 import com.eaccid.bookreader.pagerfragments.WordsCarouselTrainingFragment;
 import com.eaccid.bookreader.pagerfragments.WordsFromBookFragment;
@@ -12,6 +10,7 @@ import com.eaccid.bookreader.pagerfragments.BookReaderListFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
+    private Fragment wordsFromBookFragment;
     private static final int NUM_ITEMS = 3;
 
     /*******************************************************************************
@@ -35,13 +34,18 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return BookReaderListFragment.newInstance(position);
             case 1:
-                return new WordsFromBookFragment() ;
+                if (wordsFromBookFragment != null) {
+                    return wordsFromBookFragment;
+                }
+                wordsFromBookFragment = new WordsFromBookFragment();
+                return wordsFromBookFragment;
             case 2:
                 return WordsCarouselTrainingFragment.newInstance();
             default:
                 throw new IllegalStateException();
         }
     }
+
 
     @Override
     public int getItemPosition(Object object) {

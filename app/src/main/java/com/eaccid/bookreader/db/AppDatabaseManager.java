@@ -128,6 +128,16 @@ public class AppDatabaseManager {
 
     }
 
+
+    public static void deleteWord(Word word) {
+        try {
+            WordDaoService ws = databaseManager.getWordService();
+            ws.delete(word);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static WordFilter clearFilter() {
         return currentFilter = WordFilter.NONE;
     }

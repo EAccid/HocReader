@@ -53,6 +53,10 @@ public class WordDatabaseDataProvider extends DataProvider {
 
     public void addWord(String wordBaseName) {
 
+        if (sessionWords.contains(wordBaseName)) {
+            return;
+        }
+
         ItemDataProvider wordItem = WordItemListUtils.createItemWord(wordBaseName, sessionWords.size());
         if (wordItem == null) {
             Log.e(TAG, "Word has not been added to database.");
@@ -60,9 +64,10 @@ public class WordDatabaseDataProvider extends DataProvider {
         }
 
         sessionWords.add(wordBaseName);
-//        int insertedPosition = 0;
-//        wordItem.setLastAdded(true);
-//        getDataList().add(insertedPosition, wordItem);
+
+        int insertedPosition = 0;
+        wordItem.setLastAdded(true);
+        getDataList().add(insertedPosition, wordItem);
 
     }
 
@@ -128,7 +133,7 @@ public class WordDatabaseDataProvider extends DataProvider {
             AppDatabaseManager.setFilter(wordFilter);
             List<Word> wordsFromDB = AppDatabaseManager.getAllWords(words, null);
 
-           for (Word word : wordsFromDB) {
+            for (Word word : wordsFromDB) {
                 ItemDataProvider itemDataProvider = new ItemDataProvider(fromCurrentPosition + dataList.size(), word);
                 itemDataProvider.setLastAdded(wordFilter == WordFilter.BY_BOOK_AND_WORD_COLLECTION);
                 dataList.add(itemDataProvider);
@@ -137,5 +142,30 @@ public class WordDatabaseDataProvider extends DataProvider {
             return dataList;
         }
 
+        public static void removeItem(ItemDataProvider itemData) {
+            Word word = (Word) itemData.getObject();
+            AppDatabaseManager.deleteWord(word);
+        }
+    }
+
+    @Override
+    public int undoLastRemoval() {
+        Word word = (Word) getmLastRemovedData().getObject();
+        sessionWords.add(word.getName());
+        //todo del from here
+        AppDatabaseManager.createOrUpdateWord(word.getName(),word.getTranslation(),word.getContext(),true);
+        return super.undoLastRemoval();
+    }
+
+    @Override
+    public void removeItem(int position) {
+
+        ItemDataProvider item = getDataList().get(position);
+        WordItemListUtils.removeItem(item);
+
+        Word word = (Word) item.getObject();
+        sessionWords.remove(word.getName());
+
+        super.removeItem(position);
     }
 }

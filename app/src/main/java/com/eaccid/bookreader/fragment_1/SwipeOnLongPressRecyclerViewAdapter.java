@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.db.entity.Word;
 import com.eaccid.bookreader.provider.DataProvider;
 import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
@@ -47,11 +48,13 @@ public class SwipeOnLongPressRecyclerViewAdapter
     public static class MyViewHolder extends AbstractSwipeableItemViewHolder {
         public FrameLayout mContainer;
         public TextView mTextView;
+        public TextView mTranslationView;
 
         public MyViewHolder(View v) {
             super(v);
             mContainer = (FrameLayout) v.findViewById(R.id.container);
             mTextView = (TextView) v.findViewById(android.R.id.text1);
+            mTranslationView = (TextView) v.findViewById(android.R.id.text2);
         }
 
         @Override
@@ -68,6 +71,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
                 onItemViewClick(v);
             }
         };
+
         mSwipeableViewContainerOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +120,11 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
         // set text
         holder.mTextView.setText(item.getTestText());
+
+
+        //todo del WORD
+        Word word = (Word) item.getObject();
+        holder.mTranslationView.setText(word.getTranslation());
 
         // set background resource (target view ID: container)
         final int swipeState = holder.getSwipeStateFlags();
@@ -170,8 +179,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
                 bgRes = R.drawable.bg_swipe_item_right;
                 break;
         }
-
         holder.itemView.setBackgroundResource(bgRes);
+
     }
 
     @Override
@@ -200,10 +209,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
                     return null;
                 }
         }
-    }
-
-    public EventListener getEventListener() {
-        return mEventListener;
     }
 
     public void setEventListener(EventListener eventListener) {
@@ -311,9 +316,4 @@ public class SwipeOnLongPressRecyclerViewAdapter
             mAdapter = null;
         }
     }
-
-    public DataProvider getProvider() {
-        return mProvider;
-    }
-
 }
