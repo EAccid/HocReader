@@ -2,7 +2,6 @@ package com.eaccid.bookreader.provider;
 
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.db.WordFilter;
@@ -36,6 +35,7 @@ public class WordDatabaseDataProvider extends DataProvider {
     }
 
     public void updateSessionDataList() {
+        setDataList(getDataListByBookAndSessionWords());
         getDataList().addAll(addDataListByBookAndSessionWords());
     }
 
@@ -60,21 +60,31 @@ public class WordDatabaseDataProvider extends DataProvider {
         }
 
         sessionWords.add(wordBaseName);
-        int insertedPosition = 0;
-        wordItem.setLastAdded(true);
-        getDataList().add(insertedPosition, wordItem);
+//        int insertedPosition = 0;
+//        wordItem.setLastAdded(true);
+//        getDataList().add(insertedPosition, wordItem);
 
     }
 
     private static class WordItemListUtils implements Callable<List<ItemDataProvider>> {
         private WordFilter wordFilter;
         private List<String> words;
+        private int fromCurrentPosition;
 
         private WordItemListUtils(WordFilter wordFilter, @Nullable List<String> words) {
             this.wordFilter = wordFilter;
             if (words == null)
                 words = new ArrayList<>();
             this.words = words;
+            switch (wordFilter) {
+                case BY_BOOK_AND_EXCLUDED_WORD_COLLECTION:
+                    this.fromCurrentPosition = words.size();
+                    break;
+                default:
+                    this.fromCurrentPosition = 0;
+                    break;
+            }
+
         }
 
         static List<ItemDataProvider> addAllFromDatabase(List<String> excludeWords) {
@@ -118,15 +128,12 @@ public class WordDatabaseDataProvider extends DataProvider {
             AppDatabaseManager.setFilter(wordFilter);
             List<Word> wordsFromDB = AppDatabaseManager.getAllWords(words, null);
 
-            int fromPosition = words.size();
-
-            for (Word word : wordsFromDB) {
-
-                ItemDataProvider itemDataProvider = new ItemDataProvider(fromPosition + dataList.size(), word);
+           for (Word word : wordsFromDB) {
+                ItemDataProvider itemDataProvider = new ItemDataProvider(fromCurrentPosition + dataList.size(), word);
                 itemDataProvider.setLastAdded(wordFilter == WordFilter.BY_BOOK_AND_WORD_COLLECTION);
                 dataList.add(itemDataProvider);
-
             }
+
             return dataList;
         }
 

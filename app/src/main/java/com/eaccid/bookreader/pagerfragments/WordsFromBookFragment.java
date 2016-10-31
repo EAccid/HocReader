@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +16,6 @@ import android.view.ViewGroup;
 
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.activity.pager.PagerActivity;
-import com.eaccid.bookreader.fragment_1.SwipeOnWordRecyclerViewAdapter;
-import com.eaccid.bookreader.provider.DataProvider;
 import com.eaccid.bookreader.fragment_1.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -71,7 +68,7 @@ public class WordsFromBookFragment extends Fragment {
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
 
         //adapter
-        final SwipeOnLongPressRecyclerViewAdapter myItemAdapter = new SwipeOnWordRecyclerViewAdapter(getDataProvider());
+        final SwipeOnLongPressRecyclerViewAdapter myItemAdapter = new SwipeOnLongPressRecyclerViewAdapter(getDataProvider());
         myItemAdapter.setEventListener(new SwipeOnLongPressRecyclerViewAdapter.EventListener() {
             @Override
             public void onItemRemoved(int position) {

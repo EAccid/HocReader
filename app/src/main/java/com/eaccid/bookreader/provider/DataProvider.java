@@ -1,5 +1,7 @@
 package com.eaccid.bookreader.provider;
 
+import android.util.Log;
+
 import com.eaccid.bookreader.db.entity.Word;
 
 import java.util.LinkedList;
@@ -67,6 +69,7 @@ public abstract class DataProvider {
 
     public static final class ItemDataProvider {
 
+        private final String TAG = "updating ItemData";
         private final String text;
         private final long id;
         private boolean pinned;
@@ -75,6 +78,7 @@ public abstract class DataProvider {
 
         ItemDataProvider(int id, Object object) {
             this.id = id;
+            Log.i("TAG", "Adding new data item (id=" + getItemId() + ")");
             text = makeTestText(id, object);
         }
 
@@ -128,6 +132,9 @@ public abstract class DataProvider {
 
         public void setLastAdded(boolean lastAdded) {
             this.lastAdded = lastAdded;
+            if (lastAdded) {
+                Log.i("TAG", "Last item (id=" + getItemId() + ") has been set.");
+            }
         }
 
     }

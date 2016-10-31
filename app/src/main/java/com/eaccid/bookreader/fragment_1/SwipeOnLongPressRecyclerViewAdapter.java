@@ -120,19 +120,23 @@ public class SwipeOnLongPressRecyclerViewAdapter
         // set background resource (target view ID: container)
         final int swipeState = holder.getSwipeStateFlags();
 
-        if ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0) {
-            int bgResId;
+        int bgResId;
 
+        if (item.isLastAdded()) {
+            bgResId = R.drawable.bg_item_session_state;
+        } else {
+            bgResId = R.drawable.bg_item_normal_state;
+        }
+
+        if ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0) {
             if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
                 bgResId = R.drawable.bg_item_swiping_active_state;
             } else if ((swipeState & Swipeable.STATE_FLAG_SWIPING) != 0) {
                 bgResId = R.drawable.bg_item_swiping_state;
-            } else {
-                bgResId = R.drawable.bg_item_normal_state;
             }
-
-            holder.mContainer.setBackgroundResource(bgResId);
         }
+
+        holder.mContainer.setBackgroundResource(bgResId);
 
         // set swiping properties
         holder.setSwipeItemHorizontalSlideAmount(
@@ -158,7 +162,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         switch (type) {
             case Swipeable.DRAWABLE_SWIPE_NEUTRAL_BACKGROUND:
                 bgRes = R.drawable.bg_swipe_item_neutral;
-                break;
+             break;
             case Swipeable.DRAWABLE_SWIPE_LEFT_BACKGROUND:
                 bgRes = R.drawable.bg_swipe_item_left;
                 break;
