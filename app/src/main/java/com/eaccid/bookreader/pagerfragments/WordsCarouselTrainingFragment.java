@@ -15,6 +15,7 @@ import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.fragment_2.DrawerRecyclerViewAdapter;
 import com.eaccid.bookreader.db.AppDatabaseManager;
+import com.eaccid.bookreader.fragment_2.WordCursorBinder;
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
 
@@ -35,34 +36,22 @@ public class WordsCarouselTrainingFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
 
-        final RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);;
+        final RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
 
         DrawerRecyclerViewAdapter adapter = new DrawerRecyclerViewAdapter(getContext());
 
-//        Cursor cursor = AppDatabaseManager.getWordCursor();
-        PreparedQuery pq = AppDatabaseManager.getWordPreparedQuery();
-
-        OrmLiteCursorLoader liteCursorLoader = new OrmLiteCursorLoader(getContext(), AppDatabaseManager.getWordDao(),pq);
-        Cursor cursor = liteCursorLoader.loadInBackground();
-
-        adapter.changeCursor(cursor, pq);
-
-
-//        adapter.notifyDataSetChanged();
-
-
+        WordCursorBinder wordCursorBinder = new WordCursorBinder(getContext(), true);
+        adapter = (DrawerRecyclerViewAdapter) wordCursorBinder.createAdapterWithCursor(adapter);
 
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new CenterScrollListener());
 
     }
-
 
 }

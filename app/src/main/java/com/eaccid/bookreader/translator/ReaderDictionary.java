@@ -46,8 +46,11 @@ public class ReaderDictionary {
         @Override
         public Boolean call() throws Exception {
 
-           LingualeoDictionary lingualeo = new LingualeoDictionary(new LingualeoServiceCookiesHandler(context));
-           return lingualeo.addWord(word.getWordFromContext(), word.getTranslation(), word.getContext());
+            LingualeoServiceCookiesHandler cookiesHandler = new LingualeoServiceCookiesHandler(context);
+            LingualeoDictionary lingualeo = new LingualeoDictionary(cookiesHandler);
+            boolean succeed = lingualeo.addWord(word.getWordFromContext(), word.getTranslation(), word.getContext());
+
+            return succeed;
 
         }
     }

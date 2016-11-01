@@ -63,11 +63,11 @@ public class WordDaoServiceTest {
         ws.createOrUpdate(word2);
         ws.createOrUpdate(word3);
 
-        Word word2Created =  ws.getByWordName("devastate").get(0);
+        Word word2Created =  ws.getAllByWordName("devastate").get(0);
         assertEquals("Created word2 should be: '" + word1.getName() + "'", word2.getName(), word2Created.getName());
 
 
-        Word word3Created = ws.getByWordName("persist").get(0);
+        Word word3Created = ws.getAllByWordName("persist").get(0);
         assertEquals("Created word3 should be in book: '" + book3.getName() + "'", book3.getName(), word3Created.getBook().getName());
 
     }
@@ -101,7 +101,7 @@ public class WordDaoServiceTest {
         int amountWords = ws.getAll().size();
         assertEquals("Words amount should  be 5", 5, amountWords);
 
-        assertFalse("Word should not be enabled online", ws.getByWordName("segregate").get(0).isEnabledOnline());
+        assertFalse("Word should not be enabled online", ws.getAllByWordName("segregate").get(0).isEnabledOnline());
 
 
         word4.setEnabledOnline(true);
@@ -110,7 +110,7 @@ public class WordDaoServiceTest {
         amountWords = ws.getAll().size();
         assertEquals("Words amount should  be 5", 5, amountWords);
 
-        assertTrue("Word should be enabled online", ws.getByWordName("segregate").get(0).isEnabledOnline());
+        assertTrue("Word should be enabled online", ws.getAllByWordName("segregate").get(0).isEnabledOnline());
 
     }
 
@@ -148,14 +148,14 @@ public class WordDaoServiceTest {
         assertEquals("Words amount should  be 3", 3, amountWords);
 
 
-        Word word2Created =  ws.getByWordName("devastate").get(0);
+        Word word2Created =  ws.getAllByWordName("devastate").get(0);
         assertEquals("Created word2 should be 'devastate'" , word2.getName(), word2Created.getName());
 
-        Word word5Created = ws.getByWordName("designator").get(0);
+        Word word5Created = ws.getAllByWordName("designator").get(0);
         assertEquals("Created word5 should be in book: '" + book3.getName() + "'", book3.getName(), word5Created.getBook().getName());
 
 
-       int word3CreatedSize = ws.getByWordName("persist").size();
+       int word3CreatedSize = ws.getAllByWordName("persist").size();
         assertEquals("list of persist words should be 0", 0, word3CreatedSize);
 
     }
@@ -176,14 +176,14 @@ public class WordDaoServiceTest {
 
         bs.delete(book1);
 
-        Word word1Created = ws.getByWordName("mad").get(0);
+        Word word1Created = ws.getAllByWordName("mad").get(0);
 
         assertNull("Book should be null.", word1Created.getBook());
 
         word1Created.setBook(book2);
         ws.createOrUpdate(word1Created);
 
-        word1Created = ws.getByWordName("mad").get(0);
+        word1Created = ws.getAllByWordName("mad").get(0);
         assertEquals("Created word3 should be in book: '" + book2.getName() + "'", book2.getName(), word1Created.getBook().getName());
 
     }

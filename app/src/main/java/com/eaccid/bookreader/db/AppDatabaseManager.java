@@ -11,6 +11,7 @@ import com.eaccid.bookreader.db.service.BookDaoService;
 import com.eaccid.bookreader.db.service.DatabaseManager;
 import com.eaccid.bookreader.db.service.WordDaoService;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.PreparedQuery;
 
 import java.sql.SQLException;
@@ -29,15 +30,6 @@ public class AppDatabaseManager {
         databaseManager.releaseConnection();
         databaseManager = null;
     }
-
-    public static DatabaseManager getDatabaseManager() {
-        return databaseManager;
-    }
-
-    public static void setDatabaseManager(DatabaseManager databaseManager) {
-        AppDatabaseManager.databaseManager = databaseManager;
-    }
-
 
     // TODO DELETE BOOK: Main activity, Main Book List View
 
@@ -155,7 +147,9 @@ public class AppDatabaseManager {
                 case BY_BOOK:
 
                     if (bookIdFilter == null && currentBook == null)
-                        return lw;
+//                        return lw;
+                        throw new RuntimeException("Current book filter has not been set: \n" +
+                                "'AppDatabaseManager.setFilter( ? )' or argument 'bookIdFilter ?'");
                     lw = ws.getAllByBookId(bookIdFilter == null ? currentBook.getPath() : bookIdFilter);
 
                     break;
@@ -169,14 +163,14 @@ public class AppDatabaseManager {
 
                     if (wordsFilter == null)
                         return lw;
-                    lw = ws.getAllByWordNameCollectionAndBookId(wordsFilter, false,currentBook.getPath());
+                    lw = ws.getAllByWordNameCollectionAndBookId(wordsFilter, false, currentBook.getPath());
                     break;
 
                 case BY_BOOK_AND_EXCLUDED_WORD_COLLECTION:
 
                     if (wordsFilter == null)
                         return lw;
-                    lw = ws.getAllByWordNameCollectionAndBookId(wordsFilter, true,currentBook.getPath());
+                    lw = ws.getAllByWordNameCollectionAndBookId(wordsFilter, true, currentBook.getPath());
                     break;
 
                 case BY_WORD_COLLECTION:
@@ -201,24 +195,21 @@ public class AppDatabaseManager {
         return lw;
     }
 
-    //delete st
-
-    public static Cursor getWordCursor() {
+    public static PreparedQuery<Word> getWordPreparedQuery(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
 
         try {
             WordDaoService ws = databaseManager.getWordService();
-            return ws.getWordCursor();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+            switch (currentFilter) {
+                case BY_BOOK:
+                    if (bookIdFilter == null && currentBook == null)
+                        throw new RuntimeException("Current book filter has not been set: \n" +
+                                "'AppDatabaseManager.setFilter( ? )' or argument 'bookIdFilter ?'");
+                    return ws.getWordsByBookIdPreparedQuery(bookIdFilter == null ? currentBook.getPath() : bookIdFilter);
 
-    public static PreparedQuery getWordPreparedQuery() {
-        try {
-            WordDaoService ws = databaseManager.getWordService();
-            return ws.getWordPreparedQuery();
+                default:
+                    return ws.getAllWordsPreparedQuery();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -238,8 +229,6 @@ public class AppDatabaseManager {
         return null;
     }
 
-    //delete en
-
     @Nullable
     public static Word getCurrentBooksWordByPage(String wordBaseName) {
         try {
@@ -250,7 +239,5 @@ public class AppDatabaseManager {
         }
         return null;
     }
-
-    //
 
 }
