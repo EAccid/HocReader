@@ -3,6 +3,8 @@ package com.eaccid.bookreader.translator;
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.libtranslator.translator.TextTranslation;
 import com.eaccid.libtranslator.translator.Translator;
+import com.eaccid.libtranslator.translator.TranslatorFactory;
+import com.eaccid.libtranslator.translator.Translators;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -39,7 +41,7 @@ public class ReaderTranslator {
         @Override
         public TextTranslation call() throws Exception {
 
-            Translator translator = TranslatorFactory.newTranslator();
+            Translator translator = TranslatorFactory.newTranslator(Translators.LINGUALEO);
             translator.translate(word);
 
             return translator.getTranslations();

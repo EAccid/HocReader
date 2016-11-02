@@ -43,7 +43,7 @@ public class BookReaderListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_0_bookreader, container, false);
+        View v = inflater.inflate(R.layout.bookreader_fragment_0, container, false);
         View tv = v.findViewById(R.id.text);
         ((TextView) tv).setText("Fragment #" + mNum + ": book");
 

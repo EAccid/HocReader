@@ -22,8 +22,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemView
 import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 
 public class SwipeOnLongPressRecyclerViewAdapter
-        extends RecyclerView.Adapter<SwipeOnLongPressRecyclerViewAdapter.MyViewHolder>
-        implements SwipeableItemAdapter<SwipeOnLongPressRecyclerViewAdapter.MyViewHolder> {
+        extends RecyclerView.Adapter<SwipeOnLongPressRecyclerViewAdapter.WordTranslationViewHolder>
+        implements SwipeableItemAdapter<SwipeOnLongPressRecyclerViewAdapter.WordTranslationViewHolder> {
 
     private static final String TAG = "SwipeableItemAdapter";
 
@@ -43,24 +43,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
         void onItemViewClicked(View v, boolean pinned);
 
-    }
-
-    public static class MyViewHolder extends AbstractSwipeableItemViewHolder {
-        public FrameLayout mContainer;
-        public TextView mTextView;
-        public TextView mTranslationView;
-
-        public MyViewHolder(View v) {
-            super(v);
-            mContainer = (FrameLayout) v.findViewById(R.id.container);
-            mTextView = (TextView) v.findViewById(android.R.id.text1);
-            mTranslationView = (TextView) v.findViewById(android.R.id.text2);
-        }
-
-        @Override
-        public View getSwipeableContainerView() {
-            return mContainer;
-        }
     }
 
     public SwipeOnLongPressRecyclerViewAdapter(WordDatabaseDataProvider dataProvider) {
@@ -84,32 +66,33 @@ public class SwipeOnLongPressRecyclerViewAdapter
         setHasStableIds(true);
     }
 
-    private void onItemViewClick(View v) {
-        if (mEventListener != null) {
-            mEventListener.onItemViewClicked(v, true); // true --- pinned
-        }
-    }
+    static class WordTranslationViewHolder extends AbstractSwipeableItemViewHolder {
+        FrameLayout mContainer;
+        TextView mTextView;
+        TextView mTranslationView;
 
-    private void onSwipeableViewContainerClick(View v) {
-        if (mEventListener != null) {
-            mEventListener.onItemViewClicked(RecyclerViewAdapterUtils.getParentViewHolderItemView(v), false);  // false --- not pinned
+        WordTranslationViewHolder(View v) {
+            super(v);
+            mContainer = (FrameLayout) v.findViewById(R.id.container);
+            mTextView = (TextView) v.findViewById(android.R.id.text1);
+            mTranslationView = (TextView) v.findViewById(android.R.id.text2);
+        }
+
+        @Override
+        public View getSwipeableContainerView() {
+            return mContainer;
         }
     }
 
     @Override
-    public long getItemId(int position) {
-        return mProvider.getItem(position).getItemId();
-    }
-
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WordTranslationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View v = inflater.inflate(R.layout.word_item_fragment_1, parent, false);
-        return new MyViewHolder(v);
+        return new WordTranslationViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(WordTranslationViewHolder holder, int position) {
         final DataProvider.ItemDataProvider item = mProvider.getItem(position);
 
         // set listeners
@@ -152,13 +135,22 @@ public class SwipeOnLongPressRecyclerViewAdapter
                 item.isPinned() ? Swipeable.OUTSIDE_OF_THE_WINDOW_LEFT : 0);
     }
 
+
+
+    /** from advanced recycler view library example*/
+
+    @Override
+    public long getItemId(int position) {
+        return mProvider.getItem(position).getItemId();
+    }
+
     @Override
     public int getItemCount() {
         return mProvider.getCount();
     }
 
     @Override
-    public int onGetSwipeReactionType(MyViewHolder holder, int position, int x, int y) {
+    public int onGetSwipeReactionType(WordTranslationViewHolder holder, int position, int x, int y) {
         return Swipeable.REACTION_CAN_SWIPE_LEFT | Swipeable.REACTION_MASK_START_SWIPE_LEFT |
                 Swipeable.REACTION_CAN_SWIPE_RIGHT | Swipeable.REACTION_MASK_START_SWIPE_RIGHT |
                 Swipeable.REACTION_START_SWIPE_ON_LONG_PRESS;
@@ -166,12 +158,12 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     @Override
-    public void onSetSwipeBackground(MyViewHolder holder, int position, int type) {
+    public void onSetSwipeBackground(WordTranslationViewHolder holder, int position, int type) {
         int bgRes = 0;
         switch (type) {
             case Swipeable.DRAWABLE_SWIPE_NEUTRAL_BACKGROUND:
                 bgRes = R.drawable.bg_swipe_item_neutral;
-             break;
+                break;
             case Swipeable.DRAWABLE_SWIPE_LEFT_BACKGROUND:
                 bgRes = R.drawable.bg_swipe_item_left;
                 break;
@@ -184,7 +176,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     @Override
-    public SwipeResultAction onSwipeItem(MyViewHolder holder, final int position, int result) {
+    public SwipeResultAction onSwipeItem(WordTranslationViewHolder holder, final int position, int result) {
         Log.d(TAG, "onSwipeItem(position = " + position + ", result = " + result + ")");
 
         switch (result) {
@@ -213,6 +205,18 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     public void setEventListener(EventListener eventListener) {
         mEventListener = eventListener;
+    }
+
+    private void onItemViewClick(View v) {
+        if (mEventListener != null) {
+            mEventListener.onItemViewClicked(v, true); // true --- pinned
+        }
+    }
+
+    private void onSwipeableViewContainerClick(View v) {
+        if (mEventListener != null) {
+            mEventListener.onItemViewClicked(RecyclerViewAdapterUtils.getParentViewHolderItemView(v), false);  // false --- not pinned
+        }
     }
 
     private static class SwipeLeftResultAction extends SwipeResultActionMoveToSwipedDirection {
