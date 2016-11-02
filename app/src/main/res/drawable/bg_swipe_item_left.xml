@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
        Copyright (C) 2015 Haruki Hasegawa
 
        Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,15 @@
 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <color android:color="@color/bg_swipe_item_pinned"/>
+        <shape>
+            <gradient
+                android:angle="90.0"
+                android:endColor="@color/bg_swipe_item_pinned"
+                android:startColor="@color/bg_swipe_item_neutral"
+                android:type="linear" />
+            <corners android:radius="2.0dip" />
+            <padding android:bottom="2dp"/>
+        </shape>
+
     </item>
 </layer-list>

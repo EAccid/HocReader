@@ -56,7 +56,7 @@ public class WordsFromBookFragment extends Fragment {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefresh);
-        mCardView = (CardView) getView().findViewById(R.id.cardView);
+//        mCardView = (CardView) getView().findViewById(R.id.cardView);
 
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
