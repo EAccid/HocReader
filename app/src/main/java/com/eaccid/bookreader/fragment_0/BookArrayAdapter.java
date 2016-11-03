@@ -6,12 +6,15 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.db.AppDatabaseManager;
+import com.eaccid.bookreader.fragment_1.SwipeOnLongPressRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -64,6 +67,7 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
         );
 
         viewHolderItem.textViewItem.setOnTouchListener(new OnWordFromTextViewTouchListener(pageNumber));
+//        animate(viewHolderItem);
 
         return convertView;
 
@@ -73,6 +77,12 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
         TextView textViewItem;
         TextView pageNumberViewItem;
     }
+
+    private void animate(ViewHolderItem viewHolder) {
+        final Animation animAnticipateOvershoot = AnimationUtils.loadAnimation(viewHolder.pageNumberViewItem.getContext(), R.anim.bounce_interpolator);
+        viewHolder.pageNumberViewItem.setAnimation(animAnticipateOvershoot);
+    }
+
 
 }
 

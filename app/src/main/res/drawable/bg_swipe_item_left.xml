@@ -13,17 +13,28 @@
        See the License for the specific language governing permissions and
        limitations under the License.
 -->
+
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
+        <color android:color="@color/bg_swipe_item_neutral" />
         <shape>
-            <gradient
-                android:angle="90.0"
-                android:endColor="@color/bg_swipe_item_pinned"
-                android:startColor="@color/bg_swipe_item_neutral"
-                android:type="linear" />
             <corners android:radius="2.0dip" />
             <padding android:bottom="2dp"/>
         </shape>
-
     </item>
 </layer-list>
+
+<!--<layer-list xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--<item>-->
+    <!--<shape>-->
+        <!--<gradient-->
+            <!--android:angle="90.0"-->
+            <!--android:endColor="@color/bg_swipe_item_pinned"-->
+            <!--android:startColor="@color/bg_swipe_item_neutral"-->
+            <!--android:type="linear" />-->
+        <!--<corners android:radius="2.0dip" />-->
+        <!--<padding android:bottom="2dp"/>-->
+    <!--</shape>-->
+
+<!--</item>-->
+<!--</layer-list>-->

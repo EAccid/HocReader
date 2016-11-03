@@ -8,7 +8,7 @@
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="colorDivider">#bdbdbd</color>
-
+    <color name="windowBackground">#ddd</color>
 
     <color name="colorLightAccent">#f8bbd0</color>
 
@@ -31,6 +31,10 @@
     <color name="testColor2">#b8fae4</color>
     <color name="colorTest3">#6d79f9</color>
     <color name="colorTest4">#faeff7</color>
-    <color name="bg_item_session_state">#9cf4d7</color>
+    <color name="bg_item_session_state">#C5CAE9</color>
+
+
+    <color name="test">#9cf4d7</color>
+
 
 </resources>

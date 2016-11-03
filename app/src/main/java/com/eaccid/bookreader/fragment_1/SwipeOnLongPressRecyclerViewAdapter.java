@@ -5,7 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
@@ -120,21 +123,21 @@ public class SwipeOnLongPressRecyclerViewAdapter
             bgResId = R.drawable.bg_item_normal_state;
         }
 
-        if ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0) {
-            if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
-                bgResId = R.drawable.bg_item_swiping_active_state;
-            } else if ((swipeState & Swipeable.STATE_FLAG_SWIPING) != 0) {
-                bgResId = R.drawable.bg_item_swiping_state;
-            }
-        }
+//        if ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0) {
+//            if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
+//                bgResId = R.drawable.bg_item_swiping_active_state;
+//            } else if ((swipeState & Swipeable.STATE_FLAG_SWIPING) != 0) {
+//                bgResId = R.drawable.bg_item_swiping_state;
+//            }
+//        }
 
         holder.mContainer.setBackgroundResource(bgResId);
 
         // set swiping properties
         holder.setSwipeItemHorizontalSlideAmount(
                 item.isPinned() ? Swipeable.OUTSIDE_OF_THE_WINDOW_LEFT : 0);
-    }
 
+    }
 
 
     /** from advanced recycler view library example*/
