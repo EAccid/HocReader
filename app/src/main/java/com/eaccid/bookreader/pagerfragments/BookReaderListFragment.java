@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.fragment_0.BookArrayAdapter;
 
 import java.util.ArrayList;
@@ -45,7 +46,8 @@ public class BookReaderListFragment extends ListFragment {
 
         View v = inflater.inflate(R.layout.bookreader_fragment_0, container, false);
         View tv = v.findViewById(R.id.text);
-        ((TextView) tv).setText("Fragment #" + mNum + ": book");
+//        ((TextView) tv).setText("Fragment #" + mNum + ": book");
+        ((TextView) tv).setText(AppDatabaseManager.getCurrentBookName() + ", pagers: " + pagesList.size());
 
         return v;
     }
@@ -64,5 +66,7 @@ public class BookReaderListFragment extends ListFragment {
         outState.putInt("firstVisiblePosition", list.getFirstVisiblePosition());
         super.onSaveInstanceState(outState);
     }
+
+
 
 }

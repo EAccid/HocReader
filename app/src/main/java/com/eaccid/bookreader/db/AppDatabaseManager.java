@@ -240,4 +240,9 @@ public class AppDatabaseManager {
         return null;
     }
 
+    @Nullable
+    public static String getCurrentBookName() {
+        return currentBook.getName();
+    }
+
 }
