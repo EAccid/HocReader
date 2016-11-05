@@ -47,32 +47,29 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.j256.ormlite:ormlite-core:5.0'
     compile 'com.j256.ormlite:ormlite-jdbc:5.0'
-    compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.0'){
+    compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.0') {
         transitive = true
     }
     compile 'com.azoft.carousellayoutmanager:carousel:1.1.6'
     compile 'com.android.support:cardview-v7:25.0.0'
-
-
-
+    compile 'com.github.tosslife:foldingtabbar:1.0.0'
+    compile 'com.yalantis:contextmenu:1.0.7'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile 'org.testng:testng:6.9.12'
-
-
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
-
     androidTestCompile 'com.android.support.test:runner:0.5'
     //    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+
     //        exclude group: 'com.android.support', module: 'support-annotations'
+
     //    })
     androidTestCompile 'com.android.support:support-annotations:25.0.0'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     androidTestCompile 'org.testng:testng:6.9.12'
     androidTestCompile 'junit:junit:4.12'
-
 }
 
 

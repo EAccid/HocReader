@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796b</color>
-    <color name="colorLightPrimary">#b2dfdb</color>
+    <color name="colorLightPrimary">#70b2dfdb</color>
     <color name="colorTextIcons">#ffffff</color>
     <color name="colorAccent">#ff4081</color>
     <color name="colorPrimaryText">#212121</color>
@@ -11,6 +11,9 @@
     <color name="windowBackground">#ddd</color>
 
     <color name="colorLightAccent">#f8bbd0</color>
+
+
+    <color name="colorTransparent">#00ffffff</color>
 
 
     <color name="bg_item_normal_state">#fff0f0f0</color>
@@ -26,6 +29,14 @@
 
     <color name="snackbar_action_color_done">#ffccccff</color>
 
+    <color name="ic_color_black">#000000</color>
+    <color name="ic_color_blue">#03A9F4</color>
+    <color name="ic_color_bookmark">#fdaa23</color>
+    <color name="ic_color_pets_green">#ff2f8b2a</color>
+    <color name="ic_color_pets_brown">#bf572a</color>
+
+
+
     <color name="expandable_item_indicator_color">#42000000</color>
     <color name="testColor1">#ffcaf6</color>
     <color name="testColor2">#b8fae4</color>
@@ -35,6 +46,7 @@
 
 
     <color name="test">#9cf4d7</color>
+
 
 
 </resources>
