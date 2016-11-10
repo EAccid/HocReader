@@ -73,6 +73,7 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
 
     }
 
+
     private static class ViewHolderItem {
         TextView textViewItem;
         TextView pageNumberViewItem;
@@ -82,6 +83,8 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
         final Animation animAnticipateOvershoot = AnimationUtils.loadAnimation(viewHolder.pageNumberViewItem.getContext(), R.anim.bounce_interpolator);
         viewHolder.pageNumberViewItem.setAnimation(animAnticipateOvershoot);
     }
+
+
 
 
 }

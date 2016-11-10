@@ -1,13 +1,11 @@
 package com.eaccid.bookreader.pagerfragments;
 
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.fragment_0.BookArrayAdapter;
 import com.eaccid.bookreader.fragment_0.MenuObjectWrapper;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
@@ -37,6 +35,7 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects = new ArrayList<>();
+    private BookArrayAdapter bookArrayAdapter;
 
     public static BookReaderListFragment newInstance(int num) {
         BookReaderListFragment f = new BookReaderListFragment();
@@ -78,7 +77,7 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BookArrayAdapter bookArrayAdapter = new BookArrayAdapter(getContext(), R.id.text_on_page, pagesList);
+        bookArrayAdapter = new BookArrayAdapter(getContext(), R.id.text_on_page, pagesList);
 
         if (pagesList.size() > 0)
             setListAdapter(bookArrayAdapter);
@@ -162,9 +161,7 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
 
         switch (mo.getTag()) {
             case GO_TO_PAGE:
-
                 goToPage(clickedView);
-
                 break;
             case ADD_BOOKMARK:
                 Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
@@ -194,18 +191,41 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
 
     private void goToPage(View clickedView) {
 
-        MaterialDialog dialog = new MaterialDialog.Builder(clickedView.getContext())
-                .title(R.string.go_to_page_title)
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Toast.makeText(getContext(), "on positive button clicked", Toast.LENGTH_SHORT).show();
-                    }
-                }).build();
-        dialog.show();
+        int currentItemPosition = AppDatabaseManager.getCurrentPage() - 1;
 
+        new MaterialDialog.Builder(clickedView.getContext())
+                .title(R.string.go_to_page_title)
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .positiveText(android.R.string.ok)
+                .input(R.string.input_page, 0, false, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        scrollToListAdapterPosition(Integer.parseInt(input.toString()) - 1);
+                        showSnackBackToLastOpenedPage(currentItemPosition);
+                    }
+                })
+                .negativeText(android.R.string.cancel)
+                .show();
+    }
+
+    private void showSnackBackToLastOpenedPage(int pageNumber) {
+
+        Snackbar snackbar = Snackbar.make(
+                getListView(),
+                R.string.previous_page,
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_bar_action_back, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToListAdapterPosition(pageNumber);
+            }
+        });
+        snackbar.show();
+    }
+
+    private void scrollToListAdapterPosition(int position) {
+        getListView().smoothScrollToPosition(position);
+        bookArrayAdapter.notifyDataSetChanged();
     }
 
 }

@@ -27,5 +27,9 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="go_to_page_title">Go to page</string>
+    <string name="go_to_page_content">input page number</string>
+    <string name="input_page">page number</string>
+    <string name="previous_page">to previous page</string>
+    <string name="snack_bar_action_back">BACK</string>
 
 </resources>

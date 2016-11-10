@@ -245,4 +245,7 @@ public class AppDatabaseManager {
         return currentBook.getName();
     }
 
+    public static int getCurrentPage() {
+        return currentPage;
+    }
 }
