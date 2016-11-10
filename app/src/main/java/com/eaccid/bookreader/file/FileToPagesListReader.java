@@ -22,7 +22,7 @@ public class FileToPagesListReader extends ContextWrapper {
     private String filePath;
     private TextPaint paint;
     private DisplayMetrics metrics;
-    private ArrayList<String> pagesList = new ArrayList<String>();
+    private ArrayList<String> pagesList = new ArrayList<>();
     int currentChar = 0;
     boolean isLastPageRead = false;
 
@@ -46,9 +46,9 @@ public class FileToPagesListReader extends ContextWrapper {
         PagerActivity pagerActivity = (PagerActivity) getBaseContext();
         LayoutInflater inflater = pagerActivity.getLayoutInflater();
 
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.bookreader_fragment_0,
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.bookpage_item_fragment_0,
                 (ViewGroup) pagerActivity.getWindow().getDecorView().findViewById(android.R.id.content), false);
-        TextView textOnPage = (TextView) viewGroup.findViewById(R.id.text);
+        TextView textOnPage = (TextView) viewGroup.findViewById(R.id.text_on_page);
 
         paint = textOnPage.getPaint();
         Paint.FontMetrics paintFontMetrics = paint.getFontMetrics();
