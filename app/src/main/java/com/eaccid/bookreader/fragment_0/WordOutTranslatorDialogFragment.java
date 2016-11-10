@@ -1,5 +1,11 @@
 package com.eaccid.bookreader.fragment_0;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
+import android.support.annotation.Size;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +24,9 @@ import com.eaccid.bookreader.translator.ReaderTranslator;
 import com.eaccid.bookreader.translator.TranslatedWord;
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.libtranslator.translator.TextTranslation;
+
+import java.io.InputStream;
+import java.net.URL;
 
 public class WordOutTranslatorDialogFragment extends DialogFragment {
 
@@ -59,32 +68,34 @@ public class WordOutTranslatorDialogFragment extends DialogFragment {
 
         //set data to view
         base_word_from.setText(wordTranslation.getWord());
-        //imageWordPicture
+        new ImageWordPictureLoader(imageWordPicture).execute(wordTranslation.getPicUrl());
         text_transcription.setText("[ " + wordTranslation.getTranscription() + " ]");
+
         //imageButtonTranscriptionSpeaker
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        PlayerWordSoundLoader translationPlayer = new PlayerWordSoundLoader(mediaPlayer);
+        imageButtonTranscriptionSpeaker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                translationPlayer.execute(wordTranslation.getSoundUrl());
+            }
+        });
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 inflater.getContext(), R.layout.translation_dialog_item, wordTranslation.getTranslates());
         listViewTranslations.setAdapter(adapter);
 
-        imageButtonTranscriptionSpeaker.setOnClickListener(new OnImageClickListener());
         listViewTranslations.setOnItemClickListener(new OnItemTranslationClickListener(translatedWord));
 
         return v;
 
     }
 
-    private class OnImageClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            //TODO speak
-            Toast.makeText(v.getContext(), "...is speaking ", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private class OnItemTranslationClickListener implements AdapterView.OnItemClickListener {
+       private class OnItemTranslationClickListener implements AdapterView.OnItemClickListener {
 
         TranslatedWord translatedWord;
+
         OnItemTranslationClickListener(TranslatedWord translatedWord) {
             this.translatedWord = translatedWord;
         }
@@ -103,4 +114,60 @@ public class WordOutTranslatorDialogFragment extends DialogFragment {
         }
     }
 
+
+    private class ImageWordPictureLoader extends AsyncTask<String, Void, Bitmap> {
+        ImageView imageView;
+
+        ImageWordPictureLoader(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(@Size(min = 1) String... urls) {
+            String url = urls[0];
+            Bitmap wordImage = null;
+            try{
+                InputStream is = new URL(url).openStream();
+                wordImage = BitmapFactory.decodeStream(is);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return wordImage;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            imageView.setImageBitmap(bitmap);
+        }
+
+    }
+
+    private class PlayerWordSoundLoader extends AsyncTask<String, Void, Boolean> {
+
+        MediaPlayer mediaPlayer;
+
+        PlayerWordSoundLoader(MediaPlayer mediaPlayer) {
+            this.mediaPlayer = mediaPlayer;
+        }
+
+        @Override
+        protected Boolean doInBackground(@Size(min = 1) String... urls) {
+            String url = urls[0];
+            Boolean prepared;
+            try {
+                mediaPlayer.setDataSource(url);
+                mediaPlayer.prepare();
+                prepared = true;
+            } catch (Exception e) {
+                prepared = false;
+                e.printStackTrace();
+            }
+            return prepared;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            mediaPlayer.start();
+        }
+    }
 }

@@ -14,7 +14,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutTranscription"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_gravity="end"
             android:orientation="horizontal">
 
@@ -22,14 +22,14 @@
                 android:id="@+id/transcription_speaker"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@android:drawable/ic_btn_speak_now" />
+                app:srcCompat="@drawable/ic_hearing_blue_24px"/>
 
             <TextView
                 android:id="@+id/text_transcription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/transcription"
-                android:textAlignment="viewEnd" />
+                android:layout_gravity="center_horizontal"
+                android:text="@string/transcription" />
 
         </LinearLayout>
 
@@ -49,9 +49,8 @@
 
             <ImageView
                 android:id="@+id/image_word_picture"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_weight="0.02"
                 android:elevation="@dimen/activity_horizontal_margin"
                 app:srcCompat="@android:drawable/ic_dialog_alert" />
 
