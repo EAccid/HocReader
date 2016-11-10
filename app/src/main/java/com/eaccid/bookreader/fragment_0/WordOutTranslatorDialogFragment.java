@@ -74,11 +74,13 @@ public class WordOutTranslatorDialogFragment extends DialogFragment {
         //imageButtonTranscriptionSpeaker
         MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        PlayerWordSoundLoader translationPlayer = new PlayerWordSoundLoader(mediaPlayer);
+        new PlayerWordSoundLoader(mediaPlayer).execute(wordTranslation.getSoundUrl());
+//        imageButtonTranscriptionSpeaker.setImageResource(R.drawable.ic_hearing_blue_24px);
         imageButtonTranscriptionSpeaker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                translationPlayer.execute(wordTranslation.getSoundUrl());
+                if (!mediaPlayer.isPlaying())
+                    mediaPlayer.start();
             }
         });
 
@@ -163,11 +165,6 @@ public class WordOutTranslatorDialogFragment extends DialogFragment {
                 e.printStackTrace();
             }
             return prepared;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            mediaPlayer.start();
         }
     }
 }
