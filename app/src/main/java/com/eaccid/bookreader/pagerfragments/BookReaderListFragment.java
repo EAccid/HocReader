@@ -1,8 +1,13 @@
 package com.eaccid.bookreader.pagerfragments;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +15,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.fragment_0.BookArrayAdapter;
+import com.eaccid.bookreader.fragment_0.MenuObjectWrapper;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -24,7 +32,7 @@ import java.util.List;
 import static com.eaccid.bookreader.activity.pager.PagerActivity.getPagesList;
 
 public class BookReaderListFragment extends ListFragment implements OnMenuItemClickListener, OnMenuItemLongClickListener {
-    private int mNum;
+
     private List<String> pagesList;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
@@ -45,9 +53,7 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNum = getArguments() != null ? getArguments().getInt("num") : 1;
         pagesList = getArguments() != null ? getArguments().getStringArrayList("pagesList") : new ArrayList<>();
-
         fragmentManager = getFragmentManager();
         initMenuFragment();
     }
@@ -71,7 +77,9 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         BookArrayAdapter bookArrayAdapter = new BookArrayAdapter(getContext(), R.id.text_on_page, pagesList);
+
         if (pagesList.size() > 0)
             setListAdapter(bookArrayAdapter);
     }
@@ -91,7 +99,7 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
         menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.tool_bar_height));
         menuParams.setMenuObjects(getMenuObjects());
         menuParams.setClosableOutside(true);
-        menuParams.setAnimationDuration(100);
+        menuParams.setAnimationDuration(10);
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
         mMenuDialogFragment.setItemClickListener(this);
         mMenuDialogFragment.setItemLongClickListener(this);
@@ -115,25 +123,25 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
         // You can set any [color] as divider color:
         // item.setDividerColor(...)
 
-        MenuObject close = new MenuObject();
+        MenuObject close = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.CLOSE);
         close.setResource(R.drawable.ic_arrow_back_blue_24px);
 
-        MenuObject aster = new MenuObject("go to page");
+        MenuObject aster = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.GO_TO_PAGE, "go to page");
         aster.setResource(R.drawable.ic_find_in_page_blue_24px);
 
-        MenuObject bookmark = new MenuObject("add bookmark");
+        MenuObject bookmark = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.ADD_BOOKMARK, "add bookmark");
         bookmark.setResource(R.drawable.ic_star_yellow_24px);
 
-        MenuObject leoTraining = new MenuObject("open Lingualeo");
+        MenuObject leoTraining = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.OPEN_LINGUALEO, "open Lingualeo");
         leoTraining.setResource(R.drawable.ic_pets_leo_training_24px);
 
-        MenuObject gTranslator= new MenuObject("open Google Translator");
+        MenuObject gTranslator = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.OPEN_GOOGLE_TRANSLATOR, "open Google Translator");
         gTranslator.setResource(R.drawable.ic_g_translate_blue_24px);
 
-        MenuObject fontSize= new MenuObject("font size");
+        MenuObject fontSize = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.FONT_SIZE, "font size");
         fontSize.setResource(R.drawable.ic_format_size_blue_24px);
 
-        MenuObject selectText= new MenuObject("select to translate");
+        MenuObject selectText = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.SELECT_TEXT, "select to translate");
         selectText.setResource(R.drawable.ic_mode_edit_blue_24px);
 
         menuObjects.add(close);
@@ -147,14 +155,57 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
         return menuObjects;
     }
 
-
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        Toast.makeText(clickedView.getContext(), "item on clicked: " + menuObjects.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+
+        MenuObjectWrapper mo = (MenuObjectWrapper) menuObjects.get(position);
+
+        switch (mo.getTag()) {
+            case GO_TO_PAGE:
+
+                goToPage(clickedView);
+
+                break;
+            case ADD_BOOKMARK:
+                Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
+                break;
+            case OPEN_LINGUALEO:
+                Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
+                break;
+            case OPEN_GOOGLE_TRANSLATOR:
+                Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
+                break;
+            case FONT_SIZE:
+                Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
+                break;
+            case SELECT_TEXT:
+                Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                throw new RuntimeException("There is no such menu item: position " + position);
+        }
+
     }
 
     @Override
     public void onMenuItemLongClick(View clickedView, int position) {
         Toast.makeText(clickedView.getContext(), "item on long clicked: " + menuObjects.get(position).getTitle(), Toast.LENGTH_SHORT).show();
     }
+
+    private void goToPage(View clickedView) {
+
+        MaterialDialog dialog = new MaterialDialog.Builder(clickedView.getContext())
+                .title(R.string.go_to_page_title)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Toast.makeText(getContext(), "on positive button clicked", Toast.LENGTH_SHORT).show();
+                    }
+                }).build();
+        dialog.show();
+
+    }
+
 }

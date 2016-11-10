@@ -5,15 +5,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.eaccid.bookreader.pagerfragments.FragmentTags;
 import com.eaccid.bookreader.fragment_0.OnWordFromTextViewTouchListener;
@@ -29,7 +25,6 @@ import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.translator.ReaderDictionary;
 import com.eaccid.bookreader.translator.TranslatedWord;
 import com.eaccid.bookreader.wordgetter.WordFromText;
-import com.j256.ormlite.misc.TransactionManager;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
@@ -59,47 +54,12 @@ public class PagerActivity extends FragmentActivity implements
         pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setAdapter(pagerAdapter);
 
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-//                switch (position) {
-//                    case 0:
-//                    case 2:
-//                        getDataProvider().fillDataList();
-//                        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
-//                        getSupportFragmentManager().beginTransaction()
-//                                .remove(fragment).commit();
-//
-//                        ((WordsFromBookFragment) fragment).notifyDataChanged();
-//
-//
-//                        getSupportFragmentManager().beginTransaction()
-//                                .add(new WordsFromBookFragment(), "RAGMENT_WORDS_LIST_VIEW1")
-//                                .commit();
-////                        final Fragment fragment1 = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_WORDS_LIST_VIEW);
-////                        ((WordsFromBookFragment) fragment1).notifyDataChanged();
-//
-////                        getSupportFragmentManager().beginTransaction().attach(fragment).commit();
-//                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-
-
-        });
-
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         circleIndicator.setViewPager(pager);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(new WordDatabaseProviderFragment(), FragmentTags.FRAGMENT_TAG_DATA_PROVIDER)
+                    .add(new WordDatabaseProviderFragment(), FragmentTags.DATA_PROVIDER)
                     .commit();
 
             //todo del fragment / add to transaction
@@ -146,13 +106,13 @@ public class PagerActivity extends FragmentActivity implements
         final DialogFragment dialog = WordOutTranslatorDialogFragment.newInstance(wordFromText);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(dialog, FragmentTags.FRAGMENT_TAG_ITEM_PINNED_DIALOG)
+                .add(dialog, FragmentTags.ITEM_PINNED_DIALOG)
                 .commit();
 
     }
 
     public WordDatabaseDataProvider getDataProvider() {
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.FRAGMENT_TAG_DATA_PROVIDER);
+        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(FragmentTags.DATA_PROVIDER);
         return ((WordDatabaseProviderFragment) fragment).getDataProvider();
     }
 
@@ -204,7 +164,7 @@ public class PagerActivity extends FragmentActivity implements
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(dialog, FragmentTags.FRAGMENT_TAG_ITEM_PINNED_DIALOG)
+                .add(dialog, FragmentTags.ITEM_PINNED_DIALOG)
                 .commit();
     }
 

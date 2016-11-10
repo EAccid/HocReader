@@ -23,4 +23,9 @@
     <string name="snack_bar_text_item_removed">1 item removed</string>
     <string name="activity_title_demo_s_on_longpress">on long press</string>
 
+    <!--fragment alert dialog-->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="go_to_page_title">Go to page</string>
+
 </resources>
