@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +16,7 @@ import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.db.entity.Book;
 import com.eaccid.bookreader.db.entity.Word;
 import com.eaccid.bookreader.db.AppDatabaseManager;
-import com.eaccid.bookreader.dev.settings.MainSettings;
+import com.eaccid.bookreader.underdev.settings.MainSettings;
 import com.eaccid.bookreader.db.WordFilter;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+                //TODO delete from here / temp data
 
                 AppDatabaseManager.setFilter(WordFilter.NONE);
 
@@ -68,12 +71,15 @@ public class MainActivity extends AppCompatActivity {
         bookListViewHandler.fillBookList();
         settings.setDefaultSettings();
 
+        Log.i("TestLC", "on create");
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         AppDatabaseManager.releaseDatabaseManager();
+        Log.i("TestLC", "on destroy");
     }
 
     @Override
@@ -104,5 +110,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    ///////
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("TestLC", "on start");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("TestLC", "on resume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("TestLC", "on pause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("TestLC", "on stop");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("TestLC", "on restart");
+    }
 }
+
 

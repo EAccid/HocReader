@@ -2,7 +2,7 @@ package com.eaccid.bookreader.translator;
 
 import android.content.Context;
 
-import com.eaccid.bookreader.dev.settings.LingualeoServiceCookiesHandler;
+import com.eaccid.bookreader.underdev.settings.LingualeoServiceCookiesHandler;
 import com.eaccid.libtranslator.lingualeo.dictionary.LingualeoDictionary;
 
 

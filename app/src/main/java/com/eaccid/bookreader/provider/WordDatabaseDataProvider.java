@@ -150,7 +150,7 @@ public class WordDatabaseDataProvider extends DataProvider {
 
     @Override
     public int undoLastRemoval() {
-        Word word = (Word) getmLastRemovedData().getObject();
+        Word word = (Word) getLastRemovedData().getObject();
         sessionWords.add(word.getName());
         //todo del from here
         AppDatabaseManager.createOrUpdateWord(word.getName(),word.getTranslation(),word.getContext(),true);

@@ -1,11 +1,8 @@
-package com.eaccid.bookreader.dev.settings;
+package com.eaccid.bookreader.underdev.settings;
 
 
-import android.app.Application;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.eaccid.libtranslator.lingualeo.dictionary.LingualeoServiceCookies;
 

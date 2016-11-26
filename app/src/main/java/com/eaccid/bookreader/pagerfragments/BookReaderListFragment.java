@@ -55,6 +55,7 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
         pagesList = getArguments() != null ? getArguments().getStringArrayList("pagesList") : new ArrayList<>();
         fragmentManager = getFragmentManager();
         initMenuFragment();
+        setRetainInstance(true);
     }
 
     @Override
@@ -81,6 +82,9 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
 
         if (pagesList.size() > 0)
             setListAdapter(bookArrayAdapter);
+
+        if (savedInstanceState != null)
+            getListView().setSelection(savedInstanceState.getInt("firstVisiblePosition"));
     }
 
     @Override

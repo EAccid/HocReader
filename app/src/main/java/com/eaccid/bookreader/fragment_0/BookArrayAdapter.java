@@ -39,7 +39,6 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolderItem viewHolderItem;
-
         String textOnPage = mPagesList.get(position);
         int pageNumber = position + 1;
 

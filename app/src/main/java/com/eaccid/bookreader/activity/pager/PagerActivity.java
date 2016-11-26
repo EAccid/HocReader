@@ -70,8 +70,8 @@ public class PagerActivity extends FragmentActivity implements
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if ((positionOffset == 0)
-                        && (position == 0 || position == 2)){
+                if (wordsFromBookFragment != null && (positionOffset == 0)
+                        && (position == 0 || position == 2)) {
                     Log.i("words list", "Word list has been filled by session words.");
                     getDataProvider().fillSessionDataList();
                     wordsFromBookFragment.notifyItemChanged();
@@ -90,7 +90,6 @@ public class PagerActivity extends FragmentActivity implements
         });
 
     }
-
 
     @Override
     public void onNotifyItemPinnedDialogDismissed(int itemPosition, boolean ok) {
@@ -185,7 +184,6 @@ public class PagerActivity extends FragmentActivity implements
     }
 
 }
-
 
 
 

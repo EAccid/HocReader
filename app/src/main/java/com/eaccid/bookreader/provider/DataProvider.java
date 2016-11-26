@@ -67,7 +67,7 @@ public abstract class DataProvider {
         mLastRemovedPosition = position;
     }
 
-    public ItemDataProvider getmLastRemovedData() {
+    public ItemDataProvider getLastRemovedData() {
         return mLastRemovedData;
     }
 
@@ -83,7 +83,7 @@ public abstract class DataProvider {
         ItemDataProvider(int id, Object object) {
             this.id = id;
             this.object = object;
-            Log.i("TAG", "Adding new data item (id=" + getItemId() + ")");
+            Log.i(TAG, "Adding new data item (id=" + getItemId() + ")");
             text = makeTestText(id, object);
         }
 
@@ -138,7 +138,7 @@ public abstract class DataProvider {
         public void setLastAdded(boolean lastAdded) {
             this.lastAdded = lastAdded;
             if (lastAdded) {
-                Log.i("TAG", "Last item (id=" + getItemId() + ") has been set.");
+                Log.i(TAG, "Last item (id=" + getItemId() + ") has been set.");
             }
         }
 

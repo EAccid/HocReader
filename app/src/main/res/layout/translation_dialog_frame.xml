@@ -22,7 +22,8 @@
                 android:id="@+id/transcription_speaker"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                app:srcCompat="@drawable/ic_hearing_blue_24px"/>
+                android:background="@color/colorTransparent"
+                android:src="@drawable/ic_hearing_accent_18px"/>
 
             <TextView
                 android:id="@+id/text_transcription"
@@ -55,6 +56,7 @@
                 app:srcCompat="@android:drawable/ic_dialog_alert" />
 
         </LinearLayout>
+
     </LinearLayout>
 
     <ListView
@@ -63,6 +65,5 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.05"
         android:background="#5adce9f0" />
-
 
 </LinearLayout>

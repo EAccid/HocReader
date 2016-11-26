@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.dev.settings;
+package com.eaccid.bookreader.underdev.settings;
 
 import android.app.Activity;
 import android.provider.SearchRecentSuggestions;

@@ -29,6 +29,12 @@ public class WordOnTexvViewFinder {
             String wordFromLine = getWordFromLine(text, startOfLine, charOffsetInLine, endOfLine);
             wordFromText.setText(wordFromLine);
 
+            //temp start
+//            Spannable spanText = new SpannableString(text);
+//            spanText.setSpan(new WordClickableSpan(tv.getContext(), wordFromLine, charOffsetInLine), charOffsetInLine, charOffsetInLine + wordFromLine.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            tv.setText(spanText, TextView.BufferType.SPANNABLE);
+            //temp end
+
 //            wordFromText.setSentence(
 //                    getSentenceFromText(
 //                            text, text.subSequence(startOfLine, endOfLine).toString()));
@@ -51,7 +57,7 @@ public class WordOnTexvViewFinder {
 
     }
 
-    private static String getFirstPartOfWordInLine(CharSequence sublineBeforeClickedChar) {
+    public static String getFirstPartOfWordInLine(CharSequence sublineBeforeClickedChar) {
         return getMatchingResult(sublineBeforeClickedChar, Pattern.compile("(\\w+)$"));
     }
 

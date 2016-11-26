@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.dev.spann;
+package com.eaccid.bookreader.underdev.spann;
 
 
 import android.content.Context;
