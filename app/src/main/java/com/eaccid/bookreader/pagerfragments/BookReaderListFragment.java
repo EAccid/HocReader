@@ -204,7 +204,7 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
                 .input(R.string.input_page, 0, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        scrollToListAdapterPosition(Integer.parseInt(input.toString()) - 1);
+                        goToListAdapterPosition(Integer.parseInt(input.toString()) - 1);
                         showSnackBackToLastOpenedPage(currentItemPosition);
                     }
                 })
@@ -221,15 +221,14 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
         snackbar.setAction(R.string.snack_bar_action_back, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollToListAdapterPosition(pageNumber);
+                goToListAdapterPosition(pageNumber);
             }
         });
         snackbar.show();
     }
 
-    private void scrollToListAdapterPosition(int position) {
-        getListView().smoothScrollToPosition(position);
-        bookArrayAdapter.notifyDataSetChanged();
+    private void goToListAdapterPosition(int position) {
+        getListView().setSelection(position);
     }
 
 }
