@@ -13,7 +13,7 @@ public class Word implements Serializable {
     @DatabaseField(generatedId = true, allowGeneratedIdInsert = true, columnName = "_id")
     private long id;
 
-    @DatabaseField
+    @DatabaseField(index = true, indexName = "word_index")
     private String word;
 
     @DatabaseField
