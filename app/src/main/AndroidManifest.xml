@@ -39,6 +39,15 @@
                 <action android:name="android.intent.action.OPEN_DOCUMENT" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".activity.main.LingualeoRefreshService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
+            android:name=".activity.main.MemorizeTimeService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

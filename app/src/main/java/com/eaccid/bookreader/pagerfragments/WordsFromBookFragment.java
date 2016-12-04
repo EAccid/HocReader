@@ -174,10 +174,6 @@ public class WordsFromBookFragment extends Fragment {
         }
     }
 
-    private boolean supportsViewElevation() {
-        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
-    }
-
     public WordDatabaseDataProvider getDataProvider() {
         return ((PagerActivity) getActivity()).getDataProvider();
     }

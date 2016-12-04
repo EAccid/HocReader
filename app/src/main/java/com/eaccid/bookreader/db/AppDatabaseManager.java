@@ -248,4 +248,17 @@ public class AppDatabaseManager {
     public static int getCurrentPage() {
         return currentPage;
     }
+
+    @Nullable
+    public static Word getRandomWord() {
+        try {
+            WordDaoService ws = databaseManager.getWordService();
+            Log.i("Test", "get random word");
+            return ws.getRandomWord();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

@@ -4,17 +4,22 @@ import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
+import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.db.entity.Word;
 import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WordDaoService implements Crud {
@@ -237,5 +242,16 @@ public class WordDaoService implements Crud {
         return getWordByBookIdAndPage(word.getName(), word.getBook().getPath(), word.getPage());
     }
 
-
+    @Nullable
+    public Word getRandomWord() {
+        try {
+            QueryBuilder<Word, String> qb = dao.queryBuilder();
+            qb.orderByRaw(" random() ");
+            PreparedQuery<Word> preparedQuery = qb.prepare();
+            return dao.queryForFirst(preparedQuery);
+        } catch (Exception e) {
+            e.printStackTrace();
+         }
+        return null;
+    }
 }

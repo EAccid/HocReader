@@ -1,5 +1,6 @@
 package com.eaccid.bookreader.activity.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 AppDatabaseManager.setFilter(WordFilter.NONE);
 
                 Snackbar.make(view, "books: " + AppDatabaseManager.getAllBooks().size() + "\nwords: "
-                        + AppDatabaseManager.getAllWords(null, null).size(),
+                                + AppDatabaseManager.getAllWords(null, null).size(),
                         Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
 
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         settings.setDefaultSettings();
 
         Log.i("TestLC", "on create");
+
+        startService(new Intent(this, MemorizeTimeService.class));
 
     }
 
