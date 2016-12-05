@@ -47,6 +47,8 @@ public class PagerActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_fragment_activity);
 
+        AppDatabaseManager.loadDatabaseManager(this);
+
         fillPagesListAndRefreshDatabase();
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
@@ -68,6 +70,8 @@ public class PagerActivity extends FragmentActivity implements
 
 
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            //TODO del
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (wordsFromBookFragment != null && (positionOffset == 0)
@@ -183,6 +187,11 @@ public class PagerActivity extends FragmentActivity implements
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppDatabaseManager.releaseDatabaseManager();
+    }
 }
 
 

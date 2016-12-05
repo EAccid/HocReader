@@ -11,7 +11,7 @@
     <color name="windowBackground">#ddd</color>
     <color name="windowSecondaryBackground">#B0BEC5</color>
     <color name="colorLightAccent">#f8bbd0</color>
-     <color name="colorTransparent">#00ffffff</color>
+    <color name="colorTransparent">#00ffffff</color>
 
 
 

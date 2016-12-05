@@ -12,96 +12,78 @@ import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.db.entity.Word;
 
-import java.util.Timer;
-
 public class MemorizingService extends IntentService {
 
     private static final String NOTIFICATION_TAG = "WORD_MEMORIZING";
 
     private NotificationManager notificationManager;
-    private Timer timer;
 
     public MemorizingService() {
         super("memorizing-service");
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i("MemorizingService", "on create");
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Log.i("MemorizingService", "onCreate");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
         Log.i("MemorizingService", "memorizing-service running");
         if (intent == null) return;
 
         String action = intent.getAction();
-
         switch (action) {
             case "ACTION_CREATE":
                 sendNotification();
                 break;
-            case "ACTION_UPDATE":
-
-                Word word = (Word) intent.getSerializableExtra("word");
-                updateNotification(word);
-                break;
-
         }
-
-
-
-    }
-
-    private void updateNotification(Word word) {
-        AppDatabaseManager.loadDatabaseManager(this);
-        createOrUpdateMemorizingNotification(word, false);
     }
 
     private void sendNotification() {
-        AppDatabaseManager.loadDatabaseManager(this);
+
         // TODO create notification ID and separate random word fetching / work with db
+        AppDatabaseManager.loadDatabaseManager(this);
         Word word = AppDatabaseManager.getRandomWord();
-        if (word == null) {
-            return;
-        }
-        createOrUpdateMemorizingNotification(word, true);
+        if (word == null) return;
+
+        Intent intent = new Intent(this, MemorizingActivity.class);
+        intent.putExtra("word", word.getName());
+        intent.putExtra("translation", word.getTranslation());
+
+        createMemorizingNotification(intent, (int) word.getId(), word.getName());
 
     }
 
-    private void createOrUpdateMemorizingNotification(Word word, boolean w) {
+    private void createMemorizingNotification(Intent pendingIntent, int id, String textNotification) {
 
         final int REQUEST_CODE = 17;
 
-        Intent intentUpdate = new Intent(this, MemorizingService.class);
-        intentUpdate.putExtra("word", word);
-        intentUpdate.setAction("ACTION_UPDATE");
-
         PendingIntent contentIntent =
-                PendingIntent.getService(this, REQUEST_CODE,
-                        intentUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent.getActivity(this, REQUEST_CODE,
+                pendingIntent, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder builder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_pets_leo_training_24px)
-                        .setContentTitle("Do you remember?")
+                        .setSmallIcon(R.drawable.ic_pets_memorizing_24px)
+                        .setContentTitle(textNotification)
+                        .setContentText("Do you remember?")
                         .setContentIntent(contentIntent)
-                        .setAutoCancel(false)
                         .setDefaults(Notification.DEFAULT_SOUND)
-                        .setContentText(w ? word.getName() : word.getTranslation());
-        notificationManager.notify(NOTIFICATION_TAG, (int) word.getId(), builder.build());
+                        .setAutoCancel(true);
 
-        Log.i("MN", "Memorizing notification has been created / updated");
+        notificationManager.notify(NOTIFICATION_TAG, id, builder.build());
 
+        Log.i("MemorizingService", "notification has been created");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("MemorizingService", "onDestroy");
+        Log.i("MemorizingService", "on destroy");
         AppDatabaseManager.releaseDatabaseManager();
     }
 }

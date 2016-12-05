@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme">
         <provider
             android:name=".searchbooks.SearchSuggestionsProvider"
-            android:authorities="com.eaccid.bookreader.searchbooks.SearchSuggestionsProvider" />
+            android:authorities="com.eaccid.bookreader.searchbooks.SearchSuggestionsProvider"
+            android:exported="false"/>
 
         <activity
             android:name=".activity.main.MainActivity"
@@ -43,7 +44,7 @@
         <service
             android:name=".activity.services.LingualeoRefreshService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".activity.services.MemorizingService"
             android:enabled="true"
@@ -52,6 +53,10 @@
         <receiver
             android:name=".activity.services.MemorizingAlarmReceiver"
             android:process=":remote" />
+
+        <activity
+            android:name=".activity.services.MemorizingActivity"
+            android:theme="@style/AppTheme.Dialog" />
 
     </application>
 

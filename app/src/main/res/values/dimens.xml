@@ -13,8 +13,6 @@
     <dimen name="item_view_min_height">64dp</dimen>
 
 
-
-
     <dimen name="tool_bar_height">56dp</dimen>
 
 </resources>

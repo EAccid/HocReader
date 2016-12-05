@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("TestLC", "on create");
 
-//        startService(new Intent(this, MemorizingService.class));
         scheduleAlarm();
 
     }
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, NOTIFY_INTERVAL,
                 2 * 60 * 1000, pendingIntent);
-//                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+//                AlarmManager.INTERVAL_HOUR, pendingIntent);
     }
 
     public void cancelAlarm() {
