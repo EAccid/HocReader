@@ -41,13 +41,18 @@
         </activity>
 
         <service
-            android:name=".activity.main.LingualeoRefreshService"
+            android:name=".activity.services.LingualeoRefreshService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
-            android:name=".activity.main.MemorizeTimeService"
+            android:name=".activity.services.MemorizingService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="false" />
+
+        <receiver
+            android:name=".activity.services.MemorizingAlarmReceiver"
+            android:process=":remote" />
+
     </application>
 
 </manifest>

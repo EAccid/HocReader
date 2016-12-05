@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.activity.main;
+package com.eaccid.bookreader.activity.services;
 
 import android.app.Service;
 import android.content.Intent;

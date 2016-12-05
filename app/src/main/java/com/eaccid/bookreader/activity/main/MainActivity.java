@@ -1,5 +1,8 @@
 package com.eaccid.bookreader.activity.main;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.activity.services.MemorizingAlarmReceiver;
+import com.eaccid.bookreader.activity.services.MemorizingService;
 import com.eaccid.bookreader.db.entity.Book;
 import com.eaccid.bookreader.db.entity.Word;
 import com.eaccid.bookreader.db.AppDatabaseManager;
@@ -74,8 +79,34 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("TestLC", "on create");
 
-        startService(new Intent(this, MemorizeTimeService.class));
+//        startService(new Intent(this, MemorizingService.class));
+        scheduleAlarm();
 
+    }
+
+    //TODO: scheduleAlarm, cancelAlarm - > settings isCanceled
+    public void scheduleAlarm() {
+
+        Intent intent = new Intent(getApplicationContext(), MemorizingAlarmReceiver.class);
+        final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MemorizingAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        final long NOTIFY_INTERVAL = 5 * 1000;
+
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+          alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, NOTIFY_INTERVAL,
+                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+    }
+
+    public void cancelAlarm() {
+
+
+        Intent intent = new Intent(getApplicationContext(), MemorizingAlarmReceiver.class);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MemorizingAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        if (alarm != null) {
+            alarm.cancel(pIntent);
+        }
     }
 
     @Override

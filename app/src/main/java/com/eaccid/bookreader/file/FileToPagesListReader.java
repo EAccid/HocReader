@@ -3,13 +3,18 @@ package com.eaccid.bookreader.file;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
+import android.support.annotation.Size;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.eaccid.bookreader.activity.pager.PagerActivity;
 import com.eaccid.bookreader.R;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,7 +37,8 @@ public class FileToPagesListReader extends ContextWrapper {
         setScreenParameters();
 
         //TODO save and load current char
-        loadPages();
+//        loadPages();
+        new PagesLoader().execute();
     }
 
     public ArrayList<String> getPages() {
@@ -127,6 +133,21 @@ public class FileToPagesListReader extends ContextWrapper {
         }
         isLastPageRead = line == null;
         return line;
+    }
+
+
+    private class PagesLoader extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... test) {
+            try {
+                loadPages();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
     }
 
 }
