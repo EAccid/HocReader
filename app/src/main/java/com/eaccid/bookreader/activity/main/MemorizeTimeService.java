@@ -17,9 +17,26 @@ import java.util.TimerTask;
 public class MemorizeTimeService extends Service { //IntentService
 
     private static final String NOTIFICATION_TAG = "WORD_MEMORIZING";
-    private static final long NOTIFY_INTERVAL = 5 * 1000;
+    private static final long NOTIFY_INTERVAL = 5 * 60 * 1000;
     private NotificationManager notificationManager;
     private Timer timer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void onCreate() {
@@ -41,7 +58,7 @@ public class MemorizeTimeService extends Service { //IntentService
     }
 
     private void sendNewNotification() {
-
+        AppDatabaseManager.loadDatabaseManager(this);
         // TODO create notification ID and separate random word fetching / work with db
         Word word = AppDatabaseManager.getRandomWord();
         if (word == null) {
@@ -62,7 +79,6 @@ public class MemorizeTimeService extends Service { //IntentService
         notificationManager.notify(NOTIFICATION_TAG, id, mBuilder.build());
     }
 
-
     private class NotificationTimerTask extends TimerTask {
         private Thread thread;
 
@@ -75,5 +91,11 @@ public class MemorizeTimeService extends Service { //IntentService
         public void run() {
             sendNewNotification();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        AppDatabaseManager.releaseDatabaseManager();
     }
 }
