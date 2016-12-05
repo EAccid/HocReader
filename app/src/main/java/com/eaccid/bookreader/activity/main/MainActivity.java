@@ -93,8 +93,9 @@ public class MainActivity extends AppCompatActivity {
         final long NOTIFY_INTERVAL = 5 * 1000;
 
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-          alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, NOTIFY_INTERVAL,
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, NOTIFY_INTERVAL,
+                2 * 60 * 1000, pendingIntent);
+//                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
     }
 
     public void cancelAlarm() {

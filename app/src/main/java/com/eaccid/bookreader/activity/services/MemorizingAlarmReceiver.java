@@ -12,9 +12,9 @@ public class MemorizingAlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent i = new Intent(context, MemorizingService.class);
-//        i.putExtra("", "");
-        context.startService(i);
+        Intent intentCreate = new Intent(context, MemorizingService.class);
+        intentCreate.setAction("ACTION_CREATE");
+        context.startService(intentCreate);
     }
 
 }
