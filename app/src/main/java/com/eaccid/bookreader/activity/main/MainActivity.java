@@ -89,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MemorizingAlarmReceiver.class);
         final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MemorizingAlarmReceiver.REQUEST_CODE,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        final long NOTIFY_INTERVAL = 5 * 1000;
+        final long NOTIFY_INTERVAL =  60 * 60 * 1000;
 
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, NOTIFY_INTERVAL,
-                2 * 60 * 1000, pendingIntent);
-//                AlarmManager.INTERVAL_HOUR, pendingIntent);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,  AlarmManager.INTERVAL_HOUR,
+//                2 * 60 * 1000, pendingIntent);
+                AlarmManager.INTERVAL_HOUR, pendingIntent);
     }
 
     public void cancelAlarm() {
