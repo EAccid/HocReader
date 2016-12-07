@@ -11,15 +11,17 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.eaccid.bookreader.activity.pager.PagerActivity;
 import com.eaccid.bookreader.R;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import rx.Observable;
+import rx.Subscriber;
+
 
 public class FileToPagesListReader extends ContextWrapper {
 
@@ -38,7 +40,8 @@ public class FileToPagesListReader extends ContextWrapper {
 
         //TODO save and load current char
 //        loadPages();
-        new PagesLoader().execute();
+//        new PagesLoader().execute();
+        loadRxPages();
     }
 
     public ArrayList<String> getPages() {
@@ -69,9 +72,9 @@ public class FileToPagesListReader extends ContextWrapper {
     private void loadPages() {
 
         //TODO remove comment
-        while (!isLastPageRead) {
+//        while (!isLastPageRead) {
         int i = 0;
-//        while (!isLastPageRead && i < 10) {
+        while (!isLastPageRead && i < 10) {
             pagesList.add(getPage());
             i++;
         }
@@ -136,18 +139,59 @@ public class FileToPagesListReader extends ContextWrapper {
     }
 
 
-    private class PagesLoader extends AsyncTask<String, Void, Boolean> {
+    private class PagesLoader extends AsyncTask<String, Void, String> {
 
         @Override
-        protected Boolean doInBackground(String... test) {
+        protected String doInBackground(String... test) {
             try {
-                loadPages();
-                return true;
+                return getPage();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return false;
+            return "";
         }
+    }
+
+    public void loadRxPages() {
+
+        Observable<String> observable = Observable.create(
+                new Observable.OnSubscribe<String>() {
+                    @Override
+                    public void call(Subscriber<? super String> sub) {
+
+                        String s = "";
+
+                        try {
+                            s = new PagesLoader().execute().get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
+                        sub.onNext(s);
+
+
+                        sub.onCompleted();
+                    }
+                }
+        ).limit(1);
+
+        Subscriber<String> subscriber = new Subscriber<String>() {
+            @Override
+            public void onNext(String s) {
+                System.out.println(s);
+            }
+
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+        };
+
+        observable.subscribe(subscriber);
+
     }
 
 }

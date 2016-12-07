@@ -83,9 +83,6 @@ public class BookArrayAdapter extends ArrayAdapter<String> {
         viewHolder.pageNumberViewItem.setAnimation(animAnticipateOvershoot);
     }
 
-
-
-
 }
 
 

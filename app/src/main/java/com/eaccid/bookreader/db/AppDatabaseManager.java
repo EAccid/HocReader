@@ -245,6 +245,11 @@ public class AppDatabaseManager {
         return currentBook.getName();
     }
 
+    @Nullable
+    public static String getCurrentBookPath() {
+        return currentBook.getPath();
+    }
+
     public static int getCurrentPage() {
         return currentPage;
     }

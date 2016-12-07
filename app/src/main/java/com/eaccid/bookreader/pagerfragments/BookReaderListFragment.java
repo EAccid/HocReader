@@ -231,4 +231,5 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
         getListView().setSelection(position);
     }
 
+
 }
