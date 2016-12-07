@@ -27,6 +27,7 @@ import com.eaccid.bookreader.translator.TranslatedWord;
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import java.util.List;
 import java.util.ArrayList;
 
 public class PagerActivity extends FragmentActivity implements
@@ -34,11 +35,11 @@ public class PagerActivity extends FragmentActivity implements
         OnWordFromTextViewTouchListener.OnWordFromTextClickListener,
         WordOutTranslatorDialogFragment.WordTranslationClickListener {
 
-    private static ArrayList<String> pagesList = new ArrayList<>();
+    private static List<String> pagesList = new ArrayList<>();
     private PagerAdapter pagerAdapter;
     private WordsFromBookFragment wordsFromBookFragment;
 
-    public static ArrayList<String> getPagesList() {
+    public static List<String> getPagesList() {
         return pagesList;
     }
 
