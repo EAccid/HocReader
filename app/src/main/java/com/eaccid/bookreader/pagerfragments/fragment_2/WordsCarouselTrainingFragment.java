@@ -1,8 +1,7 @@
-package com.eaccid.bookreader.pagerfragments;
+package com.eaccid.bookreader.pagerfragments.fragment_2;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +12,6 @@ import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.fragment_2.DrawerRecyclerViewAdapter;
-import com.eaccid.bookreader.db.AppDatabaseManager;
-import com.eaccid.bookreader.fragment_2.WordCursorBinder;
-import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
-import com.j256.ormlite.stmt.PreparedQuery;
 
 
 public class WordsCarouselTrainingFragment extends Fragment {

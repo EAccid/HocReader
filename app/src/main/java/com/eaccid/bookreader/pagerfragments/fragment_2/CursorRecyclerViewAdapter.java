@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.fragment_2;
+package com.eaccid.bookreader.pagerfragments.fragment_2;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;

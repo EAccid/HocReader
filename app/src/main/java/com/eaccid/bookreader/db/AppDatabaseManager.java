@@ -27,8 +27,10 @@ public class AppDatabaseManager {
     }
 
     public static void releaseDatabaseManager() {
-        databaseManager.releaseConnection();
-        databaseManager = null;
+        if (databaseManager != null) {
+            databaseManager.releaseConnection();
+            databaseManager = null;
+        }
     }
 
     // TODO DELETE BOOK: Main activity, Main Book List View

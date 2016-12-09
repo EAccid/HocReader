@@ -1,14 +1,11 @@
-package com.eaccid.bookreader.fragment_1;
+package com.eaccid.bookreader.pagerfragments.fragment_1;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;

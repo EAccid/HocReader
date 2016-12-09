@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.underdev.bookfragment_0;
+package com.eaccid.bookreader.pagerfragments.fragment_0;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,13 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.eaccid.bookreader.R;
+import com.eaccid.bookreader.db.AppDatabaseManager;
+
 import java.util.List;
 
-class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-    private static final String TAG = "CustomAdapter";
+public class BookReaderRecyclerViewAdapter extends RecyclerView.Adapter<BookReaderRecyclerViewAdapter.ViewHolder> {
+    private static final String TAG = "BookReaderRecyclerViewAdapter";
     private List<String> mPagesList;
 
-    public CustomAdapter(List<String> mPagesList) {
+    public BookReaderRecyclerViewAdapter(List<String> mPagesList) {
         this.mPagesList = mPagesList;
     }
 
@@ -20,15 +22,28 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.bookpage_item_fragment_0, parent, false);
+        View v = inflater.inflate(R.layout.book_page_text_default, parent, false);
 
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.getTextOnPageTextView().setText(mPagesList.get(position));
-        holder.getPageNumberTextView().setText(position);
+
+        String textOnPage = mPagesList.get(position);
+        int pageNumber = position + 1;
+
+        AppDatabaseManager.setCurrentPageForAddingWord(position + 1);
+
+        holder.getTextOnPageTextView().setText(textOnPage);
+        holder.getPageNumberTextView().setText(
+                String.valueOf(position + 1) +
+                        " - " +
+                        String.valueOf(mPagesList.size())
+        );
+
+       holder.getTextOnPageTextView().setOnTouchListener(new OnWordFromTextViewTouchListener(pageNumber));
+
     }
 
     @Override
@@ -36,7 +51,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
         return mPagesList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textOnPageTextView;
         private final TextView pageNumberTextView;
 

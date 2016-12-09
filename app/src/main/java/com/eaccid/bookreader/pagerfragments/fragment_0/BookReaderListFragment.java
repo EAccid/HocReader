@@ -1,69 +1,81 @@
-package com.eaccid.bookreader.pagerfragments;
+package com.eaccid.bookreader.pagerfragments.fragment_0;
 
-import android.support.annotation.NonNull;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.db.AppDatabaseManager;
-import com.eaccid.bookreader.fragment_0.BookArrayAdapter;
-import com.eaccid.bookreader.fragment_0.MenuObjectWrapper;
+import com.eaccid.bookreader.file.CharsetName;
+import com.eaccid.bookreader.file.FileToScreenPagesReader;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.eaccid.bookreader.activity.pager.PagerActivity.getPagesList;
+public class BookReaderListFragment extends Fragment implements OnMenuItemClickListener, OnMenuItemLongClickListener {
 
-public class BookReaderListFragment extends ListFragment implements OnMenuItemClickListener, OnMenuItemLongClickListener {
-
-    private List<String> pagesList;
+    private RecyclerView mRecyclerView;
+    private BookReaderRecyclerViewAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects = new ArrayList<>();
-    private BookArrayAdapter bookArrayAdapter;
+    private static final String TAG = "BookReaderListFragment";
+    private List<String> mPagesList = new ArrayList<>();
 
-    public static BookReaderListFragment newInstance(int num) {
+    public static BookReaderListFragment newInstance() {
         BookReaderListFragment f = new BookReaderListFragment();
-
-        // Supply num input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("num", num);
-        args.putStringArrayList("pagesList", (ArrayList<String>) getPagesList());
-        f.setArguments(args);
-
         return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pagesList = getArguments() != null ? getArguments().getStringArrayList("pagesList") : new ArrayList<>();
-        fragmentManager = getFragmentManager();
-        initMenuFragment();
         setRetainInstance(true);
+        fragmentManager = getFragmentManager();
+        setDataToList();
+        initMenuFragment();
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.bookreader_fragment_0, container, false);
-        ImageView iv = (ImageView) v.findViewById(R.id.menu_more_vert_grey);
+        View rootView = inflater.inflate(R.layout.bookreader_rv_fragment_0, container, false);
+        rootView.setTag(TAG);
+
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+
+        mAdapter = new BookReaderRecyclerViewAdapter(mPagesList);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        ImageView iv = (ImageView) rootView.findViewById(R.id.menu_more_vert_grey);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,31 +83,18 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
             }
         });
 
-        return v;
+        return rootView;
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onDestroy() {
+        super.onDestroy();
 
-        bookArrayAdapter = new BookArrayAdapter(getContext(), R.id.text_on_page, pagesList);
-
-        if (pagesList.size() > 0)
-            setListAdapter(bookArrayAdapter);
-
-        if (savedInstanceState != null)
-            getListView().setSelection(savedInstanceState.getInt("firstVisiblePosition"));
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        ListView list = getListView();
-        outState.putInt("firstVisiblePosition", list.getFirstVisiblePosition());
-        super.onSaveInstanceState(outState);
+    private void setDataToList() {
+        new FileToListSplitter().execute();
     }
-
-
-    /////////////////////////////////////////    /////////////////////////////////////////
 
     private void initMenuFragment() {
         MenuParams menuParams = new MenuParams();
@@ -160,7 +159,6 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-
         MenuObjectWrapper mo = (MenuObjectWrapper) menuObjects.get(position);
 
         switch (mo.getTag()) {
@@ -185,7 +183,6 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
             default:
                 throw new RuntimeException("There is no such menu item: position " + position);
         }
-
     }
 
     @Override
@@ -204,32 +201,68 @@ public class BookReaderListFragment extends ListFragment implements OnMenuItemCl
                 .input(R.string.input_page, 0, false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        goToListAdapterPosition(Integer.parseInt(input.toString()) - 1);
-                        showSnackBackToLastOpenedPage(currentItemPosition);
+                        int fromPosition = Integer.parseInt(input.toString()) - 1;
+                        goToListAdapterPosition(fromPosition, currentItemPosition);
+                        showSnackBackToLastOpenedPage(currentItemPosition, fromPosition);
                     }
                 })
                 .negativeText(android.R.string.cancel)
                 .show();
     }
 
-    private void showSnackBackToLastOpenedPage(int pageNumber) {
+    private void showSnackBackToLastOpenedPage(int pageNumber, int oldPosition) {
 
         Snackbar snackbar = Snackbar.make(
-                getListView(),
+                mRecyclerView,
                 R.string.previous_page,
                 Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snack_bar_action_back, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToListAdapterPosition(pageNumber);
+                goToListAdapterPosition(pageNumber, oldPosition);
             }
         });
         snackbar.show();
     }
 
-    private void goToListAdapterPosition(int position) {
-        getListView().setSelection(position);
+    private void goToListAdapterPosition(int position, int oldPosition) {
+        mRecyclerView.scrollToPosition(position);
+//        mRecyclerView.smoothScrollToPosition(oldPosition);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private class FileToListSplitter extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... test) {
+            FileToScreenPagesReader fileToScreenPagesReader = new FileToScreenPagesReader(getActivity());
+            fileToScreenPagesReader.readListFromFile(AppDatabaseManager.getCurrentBookPath(), mPagesList);
+            return true;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isDone) {
+            super.onPostExecute(isDone);
+
+            //TODO: Observable -> isDone
+        }
+
+    }
 
 }
+
+
+
+

@@ -1,11 +1,9 @@
-package com.eaccid.bookreader.pagerfragments;
+package com.eaccid.bookreader.pagerfragments.fragment_1;
 
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,16 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.activity.pager.PagerActivity;
-import com.eaccid.bookreader.fragment_1.SwipeOnLongPressRecyclerViewAdapter;
+import com.eaccid.bookreader.pagerfragments.fragment_1.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
-import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;

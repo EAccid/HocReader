@@ -15,4 +15,6 @@
 
     <dimen name="tool_bar_height">56dp</dimen>
 
+    <dimen name="text_size_default">20sp</dimen>
+
 </resources>

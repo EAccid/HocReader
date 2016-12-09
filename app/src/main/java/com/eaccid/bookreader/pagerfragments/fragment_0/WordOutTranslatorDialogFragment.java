@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.fragment_0;
+package com.eaccid.bookreader.pagerfragments.fragment_0;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.translator.ReaderTranslator;

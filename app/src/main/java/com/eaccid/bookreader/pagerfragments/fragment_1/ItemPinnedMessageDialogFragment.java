@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.fragment_1;
+package com.eaccid.bookreader.pagerfragments.fragment_1;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

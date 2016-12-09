@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.fragment_0;
+package com.eaccid.bookreader.pagerfragments.fragment_0;
 
 import com.yalantis.contextmenu.lib.MenuObject;
 

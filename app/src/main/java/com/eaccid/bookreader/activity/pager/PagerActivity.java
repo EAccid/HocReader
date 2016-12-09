@@ -12,36 +12,27 @@ import android.util.Log;
 import android.view.View;
 
 import com.eaccid.bookreader.pagerfragments.FragmentTags;
-import com.eaccid.bookreader.fragment_0.OnWordFromTextViewTouchListener;
-import com.eaccid.bookreader.fragment_0.WordOutTranslatorDialogFragment;
+import com.eaccid.bookreader.pagerfragments.fragment_0.OnWordFromTextViewTouchListener;
+import com.eaccid.bookreader.pagerfragments.fragment_0.WordOutTranslatorDialogFragment;
 import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.provider.DataProvider;
 import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
 import com.eaccid.bookreader.provider.WordDatabaseProviderFragment;
-import com.eaccid.bookreader.fragment_1.ItemPinnedMessageDialogFragment;
-import com.eaccid.bookreader.pagerfragments.WordsFromBookFragment;
-import com.eaccid.bookreader.file.FileToPagesListReader;
+import com.eaccid.bookreader.pagerfragments.fragment_1.ItemPinnedMessageDialogFragment;
+import com.eaccid.bookreader.pagerfragments.fragment_1.WordsFromBookFragment;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.translator.ReaderDictionary;
 import com.eaccid.bookreader.translator.TranslatedWord;
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.viewpagerindicator.CirclePageIndicator;
 
-import java.util.List;
-import java.util.ArrayList;
 
 public class PagerActivity extends FragmentActivity implements
         ItemPinnedMessageDialogFragment.ItemPinnedEventListener,
         OnWordFromTextViewTouchListener.OnWordFromTextClickListener,
         WordOutTranslatorDialogFragment.WordTranslationClickListener {
 
-    private static List<String> pagesList = new ArrayList<>();
-    private PagerAdapter pagerAdapter;
     private WordsFromBookFragment wordsFromBookFragment;
-
-    public static List<String> getPagesList() {
-        return pagesList;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +40,9 @@ public class PagerActivity extends FragmentActivity implements
         setContentView(R.layout.pager_fragment_activity);
 
         AppDatabaseManager.loadDatabaseManager(this);
+        RefreshDatabase();
 
-        fillPagesListAndRefreshDatabase();
-
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setAdapter(pagerAdapter);
@@ -64,11 +54,9 @@ public class PagerActivity extends FragmentActivity implements
             getSupportFragmentManager().beginTransaction()
                     .add(new WordDatabaseProviderFragment(), FragmentTags.DATA_PROVIDER)
                     .commit();
-
             //todo del fragment / add to transaction
             wordsFromBookFragment = (WordsFromBookFragment) pagerAdapter.getItem(1);
         }
-
 
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -135,14 +123,12 @@ public class PagerActivity extends FragmentActivity implements
         wordsFromBookFragment.notifyItemChanged();
     }
 
-    private void fillPagesListAndRefreshDatabase() {
+    private void RefreshDatabase() {
         String filePath = getIntent().getStringExtra("filePath");
         String fileName = getIntent().getStringExtra("fileName");
-        FileToPagesListReader fileToPagesListReader = new FileToPagesListReader(this, filePath);
-        pagesList = fileToPagesListReader.getPages();
 
         //TODO del book updating
-        AppDatabaseManager.createOrUpdateBook(filePath, fileName, pagesList.size());
+        AppDatabaseManager.createOrUpdateBook(filePath, fileName, 0);
         //TODO set as WordFilter
         AppDatabaseManager.setCurrentBookForAddingWord(filePath);
     }

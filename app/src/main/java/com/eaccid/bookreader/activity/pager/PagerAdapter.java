@@ -4,10 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.eaccid.bookreader.pagerfragments.WordsCarouselTrainingFragment;
-import com.eaccid.bookreader.pagerfragments.WordsFromBookFragment;
-import com.eaccid.bookreader.pagerfragments.BookReaderListFragment;
-import com.eaccid.bookreader.underdev.bookfragment_0.RecyclerViewFragment;
+import com.eaccid.bookreader.pagerfragments.fragment_2.WordsCarouselTrainingFragment;
+import com.eaccid.bookreader.pagerfragments.fragment_1.WordsFromBookFragment;
+import com.eaccid.bookreader.pagerfragments.fragment_0.BookReaderListFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
@@ -33,8 +32,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-//                return BookReaderListFragment.newInstance(position);
-                return RecyclerViewFragment.newInstance();
+                return BookReaderListFragment.newInstance();
             case 1:
                 if (wordsFromBookFragment != null) {
                     return wordsFromBookFragment;
