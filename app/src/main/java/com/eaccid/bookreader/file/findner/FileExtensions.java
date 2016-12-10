@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.file;
+package com.eaccid.bookreader.file.findner;
 
 enum FileExtensions {
     TXT, PDF;

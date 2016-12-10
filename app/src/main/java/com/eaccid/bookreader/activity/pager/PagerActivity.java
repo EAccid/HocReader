@@ -10,7 +10,10 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.eaccid.bookreader.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.bookreader.pagerfragments.FragmentTags;
 import com.eaccid.bookreader.pagerfragments.fragment_0.OnWordFromTextViewTouchListener;
 import com.eaccid.bookreader.pagerfragments.fragment_0.WordOutTranslatorDialogFragment;
@@ -30,7 +33,8 @@ import com.viewpagerindicator.CirclePageIndicator;
 public class PagerActivity extends FragmentActivity implements
         ItemPinnedMessageDialogFragment.ItemPinnedEventListener,
         OnWordFromTextViewTouchListener.OnWordFromTextClickListener,
-        WordOutTranslatorDialogFragment.WordTranslationClickListener {
+        WordOutTranslatorDialogFragment.WordTranslationClickListener,
+        CharactersDefinerForFullScreenTextView.PageView {
 
     private WordsFromBookFragment wordsFromBookFragment;
 
@@ -178,6 +182,13 @@ public class PagerActivity extends FragmentActivity implements
     protected void onDestroy() {
         super.onDestroy();
         AppDatabaseManager.releaseDatabaseManager();
+    }
+
+    @Override
+    public TextView getTextView() {
+        //TODO settings: depends on user preferences
+        ViewGroup viewGroup = (ViewGroup) getLayoutInflater().inflate(R.layout.book_page_text_default, null, false);
+        return (TextView) viewGroup.findViewById(R.id.text_on_page);
     }
 }
 

@@ -1,9 +1,7 @@
-package com.eaccid.bookreader.file;
+package com.eaccid.bookreader.file.findner;
 
 
 import android.os.Environment;
-
-import com.eaccid.bookreader.file.FileExtensions;
 
 import java.io.File;
 import java.util.ArrayList;

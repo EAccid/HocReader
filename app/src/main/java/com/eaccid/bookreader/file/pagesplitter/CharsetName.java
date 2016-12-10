@@ -1,6 +1,4 @@
-package com.eaccid.bookreader.file;
-
-import java.nio.charset.Charset;
+package com.eaccid.bookreader.file.pagesplitter;
 
 public class CharsetName {
 
@@ -12,6 +10,8 @@ public class CharsetName {
 
         //TODO settings: Charset
 //        Charset.isSupported()
+//    } catch (UnsupportedEncodingException e) {
+//        e.printStackTrace();
         return WINDOWS_1251;
     }
 }
