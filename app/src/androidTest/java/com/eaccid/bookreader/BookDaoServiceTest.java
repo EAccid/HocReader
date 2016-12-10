@@ -44,7 +44,7 @@ public class BookDaoServiceTest {
 
         BookDaoService bs = databaseManager.getBookService();
 
-        Book book = new Book("/storage/sdcard/Download/book test.txt","book test.txt", 513);
+        Book book = new Book("/storage/sdcard/Download/book test.txt","book test.txt");
         assertTrue("Book has bean created.", bs.createOrUpdate(book));
 
         Book bookCreated = (Book) bs.getById(book.getPath());
@@ -62,11 +62,11 @@ public class BookDaoServiceTest {
 
         BookDaoService bs = databaseManager.getBookService();
 
-        Book book1 = new Book("/storage/sdcard/Download/book test 1.txt", "book test 1 .txt", 1);
-        Book book2 = new Book("/storage/sdcard/Download/book test 2.txt", "book test 2 .txt", 2);
-        Book book3 = new Book("/storage/sdcard/Download/book test 3.txt", "book test 3 .txt", 3);
-        Book book4 = new Book("/storage/sdcard/Download/book test 4.txt", "book test 4 .txt", 4);
-        Book book5 = new Book("/storage/sdcard/Download/book test 5.txt", "book test 5 .txt", 5);
+        Book book1 = new Book("/storage/sdcard/Download/book test 1.txt", "book test 1 .txt");
+        Book book2 = new Book("/storage/sdcard/Download/book test 2.txt", "book test 2 .txt");
+        Book book3 = new Book("/storage/sdcard/Download/book test 3.txt", "book test 3 .txt");
+        Book book4 = new Book("/storage/sdcard/Download/book test 4.txt", "book test 4 .txt");
+        Book book5 = new Book("/storage/sdcard/Download/book test 5.txt", "book test 5 .txt");
 
         bs.createOrUpdate(book1);
         bs.createOrUpdate(book2);
@@ -85,11 +85,11 @@ public class BookDaoServiceTest {
 
         BookDaoService bs = databaseManager.getBookService();
 
-        Book book1 = new Book("/storage/sdcard/Download/book test 1.txt", "book test 1 .txt", 1);
-        Book book2 = new Book("/storage/sdcard/Download/book test 2.txt", "book test 2 .txt", 2);
-        Book book3 = new Book("/storage/sdcard/Download/book test 3.txt", "book test 3 .txt", 3);
-        Book book4 = new Book("/storage/sdcard/Download/book test 4.txt", "book test 4 .txt", 4);
-        Book book5 = new Book("/storage/sdcard/Download/book test 5.txt", "book test 5 .txt", 5);
+        Book book1 = new Book("/storage/sdcard/Download/book test 1.txt", "book test 1 .txt");
+        Book book2 = new Book("/storage/sdcard/Download/book test 2.txt", "book test 2 .txt");
+        Book book3 = new Book("/storage/sdcard/Download/book test 3.txt", "book test 3 .txt");
+        Book book4 = new Book("/storage/sdcard/Download/book test 4.txt", "book test 4 .txt");
+        Book book5 = new Book("/storage/sdcard/Download/book test 5.txt", "book test 5 .txt");
 
         bs.createOrUpdate(book1);
         bs.createOrUpdate(book2);

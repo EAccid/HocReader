@@ -70,7 +70,7 @@ public class AppDatabaseManager {
 
         try {
             BookDaoService bs = databaseManager.getBookService();
-            Book book = new Book(filePath, fileName, amountPages);
+            Book book = new Book(filePath, fileName);
             bs.createOrUpdate(book);
         } catch (SQLException e) {
             e.printStackTrace();

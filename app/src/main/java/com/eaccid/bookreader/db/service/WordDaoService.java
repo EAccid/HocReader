@@ -1,25 +1,15 @@
 package com.eaccid.bookreader.db.service;
 
-import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-
-import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.db.entity.Word;
-import com.j256.ormlite.android.AndroidDatabaseResults;
-import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.dao.GenericRawResults;
-import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
-
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class WordDaoService implements Crud {
@@ -50,15 +40,11 @@ public class WordDaoService implements Crud {
     @Override
     public boolean delete(Object word) {
         try {
-
             Word existedWord = getWord((Word) word);
-
             if (existedWord != null) {
                 return dao.delete(existedWord) == 1;
             }
-
             return false;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,7 +63,6 @@ public class WordDaoService implements Crud {
 
     @Override
     public List<Word> getAll() {
-
         List<Word> words = new ArrayList<>();
         try {
             words = dao.queryForAll();
@@ -91,11 +76,9 @@ public class WordDaoService implements Crud {
 
     public List<Word> getAllByWordNameCollection(Iterable<String> word) {
         try {
-
             QueryBuilder<Word, String> qb = dao.queryBuilder();
             qb.where().in("word", word);
             PreparedQuery<Word> preparedQuery = qb.prepare();
-
             return dao.query(preparedQuery);
 
         } catch (SQLException e) {
@@ -106,7 +89,6 @@ public class WordDaoService implements Crud {
 
     public List<Word> getAllByWordNameCollectionAndBookId(Iterable<String> word, boolean excludeWords, String bookid) {
         try {
-
             QueryBuilder<Word, String> qb = dao.queryBuilder();
             Where<Word, String> where = qb.where();
 
@@ -169,7 +151,6 @@ public class WordDaoService implements Crud {
     }
 
     public PreparedQuery<Word> getAllWordsPreparedQuery() {
-
         try {
 
             QueryBuilder<Word, String> qb = dao.queryBuilder();

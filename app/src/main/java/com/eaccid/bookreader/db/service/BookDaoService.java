@@ -20,16 +20,13 @@ public class BookDaoService implements Crud {
 
     @Override
     public boolean createOrUpdate(Object book) {
-
         boolean created = false;
-
         try {
             Dao.CreateOrUpdateStatus status = dao.createOrUpdate((Book) book);
             created = status.isCreated() || status.isUpdated();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return created;
     }
 
@@ -54,7 +51,6 @@ public class BookDaoService implements Crud {
     }
 
     public List<Book> getAll() {
-
         List<Book> books = new ArrayList<>();
         try {
             books = dao.queryForAll();
@@ -63,8 +59,5 @@ public class BookDaoService implements Crud {
         }
         return books;
     }
-
-
-
 
 }

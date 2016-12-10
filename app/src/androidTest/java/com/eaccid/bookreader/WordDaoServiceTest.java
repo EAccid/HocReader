@@ -46,8 +46,8 @@ public class WordDaoServiceTest {
     @Test
     public void testCreateOrUpdateWord() throws Exception {
 
-        Book book = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 513);
-        Book book3 = new Book("/storage/sdcard/Download/book3 test.txt", "book3 test.txt", 713);
+        Book book = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt");
+        Book book3 = new Book("/storage/sdcard/Download/book3 test.txt", "book3 test.txt");
 
         Word word1 = new Word("mad", "сумасшедший", "mad in some context", 13, book, false);
         Word word2 = new Word("devastate", "опустошать", "devastate in some context", 13, book, false);
@@ -75,9 +75,9 @@ public class WordDaoServiceTest {
     @Test
     public void testAmountWords() throws Exception {
 
-        Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 1);
-        Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt", 2);
-        Book book3 = new Book("/storage/sdcard/Download/book3 test.txt", "book3 test.txt", 3);
+        Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt");
+        Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt");
+        Book book3 = new Book("/storage/sdcard/Download/book3 test.txt", "book3 test.txt");
 
         BookDaoService bs = databaseManager.getBookService();
         bs.createOrUpdate(book1);
@@ -117,9 +117,9 @@ public class WordDaoServiceTest {
     @Test
     public void testDeleteWord() throws Exception {
 
-        Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 1);
-        Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt", 2);
-        Book book3 = new Book("/storage/sdcard/Download/book3 test.txt", "book3 test.txt", 3);
+        Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt");
+        Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt");
+        Book book3 = new Book("/storage/sdcard/Download/book3 test.txt", "book3 test.txt");
 
         BookDaoService bs = databaseManager.getBookService();
         bs.createOrUpdate(book1);
@@ -163,8 +163,8 @@ public class WordDaoServiceTest {
     @Test
     public void testForeignCollection() throws Exception {
 
-        Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt", 1);
-        Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt", 2);
+        Book book1 = new Book("/storage/sdcard/Download/book1 test.txt", "book1 test.txt");
+        Book book2 = new Book("/storage/sdcard/Download/book2 test.txt", "book2 test.txt");
         BookDaoService bs = databaseManager.getBookService();
         bs.createOrUpdate(book1);
         bs.createOrUpdate(book2);
