@@ -11,7 +11,7 @@ import android.widget.ExpandableListView;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.searchbooks.SearchAdapter;
-import com.eaccid.bookreader.file.FileOnDeviceFinder;
+import com.eaccid.bookreader.file.findner.FileOnDeviceFinder;
 import com.eaccid.bookreader.searchbooks.ItemObjectChild;
 import com.eaccid.bookreader.searchbooks.ItemObjectGroup;
 import com.eaccid.bookreader.searchbooks.SearchSuggestionsProvider;

@@ -1,6 +1,5 @@
 package com.eaccid.bookreader.pagerfragments.fragment_0;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,28 +14,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.db.AppDatabaseManager;
-import com.eaccid.bookreader.file.CharsetName;
-import com.eaccid.bookreader.file.FileToScreenPagesReader;
+import com.eaccid.bookreader.file.BaseFileImpl;
+import com.eaccid.bookreader.file.pagesplitter.Page;
+import com.eaccid.bookreader.file.pagesplitter.TxtFileToScreenReader;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookReaderListFragment extends Fragment implements OnMenuItemClickListener, OnMenuItemLongClickListener {
+
+public class BookReaderListFragment extends Fragment implements
+        OnMenuItemClickListener, OnMenuItemLongClickListener {
 
     private RecyclerView mRecyclerView;
     private BookReaderRecyclerViewAdapter mAdapter;
@@ -45,7 +40,7 @@ public class BookReaderListFragment extends Fragment implements OnMenuItemClickL
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects = new ArrayList<>();
     private static final String TAG = "BookReaderListFragment";
-    private List<String> mPagesList = new ArrayList<>();
+    private List<Page<String>> mPagesList = new ArrayList<>();
 
     public static BookReaderListFragment newInstance() {
         BookReaderListFragment f = new BookReaderListFragment();
@@ -236,8 +231,13 @@ public class BookReaderListFragment extends Fragment implements OnMenuItemClickL
 
         @Override
         protected Boolean doInBackground(String... test) {
-            FileToScreenPagesReader fileToScreenPagesReader = new FileToScreenPagesReader(getActivity());
-            fileToScreenPagesReader.readListFromFile(AppDatabaseManager.getCurrentBookPath(), mPagesList);
+            TxtFileToScreenReader txtFileToScreenReader = new TxtFileToScreenReader(getActivity());
+            BaseFileImpl baseFile = new BaseFileImpl(AppDatabaseManager.getCurrentBookPath());
+            txtFileToScreenReader.getPageObservable(baseFile).subscribe(page -> {
+                mPagesList.add(page);
+
+                //TODO settings: goToPage
+            });
             return true;
         }
 

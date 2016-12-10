@@ -7,43 +7,35 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.db.AppDatabaseManager;
-
+import com.eaccid.bookreader.file.pagesplitter.Page;
 import java.util.List;
 
 public class BookReaderRecyclerViewAdapter extends RecyclerView.Adapter<BookReaderRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "BookReaderRecyclerViewAdapter";
-    private List<String> mPagesList;
+    private List<Page<String>> mPagesList;
 
-    public BookReaderRecyclerViewAdapter(List<String> mPagesList) {
+    public BookReaderRecyclerViewAdapter(List<Page<String>> mPagesList) {
         this.mPagesList = mPagesList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.book_page_text_default, parent, false);
-
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
-        String textOnPage = mPagesList.get(position);
-        int pageNumber = position + 1;
-
-        AppDatabaseManager.setCurrentPageForAddingWord(position + 1);
-
-        holder.getTextOnPageTextView().setText(textOnPage);
+        Page<String> page = mPagesList.get(position);
+        AppDatabaseManager.setCurrentPageForAddingWord(page.getPageNumber());
+        holder.getTextOnPageTextView().setText(page.getDataFromPage());
         holder.getPageNumberTextView().setText(
                 String.valueOf(position + 1) +
                         " - " +
                         String.valueOf(mPagesList.size())
         );
-
-       holder.getTextOnPageTextView().setOnTouchListener(new OnWordFromTextViewTouchListener(pageNumber));
-
+        holder.getTextOnPageTextView().setOnTouchListener(new OnWordFromTextViewTouchListener(page.getPageNumber()));
     }
 
     @Override
