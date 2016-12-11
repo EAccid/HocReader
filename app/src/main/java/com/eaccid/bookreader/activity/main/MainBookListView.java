@@ -45,7 +45,15 @@ public class MainBookListView implements SearchView.OnQueryTextListener, SearchV
 
         for (File file : foundFiles) {
             String ext = MimeTypeMap.getFileExtensionFromUrl(file.getName());
-            if (ext.equalsIgnoreCase("txt")) {
+
+            //TODO del: temp
+            int lastDot = file.getName().lastIndexOf('.');
+            String ext1 = "";
+            if (lastDot != -1)
+                ext1 = file.getName().substring(lastDot+1, file.getName().length());
+
+            if (ext.equalsIgnoreCase("txt") || ext1.equalsIgnoreCase("txt")) {
+//            if (ext.equalsIgnoreCase("txt")) {
                 childObjectItemTXT.add(new ItemObjectChild(R.mipmap.generic_icon, file.getName(), file));
                 readableFiles.add(file.getPath());
             } else {
