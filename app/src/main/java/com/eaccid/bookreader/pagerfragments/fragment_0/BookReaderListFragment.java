@@ -29,6 +29,8 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.schedulers.Schedulers;
+
 
 public class BookReaderListFragment extends Fragment implements
         OnMenuItemClickListener, OnMenuItemLongClickListener {
@@ -85,10 +87,6 @@ public class BookReaderListFragment extends Fragment implements
     public void onDestroy() {
         super.onDestroy();
 
-    }
-
-    private void setDataToList() {
-        new FileToListSplitter().execute();
     }
 
     private void initMenuFragment() {
@@ -227,40 +225,19 @@ public class BookReaderListFragment extends Fragment implements
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private class FileToListSplitter extends AsyncTask<String, Void, Boolean> {
+    private void setDataToList() {
 
-        @Override
-        protected Boolean doInBackground(String... test) {
-            TxtFileToScreenReader txtFileToScreenReader = new TxtFileToScreenReader(getActivity());
-            BaseFileImpl baseFile = new BaseFileImpl(AppDatabaseManager.getCurrentBookPath());
-            txtFileToScreenReader.getPageObservable(baseFile).subscribe(page -> {
-                mPagesList.add(page);
+        TxtFileToScreenReader txtFileToScreenReader = new TxtFileToScreenReader(getActivity());
+        BaseFileImpl baseFile = new BaseFileImpl(AppDatabaseManager.getCurrentBookPath());
+        txtFileToScreenReader.getPageObservable(baseFile)
+                .subscribeOn(Schedulers.io())
+                .subscribe(page -> {
+            mPagesList.add(page);
 
-                //TODO settings: goToPage
-            });
-            return true;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean isDone) {
-            super.onPostExecute(isDone);
-
-            //TODO: Observable -> isDone
-        }
+            //TODO settings: goToPage
+        });
 
     }
-
 }
 
 
