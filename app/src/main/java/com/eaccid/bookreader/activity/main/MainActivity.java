@@ -2,42 +2,48 @@ package com.eaccid.bookreader.activity.main;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.webkit.MimeTypeMap;
+import android.widget.ExpandableListView;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.activity.services.MemorizingAlarmReceiver;
-import com.eaccid.bookreader.activity.services.MemorizingService;
-import com.eaccid.bookreader.db.entity.Book;
-import com.eaccid.bookreader.db.entity.Word;
-import com.eaccid.bookreader.db.AppDatabaseManager;
-import com.eaccid.bookreader.underdev.settings.MainSettings;
-import com.eaccid.bookreader.db.WordFilter;
+import com.eaccid.bookreader.searchfiles.ItemObjectChild;
+import com.eaccid.bookreader.searchfiles.ItemObjectGroup;
+import com.eaccid.bookreader.searchfiles.SearchAdapter;
+import com.eaccid.bookreader.searchfiles.SearchSuggestionsProvider;
+import com.eaccid.hocreader.view.BaseView;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BaseView, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
-    MainBookListView bookListViewHandler;
-    MainSettings settings;
+    private static MainPresenter mPresenter;
+    private ExpandableListView expandableListView;
+    private SearchAdapter searchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView_main);
 
-        bookListViewHandler = new MainBookListView(this);
-        settings = new MainSettings(this);
-        AppDatabaseManager.loadDatabaseManager(this);
+        if (mPresenter == null)
+            mPresenter = new MainPresenter();
+        mPresenter.attachView(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,74 +52,29 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                //TODO delete from here / temp data
-
-                AppDatabaseManager.setFilter(WordFilter.NONE);
-
-                Snackbar.make(view, "books: " + AppDatabaseManager.getAllBooks().size() + "\nwords: "
-                                + AppDatabaseManager.getAllWords(null, null).size(),
-                        Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-
-                int i = 1;
-                for (Book book : AppDatabaseManager.getAllBooks()
-                        ) {
-                    System.out.println(i + ": " + book + "/n");
-                    i++;
-                }
-
-                i = 1;
-                for (Word word : AppDatabaseManager.getAllWords(null, null)
-                        ) {
-                    System.out.println(i + ": " + word + "/n");
-                    i++;
-                }
-
+                mPresenter.onFabButtonClickListener();
             }
         });
 
-        bookListViewHandler.fillBookList();
-        settings.setDefaultSettings();
-
-        Log.i("TestLC", "on create");
+        mPresenter.loadFiles();
+        mPresenter.loadSettings();
 
         scheduleAlarm();
 
     }
 
-    //TODO: scheduleAlarm, cancelAlarm - > settings isCanceled
-    public void scheduleAlarm() {
 
-        Intent intent = new Intent(getApplicationContext(), MemorizingAlarmReceiver.class);
-        final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MemorizingAlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        final long NOTIFY_INTERVAL =  60 * 60 * 1000;
-
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,  AlarmManager.INTERVAL_HOUR,
-//                2 * 60 * 1000, pendingIntent);
-                AlarmManager.INTERVAL_HOUR, pendingIntent);
-    }
-
-    public void cancelAlarm() {
-
-
-        Intent intent = new Intent(getApplicationContext(), MemorizingAlarmReceiver.class);
-        final PendingIntent pIntent = PendingIntent.getBroadcast(this, MemorizingAlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        if (alarm != null) {
-            alarm.cancel(pIntent);
-        }
+    @Override
+    public boolean onClose() {
+        searchAdapter.filterData("");
+        expandListViewGroup();
+        return false;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AppDatabaseManager.releaseDatabaseManager();
-        Log.i("TestLC", "on destroy");
+        mPresenter.detachView();
     }
 
     @Override
@@ -123,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_main, menu);
 
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        bookListViewHandler.setSearch(searchView);
+        setSearch(searchView);
 
         return true;
     }
@@ -137,44 +98,100 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_search:
                 return true;
             case R.id.action_clearSearchHistory:
-                settings.clearBookSearchHistory();
+                mPresenter.clearBookSearchHistory();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    ///////
-
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("TestLC", "on start");
+    public boolean onQueryTextSubmit(String query) {
+        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
+        suggestions.saveRecentQuery(query, null);
+        refreshBookList(query);
+        return false;
+    }
+
+    private void refreshBookList(String searchText) {
+        searchAdapter.filterData(searchText);
+        expandListViewGroup();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("TestLC", "on resume");
+    public boolean onQueryTextChange(String newText) {
+        refreshBookList(newText);
+        return false;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("TestLC", "on pause");
+    public void showTempDataFromDB(String text) {
+        Snackbar.make(getCurrentFocus(), text,
+                Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i("TestLC", "on stop");
+    public List<String> fillExpandableListView(List<File> files) {
+
+        List<ItemObjectGroup> itemObjectGroupList = new ArrayList<>();
+        List<String> readableFiles = new ArrayList<>();
+
+        List<ItemObjectChild> childObjectItemTXT = new ArrayList<>();
+        List<ItemObjectChild> childObjectItemPDF = new ArrayList<>();
+
+        for (File file : files) {
+            String ext1 = MimeTypeMap.getFileExtensionFromUrl(file.getName());
+            int lastDot = file.getName().lastIndexOf('.');
+            String ext2 = "";
+            if (lastDot != -1)
+                ext2 = file.getName().substring(lastDot + 1, file.getName().length());
+            if (ext1.equalsIgnoreCase("txt") || ext2.equalsIgnoreCase("txt")) {
+                childObjectItemTXT.add(new ItemObjectChild(R.mipmap.generic_icon, file.getName(), file));
+                readableFiles.add(file.getPath());
+            } else {
+                childObjectItemPDF.add(new ItemObjectChild(R.mipmap.generic_icon, file.getName(), file));
+            }
+        }
+
+        ItemObjectGroup itemObjectGroupTXT = new ItemObjectGroup("TXT", childObjectItemTXT);
+        itemObjectGroupList.add(itemObjectGroupTXT);
+        ItemObjectGroup itemObjectGroupPDF = new ItemObjectGroup("PDF", childObjectItemPDF);
+        itemObjectGroupList.add(itemObjectGroupPDF);
+
+        searchAdapter = new SearchAdapter(this, itemObjectGroupList);
+        expandableListView.setAdapter(searchAdapter);
+
+        expandListViewGroup();
+
+        return readableFiles;
+
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.i("TestLC", "on restart");
+    private void scheduleAlarm() {
+        //TODO: scheduleAlarm, cancelAlarm - > settings isCanceled
+
+        Intent intent = new Intent(getApplicationContext(), MemorizingAlarmReceiver.class);
+        final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MemorizingAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, AlarmManager.INTERVAL_HOUR,
+                AlarmManager.INTERVAL_HOUR, pendingIntent);
     }
+
+    private void setSearch(SearchView searchView) {
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnCloseListener(this);
+        searchView.requestFocus();
+    }
+
+    private void expandListViewGroup() {
+        int groupCount = searchAdapter.getGroupCount();
+        for (int i = 0; i < groupCount; i++) {
+            expandableListView.expandGroup(i);
+        }
+    }
+
 }
-
 

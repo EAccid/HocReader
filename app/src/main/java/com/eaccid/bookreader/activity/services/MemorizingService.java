@@ -9,13 +9,13 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.db.AppDatabaseManager;
-import com.eaccid.bookreader.db.entity.Word;
+import com.eaccid.hocreader.data.local.WordManager;
+import com.eaccid.hocreader.data.local.db.entity.Word;
 
 public class MemorizingService extends IntentService {
 
     private static final String NOTIFICATION_TAG = "WORD_MEMORIZING";
-
+    private WordManager wordManager;
     private NotificationManager notificationManager;
 
     public MemorizingService() {
@@ -27,6 +27,7 @@ public class MemorizingService extends IntentService {
         super.onCreate();
         Log.i("MemorizingService", "on create");
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        wordManager = new WordManager();
     }
 
     @Override
@@ -46,8 +47,8 @@ public class MemorizingService extends IntentService {
     private void sendNotification() {
 
         // TODO create notification ID and separate random word fetching / work with db
-        AppDatabaseManager.loadDatabaseManager(this);
-        Word word = AppDatabaseManager.getRandomWord();
+        wordManager.loadDatabaseManager(this);
+        Word word = wordManager.getRandomWord();
         if (word == null) return;
 
         Intent intent = new Intent(this, MemorizingActivity.class);
@@ -84,6 +85,6 @@ public class MemorizingService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         Log.i("MemorizingService", "on destroy");
-        AppDatabaseManager.releaseDatabaseManager();
+        wordManager.releaseDatabaseManager();
     }
 }

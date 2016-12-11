@@ -6,16 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.file.pagesplitter.Page;
+import com.eaccid.hocreader.data.local.WordManager;
+
 import java.util.List;
 
 public class BookReaderRecyclerViewAdapter extends RecyclerView.Adapter<BookReaderRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "BookReaderRecyclerViewAdapter";
     private List<Page<String>> mPagesList;
+    private WordManager wordManager;
 
-    public BookReaderRecyclerViewAdapter(List<Page<String>> mPagesList) {
+    public BookReaderRecyclerViewAdapter(List<Page<String>> mPagesList, WordManager wm) {
         this.mPagesList = mPagesList;
+        this.wordManager = wm;
     }
 
     @Override
@@ -28,7 +31,7 @@ public class BookReaderRecyclerViewAdapter extends RecyclerView.Adapter<BookRead
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Page<String> page = mPagesList.get(position);
-        AppDatabaseManager.setCurrentPageForAddingWord(page.getPageNumber());
+        wordManager.setCurrentPageForAddingWord(page.getPageNumber());
         holder.getTextOnPageTextView().setText(page.getDataFromPage());
         holder.getPageNumberTextView().setText(
                 String.valueOf(position + 1) +
@@ -62,4 +65,10 @@ public class BookReaderRecyclerViewAdapter extends RecyclerView.Adapter<BookRead
         }
     }
 
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        wordManager.releaseDatabaseManager();
+    }
 }

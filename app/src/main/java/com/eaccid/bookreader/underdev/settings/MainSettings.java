@@ -3,7 +3,7 @@ package com.eaccid.bookreader.underdev.settings;
 import android.app.Activity;
 import android.provider.SearchRecentSuggestions;
 
-import com.eaccid.bookreader.searchbooks.SearchSuggestionsProvider;
+import com.eaccid.bookreader.searchfiles.SearchSuggestionsProvider;
 
 public class MainSettings {
 

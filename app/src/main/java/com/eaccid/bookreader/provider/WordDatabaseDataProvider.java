@@ -1,11 +1,12 @@
 package com.eaccid.bookreader.provider;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.eaccid.bookreader.db.AppDatabaseManager;
-import com.eaccid.bookreader.db.WordFilter;
-import com.eaccid.bookreader.db.entity.Word;
+import com.eaccid.hocreader.data.local.WordFilter;
+import com.eaccid.hocreader.data.local.WordManager;
+import com.eaccid.hocreader.data.local.db.entity.Word;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -19,10 +20,10 @@ public class WordDatabaseDataProvider extends DataProvider {
 
     private final String TAG = "words list";
     private List<String> sessionWords;
+    protected static WordManager wordManager;
 
     public WordDatabaseDataProvider() {
         sessionWords = new ArrayList<>();
-//        fillDataList();
     }
 
     @Override
@@ -71,6 +72,28 @@ public class WordDatabaseDataProvider extends DataProvider {
 
     }
 
+    @Override
+    public int undoLastRemoval() {
+        Word word = (Word) getLastRemovedData().getObject();
+        sessionWords.add(word.getName());
+        //todo del from here
+
+        wordManager.createOrUpdateWord(word.getName(), word.getTranslation(), word.getContext(), true);
+        return super.undoLastRemoval();
+    }
+
+    @Override
+    public void removeItem(int position) {
+
+        ItemDataProvider item = getDataList().get(position);
+        WordItemListUtils.removeItem(item);
+
+        Word word = (Word) item.getObject();
+        sessionWords.remove(word.getName());
+
+        super.removeItem(position);
+    }
+
     private static class WordItemListUtils implements Callable<List<ItemDataProvider>> {
         private WordFilter wordFilter;
         private List<String> words;
@@ -89,7 +112,6 @@ public class WordDatabaseDataProvider extends DataProvider {
                     this.fromCurrentPosition = 0;
                     break;
             }
-
         }
 
         static List<ItemDataProvider> addAllFromDatabase(List<String> excludeWords) {
@@ -106,11 +128,10 @@ public class WordDatabaseDataProvider extends DataProvider {
 
         @Nullable
         static ItemDataProvider createItemWord(String wordBaseName, int currentId) {
-            Word word = AppDatabaseManager.getCurrentBooksWordByPage(wordBaseName);
+            Word word = wordManager.getCurrentBooksWordByPage(wordBaseName);
             if (word == null) return null;
             return new DataProvider.ItemDataProvider(currentId, word);
         }
-
 
         private static List<ItemDataProvider> getWordItemByCurrentBookList(WordFilter wordFilter, @Nullable List<String> words) {
             List<DataProvider.ItemDataProvider> newDataList = new LinkedList<>();
@@ -130,8 +151,8 @@ public class WordDatabaseDataProvider extends DataProvider {
             Log.i("TAG", "Updating words from database.");
 
             List<ItemDataProvider> dataList = new ArrayList<>();
-            AppDatabaseManager.setFilter(wordFilter);
-            List<Word> wordsFromDB = AppDatabaseManager.getAllWords(words, null);
+            wordManager.setFilter(wordFilter);
+            List<Word> wordsFromDB = wordManager.getAllWords(words, null);
 
             for (Word word : wordsFromDB) {
                 ItemDataProvider itemDataProvider = new ItemDataProvider(fromCurrentPosition + dataList.size(), word);
@@ -144,28 +165,23 @@ public class WordDatabaseDataProvider extends DataProvider {
 
         public static void removeItem(ItemDataProvider itemData) {
             Word word = (Word) itemData.getObject();
-            AppDatabaseManager.deleteWord(word);
+            wordManager.deleteWord(word);
         }
     }
 
-    @Override
-    public int undoLastRemoval() {
-        Word word = (Word) getLastRemovedData().getObject();
-        sessionWords.add(word.getName());
-        //todo del from here
-        AppDatabaseManager.createOrUpdateWord(word.getName(),word.getTranslation(),word.getContext(),true);
-        return super.undoLastRemoval();
+
+    protected static void loadWordManager(Context context) {
+        if (wordManager == null) {
+            wordManager = new WordManager();
+            wordManager.loadDatabaseManager(context);
+        }
     }
 
-    @Override
-    public void removeItem(int position) {
-
-        ItemDataProvider item = getDataList().get(position);
-        WordItemListUtils.removeItem(item);
-
-        Word word = (Word) item.getObject();
-        sessionWords.remove(word.getName());
-
-        super.removeItem(position);
+    protected static void releaseWordManager() {
+        if (wordManager != null) {
+            wordManager.releaseDatabaseManager();
+            wordManager = null;
+        }
     }
+
 }

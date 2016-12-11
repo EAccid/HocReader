@@ -4,7 +4,7 @@ package com.eaccid.bookreader.underdev.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.eaccid.libtranslator.lingualeo.dictionary.LingualeoServiceCookies;
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 
 public class LingualeoServiceCookiesHandler implements LingualeoServiceCookies {
 

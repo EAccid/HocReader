@@ -4,11 +4,10 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.eaccid.bookreader.db.entity.Book;
-import com.eaccid.bookreader.db.entity.Word;
-import com.eaccid.bookreader.db.service.BookDaoService;
-import com.eaccid.bookreader.db.service.DatabaseHelper;
-import com.eaccid.bookreader.db.service.DatabaseManager;
+import com.eaccid.hocreader.data.local.db.entity.Book;
+import com.eaccid.hocreader.data.local.db.entity.Word;
+import com.eaccid.hocreader.data.local.db.service.BookDaoService;
+import com.eaccid.hocreader.data.local.db.service.DatabaseManager;
 import com.j256.ormlite.table.TableUtils;
 
 import org.junit.After;

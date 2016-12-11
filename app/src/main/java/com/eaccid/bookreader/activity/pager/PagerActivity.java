@@ -4,7 +4,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -12,38 +11,35 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.eaccid.bookreader.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.bookreader.pagerfragments.FragmentTags;
 import com.eaccid.bookreader.pagerfragments.fragment_0.OnWordFromTextViewTouchListener;
 import com.eaccid.bookreader.pagerfragments.fragment_0.WordOutTranslatorDialogFragment;
-import com.eaccid.bookreader.db.AppDatabaseManager;
 import com.eaccid.bookreader.provider.DataProvider;
 import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
 import com.eaccid.bookreader.provider.WordDatabaseProviderFragment;
-import com.eaccid.bookreader.pagerfragments.fragment_1.ItemPinnedMessageDialogFragment;
 import com.eaccid.bookreader.pagerfragments.fragment_1.WordsFromBookFragment;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.translator.ReaderDictionary;
-import com.eaccid.bookreader.translator.TranslatedWord;
+import com.eaccid.hocreader.data.local.WordManager;
+import com.eaccid.hocreader.data.remote.ReaderDictionary;
+import com.eaccid.hocreader.data.remote.TranslatedWord;
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.viewpagerindicator.CirclePageIndicator;
 
-
 public class PagerActivity extends FragmentActivity implements
-        ItemPinnedMessageDialogFragment.ItemPinnedEventListener,
         OnWordFromTextViewTouchListener.OnWordFromTextClickListener,
         WordOutTranslatorDialogFragment.WordTranslationClickListener,
         CharactersDefinerForFullScreenTextView.PageView {
 
+    private WordManager wordManager;
     private WordsFromBookFragment wordsFromBookFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_fragment_activity);
-
-        AppDatabaseManager.loadDatabaseManager(this);
+        wordManager = new WordManager();
+        wordManager.loadDatabaseManager(this);
         RefreshDatabase();
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
@@ -89,15 +85,9 @@ public class PagerActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onNotifyItemPinnedDialogDismissed(int itemPosition, boolean ok) {
-        getDataProvider().getItem(itemPosition).setPinned(ok);
-        wordsFromBookFragment.notifyItemChanged(itemPosition);
-    }
-
-    @Override
     public void OnWordClicked(WordFromText wordFromText) {
 
-        AppDatabaseManager.setCurrentPageForAddingWord(wordFromText.getPageNumber());
+        wordManager.setCurrentPageForAddingWord(wordFromText.getPageNumber());
 
         final DialogFragment dialog = WordOutTranslatorDialogFragment.newInstance(wordFromText);
         getSupportFragmentManager()
@@ -118,7 +108,7 @@ public class PagerActivity extends FragmentActivity implements
         boolean succeed = readerDictionary.addTranslatedWord(translatedWord);
 
         //TODO del word updating
-        AppDatabaseManager.createOrUpdateWord(translatedWord.getWordBaseForm(),
+        wordManager.createOrUpdateWord(translatedWord.getWordBaseForm(),
                 translatedWord.getTranslation(),
                 translatedWord.getContext(),
                 succeed);
@@ -131,10 +121,8 @@ public class PagerActivity extends FragmentActivity implements
         String filePath = getIntent().getStringExtra("filePath");
         String fileName = getIntent().getStringExtra("fileName");
 
-        //TODO del book updating
-        AppDatabaseManager.createOrUpdateBook(filePath, fileName, 0);
         //TODO set as WordFilter
-        AppDatabaseManager.setCurrentBookForAddingWord(filePath);
+        wordManager.setCurrentBookForAddingWord(filePath);
     }
 
     public void onItemFragment1Removed(int position) {
@@ -151,15 +139,6 @@ public class PagerActivity extends FragmentActivity implements
         });
         snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.snackbar_action_color_done));
         snackbar.show();
-    }
-
-    public void onItemFragment1Pinned(int position) {
-        final DialogFragment dialog = ItemPinnedMessageDialogFragment.newInstance(position);
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(dialog, FragmentTags.ITEM_PINNED_DIALOG)
-                .commit();
     }
 
     public void onItemFragment1Clicked(int position) {
@@ -181,7 +160,7 @@ public class PagerActivity extends FragmentActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AppDatabaseManager.releaseDatabaseManager();
+        wordManager.releaseDatabaseManager();
     }
 
     @Override
@@ -189,6 +168,10 @@ public class PagerActivity extends FragmentActivity implements
         //TODO settings: depends on user preferences
         ViewGroup viewGroup = (ViewGroup) getLayoutInflater().inflate(R.layout.book_page_text_default, null, false);
         return (TextView) viewGroup.findViewById(R.id.text_on_page);
+    }
+
+    public WordManager getWordData() {
+        return wordManager;
     }
 }
 

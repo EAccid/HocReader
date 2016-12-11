@@ -2,7 +2,7 @@ package com.eaccid.bookreader.provider;
 
 import android.util.Log;
 
-import com.eaccid.bookreader.db.entity.Word;
+import com.eaccid.hocreader.data.local.db.entity.Word;
 
 import java.util.LinkedList;
 import java.util.List;

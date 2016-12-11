@@ -12,13 +12,21 @@ import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.eaccid.bookreader.R;
+import com.eaccid.hocreader.data.local.WordManager;
 
 
 public class WordsCarouselTrainingFragment extends Fragment {
-
+    private WordManager wordManager;
 
     public static WordsCarouselTrainingFragment newInstance() {
         return new WordsCarouselTrainingFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        wordManager = new WordManager();
+        wordManager.loadDatabaseManager(getContext());
     }
 
     @Override
@@ -41,7 +49,7 @@ public class WordsCarouselTrainingFragment extends Fragment {
         DrawerRecyclerViewAdapter adapter = new DrawerRecyclerViewAdapter(getContext());
 
         WordCursorBinder wordCursorBinder = new WordCursorBinder(getContext(), true);
-        adapter = (DrawerRecyclerViewAdapter) wordCursorBinder.createAdapterWithCursor(adapter);
+        adapter = (DrawerRecyclerViewAdapter) wordCursorBinder.createAdapterWithCursor(adapter, wordManager);
 
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new CenterScrollListener());

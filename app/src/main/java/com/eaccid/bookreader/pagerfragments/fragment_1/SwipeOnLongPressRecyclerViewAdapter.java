@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.db.entity.Word;
+import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.bookreader.provider.DataProvider;
 import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;

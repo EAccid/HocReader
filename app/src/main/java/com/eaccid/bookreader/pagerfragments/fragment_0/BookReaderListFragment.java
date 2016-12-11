@@ -1,6 +1,5 @@
 package com.eaccid.bookreader.pagerfragments.fragment_0;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,10 +16,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.db.AppDatabaseManager;
+import com.eaccid.bookreader.activity.pager.PagerActivity;
 import com.eaccid.bookreader.file.BaseFileImpl;
 import com.eaccid.bookreader.file.pagesplitter.Page;
 import com.eaccid.bookreader.file.pagesplitter.TxtFileToScreenReader;
+import com.eaccid.hocreader.data.local.WordManager;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -68,7 +68,7 @@ public class BookReaderListFragment extends Fragment implements
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
 
-        mAdapter = new BookReaderRecyclerViewAdapter(mPagesList);
+        mAdapter = new BookReaderRecyclerViewAdapter(mPagesList, getWordManager());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -185,7 +185,7 @@ public class BookReaderListFragment extends Fragment implements
 
     private void goToPage(View clickedView) {
 
-        int currentItemPosition = AppDatabaseManager.getCurrentPage() - 1;
+        int currentItemPosition = getWordManager().getCurrentPage() - 1;
 
         new MaterialDialog.Builder(clickedView.getContext())
                 .title(R.string.go_to_page_title)
@@ -228,7 +228,7 @@ public class BookReaderListFragment extends Fragment implements
     private void setDataToList() {
 
         TxtFileToScreenReader txtFileToScreenReader = new TxtFileToScreenReader(getActivity());
-        BaseFileImpl baseFile = new BaseFileImpl(AppDatabaseManager.getCurrentBookPath());
+        BaseFileImpl baseFile = new BaseFileImpl(getWordManager().getCurrentBookPath());
         txtFileToScreenReader.getPageObservable(baseFile)
                 .subscribeOn(Schedulers.io())
                 .subscribe(page -> {
@@ -238,6 +238,11 @@ public class BookReaderListFragment extends Fragment implements
         });
 
     }
+
+    public WordManager getWordManager() {
+        return ((PagerActivity) getActivity()).getWordData();
+    }
+
 }
 
 

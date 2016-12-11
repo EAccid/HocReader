@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.db.entity.Word;
+import com.eaccid.hocreader.data.local.db.entity.Word;
 
 public class DrawerRecyclerViewAdapter extends OrmliteCursorRecyclerViewAdapter<Word, DrawerRecyclerViewAdapter.ViewHolder> {
 

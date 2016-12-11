@@ -2,7 +2,7 @@ package com.eaccid.bookreader.underdev.settings;
 
 import android.content.Context;
 
-import com.eaccid.libtranslator.lingualeo.dictionary.LingualeoDictionary;
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionary;
 
 public class LingualeoAuthSettings implements Runnable {
 

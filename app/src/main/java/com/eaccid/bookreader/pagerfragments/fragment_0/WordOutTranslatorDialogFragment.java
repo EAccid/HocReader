@@ -19,10 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.translator.ReaderTranslator;
-import com.eaccid.bookreader.translator.TranslatedWord;
+import com.eaccid.hocreader.data.remote.ReaderTranslator;
+import com.eaccid.hocreader.data.remote.TranslatedWord;
 import com.eaccid.bookreader.wordgetter.WordFromText;
-import com.eaccid.libtranslator.translator.TextTranslation;
+import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 
 import java.io.InputStream;
 import java.net.URL;

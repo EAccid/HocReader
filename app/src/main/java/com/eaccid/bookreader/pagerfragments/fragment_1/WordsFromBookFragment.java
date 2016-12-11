@@ -96,7 +96,7 @@ public class WordsFromBookFragment extends Fragment {
 
             @Override
             public void onItemPinned(int position) {
-                ((PagerActivity) getActivity()).onItemFragment1Pinned(position);
+//                ((PagerActivity) getActivity()).onItemFragment1Pinned(position);
             }
 
             @Override

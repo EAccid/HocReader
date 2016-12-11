@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:name=".searchbooks.SearchSuggestionsProvider"
-            android:authorities="com.eaccid.bookreader.searchbooks.SearchSuggestionsProvider"
+            android:name=".searchfiles.SearchSuggestionsProvider"
+            android:authorities="com.eaccid.bookreader.searchfiles.SearchSuggestionsProvider"
             android:exported="false"/>
 
         <activity

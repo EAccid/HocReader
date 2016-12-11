@@ -9,13 +9,18 @@ public class WordDatabaseProviderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setRetainInstance(true);  // keep the mDataProvider instance
+        WordDatabaseDataProvider.loadWordManager(getContext());
         mDataProvider = new WordDatabaseDataProvider();
-
     }
 
     public WordDatabaseDataProvider getDataProvider() {
         return mDataProvider;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        WordDatabaseDataProvider.releaseWordManager();
     }
 }

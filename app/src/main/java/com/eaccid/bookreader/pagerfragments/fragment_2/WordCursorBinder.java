@@ -2,10 +2,9 @@ package com.eaccid.bookreader.pagerfragments.fragment_2;
 
 import android.content.Context;
 import android.database.Cursor;
-
-import com.eaccid.bookreader.db.AppDatabaseManager;
-import com.eaccid.bookreader.db.WordFilter;
-import com.eaccid.bookreader.db.entity.Word;
+import com.eaccid.hocreader.data.local.WordFilter;
+import com.eaccid.hocreader.data.local.WordManager;
+import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
 
@@ -19,16 +18,17 @@ public class WordCursorBinder {
         this.filterByBook = filterByBook;
     }
 
-    public OrmliteCursorRecyclerViewAdapter createAdapterWithCursor(DrawerRecyclerViewAdapter adapter) {
+    public OrmliteCursorRecyclerViewAdapter createAdapterWithCursor(DrawerRecyclerViewAdapter adapter, WordManager wordManager) {
+
 
         if (filterByBook) {
-            AppDatabaseManager.setFilter(WordFilter.BY_BOOK);
+            wordManager.setFilter(WordFilter.BY_BOOK);
         }
 
-        PreparedQuery<Word> pq = AppDatabaseManager.getWordPreparedQuery(null, null);
+        PreparedQuery<Word> pq = wordManager.getWordPreparedQuery(null, null);
         OrmLiteCursorLoader<Word> liteCursorLoader = new OrmLiteCursorLoader<>(
                 context,
-                AppDatabaseManager.getWordDao(),
+                wordManager.getWordDao(),
                 pq);
         Cursor cursor = liteCursorLoader.loadInBackground();
         adapter.changeCursor(cursor, pq);
