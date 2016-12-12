@@ -4,7 +4,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.eaccid.bookreader.exception.NotImplementedException;
+import com.eaccid.hocreader.exception.NotImplementedException;
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.bookreader.wordgetter.WordOnTexvViewFinder;
 

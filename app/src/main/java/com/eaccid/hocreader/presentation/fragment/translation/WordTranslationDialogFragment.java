@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -23,23 +24,46 @@ import com.eaccid.hocreader.data.remote.ReaderTranslator;
 import com.eaccid.hocreader.data.remote.TranslatedWord;
 import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
+import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.presentation.BaseView;
+import com.eaccid.hocreader.presentation.fragment.book.BookPresenter;
 
 import java.io.InputStream;
 import java.net.URL;
 
-public class WordOutTranslatorDialogFragment extends DialogFragment {
+public class WordTranslationDialogFragment extends DialogFragment implements BaseView {
 
     public interface WordTranslationClickListener {
         void onWordTranslated(TranslatedWord translatedWord);
     }
 
-    public static WordOutTranslatorDialogFragment newInstance(WordFromText wordFromText) {
-        WordOutTranslatorDialogFragment f = new WordOutTranslatorDialogFragment();
+    public static WordTranslationDialogFragment newInstance(WordFromText wordFromText) {
+        WordTranslationDialogFragment f = new WordTranslationDialogFragment();
         // Supply word translation input as an argument.
         Bundle args = new Bundle();
         args.putSerializable("wordFromText", wordFromText);
         f.setArguments(args);
         return f;
+    }
+
+    private WordTranslationDialogPresenter mPresenter;
+
+    @Override
+    public BasePresenter getPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (mPresenter == null) mPresenter = new WordTranslationDialogPresenter();
+        mPresenter.attachView(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
     }
 
     @Override
@@ -93,7 +117,7 @@ public class WordOutTranslatorDialogFragment extends DialogFragment {
 
     }
 
-       private class OnItemTranslationClickListener implements AdapterView.OnItemClickListener {
+    private class OnItemTranslationClickListener implements AdapterView.OnItemClickListener {
 
         TranslatedWord translatedWord;
 
@@ -127,10 +151,10 @@ public class WordOutTranslatorDialogFragment extends DialogFragment {
         protected Bitmap doInBackground(@Size(min = 1) String... urls) {
             String url = urls[0];
             Bitmap wordImage = null;
-            try{
+            try {
                 InputStream is = new URL(url).openStream();
                 wordImage = BitmapFactory.decodeStream(is);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return wordImage;

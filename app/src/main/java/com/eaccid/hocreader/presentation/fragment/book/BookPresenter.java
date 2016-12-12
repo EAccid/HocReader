@@ -4,10 +4,7 @@ import android.util.Log;
 import com.eaccid.bookreader.file.BaseFileImpl;
 import com.eaccid.bookreader.file.pagesplitter.Page;
 import com.eaccid.bookreader.file.pagesplitter.TxtFileToScreenReader;
-import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
-import com.eaccid.hocreader.data.remote.ReaderDictionary;
-import com.eaccid.hocreader.data.remote.TranslatedWord;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
@@ -29,14 +26,14 @@ public class BookPresenter implements BasePresenter<BookFragment> {
     @Override
     public void attachView(BookFragment bookFragment) {
         mView = bookFragment;
-        Log.i(logTAG, mView.getClass().getName() + "' has been attached.");
+        Log.i(logTAG, "BookFragment has been attached.");
         setDataManager();
         setDataToList();
     }
 
     @Override
     public void detachView() {
-        Log.i(logTAG, mView.getClass().getName() + "' has been detached.");
+        Log.i(logTAG, "BookFragment has been detached.");
         mView = null;
     }
 
@@ -77,23 +74,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
         int currentPagePosition = dataManager.getCurrentPage() - 1;
         int fromPage = Integer.parseInt(input.toString()) - 1;
         mView.scrollToListPosition(fromPage, currentPagePosition);
-        mView.showSnackBackToLastOpenedPage(currentPagePosition, fromPage);
+        mView.showSnackbarBackToLastOpenedPage(currentPagePosition, fromPage);
     }
 
-    public void onWordTranslated(TranslatedWord translatedWord) {
-        ReaderDictionary readerDictionary = new ReaderDictionary(mView.getContext());
-        boolean succeed = readerDictionary.addTranslatedWord(translatedWord);
-        dataManager.createOrUpdateWord(translatedWord.getWordBaseForm(),
-                translatedWord.getTranslation(),
-                translatedWord.getContext(),
-                succeed);
-
-        //TODO del from here
-        PagerPresenter pp = ((PagerActivity) mView.getActivity()).getPresenter();
-        pp.addWordToWordListProvider(translatedWord.getWordBaseForm());
     }
-
-    public void OnWordFromTextViewClicked(WordFromText wordFromText) {
-        dataManager.setCurrentPageForAddingWord(wordFromText.getPageNumber());
-    }
-}

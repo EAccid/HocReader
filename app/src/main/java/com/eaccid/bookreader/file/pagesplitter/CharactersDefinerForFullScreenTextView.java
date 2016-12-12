@@ -6,7 +6,7 @@ import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.widget.TextView;
 
-import com.eaccid.bookreader.exception.NotImplementedException;
+import com.eaccid.hocreader.exception.NotImplementedException;
 
 public class CharactersDefinerForFullScreenTextView {
 

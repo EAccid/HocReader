@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.pagerfragments;
+package com.eaccid.hocreader.presentation.fragment;
 
 public class FragmentTags {
 
@@ -6,7 +6,6 @@ public class FragmentTags {
     public static final String WORDS_LIST_VIEW = "list view";
     public static final String ITEM_PINNED_DIALOG = "item pinned dialog";
     public static final String ADD_WORD_DIALOG = "add word dialog";
-
     public static final String GO_TO_PAGE = "add word dialog";
 
 }

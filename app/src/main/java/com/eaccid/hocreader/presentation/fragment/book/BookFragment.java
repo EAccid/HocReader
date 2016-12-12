@@ -3,7 +3,6 @@ package com.eaccid.hocreader.presentation.fragment.book;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,10 +16,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.pagerfragments.FragmentTags;
-import com.eaccid.hocreader.presentation.fragment.translation.WordOutTranslatorDialogFragment;
-import com.eaccid.bookreader.wordgetter.WordFromText;
-import com.eaccid.hocreader.data.remote.TranslatedWord;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
@@ -34,16 +29,13 @@ import java.util.List;
 
 
 public class BookFragment extends Fragment implements
-        OnMenuItemClickListener, OnMenuItemLongClickListener, BaseView,
-        OnWordFromPageViewTouchListener.OnWordFromTextClickListener,
-        WordOutTranslatorDialogFragment.WordTranslationClickListener{
+        OnMenuItemClickListener, OnMenuItemLongClickListener, BaseView {
 
     private BookPresenter mPresenter;
     private RecyclerView mRecyclerView;
     private BookRecyclerViewAdapter mAdapter;
     private ContextMenuDialogFragment mMenuDialogFragment;
-    private FragmentManager fragmentManager;
-    private List<MenuObject> menuObjects = new ArrayList<>();
+     private List<MenuObject> menuObjects = new ArrayList<>();
     private static final String TAG = "BookFragment";
 
     public static BookFragment newInstance() {
@@ -63,7 +55,6 @@ public class BookFragment extends Fragment implements
         if (mPresenter == null) mPresenter = new BookPresenter();
         mPresenter.attachView(this);
 
-        fragmentManager = getFragmentManager();
         initMenuFragment();
     }
 
@@ -82,19 +73,20 @@ public class BookFragment extends Fragment implements
         mRecyclerView.setAdapter(mAdapter);
 
         ImageView moreMenuImg = (ImageView) rootView.findViewById(R.id.menu_more_vert_grey);
+
         moreMenuImg.setOnClickListener(view -> onMoreMenuClicked());
 
         return rootView;
     }
 
     private void onMoreMenuClicked() {
-        mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+        mMenuDialogFragment.show(getFragmentManager(), ContextMenuDialogFragment.TAG);
     }
 
     @Override
     public void onDestroy() {
-        mPresenter.detachView();
         super.onDestroy();
+        mPresenter.detachView();
     }
 
     private void initMenuFragment() {
@@ -149,7 +141,7 @@ public class BookFragment extends Fragment implements
         MenuObjectWrapper mo = (MenuObjectWrapper) menuObjects.get(position);
         switch (mo.getTag()) {
             case GO_TO_PAGE:
-                goToPage(clickedView);
+                showGoToPageFragment(clickedView);
                 break;
             case ADD_BOOKMARK:
                 Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
@@ -176,7 +168,7 @@ public class BookFragment extends Fragment implements
         Toast.makeText(clickedView.getContext(), "item on long clicked: " + menuObjects.get(position).getTitle(), Toast.LENGTH_SHORT).show();
     }
 
-    private void goToPage(View clickedView) {
+    private void showGoToPageFragment(View clickedView) {
 
         new MaterialDialog.Builder(clickedView.getContext())
                 .title(R.string.go_to_page_title)
@@ -189,7 +181,7 @@ public class BookFragment extends Fragment implements
                 .show();
     }
 
-    public void showSnackBackToLastOpenedPage(int currentPage, int previousPage) {
+    public void showSnackbarBackToLastOpenedPage(int currentPage, int previousPage) {
 
         Snackbar snackbar = Snackbar.make(
                 mRecyclerView,
@@ -210,21 +202,6 @@ public class BookFragment extends Fragment implements
 
     public void notifyDataSetChanged() {
         mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void OnWordClicked(WordFromText wordFromText) {
-        mPresenter.OnWordFromTextViewClicked(wordFromText);
-        final DialogFragment dialog = WordOutTranslatorDialogFragment.newInstance(wordFromText);
-        getFragmentManager()
-                .beginTransaction()
-                .add(dialog, FragmentTags.ITEM_PINNED_DIALOG)
-                .commit();
-    }
-
-    @Override
-    public void onWordTranslated(TranslatedWord translatedWord) {
-        mPresenter.onWordTranslated(translatedWord);
     }
 
 }

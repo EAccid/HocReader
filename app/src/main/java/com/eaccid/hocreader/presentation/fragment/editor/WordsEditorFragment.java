@@ -33,6 +33,9 @@ public class WordsEditorFragment extends Fragment implements BaseView {
     public RecyclerViewSwipeManager mRecyclerViewSwipeManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
+    public WordsEditorFragment() {
+    }
+
     public static WordsEditorFragment newInstance() {
         WordsEditorFragment f = new WordsEditorFragment();
         return f;
@@ -62,12 +65,7 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         initRecyclerView();
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryText);
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorLightAccent);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                onRefreshRecyclerView();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(this::onRefreshRecyclerView);
 
     }
 

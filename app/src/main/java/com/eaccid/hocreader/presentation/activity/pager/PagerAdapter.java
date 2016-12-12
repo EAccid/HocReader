@@ -28,8 +28,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return BookFragment.newInstance();
             case 1:
-                if (wordsFromBookFragment == null)
-                    return WordsEditorFragment.newInstance();
+                if (wordsFromBookFragment == null) {
+                    wordsFromBookFragment = WordsEditorFragment.newInstance();
+                    return wordsFromBookFragment;
+                }
                 return wordsFromBookFragment;
             case 2:
                 return WordsCarouselTrainingFragment.newInstance();

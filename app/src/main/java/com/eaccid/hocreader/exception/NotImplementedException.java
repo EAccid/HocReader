@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.exception;
+package com.eaccid.hocreader.exception;
 
 public class NotImplementedException extends RuntimeException {
 

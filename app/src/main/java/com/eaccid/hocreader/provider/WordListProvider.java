@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class WordListProvider extends DataListProvider {
 
-    private final String TAG = "words list";
+    private static final String logTAG = "WordListProvider";
     private List<String> sessionWords;
     public static AppDatabaseManager dataManager; //TODO inject
 
@@ -63,7 +63,7 @@ public class WordListProvider extends DataListProvider {
 
         ItemDataProvider wordItem = WordItemListUtils.createItemWord(wordBaseName, sessionWords.size());
         if (wordItem == null) {
-            Log.e(TAG, "Word has not been added to database.");
+            Log.e(logTAG, "Word has not been added to database.");
             return;
         }
 
@@ -151,7 +151,7 @@ public class WordListProvider extends DataListProvider {
 
         @Override
         public List<ItemDataProvider> call() throws Exception {
-            Log.i("TAG", "Updating words from database.");
+            Log.i(logTAG, "Updating words from database... start");
 
             List<ItemDataProvider> dataList = new ArrayList<>();
             dataManager.setFilter(wordFilter);
@@ -162,7 +162,7 @@ public class WordListProvider extends DataListProvider {
                 itemDataProvider.setLastAdded(wordFilter == WordFilter.BY_BOOK_AND_WORD_COLLECTION);
                 dataList.add(itemDataProvider);
             }
-
+            Log.i(logTAG, "Updating words from database... end");
             return dataList;
         }
 

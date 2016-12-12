@@ -23,7 +23,7 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     @Override
     public void attachView(PagerActivity pagerActivity) {
         mView = pagerActivity;
-        Log.i(logTAG, mView.getLocalClassName() + "' has been attached.");
+        Log.i(logTAG, "PagerActivity has been attached.");
 
         dataManager.loadDatabaseManager(mView);
         WordListProvider.setDataManager(dataManager);
@@ -36,7 +36,7 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
         dataManager.releaseDatabaseManager();
         WordListProvider.setDataManager(null);
 
-        Log.i(logTAG, mView.getLocalClassName() + "' has been detached.");
+        Log.i(logTAG, "PagerActivity has been detached.");
         mView = null;
     }
 
@@ -60,4 +60,19 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
         wordListProvider.addWord(translatedWord);
         mView.notifyItemChanged();
     }
+
+    public void onWordTranslated(TranslatedWord translatedWord) {
+        ReaderDictionary readerDictionary = new ReaderDictionary(mView.getApplicationContext());
+        boolean succeed = readerDictionary.addTranslatedWord(translatedWord);
+        dataManager.createOrUpdateWord(translatedWord.getWordBaseForm(),
+                translatedWord.getTranslation(),
+                translatedWord.getContext(),
+                succeed);
+        addWordToWordListProvider(translatedWord.getWordBaseForm());
+    }
+
+    public void OnWordFromTextViewClicked(WordFromText wordFromText) {
+        dataManager.setCurrentPageForAddingWord(wordFromText.getPageNumber());
+    }
+
 }

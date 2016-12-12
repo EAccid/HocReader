@@ -14,13 +14,13 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     @Override
     public void attachView(WordsEditorFragment wordsEditorFragment) {
         mView = wordsEditorFragment;
-        Log.i(logTAG, mView.getClass().getName() + "' has been attached.");
+        Log.i(logTAG, "WordsEditorFragment has been attached.");
         setDataProvider();
     }
 
     @Override
     public void detachView() {
-        Log.i(logTAG, mView.getClass().getName() + "' has been detached.");
+        Log.i(logTAG, "WordsEditorFragment has been detached.");
         mView = null;
     }
 

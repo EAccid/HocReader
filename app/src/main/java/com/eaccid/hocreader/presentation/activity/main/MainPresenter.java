@@ -29,13 +29,13 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     public void attachView(MainActivity mainActivity) {
         mView = mainActivity;
         dataManager.loadDatabaseManager(mView);
-        Log.i(logTAG, mView.getLocalClassName() + "' has been attached.");
+        Log.i(logTAG, "MainActivity has been attached.");
     }
 
     @Override
     public void detachView() {
         dataManager.releaseDatabaseManager();
-        Log.i(logTAG, mView.getLocalClassName() + "' has been detached.");
+        Log.i(logTAG, "MainActivity has been detached.");
         mView = null;
     }
 
