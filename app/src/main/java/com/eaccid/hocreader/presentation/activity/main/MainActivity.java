@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.main;
+package com.eaccid.hocreader.presentation.activity.main;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -23,6 +23,7 @@ import com.eaccid.bookreader.activity.services.MemorizingAlarmReceiver;
 import com.eaccid.bookreader.searchfiles.ItemObjectGroup;
 import com.eaccid.bookreader.searchfiles.SearchAdapter;
 import com.eaccid.bookreader.searchfiles.SearchSuggestionsProvider;
+import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
 
 import java.util.List;
@@ -32,6 +33,11 @@ public class MainActivity extends AppCompatActivity implements BaseView, SearchV
     private static MainPresenter mPresenter;
     private ExpandableListView expandableListView;
     private SearchAdapter searchAdapter;
+
+    @Override
+    public BasePresenter getPresenter() {
+        return mPresenter;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -9,13 +9,13 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.hocreader.data.local.WordManager;
+import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 
 public class MemorizingService extends IntentService {
 
     private static final String NOTIFICATION_TAG = "WORD_MEMORIZING";
-    private WordManager wordManager;
+    private AppDatabaseManager wordManager;
     private NotificationManager notificationManager;
 
     public MemorizingService() {
@@ -27,7 +27,7 @@ public class MemorizingService extends IntentService {
         super.onCreate();
         Log.i("MemorizingService", "on create");
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        wordManager = new WordManager();
+        wordManager = new AppDatabaseManager();
     }
 
     @Override

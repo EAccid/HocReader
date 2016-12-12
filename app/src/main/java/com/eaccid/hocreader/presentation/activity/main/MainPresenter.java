@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.main;
+package com.eaccid.hocreader.presentation.activity.main;
 
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -8,8 +8,7 @@ import com.eaccid.bookreader.file.findner.FileOnDeviceFinder;
 import com.eaccid.bookreader.searchfiles.ItemObjectChild;
 import com.eaccid.bookreader.searchfiles.ItemObjectGroup;
 import com.eaccid.bookreader.underdev.settings.MainSettings;
-import com.eaccid.hocreader.data.local.BookManager;
-import com.eaccid.hocreader.data.local.WordManager;
+import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
 import java.io.File;
@@ -20,10 +19,10 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     private final String logTAG = "MainPresenter";
     private MainActivity mView;
-    private BookManager dataManager; //TODO inject
+    private AppDatabaseManager dataManager; //TODO inject
 
     public MainPresenter() {
-        dataManager = new BookManager();
+        dataManager = new AppDatabaseManager();
     }
 
     @Override
@@ -98,10 +97,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     public void onFabButtonClickListener() {
         //TEMP
-        WordManager wordManager = new WordManager();
-        wordManager.loadDatabaseManager(mView);
-        int words = wordManager.getAllWords(null, null).size();
-        wordManager.releaseDatabaseManager();
+        int words = dataManager.getAllWords(null, null).size();
         int books = dataManager.getAllBooks().size();
         String text = "books: " + books + ", words: " + words;
         mView.showTestFab(text);

@@ -1,12 +1,14 @@
 package com.eaccid.hocreader.data.local;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.eaccid.hocreader.data.local.db.AppDatabaseManager;
+import com.eaccid.hocreader.data.local.WordFilter;
 import com.eaccid.hocreader.data.local.db.entity.Book;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.data.local.db.service.BookDaoService;
+import com.eaccid.hocreader.data.local.db.service.DatabaseManager;
 import com.eaccid.hocreader.data.local.db.service.WordDaoService;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -15,12 +17,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WordManager extends AppDatabaseManager {
+public class AppDatabaseManager {
 
-    private final String logTAG = "BookManager";
+    private final String logTAG = "AppDatabaseManager";
+    private DatabaseManager mDatabaseManager;
+    private static int count = 0; //test
+
+    public void loadDatabaseManager(Context baseContext) {
+        mDatabaseManager = new DatabaseManager(baseContext);
+        Log.i(logTAG, "load db manager from: " + baseContext.getClass().getName() + ", " + ++count);
+    }
+
+    public void releaseDatabaseManager() {
+        mDatabaseManager.releaseConnection();
+        Log.i(logTAG, "release db manager, " + --count);
+    }
+
+
     private WordFilter currentFilter = WordFilter.NONE;
-
-    //TODO: refactor - > del current book and page solution
     private static Book currentBook;
     private static int currentPage = 1;
 
@@ -36,6 +50,73 @@ public class WordManager extends AppDatabaseManager {
     public void setCurrentPageForAddingWord(int pageNumber) {
         currentPage = pageNumber;
     }
+
+    public String getCurrentBookName() {
+        return currentBook.getName();
+    }
+
+    public String getCurrentBookPath() {
+        return currentBook.getPath();
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public WordFilter clearFilter() {
+        return currentFilter = WordFilter.NONE;
+    }
+
+    public void setFilter(WordFilter filter) {
+        currentFilter = filter;
+    }
+
+
+    /**
+     * books table
+     */
+
+
+    public void refreshBooks(List<String> bookpaths) {
+        try {
+            BookDaoService bookDaoService = mDatabaseManager.getBookService();
+            List<Book> booksInDB = bookDaoService.getAll();
+            for (Book book : booksInDB
+                    ) {
+                if (!bookpaths.contains(book.getPath())) {
+                    bookDaoService.delete(book);
+                    Log.i(logTAG, "book '" + book.getName() + "' has been deleted.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Book> getAllBooks() {
+        try {
+            BookDaoService bs = mDatabaseManager.getBookService();
+            return bs.getAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public void createOrUpdateBook(String bookPath, String bookName) {
+        try {
+            BookDaoService bs = mDatabaseManager.getBookService();
+            Book book = new Book(bookPath, bookName);
+            bs.createOrUpdate(book);
+            Log.i(logTAG, "book '" + book.getName() + "' has been created / updated");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * words table
+     */
 
     public void createOrUpdateWord(String wordname, String translation, String context,
                                    boolean enabledOnline) {
@@ -65,15 +146,6 @@ public class WordManager extends AppDatabaseManager {
         }
     }
 
-    public WordFilter clearFilter() {
-        return currentFilter = WordFilter.NONE;
-    }
-
-    public void setFilter(WordFilter filter) {
-        currentFilter = filter;
-    }
-
-
     public List<Word> getAllWords(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
 
         //TODO create filter and refactor/temp solution
@@ -86,7 +158,7 @@ public class WordManager extends AppDatabaseManager {
 
                     if (bookIdFilter == null && currentBook == null)
                         throw new RuntimeException("Current book filter has not been set: \n" +
-                                "'wordManager.setFilter( ? )' or argument 'bookIdFilter ?'");
+                                "'dataManager.setFilter( ? )' or argument 'bookIdFilter ?'");
                     lw = ws.getAllByBookId(bookIdFilter == null ? currentBook.getPath() : bookIdFilter);
                     break;
                 case BY_PAGE:
@@ -141,7 +213,7 @@ public class WordManager extends AppDatabaseManager {
                 case BY_BOOK:
                     if (bookIdFilter == null && currentBook == null)
                         throw new RuntimeException("Current book filter has not been set: \n" +
-                                "'wordManager.setFilter( ? )' or argument 'bookIdFilter ?'");
+                                "'dataManager.setFilter( ? )' or argument 'bookIdFilter ?'");
                     return ws.getWordsByBookIdPreparedQuery(bookIdFilter == null ? currentBook.getPath() : bookIdFilter);
                 default:
                     return ws.getAllWordsPreparedQuery();
@@ -174,18 +246,6 @@ public class WordManager extends AppDatabaseManager {
         return null;
     }
 
-    public String getCurrentBookName() {
-        return currentBook.getName();
-    }
-
-    public String getCurrentBookPath() {
-        return currentBook.getPath();
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
     @Nullable
     public Word getRandomWord() {
         try {
@@ -198,4 +258,5 @@ public class WordManager extends AppDatabaseManager {
         }
         return null;
     }
+
 }

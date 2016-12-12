@@ -12,11 +12,10 @@ import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.eaccid.bookreader.R;
-import com.eaccid.hocreader.data.local.WordManager;
-
+import com.eaccid.hocreader.data.local.AppDatabaseManager;
 
 public class WordsCarouselTrainingFragment extends Fragment {
-    private WordManager wordManager;
+    private AppDatabaseManager wordManager;
 
     public static WordsCarouselTrainingFragment newInstance() {
         return new WordsCarouselTrainingFragment();
@@ -25,7 +24,7 @@ public class WordsCarouselTrainingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        wordManager = new WordManager();
+        wordManager = new AppDatabaseManager();
         wordManager.loadDatabaseManager(getContext());
     }
 

@@ -17,11 +17,11 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.activity.pager.PagerActivity;
+import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import com.eaccid.bookreader.file.BaseFileImpl;
 import com.eaccid.bookreader.file.pagesplitter.Page;
 import com.eaccid.bookreader.file.pagesplitter.TxtFileToScreenReader;
-import com.eaccid.hocreader.data.local.WordManager;
+import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -40,7 +40,6 @@ public class BookReaderListFragment extends Fragment implements
 
     private RecyclerView mRecyclerView;
     private BookReaderRecyclerViewAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects = new ArrayList<>();
@@ -69,7 +68,7 @@ public class BookReaderListFragment extends Fragment implements
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
 
         mAdapter = new BookReaderRecyclerViewAdapter(mPagesList, getWordManager());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -252,8 +251,8 @@ public class BookReaderListFragment extends Fragment implements
 
     }
 
-    public WordManager getWordManager() {
-        return ((PagerActivity) getActivity()).getWordData();
+    public AppDatabaseManager getWordManager() {
+        return ((PagerActivity) getActivity()).getPresenter().getDataManager();
     }
 
 }

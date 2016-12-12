@@ -1,11 +1,10 @@
-package com.eaccid.bookreader.provider;
+package com.eaccid.hocreader.provider;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.WordFilter;
-import com.eaccid.hocreader.data.local.WordManager;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 
 import java.util.ArrayList;
@@ -16,13 +15,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class WordDatabaseDataProvider extends DataProvider {
+public class WordListProvider extends DataListProvider {
 
     private final String TAG = "words list";
     private List<String> sessionWords;
-    protected static WordManager wordManager;
+    public static AppDatabaseManager dataManager; //TODO inject
 
-    public WordDatabaseDataProvider() {
+    public static void setDataManager(AppDatabaseManager dm) {
+        dataManager = dm;
+    }
+
+    public WordListProvider() {
         sessionWords = new ArrayList<>();
     }
 
@@ -78,7 +81,7 @@ public class WordDatabaseDataProvider extends DataProvider {
         sessionWords.add(word.getName());
         //todo del from here
 
-        wordManager.createOrUpdateWord(word.getName(), word.getTranslation(), word.getContext(), true);
+        dataManager.createOrUpdateWord(word.getName(), word.getTranslation(), word.getContext(), true);
         return super.undoLastRemoval();
     }
 
@@ -128,13 +131,13 @@ public class WordDatabaseDataProvider extends DataProvider {
 
         @Nullable
         static ItemDataProvider createItemWord(String wordBaseName, int currentId) {
-            Word word = wordManager.getCurrentBooksWordByPage(wordBaseName);
+            Word word = dataManager.getCurrentBooksWordByPage(wordBaseName);
             if (word == null) return null;
-            return new DataProvider.ItemDataProvider(currentId, word);
+            return new DataListProvider.ItemDataProvider(currentId, word);
         }
 
         private static List<ItemDataProvider> getWordItemByCurrentBookList(WordFilter wordFilter, @Nullable List<String> words) {
-            List<DataProvider.ItemDataProvider> newDataList = new LinkedList<>();
+            List<DataListProvider.ItemDataProvider> newDataList = new LinkedList<>();
             try {
                 ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
                 WordItemListUtils wordFromDBList = new WordItemListUtils(wordFilter, words);
@@ -151,8 +154,8 @@ public class WordDatabaseDataProvider extends DataProvider {
             Log.i("TAG", "Updating words from database.");
 
             List<ItemDataProvider> dataList = new ArrayList<>();
-            wordManager.setFilter(wordFilter);
-            List<Word> wordsFromDB = wordManager.getAllWords(words, null);
+            dataManager.setFilter(wordFilter);
+            List<Word> wordsFromDB = dataManager.getAllWords(words, null);
 
             for (Word word : wordsFromDB) {
                 ItemDataProvider itemDataProvider = new ItemDataProvider(fromCurrentPosition + dataList.size(), word);
@@ -165,22 +168,7 @@ public class WordDatabaseDataProvider extends DataProvider {
 
         public static void removeItem(ItemDataProvider itemData) {
             Word word = (Word) itemData.getObject();
-            wordManager.deleteWord(word);
-        }
-    }
-
-
-    protected static void loadWordManager(Context context) {
-        if (wordManager == null) {
-            wordManager = new WordManager();
-            wordManager.loadDatabaseManager(context);
-        }
-    }
-
-    protected static void releaseWordManager() {
-        if (wordManager != null) {
-            wordManager.releaseDatabaseManager();
-            wordManager = null;
+            dataManager.deleteWord(word);
         }
     }
 

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.activity.pager.PagerActivity;
+import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;

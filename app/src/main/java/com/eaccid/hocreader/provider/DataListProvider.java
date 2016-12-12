@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.provider;
+package com.eaccid.hocreader.provider;
 
 import android.util.Log;
 
@@ -7,13 +7,13 @@ import com.eaccid.hocreader.data.local.db.entity.Word;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class DataProvider {
+public abstract class DataListProvider {
 
     private List<ItemDataProvider> mData;
     private ItemDataProvider mLastRemovedData;
     private int mLastRemovedPosition = -1;
 
-    public DataProvider() {
+    public DataListProvider() {
         mData = new LinkedList<>();
     }
 
@@ -107,6 +107,10 @@ public abstract class DataProvider {
             return text;
         }
 
+        public String getTranslation() {
+            return ((Word) object).getTranslation();
+        }
+
         public long getItemId() {
             return id;
         }
@@ -147,4 +151,5 @@ public abstract class DataProvider {
     public Object getItemObject(int position) {
         return mData.get(position).getObject();
     }
+
 }

@@ -30,7 +30,7 @@ import java.net.URL;
 public class WordOutTranslatorDialogFragment extends DialogFragment {
 
     public interface WordTranslationClickListener {
-        void onTranslatedWord(TranslatedWord translatedWord);
+        void onWordTranslated(TranslatedWord translatedWord);
     }
 
     public static WordOutTranslatorDialogFragment newInstance(WordFromText wordFromText) {
@@ -109,7 +109,7 @@ public class WordOutTranslatorDialogFragment extends DialogFragment {
 
             translatedWord.setTranslation(chosenTranslation);
 
-            ((WordTranslationClickListener) getContext()).onTranslatedWord(translatedWord);
+            ((WordTranslationClickListener) getContext()).onWordTranslated(translatedWord);
 
             dismiss();
         }

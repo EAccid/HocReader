@@ -1,32 +1,30 @@
-package com.eaccid.bookreader.pagerfragments.fragment_1;
+package com.eaccid.hocreader.presentation.fragment.editor;
 
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.activity.pager.PagerActivity;
-import com.eaccid.bookreader.pagerfragments.fragment_1.SwipeOnLongPressRecyclerViewAdapter;
-import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
+import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.presentation.BaseView;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
-public class WordsFromBookFragment extends Fragment {
+public class WordsEditorFragment extends Fragment implements BaseView {
 
-    private Toolbar mToolbar;
-    private CardView mCardView;
+    private WordEditorPresenter mPresenter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -35,14 +33,17 @@ public class WordsFromBookFragment extends Fragment {
     public RecyclerViewSwipeManager mRecyclerViewSwipeManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
-    public WordsFromBookFragment() {
-        super();
+    @Override
+    public BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        if (mPresenter == null) mPresenter = new WordEditorPresenter();
+        mPresenter.attachView(this);
     }
 
     @Override
@@ -54,15 +55,12 @@ public class WordsFromBookFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
-
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryText);
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorLightAccent);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getDataProvider().updateSessionDataList();
-                mAdapter.notifyDataSetChanged();
-                mSwipeRefreshLayout.setRefreshing(false);
+                onRefreshRecyclerView();
             }
         });
 
@@ -73,8 +71,6 @@ public class WordsFromBookFragment extends Fragment {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefresh);
-//        mCardView = (CardView) getView().findViewById(R.id.cardView);
-
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)
@@ -82,52 +78,34 @@ public class WordsFromBookFragment extends Fragment {
         mRecyclerViewTouchActionGuardManager.setInterceptVerticalScrollingWhileAnimationRunning(true);
         mRecyclerViewTouchActionGuardManager.setEnabled(true);
 
-        // swipe manager
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
-
-        //adapter
-        final SwipeOnLongPressRecyclerViewAdapter myItemAdapter = new SwipeOnLongPressRecyclerViewAdapter(getDataProvider());
-
+        final SwipeOnLongPressRecyclerViewAdapter myItemAdapter = mPresenter.createSwipeOnLongPressAdapter();
         myItemAdapter.setEventListener(new SwipeOnLongPressRecyclerViewAdapter.EventListener() {
             @Override
             public void onItemRemoved(int position) {
-                ((PagerActivity) getActivity()).onItemFragment1Removed(position);
+                onItemRemove(position);
             }
 
             @Override
             public void onItemPinned(int position) {
-//                ((PagerActivity) getActivity()).onItemFragment1Pinned(position);
+                onItemPin(position);
             }
 
             @Override
             public void onItemViewClicked(View v, boolean pinned) {
                 onItemViewClick(v, pinned);
             }
-
         });
 
         mAdapter = myItemAdapter;
-
         mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mAdapter);
-
-
         final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
-        // Change animations are enabled by default since support-v7-recyclerview v22.
-        // Disable the change animation in order to make turning back animation of swiped item works properly.
-
         animator.setSupportsChangeAnimations(false);
-
         animator.setRemoveDuration(300);
-
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
         mRecyclerView.setItemAnimator(animator);
-
-        // additional decorations
-        //noinspection StatementWithEmptyBody
-//        mRecyclerView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.material_shadow_z1)));
-//        mRecyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.list_divider_h), true));
 
         mRecyclerViewTouchActionGuardManager.attachRecyclerView(mRecyclerView);
         mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
@@ -140,37 +118,58 @@ public class WordsFromBookFragment extends Fragment {
             mRecyclerViewSwipeManager.release();
             mRecyclerViewSwipeManager = null;
         }
-
         if (mRecyclerViewTouchActionGuardManager != null) {
             mRecyclerViewTouchActionGuardManager.release();
             mRecyclerViewTouchActionGuardManager = null;
         }
-
         if (mRecyclerView != null) {
             mRecyclerView.setItemAnimator(null);
             mRecyclerView.setAdapter(null);
             mRecyclerView = null;
         }
-
         if (mWrappedAdapter != null) {
             WrapperAdapterUtils.releaseAll(mWrappedAdapter);
             mWrappedAdapter = null;
         }
         mAdapter = null;
         mLayoutManager = null;
-
         super.onDestroyView();
+        mPresenter.detachView();
+    }
+
+    private void onItemRemove(int position) {
+        mPresenter.onItemRemoved(position);
+    }
+
+    public void onItemPin(int position) {
+    }
+
+    public void showRemovedSnackBar(int position) {
+        Snackbar snackbar = Snackbar.make(
+                getView().findViewById(R.id.container),
+                R.string.snack_bar_text_item_removed,
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snack_bar_action_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.onUndoClick();
+            }
+        });
+        snackbar.setActionTextColor(ContextCompat.getColor(getView().getContext(), R.color.snackbar_action_color_done));
+        snackbar.show();
     }
 
     private void onItemViewClick(View v, boolean pinned) {
         int position = mRecyclerView.getChildAdapterPosition(v);
         if (position != RecyclerView.NO_POSITION) {
-            ((PagerActivity) getActivity()).onItemFragment1Clicked(position);
+            mPresenter.onItemClicked(position);
         }
     }
 
-    public WordDatabaseDataProvider getDataProvider() {
-        return ((PagerActivity) getActivity()).getDataProvider();
+    private void onRefreshRecyclerView() {
+        mPresenter.onRefreshRecyclerView();
+        mAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public void notifyItemChanged(int position) {
@@ -185,4 +184,5 @@ public class WordsFromBookFragment extends Fragment {
     public void notifyItemChanged() {
         mAdapter.notifyDataSetChanged();
     }
+
 }

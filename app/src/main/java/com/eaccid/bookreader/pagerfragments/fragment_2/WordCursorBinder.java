@@ -2,8 +2,9 @@ package com.eaccid.bookreader.pagerfragments.fragment_2;
 
 import android.content.Context;
 import android.database.Cursor;
+
+import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.WordFilter;
-import com.eaccid.hocreader.data.local.WordManager;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -18,7 +19,7 @@ public class WordCursorBinder {
         this.filterByBook = filterByBook;
     }
 
-    public OrmliteCursorRecyclerViewAdapter createAdapterWithCursor(DrawerRecyclerViewAdapter adapter, WordManager wordManager) {
+    public OrmliteCursorRecyclerViewAdapter createAdapterWithCursor(DrawerRecyclerViewAdapter adapter, AppDatabaseManager wordManager) {
 
 
         if (filterByBook) {

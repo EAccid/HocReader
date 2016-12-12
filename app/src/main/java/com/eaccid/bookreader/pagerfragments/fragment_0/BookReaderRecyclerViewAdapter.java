@@ -7,16 +7,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.file.pagesplitter.Page;
-import com.eaccid.hocreader.data.local.WordManager;
+import com.eaccid.hocreader.data.local.AppDatabaseManager;
 
 import java.util.List;
 
 public class BookReaderRecyclerViewAdapter extends RecyclerView.Adapter<BookReaderRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "BookReaderRecyclerViewAdapter";
     private List<Page<String>> mPagesList;
-    private WordManager wordManager;
+    private AppDatabaseManager wordManager;
 
-    public BookReaderRecyclerViewAdapter(List<Page<String>> mPagesList, WordManager wm) {
+    public BookReaderRecyclerViewAdapter(List<Page<String>> mPagesList, AppDatabaseManager wm) {
         this.mPagesList = mPagesList;
         this.wordManager = wm;
     }
