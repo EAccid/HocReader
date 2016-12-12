@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.file.pagesplitter.Page;
+import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.provider.file.pagesplitter.Page;
 import java.util.List;
 
 public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerViewAdapter.ViewHolder> {

@@ -2,8 +2,8 @@ package com.eaccid.hocreader.presentation.fragment.editor;
 import android.util.Log;
 import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
-import com.eaccid.hocreader.provider.DataListProvider;
-import com.eaccid.hocreader.provider.WordListProvider;
+import com.eaccid.hocreader.provider.db.DataListProvider;
+import com.eaccid.hocreader.provider.db.WordListProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
 public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {

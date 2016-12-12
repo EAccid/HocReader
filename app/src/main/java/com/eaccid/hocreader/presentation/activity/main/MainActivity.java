@@ -18,11 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
-import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.activity.services.MemorizingAlarmReceiver;
-import com.eaccid.bookreader.searchfiles.ItemObjectGroup;
-import com.eaccid.bookreader.searchfiles.SearchAdapter;
-import com.eaccid.bookreader.searchfiles.SearchSuggestionsProvider;
+import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.refactoring.services.MemorizingAlarmReceiver;
+import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
+import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchAdapter;
+import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
 

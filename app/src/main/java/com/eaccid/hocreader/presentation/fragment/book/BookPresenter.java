@@ -1,9 +1,9 @@
 package com.eaccid.hocreader.presentation.fragment.book;
 
 import android.util.Log;
-import com.eaccid.bookreader.file.BaseFileImpl;
-import com.eaccid.bookreader.file.pagesplitter.Page;
-import com.eaccid.bookreader.file.pagesplitter.TxtFileToScreenReader;
+import com.eaccid.hocreader.provider.file.BaseFileImpl;
+import com.eaccid.hocreader.provider.file.pagesplitter.Page;
+import com.eaccid.hocreader.provider.file.pagesplitter.TxtFileToScreenReader;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;

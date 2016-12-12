@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.eaccid.bookreader.R;
-import com.eaccid.hocreader.provider.DataListProvider;
-import com.eaccid.hocreader.provider.WordListProvider;
+import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.provider.db.DataListProvider;
+import com.eaccid.hocreader.provider.db.WordListProvider;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;

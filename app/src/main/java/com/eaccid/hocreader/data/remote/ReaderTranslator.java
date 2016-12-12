@@ -1,6 +1,6 @@
 package com.eaccid.hocreader.data.remote;
 
-import com.eaccid.bookreader.wordgetter.WordFromText;
+import com.eaccid.hocreader.provider.wordgetter.WordFromText;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.Translator;
 

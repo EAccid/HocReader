@@ -2,7 +2,7 @@ package com.eaccid.hocreader.data.remote;
 
 import android.content.Context;
 
-import com.eaccid.bookreader.underdev.settings.LingualeoServiceCookiesHandler;
+import com.eaccid.hocreader.refactoring.settings.LingualeoServiceCookiesHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionary;
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.eaccid.bookreader">
+    package="com.eaccid.hocreader">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:name=".searchfiles.SearchSuggestionsProvider"
-            android:authorities="com.eaccid.bookreader.searchfiles.SearchSuggestionsProvider"
+            android:name="com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider"
+            android:authorities="com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider"
             android:exported="false"/>
 
         <activity
@@ -42,20 +42,20 @@
         </activity>
 
         <service
-            android:name=".activity.services.LingualeoRefreshService"
+            android:name="com.eaccid.hocreader.refactoring.services.LingualeoRefreshService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".activity.services.MemorizingService"
+            android:name="com.eaccid.hocreader.refactoring.services.MemorizingService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name=".activity.services.MemorizingAlarmReceiver"
+            android:name="com.eaccid.hocreader.refactoring.services.MemorizingAlarmReceiver"
             android:process=":remote" />
 
         <activity
-            android:name=".activity.services.MemorizingActivity"
+            android:name="com.eaccid.hocreader.refactoring.services.MemorizingActivity"
             android:theme="@style/AppTheme.Dialog" />
 
     </application>

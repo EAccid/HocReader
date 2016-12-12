@@ -19,14 +19,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.eaccid.bookreader.R;
+import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.remote.ReaderTranslator;
 import com.eaccid.hocreader.data.remote.TranslatedWord;
-import com.eaccid.bookreader.wordgetter.WordFromText;
+import com.eaccid.hocreader.provider.wordgetter.WordFromText;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
-import com.eaccid.hocreader.presentation.fragment.book.BookPresenter;
 
 import java.io.InputStream;
 import java.net.URL;

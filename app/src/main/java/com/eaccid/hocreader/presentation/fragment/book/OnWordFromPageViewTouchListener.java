@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.eaccid.hocreader.exception.NotImplementedException;
-import com.eaccid.bookreader.wordgetter.WordFromText;
-import com.eaccid.bookreader.wordgetter.WordOnTexvViewFinder;
+import com.eaccid.hocreader.provider.wordgetter.WordFromText;
+import com.eaccid.hocreader.provider.wordgetter.WordOnTextViewFinder;
 
 public class OnWordFromPageViewTouchListener implements View.OnTouchListener{
 
@@ -25,7 +25,7 @@ public class OnWordFromPageViewTouchListener implements View.OnTouchListener{
         switch (motionEvent.getAction()) {
             case MotionEvent.AXIS_Y:
                 TextView tv = (TextView) view;
-                WordFromText wordFromText = WordOnTexvViewFinder.getWordByMotionEvent(tv, motionEvent);
+                WordFromText wordFromText = WordOnTextViewFinder.getWordByMotionEvent(tv, motionEvent);
                 wordFromText.setPageNumber(pageNumber);
                 if (!wordFromText.getText().isEmpty()) {
                     try {

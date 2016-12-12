@@ -2,8 +2,8 @@ package com.eaccid.hocreader.presentation.activity.pager;
 
 import android.util.Log;
 
-import com.eaccid.hocreader.provider.WordListProvider;
-import com.eaccid.bookreader.wordgetter.WordFromText;
+import com.eaccid.hocreader.provider.db.WordListProvider;
+import com.eaccid.hocreader.provider.wordgetter.WordFromText;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.remote.ReaderDictionary;
 import com.eaccid.hocreader.data.remote.TranslatedWord;

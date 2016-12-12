@@ -3,11 +3,11 @@ package com.eaccid.hocreader.presentation.activity.main;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
-import com.eaccid.bookreader.R;
-import com.eaccid.bookreader.file.findner.FileOnDeviceFinder;
-import com.eaccid.bookreader.searchfiles.ItemObjectChild;
-import com.eaccid.bookreader.searchfiles.ItemObjectGroup;
-import com.eaccid.bookreader.underdev.settings.MainSettings;
+import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.provider.file.findner.FileOnDeviceFinder;
+import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectChild;
+import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
+import com.eaccid.hocreader.refactoring.settings.MainSettings;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
