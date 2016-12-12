@@ -1,9 +1,9 @@
-package com.eaccid.bookreader.pagerfragments.fragment_0;
+package com.eaccid.hocreader.presentation.fragment.book;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,11 +17,12 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.bookreader.R;
-import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
-import com.eaccid.bookreader.file.BaseFileImpl;
-import com.eaccid.bookreader.file.pagesplitter.Page;
-import com.eaccid.bookreader.file.pagesplitter.TxtFileToScreenReader;
-import com.eaccid.hocreader.data.local.AppDatabaseManager;
+import com.eaccid.bookreader.pagerfragments.FragmentTags;
+import com.eaccid.hocreader.presentation.fragment.translation.WordOutTranslatorDialogFragment;
+import com.eaccid.bookreader.wordgetter.WordFromText;
+import com.eaccid.hocreader.data.remote.TranslatedWord;
+import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.presentation.BaseView;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -31,32 +32,38 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
 
+public class BookFragment extends Fragment implements
+        OnMenuItemClickListener, OnMenuItemLongClickListener, BaseView,
+        OnWordFromPageViewTouchListener.OnWordFromTextClickListener,
+        WordOutTranslatorDialogFragment.WordTranslationClickListener{
 
-public class BookReaderListFragment extends Fragment implements
-        OnMenuItemClickListener, OnMenuItemLongClickListener {
-
+    private BookPresenter mPresenter;
     private RecyclerView mRecyclerView;
-    private BookReaderRecyclerViewAdapter mAdapter;
+    private BookRecyclerViewAdapter mAdapter;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private FragmentManager fragmentManager;
     private List<MenuObject> menuObjects = new ArrayList<>();
-    private static final String TAG = "BookReaderListFragment";
-    private List<Page<String>> mPagesList = new ArrayList<>();
+    private static final String TAG = "BookFragment";
 
-    public static BookReaderListFragment newInstance() {
-        BookReaderListFragment f = new BookReaderListFragment();
+    public static BookFragment newInstance() {
+        BookFragment f = new BookFragment();
         return f;
+    }
+
+    @Override
+    public BasePresenter getPresenter() {
+        return mPresenter;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        if (mPresenter == null) mPresenter = new BookPresenter();
+        mPresenter.attachView(this);
+
         fragmentManager = getFragmentManager();
-        setDataToList();
         initMenuFragment();
     }
 
@@ -70,25 +77,24 @@ public class BookReaderListFragment extends Fragment implements
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
 
-        mAdapter = new BookReaderRecyclerViewAdapter(mPagesList, getWordManager());
+        mAdapter = mPresenter.createRecyclerViewAdapter();
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        ImageView iv = (ImageView) rootView.findViewById(R.id.menu_more_vert_grey);
-        iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
-            }
-        });
+        ImageView moreMenuImg = (ImageView) rootView.findViewById(R.id.menu_more_vert_grey);
+        moreMenuImg.setOnClickListener(view -> onMoreMenuClicked());
 
         return rootView;
     }
 
+    private void onMoreMenuClicked() {
+        mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+    }
+
     @Override
     public void onDestroy() {
+        mPresenter.detachView();
         super.onDestroy();
-
     }
 
     private void initMenuFragment() {
@@ -104,21 +110,7 @@ public class BookReaderListFragment extends Fragment implements
 
     private List<MenuObject> getMenuObjects() {
 
-        // You can use any [resource, bitmap, drawable, color] as image:
-        // item.setResource(...)
-        // item.setBitmap(...)
-        // item.setDrawable(...)
-        // item.setColor(...)
-        // You can set image ScaleType:
-        // item.setScaleType(ScaleType.FIT_XY)
-        // You can use any [resource, drawable, color] as background:
-        // item.setBgResource(...)
-        // item.setBgDrawable(...)
-        // item.setBgColor(...)
-        // You can use any [color] as text color:
-        // item.setTextColor(...)
-        // You can set any [color] as divider color:
-        // item.setDividerColor(...)
+        //TODO refactor: take creation outside
 
         MenuObject close = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.CLOSE);
         close.setResource(R.drawable.ic_arrow_back_blue_24px);
@@ -155,7 +147,6 @@ public class BookReaderListFragment extends Fragment implements
     @Override
     public void onMenuItemClick(View clickedView, int position) {
         MenuObjectWrapper mo = (MenuObjectWrapper) menuObjects.get(position);
-
         switch (mo.getTag()) {
             case GO_TO_PAGE:
                 goToPage(clickedView);
@@ -187,25 +178,18 @@ public class BookReaderListFragment extends Fragment implements
 
     private void goToPage(View clickedView) {
 
-        int currentItemPosition = getWordManager().getCurrentPage() - 1;
-
         new MaterialDialog.Builder(clickedView.getContext())
                 .title(R.string.go_to_page_title)
                 .inputType(InputType.TYPE_CLASS_NUMBER)
                 .positiveText(android.R.string.ok)
-                .input(R.string.input_page, 0, false, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        int fromPosition = Integer.parseInt(input.toString()) - 1;
-                        goToListAdapterPosition(fromPosition, currentItemPosition);
-                        showSnackBackToLastOpenedPage(currentItemPosition, fromPosition);
-                    }
+                .input(R.string.input_page, 0, false, (dialog, input) -> {
+                    mPresenter.goToPageClicked(input);
                 })
                 .negativeText(android.R.string.cancel)
                 .show();
     }
 
-    private void showSnackBackToLastOpenedPage(int pageNumber, int oldPosition) {
+    public void showSnackBackToLastOpenedPage(int currentPage, int previousPage) {
 
         Snackbar snackbar = Snackbar.make(
                 mRecyclerView,
@@ -214,45 +198,33 @@ public class BookReaderListFragment extends Fragment implements
         snackbar.setAction(R.string.snack_bar_action_back, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToListAdapterPosition(pageNumber, oldPosition);
+                scrollToListPosition(currentPage, previousPage);
             }
         });
         snackbar.show();
     }
 
-    private void goToListAdapterPosition(int position, int oldPosition) {
+    public void scrollToListPosition(int position, int oldPosition) {
         mRecyclerView.scrollToPosition(position);
-//        mRecyclerView.smoothScrollToPosition(oldPosition);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private void setDataToList() {
-
-        TxtFileToScreenReader txtFileToScreenReader = new TxtFileToScreenReader(getActivity());
-        BaseFileImpl baseFile = new BaseFileImpl(getWordManager().getCurrentBookPath());
-        txtFileToScreenReader.getPageObservable(baseFile)
-                .subscribeOn(Schedulers.io()).subscribe(new Subscriber<Page<String>>() {
-            @Override
-            public void onCompleted() {
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                //TODO on error
-            }
-
-            @Override
-            public void onNext(Page<String> page) {
-                mPagesList.add(page);
-            }
-        });
-
+    public void notifyDataSetChanged() {
+        mAdapter.notifyDataSetChanged();
     }
 
-    public AppDatabaseManager getWordManager() {
-        return ((PagerActivity) getActivity()).getPresenter().getDataManager();
+    @Override
+    public void OnWordClicked(WordFromText wordFromText) {
+        mPresenter.OnWordFromTextViewClicked(wordFromText);
+        final DialogFragment dialog = WordOutTranslatorDialogFragment.newInstance(wordFromText);
+        getFragmentManager()
+                .beginTransaction()
+                .add(dialog, FragmentTags.ITEM_PINNED_DIALOG)
+                .commit();
+    }
+
+    @Override
+    public void onWordTranslated(TranslatedWord translatedWord) {
+        mPresenter.onWordTranslated(translatedWord);
     }
 
 }

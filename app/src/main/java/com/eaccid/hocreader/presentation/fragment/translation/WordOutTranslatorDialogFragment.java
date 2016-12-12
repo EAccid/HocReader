@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.pagerfragments.fragment_0;
+package com.eaccid.hocreader.presentation.fragment.translation;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

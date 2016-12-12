@@ -48,20 +48,6 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
         return dataManager;
     }
 
-    public void onWordTranslated(TranslatedWord translatedWord) {
-        ReaderDictionary readerDictionary = new ReaderDictionary(mView.getApplicationContext());
-        boolean succeed = readerDictionary.addTranslatedWord(translatedWord);
-        dataManager.createOrUpdateWord(translatedWord.getWordBaseForm(),
-                translatedWord.getTranslation(),
-                translatedWord.getContext(),
-                succeed);
-        wordListProvider.addWord(translatedWord.getWordBaseForm());
-    }
-
-    public void OnWordFromTextViewCliched(WordFromText wordFromText) {
-        dataManager.setCurrentPageForAddingWord(wordFromText.getPageNumber());
-    }
-
     private void createOrUpdateCurrentBook() {
         String filePath = mView.getIntent().getStringExtra("filePath");
         String fileName = mView.getIntent().getStringExtra("fileName");
@@ -70,4 +56,8 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
         dataManager.setCurrentBookForAddingWord(filePath);
     }
 
+    public void addWordToWordListProvider(String translatedWord) {
+        wordListProvider.addWord(translatedWord);
+        mView.notifyItemChanged();
+    }
 }

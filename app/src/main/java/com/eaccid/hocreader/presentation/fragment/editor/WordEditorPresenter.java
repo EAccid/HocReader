@@ -24,11 +24,6 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
         mView = null;
     }
 
-    public void setDataProvider() {
-        PagerPresenter pp = ((PagerActivity) mView.getActivity()).getPresenter();
-        dataProvider = pp.getDataProvider();
-    }
-
     public void onRefreshRecyclerView() {
         dataProvider.updateSessionDataList();
     }
@@ -54,6 +49,11 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
             data.setPinned(false);
             mView.notifyItemChanged(position);
         }
+    }
+
+    private void setDataProvider() {
+        PagerPresenter pp = ((PagerActivity) mView.getActivity()).getPresenter();
+        dataProvider = pp.getDataProvider();
     }
 
 }

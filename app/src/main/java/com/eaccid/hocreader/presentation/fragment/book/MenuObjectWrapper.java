@@ -1,4 +1,4 @@
-package com.eaccid.bookreader.pagerfragments.fragment_0;
+package com.eaccid.hocreader.presentation.fragment.book;
 
 import com.yalantis.contextmenu.lib.MenuObject;
 
@@ -17,7 +17,6 @@ public class MenuObjectWrapper extends MenuObject {
     public MenuOption getTag() {
         return TAG;
     }
-
 
     public enum MenuOption {
         CLOSE,

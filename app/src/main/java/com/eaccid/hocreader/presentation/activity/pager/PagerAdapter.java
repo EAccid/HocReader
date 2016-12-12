@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.eaccid.hocreader.presentation.fragment.book.BookFragment;
 import com.eaccid.bookreader.pagerfragments.fragment_2.WordsCarouselTrainingFragment;
 import com.eaccid.hocreader.presentation.fragment.editor.WordsEditorFragment;
-import com.eaccid.bookreader.pagerfragments.fragment_0.BookReaderListFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
@@ -26,10 +26,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return BookReaderListFragment.newInstance();
+                return BookFragment.newInstance();
             case 1:
                 if (wordsFromBookFragment == null)
-                    return new WordsEditorFragment();
+                    return WordsEditorFragment.newInstance();
                 return wordsFromBookFragment;
             case 2:
                 return WordsCarouselTrainingFragment.newInstance();

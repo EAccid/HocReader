@@ -33,6 +33,11 @@ public class WordsEditorFragment extends Fragment implements BaseView {
     public RecyclerViewSwipeManager mRecyclerViewSwipeManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
+    public static WordsEditorFragment newInstance() {
+        WordsEditorFragment f = new WordsEditorFragment();
+        return f;
+    }
+
     @Override
     public BasePresenter getPresenter() {
         return mPresenter;
@@ -133,8 +138,8 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         }
         mAdapter = null;
         mLayoutManager = null;
-        super.onDestroyView();
         mPresenter.detachView();
+        super.onDestroyView();
     }
 
     private void onItemRemove(int position) {

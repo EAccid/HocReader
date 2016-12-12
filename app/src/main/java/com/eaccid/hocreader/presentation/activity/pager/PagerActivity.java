@@ -1,6 +1,5 @@
 package com.eaccid.hocreader.presentation.activity.pager;
 
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -8,19 +7,12 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.eaccid.bookreader.file.pagesplitter.CharactersDefinerForFullScreenTextView;
-import com.eaccid.bookreader.pagerfragments.FragmentTags;
-import com.eaccid.bookreader.pagerfragments.fragment_0.OnWordFromTextViewTouchListener;
-import com.eaccid.bookreader.pagerfragments.fragment_0.WordOutTranslatorDialogFragment;
 import com.eaccid.hocreader.presentation.fragment.editor.WordsEditorFragment;
 import com.eaccid.bookreader.R;
-import com.eaccid.hocreader.data.remote.TranslatedWord;
-import com.eaccid.bookreader.wordgetter.WordFromText;
 import com.eaccid.hocreader.presentation.BaseView;
 import com.viewpagerindicator.CirclePageIndicator;
 
 public class PagerActivity extends FragmentActivity implements BaseView,
-        OnWordFromTextViewTouchListener.OnWordFromTextClickListener,
-        WordOutTranslatorDialogFragment.WordTranslationClickListener,
         CharactersDefinerForFullScreenTextView.PageView {
 
     private PagerPresenter mPresenter;
@@ -82,28 +74,15 @@ public class PagerActivity extends FragmentActivity implements BaseView,
     }
 
     @Override
-    public void OnWordClicked(WordFromText wordFromText) {
-        mPresenter.OnWordFromTextViewCliched(wordFromText);
-        final DialogFragment dialog = WordOutTranslatorDialogFragment.newInstance(wordFromText);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(dialog, FragmentTags.ITEM_PINNED_DIALOG)
-                .commit();
-    }
-
-    @Override
-    public void onWordTranslated(TranslatedWord translatedWord) {
-        mPresenter.onWordTranslated(translatedWord);
-        wordsEditorFragment.notifyItemChanged();
-    }
-
-    @Override
     public TextView getTextView() {
         //TODO settings: depends on user preferences
         ViewGroup viewGroup = (ViewGroup) getLayoutInflater().inflate(R.layout.book_page_text_default, null, false);
         return (TextView) viewGroup.findViewById(R.id.text_on_page);
     }
 
+    public void notifyItemChanged() {
+        wordsEditorFragment.notifyItemChanged();
+    }
 }
 
 
