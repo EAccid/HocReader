@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.refactoring.fragment2;
+package com.eaccid.hocreader.presentation.fragment.carousel;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,20 +12,33 @@ import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.data.local.AppDatabaseManager;
+import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.presentation.BaseView;
 
-public class WordsCarouselTrainingFragment extends Fragment {
-    private AppDatabaseManager wordManager;
+public class WordsCarouselFragment extends Fragment implements BaseView {
 
-    public static WordsCarouselTrainingFragment newInstance() {
-        return new WordsCarouselTrainingFragment();
+    public static WordsCarouselFragment newInstance() {
+        return new WordsCarouselFragment();
+    }
+
+    private WordCarouselPresenter mPresenter;
+
+    @Override
+    public BasePresenter getPresenter() {
+        return null;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        wordManager = new AppDatabaseManager();
-        wordManager.loadDatabaseManager(getContext());
+        if (mPresenter == null) mPresenter = new WordCarouselPresenter();
+        mPresenter.attachView(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
     }
 
     @Override
@@ -44,11 +57,7 @@ public class WordsCarouselTrainingFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-
-        DrawerRecyclerViewAdapter adapter = new DrawerRecyclerViewAdapter(getContext());
-
-        WordCursorBinder wordCursorBinder = new WordCursorBinder(getContext(), true);
-        adapter = (DrawerRecyclerViewAdapter) wordCursorBinder.createAdapterWithCursor(adapter, wordManager);
+        WordCarouselRecyclerViewAdapter adapter = mPresenter.createWordCarouselRecyclerViewAdapter();
 
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new CenterScrollListener());

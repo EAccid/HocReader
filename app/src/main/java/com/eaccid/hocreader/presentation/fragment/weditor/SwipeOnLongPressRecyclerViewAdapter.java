@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.fragment.editor;
+package com.eaccid.hocreader.presentation.fragment.weditor;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;

@@ -1,10 +1,9 @@
-package com.eaccid.hocreader.refactoring.fragment2;
+package com.eaccid.hocreader.presentation.fragment.carousel;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 
 // Code from https://gist.github.com/skyfishjy/443b7448f59be978bc59
-// Fix to remove observers (when using CursorLoaders) by: https://gist.github.com/quanturium/46541c81aae2a916e31d
 public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
     private Cursor mCursor;

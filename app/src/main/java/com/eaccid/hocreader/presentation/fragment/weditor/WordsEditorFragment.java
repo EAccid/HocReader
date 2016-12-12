@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.fragment.editor;
+package com.eaccid.hocreader.presentation.fragment.weditor;
 
 
 import android.os.Bundle;
@@ -52,6 +52,12 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         setRetainInstance(true);
         if (mPresenter == null) mPresenter = new WordEditorPresenter();
         mPresenter.attachView(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
     }
 
     @Override
@@ -136,7 +142,6 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         }
         mAdapter = null;
         mLayoutManager = null;
-        mPresenter.detachView();
         super.onDestroyView();
     }
 

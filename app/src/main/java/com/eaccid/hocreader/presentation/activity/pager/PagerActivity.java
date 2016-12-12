@@ -11,7 +11,7 @@ import com.eaccid.hocreader.provider.wordgetter.WordFromText;
 import com.eaccid.hocreader.data.remote.TranslatedWord;
 import com.eaccid.hocreader.presentation.fragment.FragmentTags;
 import com.eaccid.hocreader.presentation.fragment.book.OnWordFromPageViewTouchListener;
-import com.eaccid.hocreader.presentation.fragment.editor.WordsEditorFragment;
+import com.eaccid.hocreader.presentation.fragment.weditor.WordsEditorFragment;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BaseView;
 import com.eaccid.hocreader.presentation.fragment.translation.WordTranslationDialogFragment;

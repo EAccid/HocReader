@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.fragment.editor;
+package com.eaccid.hocreader.presentation.fragment.weditor;
 import android.util.Log;
 import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;

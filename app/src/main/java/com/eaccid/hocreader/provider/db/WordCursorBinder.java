@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.refactoring.fragment2;
+package com.eaccid.hocreader.provider.db;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,25 +6,18 @@ import android.database.Cursor;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.WordFilter;
 import com.eaccid.hocreader.data.local.db.entity.Word;
+import com.eaccid.hocreader.presentation.fragment.carousel.WordCarouselRecyclerViewAdapter;
+import com.eaccid.hocreader.presentation.fragment.carousel.OrmliteCursorRecyclerViewAdapter;
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
 
 public class WordCursorBinder {
 
-    private Context context;
-    private boolean filterByBook;
-
-    public WordCursorBinder(Context context, boolean filterByBook) {
-        this.context = context;
-        this.filterByBook = filterByBook;
-    }
-
-    public OrmliteCursorRecyclerViewAdapter createAdapterWithCursor(DrawerRecyclerViewAdapter adapter, AppDatabaseManager wordManager) {
-
-
-        if (filterByBook) {
+    public OrmliteCursorRecyclerViewAdapter
+    createAdapterWithCursor(Context context, WordCarouselRecyclerViewAdapter adapter,
+                            AppDatabaseManager wordManager, boolean filterByBook) {
+        if (filterByBook)
             wordManager.setFilter(WordFilter.BY_BOOK);
-        }
 
         PreparedQuery<Word> pq = wordManager.getWordPreparedQuery(null, null);
         OrmLiteCursorLoader<Word> liteCursorLoader = new OrmLiteCursorLoader<>(
@@ -35,5 +28,4 @@ public class WordCursorBinder {
         adapter.changeCursor(cursor, pq);
         return adapter;
     }
-
 }

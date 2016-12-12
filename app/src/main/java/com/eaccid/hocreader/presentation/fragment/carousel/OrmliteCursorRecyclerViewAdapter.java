@@ -1,15 +1,12 @@
-package com.eaccid.hocreader.refactoring.fragment2;
+package com.eaccid.hocreader.presentation.fragment.carousel;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-
 import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.stmt.PreparedQuery;
-
 import java.sql.SQLException;
 
-// Based on https://github.com/j256/ormlite-android/pull/8
 public abstract class OrmliteCursorRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder> extends CursorRecyclerViewAdapter<VH> {
     protected PreparedQuery<T> preparedQuery;
 

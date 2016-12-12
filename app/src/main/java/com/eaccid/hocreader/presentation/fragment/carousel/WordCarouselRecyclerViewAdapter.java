@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.refactoring.fragment2;
+package com.eaccid.hocreader.presentation.fragment.carousel;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,29 +10,29 @@ import android.widget.TextView;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 
-public class DrawerRecyclerViewAdapter extends OrmliteCursorRecyclerViewAdapter<Word, DrawerRecyclerViewAdapter.ViewHolder> {
+public class WordCarouselRecyclerViewAdapter extends OrmliteCursorRecyclerViewAdapter<Word, WordCarouselRecyclerViewAdapter.ViewHolder> {
 
-    public DrawerRecyclerViewAdapter(Context context) {
+    public WordCarouselRecyclerViewAdapter(Context context) {
         super(context);
     }
 
     @Override
-    public DrawerRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WordCarouselRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_item_fragment_2, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, Word word) {
-        holder.drawerTextView.setText(word.getName());
+        holder.textView.setText(word.getName());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView drawerTextView;
+        public final TextView textView;
 
         public ViewHolder(View drawerView) {
             super(drawerView);
-            drawerTextView = (TextView) drawerView.findViewById(R.id.word);
+            textView = (TextView) drawerView.findViewById(R.id.word);
         }
     }
 }
