@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.view;
+package com.eaccid.hocreader.presentation;
 
 public interface BasePresenter<V extends BaseView> {
 

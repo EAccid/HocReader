@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.eaccid.bookreader.file.pagesplitter.BaseFile;
 import com.eaccid.bookreader.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.bookreader.pagerfragments.FragmentTags;
 import com.eaccid.bookreader.pagerfragments.fragment_0.OnWordFromTextViewTouchListener;
@@ -20,13 +22,15 @@ import com.eaccid.bookreader.provider.WordDatabaseDataProvider;
 import com.eaccid.bookreader.provider.WordDatabaseProviderFragment;
 import com.eaccid.bookreader.pagerfragments.fragment_1.WordsFromBookFragment;
 import com.eaccid.bookreader.R;
+import com.eaccid.hocreader.data.local.BookManager;
 import com.eaccid.hocreader.data.local.WordManager;
 import com.eaccid.hocreader.data.remote.ReaderDictionary;
 import com.eaccid.hocreader.data.remote.TranslatedWord;
 import com.eaccid.bookreader.wordgetter.WordFromText;
+import com.eaccid.hocreader.presentation.BaseView;
 import com.viewpagerindicator.CirclePageIndicator;
 
-public class PagerActivity extends FragmentActivity implements
+public class PagerActivity extends FragmentActivity implements BaseView,
         OnWordFromTextViewTouchListener.OnWordFromTextClickListener,
         WordOutTranslatorDialogFragment.WordTranslationClickListener,
         CharactersDefinerForFullScreenTextView.PageView {
@@ -120,6 +124,11 @@ public class PagerActivity extends FragmentActivity implements
     private void RefreshDatabase() {
         String filePath = getIntent().getStringExtra("filePath");
         String fileName = getIntent().getStringExtra("fileName");
+
+        BookManager bookManager = new BookManager();
+        bookManager.loadDatabaseManager(this);
+        bookManager.createOrUpdateBook(filePath, fileName);
+        bookManager.releaseDatabaseManager();
 
         //TODO set as WordFilter
         wordManager.setCurrentBookForAddingWord(filePath);

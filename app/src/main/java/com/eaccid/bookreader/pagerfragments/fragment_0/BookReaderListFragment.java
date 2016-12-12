@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.bookreader.R;
 import com.eaccid.bookreader.activity.pager.PagerActivity;
@@ -26,9 +27,11 @@ import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 
@@ -230,11 +233,21 @@ public class BookReaderListFragment extends Fragment implements
         TxtFileToScreenReader txtFileToScreenReader = new TxtFileToScreenReader(getActivity());
         BaseFileImpl baseFile = new BaseFileImpl(getWordManager().getCurrentBookPath());
         txtFileToScreenReader.getPageObservable(baseFile)
-                .subscribeOn(Schedulers.io())
-                .subscribe(page -> {
-            mPagesList.add(page);
+                .subscribeOn(Schedulers.io()).subscribe(new Subscriber<Page<String>>() {
+            @Override
+            public void onCompleted() {
+                mAdapter.notifyDataSetChanged();
+            }
 
-            //TODO settings: goToPage
+            @Override
+            public void onError(Throwable e) {
+                //TODO on error
+            }
+
+            @Override
+            public void onNext(Page<String> page) {
+                mPagesList.add(page);
+            }
         });
 
     }
@@ -244,7 +257,6 @@ public class BookReaderListFragment extends Fragment implements
     }
 
 }
-
 
 
 

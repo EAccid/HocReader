@@ -174,12 +174,10 @@ public class WordManager extends AppDatabaseManager {
         return null;
     }
 
-    @Nullable
     public String getCurrentBookName() {
         return currentBook.getName();
     }
 
-    @Nullable
     public String getCurrentBookPath() {
         return currentBook.getPath();
     }
