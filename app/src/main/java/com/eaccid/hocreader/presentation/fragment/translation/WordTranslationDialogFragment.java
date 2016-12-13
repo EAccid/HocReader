@@ -1,18 +1,11 @@
 package com.eaccid.hocreader.presentation.fragment.translation;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
-import android.support.annotation.Size;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,15 +13,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.data.remote.ReaderTranslator;
-import com.eaccid.hocreader.data.remote.TranslatedWord;
-import com.eaccid.hocreader.provider.wordgetter.WordFromText;
-import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
+import com.eaccid.hocreader.provider.translator.TranslatedWord;
+import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
 
-import java.io.InputStream;
-import java.net.URL;
+import java.util.List;
 
 public class WordTranslationDialogFragment extends DialogFragment implements BaseView {
 
@@ -38,7 +28,6 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
 
     public static WordTranslationDialogFragment newInstance(WordFromText wordFromText) {
         WordTranslationDialogFragment f = new WordTranslationDialogFragment();
-        // Supply word translation input as an argument.
         Bundle args = new Bundle();
         args.putSerializable("wordFromText", wordFromText);
         f.setArguments(args);
@@ -46,6 +35,12 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
     }
 
     private WordTranslationDialogPresenter mPresenter;
+
+    private TextView textViewWord;
+    private ImageView imageWordPicture;
+    private ImageButton imageButtonTranscriptionSpeaker;
+    private TextView textViewTranscription;
+    private ListView listViewTranslations;
 
     @Override
     public BasePresenter getPresenter() {
@@ -67,126 +62,56 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        TextTranslation wordTranslation;
-        WordFromText wordFromText = (WordFromText) getArguments().getSerializable("wordFromText");
-        getDialog().setTitle(wordFromText.getText());
-
-        wordTranslation = ReaderTranslator.translate(wordFromText);
-
-        TranslatedWord translatedWord = new TranslatedWord();
-        translatedWord.setWordBaseForm(wordTranslation.getWord());
-        translatedWord.setWordFromContext(wordFromText.getText());
-        translatedWord.setContext(wordFromText.getSentence());
-
-        //get view
-
         View v = inflater.inflate(R.layout.translation_dialog_frame, container);
-        ImageView imageWordPicture = (ImageView) v.findViewById(R.id.image_word_picture);
-        ImageButton imageButtonTranscriptionSpeaker = (ImageButton) v.findViewById(R.id.transcription_speaker);
-        TextView base_word_from = (TextView) v.findViewById(R.id.base_word_from);
-        TextView text_transcription = (TextView) v.findViewById(R.id.text_transcription);
-        ListView listViewTranslations = (ListView) v.findViewById(R.id.list_translations);
+        imageWordPicture = (ImageView) v.findViewById(R.id.image_word_picture);
+        textViewWord = (TextView) v.findViewById(R.id.word);
+        textViewTranscription = (TextView) v.findViewById(R.id.text_transcription);
+        listViewTranslations = (ListView) v.findViewById(R.id.list_translations);
+        imageButtonTranscriptionSpeaker = (ImageButton) v.findViewById(R.id.transcription_speaker);
 
-        //set data to view
-        base_word_from.setText(wordTranslation.getWord());
-        new ImageWordPictureLoader(imageWordPicture).execute(wordTranslation.getPicUrl());
-        text_transcription.setText("[ " + wordTranslation.getTranscription() + " ]");
-
-        //imageButtonTranscriptionSpeaker
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        new PlayerWordSoundLoader(mediaPlayer).execute(wordTranslation.getSoundUrl());
-//        imageButtonTranscriptionSpeaker.setImageResource(R.drawable.ic_hearing_blue_24px);
-        imageButtonTranscriptionSpeaker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!mediaPlayer.isPlaying())
-                    mediaPlayer.start();
-            }
-        });
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                inflater.getContext(), R.layout.translation_dialog_item, wordTranslation.getTranslates());
-        listViewTranslations.setAdapter(adapter);
-
-        listViewTranslations.setOnItemClickListener(new OnItemTranslationClickListener(translatedWord));
+        textViewWord.setOnClickListener(view -> mPresenter.OnWordClicked());
+        imageButtonTranscriptionSpeaker.setOnClickListener(view -> mPresenter.OnSpeakerClicked());
 
         return v;
-
     }
 
-    private class OnItemTranslationClickListener implements AdapterView.OnItemClickListener {
-
-        TranslatedWord translatedWord;
-
-        OnItemTranslationClickListener(TranslatedWord translatedWord) {
-            this.translatedWord = translatedWord;
-        }
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            TextView tv = (TextView) view;
-            String chosenTranslation = (String) tv.getText();
-
-            translatedWord.setTranslation(chosenTranslation);
-
-            ((WordTranslationClickListener) getContext()).onWordTranslated(translatedWord);
-
-            dismiss();
-        }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mPresenter.showTranslations();
     }
 
-
-    private class ImageWordPictureLoader extends AsyncTask<String, Void, Bitmap> {
-        ImageView imageView;
-
-        ImageWordPictureLoader(ImageView imageView) {
-            this.imageView = imageView;
-        }
-
-        @Override
-        protected Bitmap doInBackground(@Size(min = 1) String... urls) {
-            String url = urls[0];
-            Bitmap wordImage = null;
-            try {
-                InputStream is = new URL(url).openStream();
-                wordImage = BitmapFactory.decodeStream(is);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return wordImage;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            imageView.setImageBitmap(bitmap);
-        }
-
+    public void setDialogTitle(String title) {
+        getDialog().setTitle(title);
     }
 
-    private class PlayerWordSoundLoader extends AsyncTask<String, Void, Boolean> {
+    public void setWordText(String text) {
+        textViewWord.setText(text);
+    }
 
-        MediaPlayer mediaPlayer;
+    public ImageView getWordPicture() {
+        return imageWordPicture;
+    }
 
-        PlayerWordSoundLoader(MediaPlayer mediaPlayer) {
-            this.mediaPlayer = mediaPlayer;
-        }
+    public ImageButton getTranscriptionSpeaker() {
+        return imageButtonTranscriptionSpeaker;
+    }
 
-        @Override
-        protected Boolean doInBackground(@Size(min = 1) String... urls) {
-            String url = urls[0];
-            Boolean prepared;
-            try {
-                mediaPlayer.setDataSource(url);
-                mediaPlayer.prepare();
-                prepared = true;
-            } catch (Exception e) {
-                prepared = false;
-                e.printStackTrace();
-            }
-            return prepared;
-        }
+    public void setWordTranscription(String text) {
+        textViewTranscription.setText("[ " + text + " ]");
+    }
+
+    public void loadTranslations(List<String> translations) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                getView().getContext(), R.layout.translation_dialog_item, translations);
+        listViewTranslations.setAdapter(adapter);
+    }
+
+    public ListView getTranslationsView() {
+        return listViewTranslations;
+    }
+
+    public void setImageSpeaker(boolean isSpeak) {
+        //imageButtonTranscriptionSpeaker.setImageResource(R.drawable.ic_hearing_blue_24px);
     }
 }

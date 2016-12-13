@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class FileOnDeviceFinder {
+public class FileOnDeviceProvider {
 
     private ArrayList<File> fileList = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class FileOnDeviceFinder {
         for (File file : dir.listFiles())
             if (file.isDirectory()) {
 
-                //TODO set user directory names or none. temp condition
+                //TODO settings: set user directory names or none. temp condition
                 String dirName = file.getName();
                 if (dirName.equalsIgnoreCase("downloads") ||
                         dirName.equalsIgnoreCase("books") ||

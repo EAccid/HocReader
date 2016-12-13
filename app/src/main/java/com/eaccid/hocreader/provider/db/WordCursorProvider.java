@@ -11,7 +11,7 @@ import com.eaccid.hocreader.presentation.fragment.carousel.OrmliteCursorRecycler
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
 
-public class WordCursorBinder {
+public class WordCursorProvider {
 
     public OrmliteCursorRecyclerViewAdapter
     createAdapterWithCursor(Context context, WordCarouselRecyclerViewAdapter adapter,

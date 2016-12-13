@@ -70,7 +70,7 @@ public class WordTranslation implements TextTranslation {
 
     }
 
-    //TODO delete; just for practicing reflection
+    // just for practicing reflection
     private String readJsonResponseFromLingualeoAsString() {
         return this.toString();
     }

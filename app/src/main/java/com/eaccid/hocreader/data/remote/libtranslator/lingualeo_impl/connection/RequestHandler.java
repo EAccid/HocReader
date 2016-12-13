@@ -5,12 +5,9 @@ import java.net.UnknownHostException;
 
 public class RequestHandler {
 
-    //TODO a lot of fields
-
     private LingualeoHttpConnection connection = new LingualeoHttpConnection();
     private LingualeoResponse response = new LingualeoResponse();
     private ServiceStatus serviceStatus = ServiceStatus.FAILED;
-
     private RequestParameters requestParameters;
     private String urlString;
     private String cookies;
@@ -38,24 +35,17 @@ public class RequestHandler {
         if (cookies != null && cookies.isEmpty()) {
             serviceStatus = ServiceStatus.UNAUTHORIZED;
         } else {
-
-            //TODO smth with exception handler
-
             try {
-
                 URL url = new URL(urlString);
                 connection.loadCookies(cookies);
                 connection.sendLingualeoRequest(url, RequestMethod.POST, requestParameters);
                 response = connection.getResponse();
-
                 serviceStatus = ServiceStatus.SUCCEEDED;
-
             } catch (UnknownHostException e) {
                 serviceStatus = ServiceStatus.CONNECTION_ERROR;
                 System.out.println("UnknownHostException");
             } catch (Exception e) {
                 serviceStatus = ServiceStatus.FAILED;
-
                 e.printStackTrace();
             }
         }

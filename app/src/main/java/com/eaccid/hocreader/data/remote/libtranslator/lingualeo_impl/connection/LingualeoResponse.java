@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class LingualeoResponse {
 
-    //TODO Gson, JsonPath
     private JsonObject jsonObject;
 
     public void setData(InputStream in) {

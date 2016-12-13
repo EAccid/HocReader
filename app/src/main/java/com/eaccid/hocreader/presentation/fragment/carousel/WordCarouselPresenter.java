@@ -5,7 +5,7 @@ import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
-import com.eaccid.hocreader.provider.db.WordCursorBinder;
+import com.eaccid.hocreader.provider.db.WordCursorProvider;
 
 public class WordCarouselPresenter implements BasePresenter<WordsCarouselFragment> {
     private final String logTAG = "WordCarouselPresenter";
@@ -32,8 +32,8 @@ public class WordCarouselPresenter implements BasePresenter<WordsCarouselFragmen
 
     public WordCarouselRecyclerViewAdapter createWordCarouselRecyclerViewAdapter() {
         WordCarouselRecyclerViewAdapter adapter = new WordCarouselRecyclerViewAdapter(mView.getContext());
-        WordCursorBinder wordCursorBinder = new WordCursorBinder();
-        return (WordCarouselRecyclerViewAdapter) wordCursorBinder.createAdapterWithCursor(mView.getContext(), adapter, dataManager, true);
+        WordCursorProvider wordCursorProvider = new WordCursorProvider();
+        return (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(mView.getContext(), adapter, dataManager, true);
 
     }
 }

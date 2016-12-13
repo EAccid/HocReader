@@ -3,7 +3,7 @@ package com.eaccid.hocreader.presentation.fragment.book;
 import android.util.Log;
 import com.eaccid.hocreader.provider.file.BaseFileImpl;
 import com.eaccid.hocreader.provider.file.pagesplitter.Page;
-import com.eaccid.hocreader.provider.file.pagesplitter.TxtFileToScreenReader;
+import com.eaccid.hocreader.provider.file.pagesplitter.TxtPagesFromFileProvider;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
@@ -44,9 +44,9 @@ public class BookPresenter implements BasePresenter<BookFragment> {
 
     private void setDataToList() {
 
-        TxtFileToScreenReader txtFileToScreenReader = new TxtFileToScreenReader(mView.getActivity());
+        TxtPagesFromFileProvider txtPagesFromFileProvider = new TxtPagesFromFileProvider(mView.getActivity());
         BaseFileImpl baseFile = new BaseFileImpl(dataManager.getCurrentBookPath());
-        txtFileToScreenReader.getPageObservable(baseFile)
+        txtPagesFromFileProvider.getPageObservable(baseFile)
                 .subscribeOn(Schedulers.io()).subscribe(new Subscriber<Page<String>>() {
             @Override
             public void onCompleted() {

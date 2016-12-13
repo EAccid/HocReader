@@ -3,10 +3,10 @@ package com.eaccid.hocreader.presentation.activity.pager;
 import android.util.Log;
 
 import com.eaccid.hocreader.provider.db.WordListProvider;
-import com.eaccid.hocreader.provider.wordgetter.WordFromText;
+import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
-import com.eaccid.hocreader.data.remote.ReaderDictionary;
-import com.eaccid.hocreader.data.remote.TranslatedWord;
+import com.eaccid.hocreader.provider.translator.HocDictionary;
+import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
 public class PagerPresenter implements BasePresenter<PagerActivity> {
@@ -62,9 +62,9 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     }
 
     public void onWordTranslated(TranslatedWord translatedWord) {
-        ReaderDictionary readerDictionary = new ReaderDictionary(mView.getApplicationContext());
-        boolean succeed = readerDictionary.addTranslatedWord(translatedWord);
-        dataManager.createOrUpdateWord(translatedWord.getWordBaseForm(),
+        HocDictionary hocDictionary = new HocDictionary(mView.getApplicationContext());
+        boolean succeed = hocDictionary.addTranslatedWord(translatedWord);
+        dataManager.createOrUpdateWord(translatedWord.getWordFromContext(),//getWordBaseForm()
                 translatedWord.getTranslation(),
                 translatedWord.getContext(),
                 succeed);

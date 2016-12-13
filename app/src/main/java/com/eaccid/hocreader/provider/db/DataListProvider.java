@@ -73,7 +73,7 @@ public abstract class DataListProvider {
 
     public static final class ItemDataProvider {
 
-        private final String TAG = "updating ItemData";
+        private final String logTAG = "ItemDataProvider";
         private final String text;
         private final long id;
         private boolean pinned;
@@ -83,7 +83,7 @@ public abstract class DataListProvider {
         ItemDataProvider(int id, Object object) {
             this.id = id;
             this.object = object;
-            Log.i(TAG, "Adding new data item (id=" + getItemId() + ")");
+            Log.i(logTAG, "Adding new data item (id=" + getItemId() + ")");
             text = makeTestText(id, object);
         }
 
@@ -142,7 +142,7 @@ public abstract class DataListProvider {
         public void setLastAdded(boolean lastAdded) {
             this.lastAdded = lastAdded;
             if (lastAdded) {
-                Log.i(TAG, "Last item (id=" + getItemId() + ") has been set.");
+                Log.i(logTAG, "Last item (id=" + getItemId() + ") has been set.");
             }
         }
 

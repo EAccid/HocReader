@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.data.remote;
+package com.eaccid.hocreader.provider.translator;
 
 public class TranslatedWord {
 

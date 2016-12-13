@@ -15,7 +15,7 @@ public class TranslatorFactory {
 //            case G_TRANSLATOR:
 //                return new GTranslator();
             default:
-                throw new RuntimeException("smth goes wrong!");
+                throw new RuntimeException("smth went wrong!");
         }
 
     }

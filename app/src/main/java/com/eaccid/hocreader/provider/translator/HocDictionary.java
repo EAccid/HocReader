@@ -1,21 +1,20 @@
-package com.eaccid.hocreader.data.remote;
+package com.eaccid.hocreader.provider.translator;
 
 import android.content.Context;
 
 import com.eaccid.hocreader.refactoring.settings.LingualeoServiceCookiesHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionary;
-
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class ReaderDictionary {
+public class HocDictionary {
 
+    //TODO del, when preferences have been injected into LingualeoServiceCookiesHandler
     private Context context;
 
-    public ReaderDictionary(Context context) {
+    public HocDictionary(Context context) {
         this.context = context;
     }
 
@@ -24,7 +23,7 @@ public class ReaderDictionary {
         try {
 
             ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
-            ReaderDictionary.OuterDictionary outerTranslation = new ReaderDictionary.OuterDictionary(word);
+            HocDictionary.OuterDictionary outerTranslation = new HocDictionary.OuterDictionary(word);
             Future<Boolean> translationResult = executor.submit(outerTranslation);
             return translationResult.get();
 

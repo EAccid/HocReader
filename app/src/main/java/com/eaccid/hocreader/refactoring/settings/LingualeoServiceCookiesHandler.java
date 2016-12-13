@@ -9,7 +9,7 @@ import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.
 public class LingualeoServiceCookiesHandler implements LingualeoServiceCookies {
 
     private static final String LINGUALEO_COOKIES = "lingualeo_cookies";
-    private SharedPreferences sp;
+    private SharedPreferences sp; //TODO Inject context
 
     public LingualeoServiceCookiesHandler(Context applicationContext) {
         sp = applicationContext.getSharedPreferences(LINGUALEO_COOKIES, Context.MODE_PRIVATE);

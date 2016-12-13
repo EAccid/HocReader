@@ -146,9 +146,9 @@ public class AppDatabaseManager {
         }
     }
 
-    public List<Word> getAllWords(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
+    //TODO create filter and refactor/temp solution
 
-        //TODO create filter and refactor/temp solution
+    public List<Word> getAllWords(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
 
         List<Word> lw = new ArrayList<>();
         try {
@@ -203,8 +203,6 @@ public class AppDatabaseManager {
     }
 
     public PreparedQuery<Word> getWordPreparedQuery(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
-
-        //TODO create filter and refactor/temp solution
 
         try {
             WordDaoService ws = mDatabaseManager.getWordService();

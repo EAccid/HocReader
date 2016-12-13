@@ -1,6 +1,8 @@
-package com.eaccid.hocreader.data.remote;
+package com.eaccid.hocreader.provider.translator;
 
-import com.eaccid.hocreader.provider.wordgetter.WordFromText;
+import com.eaccid.hocreader.data.remote.TranslatorFactory;
+import com.eaccid.hocreader.data.remote.Translators;
+import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.Translator;
 
@@ -9,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class ReaderTranslator {
+public class HocTranslator {
 
     public static TextTranslation translate(WordFromText wordFromText) {
 

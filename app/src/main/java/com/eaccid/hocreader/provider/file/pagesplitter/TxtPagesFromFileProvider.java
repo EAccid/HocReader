@@ -4,12 +4,12 @@ import android.app.Activity;
 import rx.Observable;
 import rx.Subscriber;
 
-public class TxtFileToScreenReader implements FileToPagesReader {
+public class TxtPagesFromFileProvider implements FileToPagesReader {
 
-    //TODO: inject to 'getPageObservable'
+    //TODO: Inject
     private CharactersDefinerForFullScreenTextView parameters;
 
-    public TxtFileToScreenReader(Activity activity) {
+    public TxtPagesFromFileProvider(Activity activity) {
         parameters = new CharactersDefinerForFullScreenTextView(activity);
     }
 

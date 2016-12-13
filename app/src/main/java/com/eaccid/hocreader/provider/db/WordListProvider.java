@@ -79,8 +79,6 @@ public class WordListProvider extends DataListProvider {
     public int undoLastRemoval() {
         Word word = (Word) getLastRemovedData().getObject();
         sessionWords.add(word.getName());
-        //todo del from here
-
         dataManager.createOrUpdateWord(word.getName(), word.getTranslation(), word.getContext(), true);
         return super.undoLastRemoval();
     }

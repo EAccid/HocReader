@@ -4,7 +4,7 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.provider.file.findner.FileOnDeviceFinder;
+import com.eaccid.hocreader.provider.file.findner.FileOnDeviceProvider;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectChild;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
 import com.eaccid.hocreader.refactoring.settings.MainSettings;
@@ -40,8 +40,8 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     }
 
     public void fillExpandableListView() {
-        FileOnDeviceFinder fileOnDeviceFinder = new FileOnDeviceFinder();
-        List<File> foundFiles = fileOnDeviceFinder.findFiles();
+        FileOnDeviceProvider fileOnDeviceProvider = new FileOnDeviceProvider();
+        List<File> foundFiles = fileOnDeviceProvider.findFiles();
         loadFilesToExpandableView(foundFiles);
     }
 
@@ -80,7 +80,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
 
     /**
-     * TODO in main presenter
+     * TODO:
      * - settings into separate presenter
      * - create fab action
      */

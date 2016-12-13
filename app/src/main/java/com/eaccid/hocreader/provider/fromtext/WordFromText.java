@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.provider.wordgetter;
+package com.eaccid.hocreader.provider.fromtext;
 
 import java.io.Serializable;
 

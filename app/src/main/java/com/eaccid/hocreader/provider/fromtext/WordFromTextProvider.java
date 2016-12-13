@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.provider.wordgetter;
+package com.eaccid.hocreader.provider.fromtext;
 
 import android.text.Layout;
 import android.view.MotionEvent;
@@ -6,7 +6,7 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class WordOnTextViewFinder {
+public class WordFromTextProvider {
 
     public static WordFromText getWordByMotionEvent(TextView tv, MotionEvent event) {
         WordFromText wordFromText = new WordFromText();
@@ -51,7 +51,7 @@ public class WordOnTextViewFinder {
     }
 
     private static String getSentenceFromText(CharSequence text, CharSequence subtext) {
-        //TODO get all Sentence (now get just line)
+        //TODO get all Sentence (now just line)
         return getMatchingResult(text, Pattern.compile("[A-Za-z,\" ]+" + subtext + "[A-Za-z,\" ]+"));
     }
 
