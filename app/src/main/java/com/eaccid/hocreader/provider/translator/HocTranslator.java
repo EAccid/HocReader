@@ -1,10 +1,15 @@
 package com.eaccid.hocreader.provider.translator;
 
+import android.os.AsyncTask;
+import android.support.annotation.Size;
+
 import com.eaccid.hocreader.data.remote.TranslatorFactory;
 import com.eaccid.hocreader.data.remote.Translators;
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionary;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.Translator;
+import com.eaccid.hocreader.refactoring.settings.LingualeoServiceCookiesHandler;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -13,17 +18,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class HocTranslator {
 
-    public static TextTranslation translate(WordFromText wordFromText) {
-
-        String textWord = wordFromText.getText();
-
+    public TextTranslation translate(WordFromText wordFromText) {
         try {
-
-            ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
-            OuterTranslation outerTranslation = new OuterTranslation(textWord);
-            Future<TextTranslation> translationResult = executor.submit(outerTranslation);
-            return translationResult.get();
-
+            return new OuterTranslation().execute(wordFromText).get();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -31,21 +28,13 @@ public class HocTranslator {
 
     }
 
-    private static class OuterTranslation implements Callable<TextTranslation> {
-        private String word;
-
-        OuterTranslation(String word) {
-            this.word = word;
-        }
-
+    private class OuterTranslation extends AsyncTask<WordFromText, Void, TextTranslation> {
         @Override
-        public TextTranslation call() throws Exception {
-
+        protected TextTranslation doInBackground(@Size(min = 1) WordFromText... words) {
+            WordFromText word = words[0];
             Translator translator = TranslatorFactory.newTranslator(Translators.LINGUALEO);
-            translator.translate(word);
-
+            translator.translate(word.getText());
             return translator.getTranslations();
-
         }
     }
 
