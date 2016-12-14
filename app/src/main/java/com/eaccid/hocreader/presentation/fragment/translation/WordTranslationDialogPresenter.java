@@ -55,7 +55,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
         mView.setWordText(nextWordToTranslate);//mWordTranslation.getWord()
 
         TranslatorViewManager viewManager = new TranslatorViewManager();
-        viewManager.loadPictureFromURL(mView.getWordPicture(), mWordTranslation.getPicUrl());
+        viewManager.loadPictureFromURL(mView.getWordPictureImageView(), mWordTranslation.getPicUrl());
         viewManager.loadSoundFromURL(mMediaPlayer, mWordTranslation.getSoundUrl());
 
         mView.setWordTranscription(mWordTranslation.getTranscription());
@@ -63,7 +63,6 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
         mView.loadTranslations(mWordTranslation.getTranslates());
 
         mView.setDialogTitle(mTranslatedWord.getWordFromContext());
-        mView.getTranslationsView().setOnItemClickListener(new OnItemTranslationClickListener());
 
     }
 
@@ -85,19 +84,16 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
         showTranslations();
     }
 
-    private class OnItemTranslationClickListener implements AdapterView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            TextView tv = (TextView) view;
-            String chosenTranslation = (String) tv.getText();
-            mTranslatedWord.setTranslation(chosenTranslation);
-            ((WordTranslationDialogFragment.WordTranslationClickListener) mView.getContext()).onWordTranslated(mTranslatedWord);
-            mView.dismiss();
-        }
+    public void onTranslationClick(String text) {
+        mTranslatedWord.setTranslation(text);
+        ((WordTranslationDialogFragment.WordTranslationClickListener) mView.getContext()).onWordTranslated(mTranslatedWord);
+        mView.dismiss();
     }
 
     private void translateText(WordFromText wordFromText) {
-        mWordTranslation = HocTranslator.translate(wordFromText);
+
+        HocTranslator translator = new HocTranslator();
+        mWordTranslation = translator.translate(wordFromText);
         mTranslatedWord = new TranslatedWord();
         mTranslatedWord.setWordBaseForm(mWordTranslation.getWord());
         mTranslatedWord.setWordFromContext(wordFromText.getText());

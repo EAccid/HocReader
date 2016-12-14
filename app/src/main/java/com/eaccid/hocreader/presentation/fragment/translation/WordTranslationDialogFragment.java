@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -72,6 +73,11 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
         textViewWord.setOnClickListener(view -> mPresenter.OnWordClicked());
         imageButtonTranscriptionSpeaker.setOnClickListener(view -> mPresenter.OnSpeakerClicked());
 
+        listViewTranslations.setOnItemClickListener((adapterView, view, i, l) -> {
+            TextView tv = (TextView) view;
+            mPresenter.onTranslationClick((String) tv.getText());
+        });
+
         return v;
     }
 
@@ -89,12 +95,8 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
         textViewWord.setText(text);
     }
 
-    public ImageView getWordPicture() {
+    public ImageView getWordPictureImageView() {
         return imageWordPicture;
-    }
-
-    public ImageButton getTranscriptionSpeaker() {
-        return imageButtonTranscriptionSpeaker;
     }
 
     public void setWordTranscription(String text) {
