@@ -13,16 +13,24 @@ import com.j256.ormlite.stmt.PreparedQuery;
 
 public class WordCursorProvider {
 
-    public OrmliteCursorRecyclerViewAdapter
-    createAdapterWithCursor(Context context, WordCarouselRecyclerViewAdapter adapter,
-                            AppDatabaseManager wordManager, boolean filterByBook) {
-        if (filterByBook)
-            wordManager.setFilter(WordFilter.BY_BOOK);
+    //TODO inject
+    private Context context;
+    private AppDatabaseManager dataManager;
 
-        PreparedQuery<Word> pq = wordManager.getWordPreparedQuery(null, null);
+    public WordCursorProvider(Context context, AppDatabaseManager appDatabaseManager) {
+        this.context = context;
+        this.dataManager = appDatabaseManager;
+    }
+
+    public OrmliteCursorRecyclerViewAdapter
+    createAdapterWithCursor(WordCarouselRecyclerViewAdapter adapter, boolean filterByBook) {
+        if (filterByBook)
+            dataManager.setFilter(WordFilter.BY_BOOK);
+
+        PreparedQuery<Word> pq = dataManager.getWordPreparedQuery(null, null);
         OrmLiteCursorLoader<Word> liteCursorLoader = new OrmLiteCursorLoader<>(
                 context,
-                wordManager.getWordDao(),
+                dataManager.getWordDao(),
                 pq);
         Cursor cursor = liteCursorLoader.loadInBackground();
         adapter.changeCursor(cursor, pq);

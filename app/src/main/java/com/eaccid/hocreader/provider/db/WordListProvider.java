@@ -19,7 +19,7 @@ public class WordListProvider extends DataListProvider {
 
     private static final String logTAG = "WordListProvider";
     private List<String> sessionWords;
-    public static AppDatabaseManager dataManager; //TODO inject
+    private static AppDatabaseManager dataManager; //TODO inject
 
     public static void setDataManager(AppDatabaseManager dm) {
         dataManager = dm;

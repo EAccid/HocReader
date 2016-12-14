@@ -32,8 +32,8 @@ public class WordCarouselPresenter implements BasePresenter<WordsCarouselFragmen
 
     public WordCarouselRecyclerViewAdapter createWordCarouselRecyclerViewAdapter() {
         WordCarouselRecyclerViewAdapter adapter = new WordCarouselRecyclerViewAdapter(mView.getContext());
-        WordCursorProvider wordCursorProvider = new WordCursorProvider();
-        return (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(mView.getContext(), adapter, dataManager, true);
+        WordCursorProvider wordCursorProvider = new WordCursorProvider(mView.getContext(), dataManager);
+        return (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(adapter, true);
 
     }
 }
