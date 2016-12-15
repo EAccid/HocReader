@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.service;
+package com.eaccid.hocreader.presentation.activity.card;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ public class CardWordActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_memorizing);
         setFinishOnTouchOutside(true);
-
         String word = getIntent().getStringExtra("word");
         String translation = getIntent().getStringExtra("translation");
 
@@ -25,4 +24,5 @@ public class CardWordActivity extends AppCompatActivity {
         tv_translation.setText(translation);
 
     }
+
 }

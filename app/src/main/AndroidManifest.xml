@@ -55,7 +55,7 @@
             android:process=":remote" />
 
         <activity
-            android:name="com.eaccid.hocreader.presentation.service.CardWordActivity"
+            android:name="com.eaccid.hocreader.presentation.activity.card.CardWordActivity"
             android:theme="@style/AppTheme.Dialog" />
 
     </application>

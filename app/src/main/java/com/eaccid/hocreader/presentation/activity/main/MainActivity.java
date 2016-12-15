@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.eaccid.hocreader.BuildConfig;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.service.MemorizingAlarmReceiver;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
@@ -28,6 +29,7 @@ import com.eaccid.hocreader.presentation.BaseView;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements BaseView, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
@@ -153,17 +155,22 @@ public class MainActivity extends AppCompatActivity implements BaseView, SearchV
 //            alarmMgr.cancel(alarmIntent);
 //        }
 
+
         Intent intent = new Intent(getApplicationContext(), MemorizingAlarmReceiver.class);
         final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MemorizingAlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_ONE_SHOT);
+                intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 8);
 
+//        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+//        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,  AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+//                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, 10*1000,
+                10*1000, pendingIntent);
     }
 
     private void setSearchViewParameters(SearchView searchView) {

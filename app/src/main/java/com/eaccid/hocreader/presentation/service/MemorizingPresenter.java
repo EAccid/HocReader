@@ -3,10 +3,10 @@ package com.eaccid.hocreader.presentation.service;
 import android.content.Intent;
 import android.util.Log;
 
-import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.presentation.activity.card.CardWordActivity;
 
 public class MemorizingPresenter  implements BasePresenter<MemorizingService> {
 

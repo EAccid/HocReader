@@ -40,12 +40,11 @@ public class MemorizingService extends IntentService implements BaseView {
         mPresenter.onHandleIntent(intent.getAction());
     }
 
-    public void createMemorizingNotification(Intent pendingIntent,
-                                              int id,
-                                              String text) {
-        final int REQUEST_CODE = 17;
+    public void createMemorizingNotification(Intent pendingIntent, int id, String text) {
+
+        final int REQUEST_CODE = id+1;
         PendingIntent contentIntent =
-        PendingIntent.getActivity(this, REQUEST_CODE,pendingIntent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent.getActivity(this, REQUEST_CODE, pendingIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationCompat.Builder builder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_pets_memorizing_24px)
@@ -62,6 +61,5 @@ public class MemorizingService extends IntentService implements BaseView {
         super.onDestroy();
         mPresenter.detachView();
     }
-
 
 }
