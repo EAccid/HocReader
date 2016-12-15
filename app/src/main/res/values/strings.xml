@@ -31,5 +31,6 @@
     <string name="input_page">page number</string>
     <string name="previous_page">to previous page</string>
     <string name="snack_bar_action_back">BACK</string>
+    <string name="memorizing_notification_title">Do you remember?</string>
 
 </resources>

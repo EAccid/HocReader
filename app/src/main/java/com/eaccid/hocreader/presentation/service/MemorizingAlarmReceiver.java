@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.refactoring.services;
+package com.eaccid.hocreader.presentation.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

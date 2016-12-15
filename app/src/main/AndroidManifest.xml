@@ -46,16 +46,16 @@
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="com.eaccid.hocreader.refactoring.services.MemorizingService"
+            android:name="com.eaccid.hocreader.presentation.service.MemorizingService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name="com.eaccid.hocreader.refactoring.services.MemorizingAlarmReceiver"
+            android:name="com.eaccid.hocreader.presentation.service.MemorizingAlarmReceiver"
             android:process=":remote" />
 
         <activity
-            android:name="com.eaccid.hocreader.refactoring.services.MemorizingActivity"
+            android:name="com.eaccid.hocreader.presentation.service.CardWordActivity"
             android:theme="@style/AppTheme.Dialog" />
 
     </application>

@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.refactoring.services;
+package com.eaccid.hocreader.presentation.service;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
 
-public class MemorizingActivity extends AppCompatActivity {
+public class CardWordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
