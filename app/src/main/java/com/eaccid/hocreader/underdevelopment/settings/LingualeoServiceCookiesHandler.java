@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.refactoring.settings;
+package com.eaccid.hocreader.underdevelopment.settings;
 
 
 import android.content.Context;

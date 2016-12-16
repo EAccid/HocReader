@@ -23,7 +23,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@color/colorTransparent"
-                android:src="@drawable/ic_hearing_accent_18px"/>
+                android:src="@drawable/ic_volume_up_black_24px"/>
 
             <TextView
                 android:id="@+id/text_transcription"

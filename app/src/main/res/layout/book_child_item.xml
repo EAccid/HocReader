@@ -5,25 +5,25 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:id="@+id/child_icon" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
             android:id="@+id/child_text"
-            android:paddingLeft="45sp"
+            android:paddingLeft="48dp"
             android:paddingTop="12sp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/child_icon"
-            android:text="Place Holder"
             android:textAppearance="?android:textAppearanceMedium"/>
 
     </RelativeLayout>

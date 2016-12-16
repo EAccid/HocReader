@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.presentation.fragment.book;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -99,9 +100,10 @@ public class BookFragment extends Fragment implements
         mMenuDialogFragment.setItemLongClickListener(this);
     }
 
+    //TODO refactor: menu outside
+
     private List<MenuObject> getMenuObjects() {
 
-        //TODO refactor: take creation outside
 
         MenuObject close = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.CLOSE);
         close.setResource(R.drawable.ic_arrow_back_blue_24px);
@@ -146,17 +148,28 @@ public class BookFragment extends Fragment implements
                 Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
                 break;
             case OPEN_LINGUALEO:
-                Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
+                Intent leoIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.lingualeo.android");
+                if (leoIntent != null) {
+                    startActivity(leoIntent);
+                }
                 break;
             case OPEN_GOOGLE_TRANSLATOR:
-                Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
+                Intent googleTranslatorIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.google.android.apps.translate");
+                if (googleTranslatorIntent != null) {
+                    startActivity(googleTranslatorIntent);//null pointer check in case package name was not found
+                }
                 break;
             case FONT_SIZE:
                 Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
                 break;
             case SELECT_TEXT:
-                Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
-                break;
+
+
+
+
+
+               Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
+               break;
             default:
                 throw new RuntimeException("There is no such menu item: position " + position);
         }

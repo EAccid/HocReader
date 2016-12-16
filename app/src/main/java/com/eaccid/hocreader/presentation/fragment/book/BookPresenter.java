@@ -77,4 +77,4 @@ public class BookPresenter implements BasePresenter<BookFragment> {
         mView.showSnackbarBackToLastOpenedPage(currentPagePosition, fromPage);
     }
 
-    }
+}

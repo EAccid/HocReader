@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.refactoring.settings;
+package com.eaccid.hocreader.underdevelopment.settings;
 
 import android.content.Context;
 
@@ -6,15 +6,14 @@ import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.
 
 public class LingualeoAuthSettings implements Runnable {
 
-    Context context;
-    Thread thread;
+    private Context context;
 
     public LingualeoAuthSettings(Context context) {
         this.context = context;
     }
 
     public void setUp() {
-        thread = new Thread(this, "lingualeo authentication");
+        Thread thread = new Thread(this, "lingualeo authentication");
         thread.start();
     }
 

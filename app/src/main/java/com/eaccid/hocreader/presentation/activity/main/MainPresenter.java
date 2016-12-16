@@ -7,7 +7,7 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.provider.file.findner.FileOnDeviceProvider;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectChild;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
-import com.eaccid.hocreader.refactoring.settings.MainSettings;
+import com.eaccid.hocreader.underdevelopment.settings.MainSettings;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
@@ -47,7 +47,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     public void loadFilesToExpandableView(List<File> files) {
 
-        //TODO: drop on methods
+        //TODO: drop on methods, take --R.id-- into main activity
 
         List<ItemObjectGroup> itemObjectGroupList = new ArrayList<>();
         List<String> readableFiles = new ArrayList<>();
@@ -62,10 +62,10 @@ public class MainPresenter implements BasePresenter<MainActivity> {
             if (lastDot != -1)
                 ext2 = file.getName().substring(lastDot + 1, file.getName().length());
             if (ext1.equalsIgnoreCase("txt") || ext2.equalsIgnoreCase("txt")) {
-                childObjectItemTXT.add(new ItemObjectChild(R.mipmap.generic_icon, file.getName(), file));
+                childObjectItemTXT.add(new ItemObjectChild(R.drawable.ic_txt, file.getName(), file));
                 readableFiles.add(file.getPath());
             } else {
-                childObjectItemPDF.add(new ItemObjectChild(R.mipmap.generic_icon, file.getName(), file));
+                childObjectItemPDF.add(new ItemObjectChild(R.drawable.ic_pdf, file.getName(), file));
             }
         }
 

@@ -6,7 +6,7 @@ import android.util.Log;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.presentation.activity.card.CardWordActivity;
+import com.eaccid.hocreader.presentation.activity.notcard.CardWordActivity;
 
 public class MemorizingPresenter  implements BasePresenter<MemorizingService> {
 

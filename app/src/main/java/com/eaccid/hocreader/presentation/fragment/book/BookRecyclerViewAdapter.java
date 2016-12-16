@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.provider.file.pagesplitter.Page;
+
 import java.util.List;
 
 public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerViewAdapter.ViewHolder> {
@@ -34,6 +36,8 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
                         String.valueOf(mPagesList.size())
         );
         holder.getTextOnPageTextView().setOnTouchListener(new OnWordFromPageViewTouchListener(page.getPageNumber()));
+        holder.getTextOnPageTextView().setCustomSelectionActionModeCallback(new SelectableActionMode());
+
     }
 
     @Override

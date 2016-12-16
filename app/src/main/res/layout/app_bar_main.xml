@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.eaccid.hocreader.presentation.activity.main.MainActivity"
-    android:longClickable="false">
+    android:longClickable="false"
+    tools:context="com.eaccid.hocreader.presentation.activity.main.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
-
+        <!--android:fitsSystemWindows="true"-->
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main" />
@@ -30,6 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/fab_plus" />
+        android:src="@drawable/ic_pets_memorizing_24px" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,5 +1,4 @@
-package com.eaccid.hocreader.refactoring.spann;
-
+package com.eaccid.hocreader.underdevelopment.spann;
 
 import android.content.Context;
 import android.text.Spannable;
@@ -7,7 +6,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
-
 import java.util.Scanner;
 
 public class TextSpannHandler {
@@ -15,8 +13,6 @@ public class TextSpannHandler {
     public static void deleteClickableWordsOnTextView(TextView tv) {
         if (tv == null) return;
         tv.setText(tv.getText().toString());
-
-
 //            SpannableString ss = getYourSpannableString();
 //            UnderlineSpan[] uspans = ss.getSpans(0, ss.length(), UnderlineSpan.class);
 //            for (UnderlineSpan us : uspans) {

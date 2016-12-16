@@ -33,7 +33,6 @@ public class AppDatabaseManager {
         Log.i(logTAG, "release db manager, " + --count);
     }
 
-
     private WordFilter currentFilter = WordFilter.NONE;
     private static Book currentBook;
     private static int currentPage = 1;

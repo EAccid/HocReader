@@ -1,7 +1,7 @@
 package com.eaccid.hocreader;
 
 
-import com.eaccid.hocreader.refactoring.settings.LingualeoServiceCookiesHandler;
+import com.eaccid.hocreader.underdevelopment.settings.LingualeoServiceCookiesHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionary;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.translator.LingualeoTranslator;
 

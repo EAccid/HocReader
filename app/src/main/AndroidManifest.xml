@@ -13,12 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:name="com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider"
+            android:name=".presentation.activity.main.serchadapter.SearchSuggestionsProvider"
             android:authorities="com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
-            android:name="com.eaccid.hocreader.presentation.activity.main.MainActivity"
+            android:name=".presentation.activity.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -33,7 +33,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name="com.eaccid.hocreader.presentation.activity.pager.PagerActivity"
+            android:name=".presentation.activity.pager.PagerActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -42,22 +42,21 @@
         </activity>
 
         <service
-            android:name="com.eaccid.hocreader.refactoring.services.LingualeoRefreshService"
+            android:name=".underdevelopment.services.LingualeoRefreshService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="com.eaccid.hocreader.presentation.service.MemorizingService"
+            android:name=".presentation.service.MemorizingService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name="com.eaccid.hocreader.presentation.service.MemorizingAlarmReceiver"
+            android:name=".presentation.service.MemorizingAlarmReceiver"
             android:process=":remote" />
 
         <activity
-            android:name="com.eaccid.hocreader.presentation.activity.card.CardWordActivity"
+            android:name=".presentation.activity.notcard.CardWordActivity"
             android:theme="@style/AppTheme.Dialog" />
-
     </application>
 
 </manifest>

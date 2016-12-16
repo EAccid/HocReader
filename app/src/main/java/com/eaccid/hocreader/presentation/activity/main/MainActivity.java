@@ -7,8 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -17,8 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-
-import com.eaccid.hocreader.BuildConfig;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.service.MemorizingAlarmReceiver;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
@@ -26,16 +29,20 @@ import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchAdapte
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
-
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements BaseView, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+public class MainActivity extends AppCompatActivity implements BaseView,
+        SearchView.OnQueryTextListener,
+        SearchView.OnCloseListener,
+        NavigationView.OnNavigationItemSelectedListener{
 
     private static MainPresenter mPresenter;
     private ExpandableListView expandableListView;
     private SearchAdapter searchAdapter;
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerListener;
 
     @Override
     public BasePresenter getPresenter() {
@@ -45,12 +52,10 @@ public class MainActivity extends AppCompatActivity implements BaseView, SearchV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
         if (mPresenter == null) mPresenter = new MainPresenter();
 
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView_main);
-
-        mPresenter.attachView(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,6 +67,17 @@ public class MainActivity extends AppCompatActivity implements BaseView, SearchV
                 mPresenter.onFabButtonClickListener();
             }
         });
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerListener = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(drawerListener);
+        drawerListener.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mPresenter.attachView(this);
 
         mPresenter.fillExpandableListView();
         mPresenter.loadSettings();
@@ -98,8 +114,6 @@ public class MainActivity extends AppCompatActivity implements BaseView, SearchV
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
             case R.id.action_search:
                 return true;
             case R.id.action_clearSearchHistory:
@@ -164,13 +178,13 @@ public class MainActivity extends AppCompatActivity implements BaseView, SearchV
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 8);
 
-//        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-//        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,  AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-//                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, 10*1000,
-                10*1000, pendingIntent);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,  AlarmManager.INTERVAL_HOUR,
+                AlarmManager.INTERVAL_HOUR, pendingIntent);
+
+//        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+//        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, 10*1000,
+//                10*1000, pendingIntent);
     }
 
     private void setSearchViewParameters(SearchView searchView) {
@@ -182,5 +196,17 @@ public class MainActivity extends AppCompatActivity implements BaseView, SearchV
         searchView.requestFocus();
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+//switch
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+
+    }
 }
 

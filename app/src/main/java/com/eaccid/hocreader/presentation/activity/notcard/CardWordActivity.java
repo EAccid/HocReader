@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.activity.card;
+package com.eaccid.hocreader.presentation.activity.notcard;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
