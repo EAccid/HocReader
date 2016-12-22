@@ -72,7 +72,6 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorSecondaryText);
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorLightAccent);
         mSwipeRefreshLayout.setOnRefreshListener(this::onRefreshRecyclerView);
-
     }
 
     private void initRecyclerView() {
