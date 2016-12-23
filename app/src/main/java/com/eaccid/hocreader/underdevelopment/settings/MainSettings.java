@@ -1,26 +1,12 @@
 package com.eaccid.hocreader.underdevelopment.settings;
 
-import android.app.Activity;
+import android.content.Context;
 import android.provider.SearchRecentSuggestions;
-
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider;
 
 public class MainSettings {
 
-    private Activity context;
-
-    public MainSettings(Activity context) {
-        this.context = context;
-    }
-
-    public void setDefaultSettings() {
-
-        LingualeoAuthSettings lingualeoAuthSettings = new LingualeoAuthSettings(context);
-        lingualeoAuthSettings.setUp();
-
-    }
-
-    public void clearBookSearchHistory() {
+    public void clearBookSearchHistory(Context context) {
         // TODO 1. provide a confirmation dialog to verify that the user wants to delete their search history
         SearchRecentSuggestions suggestions = new SearchRecentSuggestions(context, SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
         suggestions.clearHistory();

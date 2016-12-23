@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.presentation.activity.settings.SettingsActivity;
 import com.eaccid.hocreader.presentation.service.MemorizingAlarmReceiver;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchAdapter;
@@ -80,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements BaseView,
         mPresenter.attachView(this);
 
         mPresenter.fillExpandableListView();
-        mPresenter.loadSettings();
 
         scheduleAlarm();
 
@@ -201,7 +201,12 @@ public class MainActivity extends AppCompatActivity implements BaseView,
 
         int id = item.getItemId();
 
-//switch
+        switch (id) {
+            case R.id.settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

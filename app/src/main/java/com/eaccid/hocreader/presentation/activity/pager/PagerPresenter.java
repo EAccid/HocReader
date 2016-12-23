@@ -64,6 +64,7 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     public void onWordTranslated(TranslatedWord translatedWord) {
         HocDictionary hocDictionary = new HocDictionary(mView.getApplicationContext());
         boolean succeed = hocDictionary.addTranslatedWord(translatedWord);
+        Log.i(logTAG, "Word translated status: " + succeed);
         dataManager.createOrUpdateWord(translatedWord.getWordFromContext(),//getWordBaseForm()
                 translatedWord.getTranslation(),
                 translatedWord.getContext(),

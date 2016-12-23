@@ -14,7 +14,7 @@
     <string name="under_development">Under development.</string>
     <string name="transcription">transcription</string>
     <string name="wordFromContext">wordFromContext</string>
-    <string name="_page_number">0</string>
+    <string name="page_number">0</string>
     <string name="text_on_page">text on page</string>
     <string name="word_item">wordFromContext</string>
     <string name="translation_item">translation</string>
@@ -37,5 +37,28 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="helloreader_eaccid_com">helloreader@eaccid.com</string>
+
+    <string name="pref_title_notify_frequency">Memorizing notification</string>
+    <string-array name="pref_notify_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_notify_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_leo_sign_in_title_display_name">Lingualeo</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 
 </resources>

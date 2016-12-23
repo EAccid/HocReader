@@ -3,7 +3,7 @@ package com.eaccid.hocreader.provider.translator;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.Size;
-import com.eaccid.hocreader.underdevelopment.settings.LingualeoServiceCookiesHandler;
+import com.eaccid.hocreader.presentation.activity.settings.LingualeoServiceCookiesHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionary;
 
 public class HocDictionary {

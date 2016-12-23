@@ -40,7 +40,8 @@ public class RequestHandler {
                 connection.loadCookies(cookies);
                 connection.sendLingualeoRequest(url, RequestMethod.POST, requestParameters);
                 response = connection.getResponse();
-                serviceStatus = ServiceStatus.SUCCEEDED;
+                LeoServiceStatus leoServiceStatus = new LeoServiceStatus();
+                serviceStatus = leoServiceStatus.getGeneralServiceStatus(response);
             } catch (UnknownHostException e) {
                 serviceStatus = ServiceStatus.CONNECTION_ERROR;
                 System.out.println("UnknownHostException");

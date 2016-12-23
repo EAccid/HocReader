@@ -57,6 +57,15 @@
         <activity
             android:name=".presentation.activity.notcard.CardWordActivity"
             android:theme="@style/AppTheme.Dialog" />
+        <activity
+            android:name=".presentation.activity.settings.SettingsActivity"
+            android:theme="@style/AppTheme.Settings"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".presentation.activity.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".presentation.activity.main.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

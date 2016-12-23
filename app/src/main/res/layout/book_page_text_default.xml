@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/_page_number"
+        android:text="@string/page_number"
         android:textColor="@color/colorSecondaryText"
         android:textSize="@dimen/menu_text_size" />
 

@@ -84,15 +84,10 @@ public class MainPresenter implements BasePresenter<MainActivity> {
      * - settings into separate presenter
      * - create fab action
      */
-    private MainSettings settings;
-
-    public void loadSettings() {
-        settings = new MainSettings(mView);
-        settings.setDefaultSettings();
-    }
 
     public void clearBookSearchHistory() {
-        settings.clearBookSearchHistory();
+        MainSettings settings = new MainSettings();
+        settings.clearBookSearchHistory(mView.getApplicationContext());
     }
 
     public void onFabButtonClickListener() {
