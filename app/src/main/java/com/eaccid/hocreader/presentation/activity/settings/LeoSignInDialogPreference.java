@@ -40,13 +40,13 @@ public class LeoSignInDialogPreference extends DialogPreference {
 
     private void authenticate(final String email, final String password) {
 
-        ProgressDialog progressDialog = new ProgressDialog(getContext(),
-                R.style.AppTheme_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
-
-        LeoAuthSettings leoAuthSettings = new LeoAuthSettings(getContext());
+//        ProgressDialog progressDialog = new ProgressDialog(getContext(),
+//                R.style.AppTheme_Dialog);
+//        progressDialog.setIndeterminate(true);
+//        progressDialog.setMessage("Authenticating...");
+//        progressDialog.show();
+//
+//        LeoAuthSettings leoAuthSettings = new LeoAuthSettings(getContext());
 //        leoAuthSettings
 //                .leoSignInObservable(email, password)
 //                .observeOn(Schedulers.io())
