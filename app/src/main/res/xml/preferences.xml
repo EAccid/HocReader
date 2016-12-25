@@ -14,8 +14,9 @@
 
         <com.eaccid.hocreader.presentation.activity.settings.LeoSignInDialogPreference
             android:key="pref_leo_sign_in"
+            android:defaultValue="Unauthorized"
             android:title="@string/pref_leo_sign_in_title_display_name"
             android:dialogLayout="@layout/leo_sign_in_dialog"
             />
-    <!--android:positiveButtonText="SIGN IN"-->
+
 </PreferenceScreen>

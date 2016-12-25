@@ -10,7 +10,8 @@ public class LeoServiceStatus {
             Log.i("LeoServiceStatus", "error_msg from lingualeo service: " + error_msg);
             return ServiceStatus.UNAUTHORIZED;
         }
-        if (!lingualeoResponse.getBoolean("is_authorized")) {
+        if (!lingualeoResponse.getString("is_authorized").isEmpty()
+                && !lingualeoResponse.getBoolean("is_authorized")) {
            return ServiceStatus.FAILED;
         }
         return ServiceStatus.SUCCEEDED;
