@@ -220,13 +220,15 @@ public class BookFragment extends Fragment implements
     public void setSelectableText(boolean isSelectable) {
         mAdapter.setSelectableItemTextView(isSelectable);
         mAdapter.notifyDataSetChanged();
+        String modeText = ""; // todo from @string
         if (isSelectable) {
-            Toast.makeText(getContext(), "Tap twice to select", Toast.LENGTH_LONG).show();
+            modeText ="Tap twice to select";
             moreMenuImg.setImageResource(R.drawable.ic_done_all_24px);
         } else {
+            modeText = "Reader mode";
             moreMenuImg.setImageResource(R.drawable.ic_more_vert_black_24px);
-            Toast.makeText(getContext(), "Reader mode", Toast.LENGTH_SHORT).show();
         }
+        Toast.makeText(getContext(), modeText, Toast.LENGTH_SHORT).show();
     }
 
     public boolean selectableMode() {
