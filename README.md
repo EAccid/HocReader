@@ -1,16 +1,17 @@
-# HelloReader “Hoc Reader”
+# Reader “Hoc Reader”
 
 TXT, FB2, PDF Reader with translator, basic words training part and “memorizing” notifications. 
 
 Already done: 
-- library to work with Lingualeo API; 
-- reading txt files with translation ability; 
-- Unit tests for work with database, work with Lingualeo API library; 
+- library to work with Lingualeo Translator API (translate, add word to dictionary); 
+- reading txt files with online translation ability; 
+- database Unit tests; 
 - part to edit added words and basic training; 
-- words memorizing notifications.
+- words memorizing notifications (without settings);
+- settings: Lingualeo authorization.
 
 TODO: 
 - main part for training added words (CarouselRecyclerView); 
 - Google offline translator; 
-- Reading fb2, pdf formats; 
-- main settings. 
+- reading FB2, PDF formats; 
+- main settings.
