@@ -1,17 +1,15 @@
-package com.eaccid.hocreader.presentation.activity.settings;
+package com.eaccid.hocreader.presentation.preferences;
 
 import android.content.Context;
-
 import com.eaccid.hocreader.provider.translator.HocDictionary;
-
 import rx.Observable;
 import rx.Subscriber;
 
-public class LeoAuthSettings {
+public class LeoAuthenticationSettings {
 
     private Context context; //TODO del after inject
 
-    public LeoAuthSettings(Context context) {
+    public LeoAuthenticationSettings(Context context) {
         this.context = context;
     }
 

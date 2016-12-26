@@ -1,14 +1,11 @@
-package com.eaccid.hocreader.presentation.activity.settings;
-
+package com.eaccid.hocreader.presentation.fragment.settings;
 
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-
 import com.eaccid.hocreader.R;
-
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -16,7 +13,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-
         bindPreferenceSummaryToValue(findPreference("notifications_frequency"));
         bindPreferenceSummaryToValue(findPreference("pref_leo_sign_in"));
     }
@@ -44,8 +40,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     private void bindPreferenceSummaryToValue(Preference preference) {
         preference.setOnPreferenceChangeListener(this);
-        updatePreference(preference,
-                PreferenceManager
+        updatePreference(preference,PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
                         .getString(preference.getKey(), ""));
     }

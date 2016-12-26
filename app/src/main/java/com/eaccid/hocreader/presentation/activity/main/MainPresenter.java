@@ -7,7 +7,6 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.provider.file.findner.FileOnDeviceProvider;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectChild;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
-import com.eaccid.hocreader.underdevelopment.settings.MainSettings;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
@@ -86,7 +85,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
      */
 
     public void clearBookSearchHistory() {
-        MainSettings settings = new MainSettings();
+        BookSearchHistory settings = new BookSearchHistory();
         settings.clearBookSearchHistory(mView.getApplicationContext());
     }
 

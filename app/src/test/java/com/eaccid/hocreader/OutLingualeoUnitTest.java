@@ -1,7 +1,7 @@
 package com.eaccid.hocreader;
 
 
-import com.eaccid.hocreader.presentation.activity.settings.LingualeoServiceCookiesHandler;
+import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesSettings;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionary;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.translator.LingualeoTranslator;
 
@@ -26,7 +26,7 @@ public class OutLingualeoUnitTest {
     private static String cookies = "";
 
     @Mock
-    LingualeoServiceCookiesHandler mLeoCookies;
+    LingualeoServiceCookiesSettings mLeoCookies;
 
     @Before
     public void setUp() {

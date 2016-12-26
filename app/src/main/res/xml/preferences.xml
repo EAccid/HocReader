@@ -12,7 +12,7 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_title_notify_frequency" />
 
-        <com.eaccid.hocreader.presentation.activity.settings.LeoSignInDialogPreference
+        <com.eaccid.hocreader.presentation.preferences.LeoAuthenticationDialogPreference
             android:key="pref_leo_sign_in"
             android:defaultValue="Unauthorized"
             android:title="@string/pref_leo_sign_in_title_display_name"
