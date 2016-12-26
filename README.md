@@ -4,7 +4,7 @@ TXT, FB2, PDF Reader with translator, basic words training part and “memorizin
 
 Already done: 
 - library to work with Lingualeo Translator API (translate, add word to dictionary); 
-- reading txt files with online translation ability; 
+- reading txt files (online translate on touch, go to page, open Translator, select to copy text); 
 - database Unit tests; 
 - part to edit added words and basic training; 
 - words memorizing notifications (without settings);
