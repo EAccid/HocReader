@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
@@ -23,7 +22,6 @@ import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +30,14 @@ public class BookFragment extends Fragment implements
         OnMenuItemClickListener, OnMenuItemLongClickListener, BaseView {
 
     private BookPresenter mPresenter;
+    private LinearLayoutManager mLayoutManager;
     private RecyclerView mRecyclerView;
     private BookRecyclerViewAdapter mAdapter;
     private ContextMenuDialogFragment mMenuDialogFragment;
-     private List<MenuObject> menuObjects = new ArrayList<>();
+    private List<MenuObject> menuObjects = new ArrayList<>();
     private static final String TAG = "BookFragment";
+
+    public ImageView moreMenuImg;
 
     public static BookFragment newInstance() {
         BookFragment f = new BookFragment();
@@ -66,13 +67,13 @@ public class BookFragment extends Fragment implements
         rootView.setTag(TAG);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(getActivity());
 
         mAdapter = mPresenter.createRecyclerViewAdapter();
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        ImageView moreMenuImg = (ImageView) rootView.findViewById(R.id.menu_more_vert_grey);
+        moreMenuImg = (ImageView) rootView.findViewById(R.id.menu_more_vert_grey);
 
         moreMenuImg.setOnClickListener(view -> onMoreMenuClicked());
 
@@ -80,8 +81,13 @@ public class BookFragment extends Fragment implements
     }
 
     private void onMoreMenuClicked() {
+        mPresenter.onMoreMenuClicked();
+    }
+
+    public void showMoreMenu() {
         mMenuDialogFragment.show(getFragmentManager(), ContextMenuDialogFragment.TAG);
     }
+
 
     @Override
     public void onDestroy() {
@@ -163,13 +169,8 @@ public class BookFragment extends Fragment implements
                 Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
                 break;
             case SELECT_TEXT:
-
-
-
-
-
-               Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
-               break;
+                mPresenter.onSelectTextMenuClicked();
+                break;
             default:
                 throw new RuntimeException("There is no such menu item: position " + position);
         }
@@ -216,6 +217,21 @@ public class BookFragment extends Fragment implements
         mAdapter.notifyDataSetChanged();
     }
 
+    public void setSelectableText(boolean isSelectable) {
+        mAdapter.setSelectableItemTextView(isSelectable);
+        mAdapter.notifyDataSetChanged();
+        if (isSelectable) {
+            Toast.makeText(getContext(), "Tap twice to select", Toast.LENGTH_LONG).show();
+            moreMenuImg.setImageResource(R.drawable.ic_done_all_24px);
+        } else {
+            moreMenuImg.setImageResource(R.drawable.ic_more_vert_black_24px);
+            Toast.makeText(getContext(), "Reader mode", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean selectableMode() {
+        return mAdapter.isSelectableItemTextView();
+    }
 }
 
 

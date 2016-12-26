@@ -5,15 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.provider.file.pagesplitter.Page;
-
 import java.util.List;
 
 public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerViewAdapter.ViewHolder> {
     private static final String logTAG = "BookAdapter";
     private List<Page<String>> mPagesList;
+    private boolean isSelectableItemTextView;
 
     public BookRecyclerViewAdapter(List<Page<String>> mPagesList) {
         this.mPagesList = mPagesList;
@@ -29,20 +28,38 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Page<String> page = mPagesList.get(position);
-        holder.getTextOnPageTextView().setText(page.getDataFromPage());
+        TextView textOnPage = holder.getTextOnPageTextView();
+
+        textOnPage.setText(page.getDataFromPage());
         holder.getPageNumberTextView().setText(
                 String.valueOf(position + 1) +
                         " - " +
                         String.valueOf(mPagesList.size())
         );
-        holder.getTextOnPageTextView().setOnTouchListener(new OnWordFromPageViewTouchListener(page.getPageNumber()));
-        holder.getTextOnPageTextView().setCustomSelectionActionModeCallback(new SelectableActionMode());
-
+        if (isSelectableItemTextView) {
+            textOnPage.setTextIsSelectable(true);
+            textOnPage.setOnTouchListener(null);
+            textOnPage.setCustomSelectionActionModeCallback(
+                    new SelectableToTranslateActionMode(textOnPage)
+            );
+        } else {
+            textOnPage.setTextIsSelectable(false);
+            textOnPage.setCustomSelectionActionModeCallback(null);
+            textOnPage.setOnTouchListener(new OnWordFromPageViewTouchListener(page.getPageNumber()));
+        }
     }
 
     @Override
     public int getItemCount() {
         return mPagesList.size();
+    }
+
+    public void setSelectableItemTextView(boolean isSelectable) {
+        isSelectableItemTextView = isSelectable;
+    }
+
+    public boolean isSelectableItemTextView() {
+        return isSelectableItemTextView;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -7,6 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        //action mode
+        <item name="android:textColorHighlight">@color/action_mode_highlight</item>
+        <item name="android:panelBackground">@color/colorPrimary</item>
+        <item name="android:actionModeBackground">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -43,16 +51,22 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
+
     <style name="Body2" parent="TextAppearance.AppCompat.Body2">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
-    <style name="Body1.White"/>
-    <style name="Body2.White"/>
-    <style name="Body2.Black"/>
+
+    <style name="Body1.White" />
+
+    <style name="Body2.White" />
+
+    <style name="Body2.Black" />
+
     <style name="Body1.White.Primary">
         <item name="android:textColor">@color/text_white_primary</item>
     </style>
+
     <style name="Body2.White.Primary">
         <item name="android:textColor">@color/text_white_primary</item>
     </style>

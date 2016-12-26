@@ -1,7 +1,6 @@
 package com.eaccid.hocreader.presentation.fragment.book;
 
 import android.util.Log;
-
 import com.eaccid.hocreader.provider.file.BaseFileImpl;
 import com.eaccid.hocreader.provider.file.pagesplitter.Page;
 import com.eaccid.hocreader.provider.file.pagesplitter.TxtPagesFromFileProvider;
@@ -9,10 +8,8 @@ import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
@@ -80,4 +77,15 @@ public class BookPresenter implements BasePresenter<BookFragment> {
         mView.showSnackbarBackToLastOpenedPage(currentPagePosition, fromPage);
     }
 
+    public void onSelectTextMenuClicked() {
+        mView.setSelectableText(true);
+    }
+
+    public void onMoreMenuClicked() {
+        if (mView.selectableMode()) {
+            mView.setSelectableText(false);
+            return;
+        }
+        mView.showMoreMenu();
+    }
 }

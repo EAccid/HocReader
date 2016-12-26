@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#00796b</color>
     <color name="colorLightPrimary">#70b2dfdb</color>
     <color name="colorTextIcons">#ffffff</color>
-    <color name="colorAccent">#8BC34A</color>
+    <color name="colorAccent">#E040FB</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="colorDivider">#bdbdbd</color>
@@ -12,6 +12,8 @@
     <color name="windowSecondaryBackground">#B0BEC5</color>
     <color name="colorLightAccent">#fff</color>
     <color name="colorTransparent">#00ffffff</color>
+
+    <color name="action_mode_highlight">#4DD0E1</color>
 
     <!--<color name="colorAccent">#ff4081</color>-->
     <!--<color name="colorLightAccent">#f8bbd0</color>-->
