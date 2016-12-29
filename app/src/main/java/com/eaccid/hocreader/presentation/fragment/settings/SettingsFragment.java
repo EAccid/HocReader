@@ -5,7 +5,9 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+
 import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.presentation.service.OnAlarmManagerScheduleListener;
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -13,19 +15,37 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        bindPreferenceSummaryToValue(findPreference("notifications_frequency"));
-        bindPreferenceSummaryToValue(findPreference("pref_leo_sign_in"));
+        bindPreferenceSummaryToValue(
+                findPreference(
+                        getString(
+                                R.string.notifications_frequency_key)
+                )
+        );
+        bindPreferenceSummaryToValue(
+                findPreference(
+                        getString(
+                                R.string.pref_leo_sign_in_key)
+                )
+        );
     }
 
     @Override
-    public boolean onPreferenceChange(Preference preference, Object o) {
-        updatePreference(preference, o);
+    public boolean onPreferenceChange(Preference preference, Object objectValue) {
+        if (preference == null) return false;
+        updatePreferencesSummary(preference, objectValue);
+        updatePreferencesValue(preference, objectValue);
         return true;
     }
 
-    private void updatePreference(Preference preference, Object value) {
+    private void bindPreferenceSummaryToValue(Preference preference) {
+        preference.setOnPreferenceChangeListener(this);
+        updatePreferencesSummary(preference, PreferenceManager
+                .getDefaultSharedPreferences(preference.getContext())
+                .getString(preference.getKey(), getString(R.string.default_pref_value)));
+    }
+
+    private void updatePreferencesSummary(Preference preference, Object value) {
         String stringValue = value.toString();
-        if (preference == null) return;
         if (preference instanceof ListPreference) {
             ListPreference listPreference = (ListPreference) preference;
             int index = listPreference.findIndexOfValue(stringValue);
@@ -38,10 +58,13 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         }
     }
 
-    private void bindPreferenceSummaryToValue(Preference preference) {
-        preference.setOnPreferenceChangeListener(this);
-        updatePreference(preference,PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+    private void updatePreferencesValue(Preference preference, Object value) {
+        String stringValue = value.toString();
+        String notificationsFrequency = getString(R.string.notifications_frequency_key);
+        if (preference.getKey().equals(notificationsFrequency)
+                ) {
+            long interval = Long.valueOf(stringValue) * 60 * 1000;
+            ((OnAlarmManagerScheduleListener) preference.getContext()).onSchedule(Math.max(-1, interval));
+        }
     }
 }

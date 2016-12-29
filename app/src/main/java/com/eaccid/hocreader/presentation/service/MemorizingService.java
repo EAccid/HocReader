@@ -13,7 +13,6 @@ import com.eaccid.hocreader.presentation.BaseView;
 public class MemorizingService extends IntentService implements BaseView {
 
     private static MemorizingPresenter mPresenter;
-
     private static final String NOTIFICATION_TAG = "WORD_MEMORIZING";
     private NotificationManager notificationManager;
 

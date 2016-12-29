@@ -82,7 +82,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
     }
 
     public void onMoreMenuClicked() {
-        if (mView.selectableMode()) {
+        if (mView.isSelectableMode()) {
             mView.setSelectableText(false);
             return;
         }

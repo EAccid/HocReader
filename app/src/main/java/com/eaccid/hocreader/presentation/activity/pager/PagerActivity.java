@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.provider.translator.TranslatedWord;
@@ -93,6 +94,7 @@ public class PagerActivity extends FragmentActivity implements BaseView,
     @Override
     public void OnWordClicked(WordFromText wordFromText) {
         mPresenter.OnWordFromTextViewClicked(wordFromText);
+
         final DialogFragment dialog = WordTranslationDialogFragment.newInstance(wordFromText);
         getSupportFragmentManager()
                 .beginTransaction()

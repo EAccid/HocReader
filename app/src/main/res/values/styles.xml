@@ -10,10 +10,6 @@
 
         //action mode
         <item name="android:textColorHighlight">@color/action_mode_highlight</item>
-        <item name="android:panelBackground">@color/colorPrimary</item>
-        <item name="android:actionModeBackground">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
 
     </style>
 

@@ -28,6 +28,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     public void attachView(MainActivity mainActivity) {
         mView = mainActivity;
         dataManager.loadDatabaseManager(mView);
+        fillExpandableListView();
         Log.i(logTAG, "MainActivity has been attached.");
     }
 
@@ -38,13 +39,32 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         mView = null;
     }
 
-    public void fillExpandableListView() {
+        /**
+     * TODO:
+     * - settings into separate presenter
+     * - create fab action
+     */
+
+    public void clearBookSearchHistory() {
+        BookSearchHistory settings = new BookSearchHistory();
+        settings.clearBookSearchHistory(mView.getApplicationContext());
+    }
+
+    public void onFabButtonClickListener() {
+        //TEMP
+        int words = dataManager.getAllWords(null, null).size();
+        int books = dataManager.getAllBooks().size();
+        String text = "books: " + books + ", words: " + words;
+        mView.showTestFab(text);
+    }
+
+    private void fillExpandableListView() {
         FileOnDeviceProvider fileOnDeviceProvider = new FileOnDeviceProvider();
         List<File> foundFiles = fileOnDeviceProvider.findFiles();
         loadFilesToExpandableView(foundFiles);
     }
 
-    public void loadFilesToExpandableView(List<File> files) {
+    private void loadFilesToExpandableView(List<File> files) {
 
         //TODO: drop on methods, take --R.id-- into main activity
 
@@ -76,25 +96,4 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         mView.setItemsToExpandableListView(itemObjectGroupList);
         dataManager.refreshBooks(readableFiles);
     }
-
-
-    /**
-     * TODO:
-     * - settings into separate presenter
-     * - create fab action
-     */
-
-    public void clearBookSearchHistory() {
-        BookSearchHistory settings = new BookSearchHistory();
-        settings.clearBookSearchHistory(mView.getApplicationContext());
-    }
-
-    public void onFabButtonClickListener() {
-        //TEMP
-        int words = dataManager.getAllWords(null, null).size();
-        int books = dataManager.getAllBooks().size();
-        String text = "books: " + books + ", words: " + words;
-        mView.showTestFab(text);
-    }
-
 }

@@ -1,11 +1,10 @@
 package com.eaccid.hocreader.presentation.activity.main;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -24,26 +23,21 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.activity.settings.SettingsActivity;
-import com.eaccid.hocreader.presentation.service.MemorizingAlarmReceiver;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchAdapter;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BaseView,
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
-        NavigationView.OnNavigationItemSelectedListener{
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static MainPresenter mPresenter;
     private ExpandableListView expandableListView;
     private SearchAdapter searchAdapter;
-
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle drawerListener;
 
     @Override
     public BasePresenter getPresenter() {
@@ -69,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements BaseView,
             }
         });
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerListener = new ActionBarDrawerToggle(
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle drawerListener = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerListener);
         drawerListener.syncState();
@@ -80,10 +74,7 @@ public class MainActivity extends AppCompatActivity implements BaseView,
 
         mPresenter.attachView(this);
 
-        mPresenter.fillExpandableListView();
-
-        scheduleAlarm();
-
+        PreferenceManager.setDefaultValues(this.getApplicationContext(), R.xml.preferences, false);
     }
 
     @Override
@@ -101,13 +92,10 @@ public class MainActivity extends AppCompatActivity implements BaseView,
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         setSearchViewParameters(searchView);
-
         return true;
     }
 
@@ -139,6 +127,20 @@ public class MainActivity extends AppCompatActivity implements BaseView,
         return false;
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     public void showTestFab(String text) {
         Snackbar.make(getCurrentFocus(), text,
                 Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -162,31 +164,6 @@ public class MainActivity extends AppCompatActivity implements BaseView,
         }
     }
 
-    private void scheduleAlarm() {
-//        TODO: scheduleAlarm, cancelAlarm - > settings isCanceled
-//         If the alarm has been set, cancel it.
-//        if (alarmMgr!= null) {
-//            alarmMgr.cancel(alarmIntent);
-//        }
-
-
-        Intent intent = new Intent(getApplicationContext(), MemorizingAlarmReceiver.class);
-        final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MemorizingAlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 8);
-
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP,  AlarmManager.INTERVAL_HOUR,
-                AlarmManager.INTERVAL_HOUR, pendingIntent);
-
-//        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-//        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, 10*1000,
-//                10*1000, pendingIntent);
-    }
-
     private void setSearchViewParameters(SearchView searchView) {
         SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
@@ -196,22 +173,5 @@ public class MainActivity extends AppCompatActivity implements BaseView,
         searchView.requestFocus();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                break;
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-
-    }
 }
 

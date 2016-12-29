@@ -3,8 +3,6 @@ package com.eaccid.hocreader.data.local;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
-import com.eaccid.hocreader.data.local.WordFilter;
 import com.eaccid.hocreader.data.local.db.entity.Book;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.data.local.db.service.BookDaoService;
@@ -12,11 +10,11 @@ import com.eaccid.hocreader.data.local.db.service.DatabaseManager;
 import com.eaccid.hocreader.data.local.db.service.WordDaoService;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO refactor: do it in background
 public class AppDatabaseManager {
 
     private final String logTAG = "AppDatabaseManager";
@@ -70,11 +68,9 @@ public class AppDatabaseManager {
         currentFilter = filter;
     }
 
-
     /**
      * books table
      */
-
 
     public void refreshBooks(List<String> bookpaths) {
         try {

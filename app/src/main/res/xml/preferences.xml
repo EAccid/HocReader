@@ -4,19 +4,18 @@
     android:title="Settings">
 
     <ListPreference
-        android:defaultValue="180"
+        android:defaultValue="-1"
         android:entries="@array/pref_notify_frequency_titles"
         android:entryValues="@array/pref_notify_frequency_values"
-        android:key="notifications_frequency"
+        android:key="@string/notifications_frequency_key"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_notify_frequency" />
 
-        <com.eaccid.hocreader.presentation.preferences.LeoAuthenticationDialogPreference
-            android:key="pref_leo_sign_in"
-            android:defaultValue="Unauthorized"
-            android:title="@string/pref_leo_sign_in_title_display_name"
-            android:dialogLayout="@layout/leo_sign_in_dialog"
-            />
+    <com.eaccid.hocreader.presentation.preferences.LeoAuthenticationDialogPreference
+        android:defaultValue="@string/unauthorized_status"
+        android:dialogLayout="@layout/leo_sign_in_dialog"
+        android:key="@string/pref_leo_sign_in_key"
+        android:title="@string/pref_leo_sign_in_title_display_name" />
 
 </PreferenceScreen>

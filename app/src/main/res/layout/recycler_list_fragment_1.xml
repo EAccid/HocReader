@@ -11,6 +11,8 @@
         android:layout_height="match_parent"
         android:elevation="3dp">
 
+
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             style="@style/recyclerViewStyleFragment1"

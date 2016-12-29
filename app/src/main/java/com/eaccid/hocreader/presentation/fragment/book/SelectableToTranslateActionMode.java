@@ -22,8 +22,8 @@ public class SelectableToTranslateActionMode implements ActionMode.Callback {
 
     @Override
     public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-        menu.add(0, 0, 0, "Lingualeo").setIcon(R.drawable.ic_pets_memorizing_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.add(0, 1, 0, "Google translator").setIcon(R.drawable.ic_g_translate_white_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, 0, 0, "Lingualeo").setIcon(R.drawable.ic_pets_leo_training_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, 1, 0, "Google translator").setIcon(R.drawable.ic_g_translate_blue_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 

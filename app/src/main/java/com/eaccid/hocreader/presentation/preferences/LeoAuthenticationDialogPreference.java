@@ -9,17 +9,25 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.eaccid.hocreader.R;
+
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class LeoAuthenticationDialogPreference extends DialogPreference {
 
     private EditText emailText;
     private EditText passwordText;
     private String persistentValue;
+    private String authorized_status;
+    private String authorizing_status;
+    private String unauthorized_status;
 
     public LeoAuthenticationDialogPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setStringAuthStatusFromContext(context);
     }
 
     @Override
@@ -56,18 +64,20 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     }
 
     private void authenticate(final String email, final String password) {
-        ProgressDialog progressDialog = new ProgressDialog(getContext(),
+        final ProgressDialog progressDialog = new ProgressDialog(getContext(),
                 R.style.AppTheme_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage(authorizing_status);
         progressDialog.show();
-        LeoAuthenticationSettings leoAuthenticationSettings = new LeoAuthenticationSettings(getContext());
-        leoAuthenticationSettings
+        new LeoAuthenticationSettings(getContext())
                 .leoSignInObservable(email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Boolean>() {
                     @Override
                     public void onCompleted() {
                         progressDialog.dismiss();
+                        unsubscribe();
                     }
 
                     @Override
@@ -75,6 +85,7 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
                         e.printStackTrace();
                         progressDialog.dismiss();
                         onAuthorized(false);
+                        unsubscribe();
                     }
 
                     @Override
@@ -87,10 +98,10 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     private void onAuthorized(boolean isAuth) {
         if (isAuth) {
             showAuthorizedToast();
-            persistValue("Authorized");
+            persistValue(authorized_status);
         } else {
             showUnauthorizedToast();
-            persistValue("Unauthorized");
+            persistValue(unauthorized_status);
         }
     }
 
@@ -107,6 +118,12 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
             persistentValue = value;
             persistString(persistentValue);
         }
+    }
+
+    private void setStringAuthStatusFromContext(Context context) {
+        authorized_status = context.getString(R.string.authorized_status);
+        authorizing_status = context.getString(R.string.authorizing_status);
+        unauthorized_status = context.getString(R.string.unauthorized_status);
     }
 
 }
