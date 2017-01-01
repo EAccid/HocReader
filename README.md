@@ -12,6 +12,6 @@ Already done:
 
 TODO: 
 - main part for training added words (CarouselRecyclerView); 
-- Google offline translator; 
+- Google online translator; 
 - reading FB2, PDF formats; 
 - main settings.
