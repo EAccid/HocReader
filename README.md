@@ -12,6 +12,6 @@ Already done:
 
 TODO: 
 - main part for training added words (CarouselRecyclerView); 
-- Google online translator; 
+- Livio English Dictionary word meanings (offline mode); 
 - reading FB2, PDF formats; 
 - main settings.
