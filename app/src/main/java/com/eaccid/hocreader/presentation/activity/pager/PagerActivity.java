@@ -49,29 +49,6 @@ public class PagerActivity extends FragmentActivity implements BaseView,
         if (savedInstanceState == null) {
             wordsEditorFragment = (WordsEditorFragment) pagerAdapter.getItem(1);
         }
-
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            //TODO del, temp solution
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (wordsEditorFragment != null && (positionOffset == 0)
-                        && (position == 0 || position == 2)) {
-                    mPresenter.getDataProvider().fillSessionDataList();
-                    wordsEditorFragment.notifyItemChanged();
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
     }
 
     @Override
@@ -92,7 +69,7 @@ public class PagerActivity extends FragmentActivity implements BaseView,
     }
 
     @Override
-    public void OnWordClicked(WordFromText wordFromText) {
+    public void onWordClicked(WordFromText wordFromText) {
         mPresenter.OnWordFromTextViewClicked(wordFromText);
 
         final DialogFragment dialog = WordTranslationDialogFragment.newInstance(wordFromText);

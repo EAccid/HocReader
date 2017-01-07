@@ -136,13 +136,15 @@ public class WordListProvider extends DataListProvider {
 
         private static List<ItemDataProvider> getWordItemByCurrentBookList(WordFilter wordFilter, @Nullable List<String> words) {
             List<DataListProvider.ItemDataProvider> newDataList = new LinkedList<>();
+            ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
             try {
-                ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
                 WordItemListUtils wordFromDBList = new WordItemListUtils(wordFilter, words);
                 Future<List<ItemDataProvider>> future = executor.submit(wordFromDBList);
                 newDataList = future.get();
             } catch (Exception e) {
                 e.printStackTrace();
+            }finally {
+                executor.shutdown();
             }
             return newDataList;
         }

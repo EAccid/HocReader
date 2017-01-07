@@ -41,8 +41,6 @@ dependencies {
         transitive = true
     }
 
-
-
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:design:25.0.1'
     compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
@@ -67,6 +65,11 @@ dependencies {
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     androidTestCompile 'org.testng:testng:6.9.12'
     androidTestCompile 'junit:junit:4.12'
+
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
+    compile 'com.google.dagger:dagger:2.8'
+    provided 'javax.annotation:jsr250-api:1.0'
+
 }
 
 

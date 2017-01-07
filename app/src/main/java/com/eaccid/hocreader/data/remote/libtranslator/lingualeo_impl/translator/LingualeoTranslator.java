@@ -7,7 +7,7 @@ import com.eaccid.hocreader.data.remote.libtranslator.translator.Translator;
 
 public class LingualeoTranslator implements Translator {
 
-    WordTranslation translation;
+    private WordTranslation translation;
 
     @Override
     public boolean translate(String word) {

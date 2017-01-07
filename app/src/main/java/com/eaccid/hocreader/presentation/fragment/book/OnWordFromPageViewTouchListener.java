@@ -13,7 +13,7 @@ public class OnWordFromPageViewTouchListener implements View.OnTouchListener{
     private int pageNumber;
 
     public interface OnWordFromTextClickListener {
-        void OnWordClicked(WordFromText wordFromText);
+        void onWordClicked(WordFromText wordFromText);
     }
 
     public OnWordFromPageViewTouchListener(int pageNumber) {
@@ -29,7 +29,7 @@ public class OnWordFromPageViewTouchListener implements View.OnTouchListener{
                 wordFromText.setPageNumber(pageNumber);
                 if (!wordFromText.getText().isEmpty()) {
                     try {
-                        ((OnWordFromTextClickListener) view.getContext()).OnWordClicked(wordFromText);
+                        ((OnWordFromTextClickListener) view.getContext()).onWordClicked(wordFromText);
                     } catch (Exception e) {
                         e.printStackTrace();
                         throw new NotImplementedException("'interface " +

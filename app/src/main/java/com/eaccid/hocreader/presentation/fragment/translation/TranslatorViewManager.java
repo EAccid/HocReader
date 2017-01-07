@@ -58,7 +58,7 @@ public class TranslatorViewManager {
     }
 
     private class PlayerWordSoundLoader extends AsyncTask<String, Void, Void> {
-        MediaPlayer mediaPlayer;
+        private final MediaPlayer mediaPlayer;
 
         PlayerWordSoundLoader(MediaPlayer mediaPlayer) {
             this.mediaPlayer = mediaPlayer;
