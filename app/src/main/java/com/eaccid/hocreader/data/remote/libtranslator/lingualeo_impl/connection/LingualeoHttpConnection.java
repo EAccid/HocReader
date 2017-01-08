@@ -7,9 +7,9 @@ import java.net.URL;
 
 class LingualeoHttpConnection {
 
-    HttpURLConnection connection;
-    LingualeoResponse lingualeoResponse;
-    LingualeoCookies cookies;
+    private HttpURLConnection connection;
+    private LingualeoResponse lingualeoResponse;
+    private LingualeoCookies cookies;
 
     public LingualeoHttpConnection() {
         lingualeoResponse = new LingualeoResponse();
@@ -42,9 +42,9 @@ class LingualeoHttpConnection {
     private void storeCookies() {
         try {
             cookies.setCookies(connection.getHeaderFields().get("Set-Cookie"));
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
     private void openHttpURLConnection(URL url, RequestMethod requestMethod) throws Exception {
@@ -70,7 +70,8 @@ class LingualeoHttpConnection {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
             outputStreamWriter.write(data);
             outputStreamWriter.close();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -81,9 +82,8 @@ class LingualeoHttpConnection {
     private void closeHttpURLConnection() {
         try {
             connection.disconnect();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
-
 }

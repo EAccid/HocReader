@@ -1,8 +1,9 @@
-package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary;
+package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.deprecated;
 
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestParameters;
 import com.eaccid.hocreader.data.remote.libtranslator.dictionary.Dictionary;
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 
 public class LingualeoDictionary implements Dictionary {
 
@@ -21,7 +22,7 @@ public class LingualeoDictionary implements Dictionary {
 
         RequestHandler requestHandler = RequestHandler.newUnauthorizedRequestWithParameters("http://lingualeo.com/api/login", requestParameters);
         requestHandler.handleRequest();
-        cookies.storeCookies(requestHandler.getResponseCookies());
+        cookies.storeCookies(requestHandler.getCookies());
 
         return requestHandler.isHandleRequestSucceeded();
 

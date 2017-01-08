@@ -10,7 +10,7 @@ public class WordTranslation implements TextTranslation {
     private LingualeoResponse lingualeoResponse;
     private List<String> translates;
     private String transcription;
-    private  String soundUrl;
+    private String soundUrl;
     private String picUrl;
     private String word;
 
@@ -19,7 +19,7 @@ public class WordTranslation implements TextTranslation {
         return word;
     }
 
-    public WordTranslation (LingualeoResponse lingualeoResponse) {
+    public WordTranslation(LingualeoResponse lingualeoResponse) {
         initLingualeoResponse(lingualeoResponse);
         loadTranslateData();
     }

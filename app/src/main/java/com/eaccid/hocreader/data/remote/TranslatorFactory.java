@@ -1,6 +1,6 @@
 package com.eaccid.hocreader.data.remote;
 
-import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.translator.LingualeoTranslator;
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.deprecated.LingualeoTranslator;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.Translator;
 
 public class TranslatorFactory {
@@ -10,10 +10,9 @@ public class TranslatorFactory {
     public static Translator newTranslator(Translators tr) {
 
         switch (tr) {
-            case LINGUALEO:
+            case LINGUALEO_ONLINE:
                 return new LingualeoTranslator();
-//            case G_TRANSLATOR:
-//                return new GTranslator();
+//            case LIVIO_TRANSLATOR:
             default:
                 throw new RuntimeException("smth went wrong!");
         }
