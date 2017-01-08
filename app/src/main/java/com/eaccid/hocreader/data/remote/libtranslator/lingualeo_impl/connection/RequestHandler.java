@@ -5,17 +5,22 @@ import java.net.UnknownHostException;
 
 public class RequestHandler {
 
-    private LingualeoHttpConnection connection = new LingualeoHttpConnection();
+    private LingualeoHttpConnection connection;
     private LingualeoResponse response = new LingualeoResponse();
     private ServiceStatus serviceStatus = ServiceStatus.FAILED;
     private RequestParameters requestParameters;
     private String urlString;
     private String cookies;
 
+    private RequestHandler() {
+
+    }
+
     private RequestHandler(String urlString, String cookies, RequestParameters requestParameters) {
         this.urlString = urlString;
         this.requestParameters = requestParameters;
         this.cookies = cookies;
+        this.connection = new LingualeoHttpConnection();
     }
 
     public static RequestHandler newUnauthorizedRequestWithParameters(String urlString, RequestParameters requestParameters) {
@@ -31,7 +36,6 @@ public class RequestHandler {
     }
 
     public void handleRequest() {
-
         if (cookies != null && cookies.isEmpty()) {
             serviceStatus = ServiceStatus.UNAUTHORIZED;
         } else {
@@ -39,12 +43,11 @@ public class RequestHandler {
                 URL url = new URL(urlString);
                 connection.loadCookies(cookies);
                 connection.sendLingualeoRequest(url, RequestMethod.POST, requestParameters);
-                response = connection.getResponse();
                 LeoServiceStatus leoServiceStatus = new LeoServiceStatus();
                 serviceStatus = leoServiceStatus.getGeneralServiceStatus(response);
             } catch (UnknownHostException e) {
                 serviceStatus = ServiceStatus.CONNECTION_ERROR;
-                System.out.println("UnknownHostException");
+                e.printStackTrace();
             } catch (Exception e) {
                 serviceStatus = ServiceStatus.FAILED;
                 e.printStackTrace();
@@ -53,18 +56,18 @@ public class RequestHandler {
     }
 
     public LingualeoResponse getResponse() {
-        return response;
+        return  connection.getResponse();
     }
 
     public boolean isHandleRequestSucceeded() {
-        return getResponseServiceStatus().getBooleanStatus();
+        return getServiceStatus().getBooleanStatus();
     }
 
-    public String getResponseCookies() {
+    public String getCookies() {
         return connection.getCookies();
     }
 
-    private ServiceStatus getResponseServiceStatus() {
+    private ServiceStatus getServiceStatus() {
         return serviceStatus;
     }
 
