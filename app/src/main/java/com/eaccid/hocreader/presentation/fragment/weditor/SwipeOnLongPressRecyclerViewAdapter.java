@@ -9,7 +9,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.provider.db.DataListProvider;
+import com.eaccid.hocreader.provider.db.dataprovider.DataListProvider;
+import com.eaccid.hocreader.provider.db.dataprovider.ItemDataProvider;
 import com.eaccid.hocreader.provider.db.WordListProvider;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
@@ -80,14 +81,14 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(WordTranslationViewHolder holder, int position) {
-        final DataListProvider.ItemDataProvider item = mDataProvider.getItem(position);
+        final ItemDataProvider item = mDataProvider.getItem(position);
 
         // if the item is 'pinned', click event comes to the itemView
         holder.itemView.setOnClickListener(mItemViewOnClickListener);
         // if the item is 'not pinned', click event comes to the mContainer
         holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
-        holder.mTextView.setText(item.getTestText());
-        holder.mTranslationView.setText(item.getTranslation());
+//        holder.mTextView.setText(item.getTestText());
+//        holder.mTranslationView.setText(item.getTranslation());
 
 
         // set background resource (target view ID: container)
@@ -198,7 +199,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         @Override
         protected void onPerformAction() {
             super.onPerformAction();
-            DataListProvider.ItemDataProvider item = mAdapter.mDataProvider.getItem(mPosition);
+            ItemDataProvider item = mAdapter.mDataProvider.getItem(mPosition);
             if (!item.isPinned()) {
                 item.setPinned(true);
                 mAdapter.notifyItemChanged(mPosition);
@@ -264,7 +265,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         @Override
         protected void onPerformAction() {
             super.onPerformAction();
-            DataListProvider.ItemDataProvider item = mAdapter.mDataProvider.getItem(mPosition);
+            ItemDataProvider item = mAdapter.mDataProvider.getItem(mPosition);
             if (item.isPinned()) {
                 item.setPinned(false);
                 mAdapter.notifyItemChanged(mPosition);

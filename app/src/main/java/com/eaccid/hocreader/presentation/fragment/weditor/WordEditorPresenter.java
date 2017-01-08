@@ -2,7 +2,8 @@ package com.eaccid.hocreader.presentation.fragment.weditor;
 import android.util.Log;
 import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
-import com.eaccid.hocreader.provider.db.DataListProvider;
+import com.eaccid.hocreader.provider.db.WordProvider;
+import com.eaccid.hocreader.provider.db.dataprovider.ItemDataProvider;
 import com.eaccid.hocreader.provider.db.WordListProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
@@ -44,7 +45,7 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     }
 
     public void onItemClicked(int position) {
-        DataListProvider.ItemDataProvider data = dataProvider.getItem(position);
+        WordProvider data = (WordProvider) dataProvider.getItem(position);
         if (data.isPinned()) {
             data.setPinned(false);
             mView.notifyItemChanged(position);

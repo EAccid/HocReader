@@ -14,11 +14,11 @@
     <RelativeLayout
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
         android:background="@color/colorTransparent"
         android:clickable="true"
-        android:foreground="?attr/selectableItemBackground">
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true">
 
         <ImageView
             android:id="@+id/menu_more_vert_grey"
@@ -27,7 +27,8 @@
             android:paddingStart="12dp"
             android:paddingTop="12dp"
             android:src="@drawable/ic_more_vert_black_24px"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            android:contentDescription="" />
 
     </RelativeLayout>
 
