@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,9 +20,12 @@ import com.eaccid.hocreader.presentation.BaseView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class WordTranslationDialogFragment extends DialogFragment implements BaseView {
 
-    public interface WordTranslationClickListener {
+    public interface OnWordTranslationClickListener {
         void onWordTranslated(TranslatedWord translatedWord);
     }
 
@@ -36,12 +38,18 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
     }
 
     private WordTranslationDialogPresenter mPresenter;
+    private ArrayAdapter<String> mAdapter;
 
-    private TextView textViewWord;
-    private ImageView imageWordPicture;
-    private ImageButton imageButtonTranscriptionSpeaker;
-    private TextView textViewTranscription;
-    private ListView listViewTranslations;
+    @BindView(R.id.word)
+    TextView mBaseWord;
+    @BindView(R.id.image_word_picture)
+    ImageView mWordPicture;
+    @BindView(R.id.transcription_speaker)
+    ImageButton mSpeaker;
+    @BindView(R.id.text_transcription)
+    TextView mTranscription;
+    @BindView(R.id.list_translations)
+    ListView mTranslations;
 
     @Override
     public BasePresenter getPresenter() {
@@ -64,56 +72,59 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.translation_dialog_frame, container);
-        imageWordPicture = (ImageView) v.findViewById(R.id.image_word_picture);
-        textViewWord = (TextView) v.findViewById(R.id.word);
-        textViewTranscription = (TextView) v.findViewById(R.id.text_transcription);
-        listViewTranslations = (ListView) v.findViewById(R.id.list_translations);
-        imageButtonTranscriptionSpeaker = (ImageButton) v.findViewById(R.id.transcription_speaker);
-
-        textViewWord.setOnClickListener(view -> mPresenter.OnWordClicked());
-        imageButtonTranscriptionSpeaker.setOnClickListener(view -> mPresenter.OnSpeakerClicked());
-
-        listViewTranslations.setOnItemClickListener((adapterView, view, i, l) -> {
+        ButterKnife.bind(this, v);
+        mBaseWord.setOnClickListener(view -> mPresenter.OnWordClicked());
+        mSpeaker.setOnClickListener(view -> mPresenter.OnSpeakerClicked());
+        mTranslations.setOnItemClickListener((adapterView, view, i, l) -> {
             TextView tv = (TextView) view;
             mPresenter.onTranslationClick((String) tv.getText());
         });
-
         return v;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter.showTranslations();
+        mPresenter.onViewCreated();
     }
 
-    public void setDialogTitle(String title) {
+    public WordFromText getWordFromText() {
+        return (WordFromText) getArguments().getSerializable("wordFromText");
+    }
+
+    public void showContextWord(String title) {
         getDialog().setTitle(title);
     }
 
-    public void setWordText(String text) {
-        textViewWord.setText(text);
+    public void ShowBaseWord(String text) {
+        mBaseWord.setText(text);
     }
 
-    public ImageView getWordPictureImageView() {
-        return imageWordPicture;
+    public ImageView getWordPicture() {
+        return mWordPicture;
     }
 
-    public void setWordTranscription(String text) {
-        textViewTranscription.setText("[ " + text + " ]");
+    public void showWordTranscription(String text) {
+        mTranscription.setText("[ " + text + " ]");
     }
 
-    public void loadTranslations(List<String> translations) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                getView().getContext(), R.layout.translation_dialog_item, translations);
-        listViewTranslations.setAdapter(adapter);
+    public void showSpeaker(boolean isSpeaking) {
+        if (isSpeaking) {
+            mSpeaker.setImageResource(R.drawable.ic_volume_up_accent_24px);
+        } else {
+            mSpeaker.setImageResource(R.drawable.ic_volume_up_black_24px);
+        }
     }
 
-    public ListView getTranslationsView() {
-        return listViewTranslations;
+    public void showTranslations(List<String> list) {
+        mAdapter = new ArrayAdapter<String>(
+                getView().getContext(), R.layout.translation_dialog_item, list);
+        mTranslations.setAdapter(mAdapter);
     }
 
-    public void setImageSpeaker(boolean isSpeak) {
-        //imageButtonTranscriptionSpeaker.setImageResource(R.drawable.ic_hearing_blue_24px);
+    public void notifyTranslationsChanged() {
+        if (mAdapter != null)
+            mAdapter.notifyDataSetChanged();
     }
+
 }

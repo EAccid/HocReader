@@ -2,12 +2,16 @@ package com.eaccid.hocreader.presentation.activity.pager;
 
 import android.util.Log;
 
+import com.eaccid.hocreader.provider.db.WordItemListUtils;
 import com.eaccid.hocreader.provider.db.WordListProvider;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
-import com.eaccid.hocreader.provider.translator.HocDictionary;
+import com.eaccid.hocreader.provider.translator.HocDictionaryProvider;
 import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.BasePresenter;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class PagerPresenter implements BasePresenter<PagerActivity> {
     private final String logTAG = "PagerPresenter";
@@ -26,7 +30,7 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
         Log.i(logTAG, "PagerActivity has been attached.");
 
         dataManager.loadDatabaseManager(mView);
-        WordListProvider.setDataManager(dataManager);
+        WordItemListUtils.setDataManager(dataManager);
         createOrUpdateCurrentBook();
 
     }
@@ -34,7 +38,7 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     @Override
     public void detachView() {
         dataManager.releaseDatabaseManager();
-        WordListProvider.setDataManager(null);
+        WordItemListUtils.setDataManager(null);
 
         Log.i(logTAG, "PagerActivity has been detached.");
         mView = null;
@@ -62,14 +66,20 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     }
 
     public void onWordTranslated(TranslatedWord translatedWord) {
-        HocDictionary hocDictionary = new HocDictionary(mView.getApplicationContext());
-        boolean succeed = hocDictionary.addTranslatedWord(translatedWord);
-        Log.i(logTAG, "Word translated status: " + succeed);
-        dataManager.createOrUpdateWord(translatedWord.getWordFromContext(),//getWordBaseForm()
-                translatedWord.getTranslation(),
-                translatedWord.getContext(),
-                succeed);
-        addWordToWordListProvider(translatedWord.getWordBaseForm());
+        HocDictionaryProvider hocDictionaryProvider = new HocDictionaryProvider();
+
+        hocDictionaryProvider.addTranslatedWord(translatedWord)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(succeed -> {
+                    Log.i(logTAG, "Word translated status: " + succeed);
+                    dataManager.createOrUpdateWord(translatedWord.getWordFromContext(),//getWordBaseForm()
+                            translatedWord.getTranslation(),
+                            translatedWord.getContext(),
+                            succeed);
+                    addWordToWordListProvider(translatedWord.getWordBaseForm());
+                }, Throwable::printStackTrace);
+
     }
 
     public void OnWordFromTextViewClicked(WordFromText wordFromText) {

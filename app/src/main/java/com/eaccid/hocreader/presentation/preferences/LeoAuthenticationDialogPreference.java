@@ -3,6 +3,7 @@ package com.eaccid.hocreader.presentation.preferences;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
@@ -40,10 +41,11 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
-        builder.setPositiveButton("SIGN IN", (dialogInterface, i) -> {
-            String email = emailText.getText().toString();
-            String password = passwordText.getText().toString();
-            authenticate(email, password);
+        builder.setPositiveButton("SIGN IN", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
         });
     }
 
@@ -69,7 +71,7 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage(authorizing_status);
         progressDialog.show();
-        new LeoAuthenticationSettings(getContext())
+        new LeoAuthenticationSettings()
                 .leoSignInObservable(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

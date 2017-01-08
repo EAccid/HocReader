@@ -21,7 +21,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 public class PagerActivity extends FragmentActivity implements BaseView,
         CharactersDefinerForFullScreenTextView.PageView,
         OnWordFromPageViewTouchListener.OnWordFromTextClickListener,
-        WordTranslationDialogFragment.WordTranslationClickListener {
+        WordTranslationDialogFragment.OnWordTranslationClickListener {
 
     private PagerPresenter mPresenter;
     private WordsEditorFragment wordsEditorFragment; //TODO refactor: del from here
