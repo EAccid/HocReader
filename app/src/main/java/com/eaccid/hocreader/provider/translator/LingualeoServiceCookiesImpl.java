@@ -2,7 +2,7 @@ package com.eaccid.hocreader.provider.translator;
 
 import android.content.SharedPreferences;
 
-import com.eaccid.hocreader.App;
+import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 
 import javax.inject.Inject;

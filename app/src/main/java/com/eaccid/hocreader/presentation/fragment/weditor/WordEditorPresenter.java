@@ -1,22 +1,26 @@
 package com.eaccid.hocreader.presentation.fragment.weditor;
+
 import android.util.Log;
-import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
-import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
-import com.eaccid.hocreader.provider.db.WordProvider;
-import com.eaccid.hocreader.provider.db.dataprovider.ItemDataProvider;
-import com.eaccid.hocreader.provider.db.WordListProvider;
+
+import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.provider.db.WordItem;
+import com.eaccid.hocreader.provider.db.WordListInteractor;
 import com.eaccid.hocreader.presentation.BasePresenter;
+
+import javax.inject.Inject;
 
 public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     private final String logTAG = "PagerPresenter";
     private WordsEditorFragment mView;
-    private WordListProvider dataProvider; //TODO Inject
+
+    @Inject
+    WordListInteractor wordListInteractor;
 
     @Override
     public void attachView(WordsEditorFragment wordsEditorFragment) {
+        App.getWordListComponent().inject(this);
         mView = wordsEditorFragment;
         Log.i(logTAG, "WordsEditorFragment has been attached.");
-        setDataProvider();
     }
 
     @Override
@@ -26,11 +30,7 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     }
 
     public void onRefreshRecyclerView() {
-        dataProvider.updateSessionDataList();
-    }
-
-    public SwipeOnLongPressRecyclerViewAdapter createSwipeOnLongPressAdapter() {
-        return new SwipeOnLongPressRecyclerViewAdapter(dataProvider);
+        wordListInteractor.updateSessionDataList();
     }
 
     public void onItemRemoved(int position) {
@@ -38,23 +38,17 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     }
 
     public void onUndoClick() {
-        int position = dataProvider.undoLastRemoval();
+        int position = wordListInteractor.undoLastRemoval();
         if (position >= 0) {
             mView.notifyItemInserted(position);
         }
     }
 
     public void onItemClicked(int position) {
-        WordProvider data = (WordProvider) dataProvider.getItem(position);
+        WordItem data = (WordItem) wordListInteractor.getItem(position);
         if (data.isPinned()) {
             data.setPinned(false);
             mView.notifyItemChanged(position);
         }
     }
-
-    private void setDataProvider() {
-        PagerPresenter pp = ((PagerActivity) mView.getActivity()).getPresenter();
-        dataProvider = pp.getDataProvider();
-    }
-
 }

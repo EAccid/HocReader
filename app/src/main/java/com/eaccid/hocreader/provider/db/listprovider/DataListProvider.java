@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.provider.db.dataprovider;
+package com.eaccid.hocreader.provider.db.listprovider;
 
 import java.util.LinkedList;
 import java.util.List;

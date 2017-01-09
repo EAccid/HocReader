@@ -2,50 +2,43 @@ package com.eaccid.hocreader.presentation.activity.pager;
 
 import android.util.Log;
 
-import com.eaccid.hocreader.provider.db.WordItemListUtils;
-import com.eaccid.hocreader.provider.db.WordListProvider;
+import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.provider.db.WordListInteractor;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.provider.translator.HocDictionaryProvider;
 import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
+import javax.inject.Inject;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class PagerPresenter implements BasePresenter<PagerActivity> {
-    private final String logTAG = "PagerPresenter";
+    private final String LOG_TAG = "PagerPresenter";
     private PagerActivity mView;
-    private AppDatabaseManager dataManager;
-    private WordListProvider wordListProvider;
 
-    public PagerPresenter() {
-        dataManager = new AppDatabaseManager();
-        wordListProvider = new WordListProvider();
-    }
+    @Inject
+    AppDatabaseManager dataManager;
+    @Inject
+    WordListInteractor wordListInteractor;
 
     @Override
     public void attachView(PagerActivity pagerActivity) {
+        App.plusWordListComponent();
+        App.getAppComponent().inject(this);
+        App.getWordListComponent().inject(this);
         mView = pagerActivity;
-        Log.i(logTAG, "PagerActivity has been attached.");
-
-        dataManager.loadDatabaseManager(mView);
-        WordItemListUtils.setDataManager(dataManager);
+        Log.i(LOG_TAG, "PagerActivity has been attached.");
         createOrUpdateCurrentBook();
-
     }
 
     @Override
     public void detachView() {
-        dataManager.releaseDatabaseManager();
-        WordItemListUtils.setDataManager(null);
-
-        Log.i(logTAG, "PagerActivity has been detached.");
+        App.clearWordListComponent();
+        Log.i(LOG_TAG, "PagerActivity has been detached.");
         mView = null;
-    }
-
-    public WordListProvider getDataProvider() {
-        return wordListProvider;
     }
 
     public AppDatabaseManager getDataManager() {
@@ -60,8 +53,8 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
         dataManager.setCurrentBookForAddingWord(filePath);
     }
 
-    public void addWordToWordListProvider(String translatedWord) {
-        wordListProvider.addWord(translatedWord);
+    public void addWord(String word) {
+        wordListInteractor.addItem(word);
         mView.notifyItemChanged();
     }
 
@@ -72,14 +65,13 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(succeed -> {
-                    Log.i(logTAG, "Word translated status: " + succeed);
-                    dataManager.createOrUpdateWord(translatedWord.getWordFromContext(),//getWordBaseForm()
+                    Log.i(LOG_TAG, "Dictionary updated status: " + succeed);
+                    dataManager.createOrUpdateWord(translatedWord.getWordBaseForm(),
                             translatedWord.getTranslation(),
                             translatedWord.getContext(),
                             succeed);
-                    addWordToWordListProvider(translatedWord.getWordBaseForm());
+                    addWord(translatedWord.getWordBaseForm());
                 }, Throwable::printStackTrace);
-
     }
 
     public void OnWordFromTextViewClicked(WordFromText wordFromText) {

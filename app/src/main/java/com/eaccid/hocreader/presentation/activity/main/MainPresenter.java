@@ -3,6 +3,7 @@ package com.eaccid.hocreader.presentation.activity.main;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
+import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.provider.file.findner.FileOnDeviceProvider;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectChild;
@@ -14,27 +15,25 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainPresenter implements BasePresenter<MainActivity> {
 
     private final String logTAG = "MainPresenter";
     private MainActivity mView;
-    private AppDatabaseManager dataManager; //TODO inject
-
-    public MainPresenter() {
-        dataManager = new AppDatabaseManager();
-    }
+    @Inject
+    AppDatabaseManager dataManager; //TODO inject
 
     @Override
     public void attachView(MainActivity mainActivity) {
         mView = mainActivity;
-        dataManager.loadDatabaseManager(mView);
+        App.getAppComponent().inject(this);
         fillExpandableListView();
         Log.i(logTAG, "MainActivity has been attached.");
     }
 
     @Override
     public void detachView() {
-        dataManager.releaseDatabaseManager();
         Log.i(logTAG, "MainActivity has been detached.");
         mView = null;
     }

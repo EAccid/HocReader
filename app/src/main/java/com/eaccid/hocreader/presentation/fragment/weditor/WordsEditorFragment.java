@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
@@ -85,7 +86,7 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         mRecyclerViewTouchActionGuardManager.setEnabled(true);
 
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
-        final SwipeOnLongPressRecyclerViewAdapter myItemAdapter = mPresenter.createSwipeOnLongPressAdapter();
+        final SwipeOnLongPressRecyclerViewAdapter myItemAdapter = new SwipeOnLongPressRecyclerViewAdapter();
         myItemAdapter.setEventListener(new SwipeOnLongPressRecyclerViewAdapter.EventListener() {
             @Override
             public void onItemRemoved(int position) {

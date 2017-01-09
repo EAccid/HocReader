@@ -44,7 +44,7 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
         builder.setPositiveButton("SIGN IN", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                authenticate(emailText.getText().toString(), passwordText.getText().toString());
             }
         });
     }

@@ -3,31 +3,31 @@ package com.eaccid.hocreader.presentation.service;
 import android.content.Intent;
 import android.util.Log;
 
+import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.activity.notcard.CardWordActivity;
 
+import javax.inject.Inject;
+
 public class MemorizingPresenter  implements BasePresenter<MemorizingService> {
 
     private final String logTAG = "MemorizingService";
     private MemorizingService mView;
-    private AppDatabaseManager dataManager; //TODO inject
 
-    public MemorizingPresenter() {
-        dataManager = new AppDatabaseManager();
-    }
+    @Inject
+    AppDatabaseManager dataManager;
 
     @Override
     public void attachView(MemorizingService memorizingService) {
+        App.getAppComponent().inject(this);
         mView = memorizingService;
-        dataManager.loadDatabaseManager(mView);
         Log.i(logTAG, "MemorizingService has been attached.");
     }
 
     @Override
     public void detachView() {
-        dataManager.releaseDatabaseManager();
         Log.i(logTAG, "MemorizingService has been detached.");
         mView = null;
     }
@@ -43,7 +43,7 @@ public class MemorizingPresenter  implements BasePresenter<MemorizingService> {
 
     private void sendNotification() {
 
-        //TODO refactor to work with WordProvider
+        //TODO refactor to work with WordItem
         Word word = dataManager.getRandomWord();
         if (word == null) return;
 

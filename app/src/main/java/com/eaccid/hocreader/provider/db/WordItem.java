@@ -1,18 +1,21 @@
-package com.eaccid.hocreader.provider.db.dataprovider;
+package com.eaccid.hocreader.provider.db;
 
 import android.util.Log;
 
-public class ItemDataProviderImpl implements ItemDataProvider {
+import com.eaccid.hocreader.data.local.db.entity.Word;
+import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
 
-    private final String logTAG = "ItemDataProviderImpl";
+public class WordItem implements ItemDataProvider {
+
+    private final String logTAG = "WordItem";
     private final long id;
-    private final Object object;
+    private final Word word;
     private boolean pinned;
     private boolean lastAdded;
 
-    public ItemDataProviderImpl(int id, Object object) {
+    public WordItem(int id, Word word) {
         this.id = id;
-        this.object = object;
+        this.word = word;
         Log.i(logTAG, "New data item (id=" + getItemId() + ") has been created");
     }
 
@@ -23,7 +26,7 @@ public class ItemDataProviderImpl implements ItemDataProvider {
 
     @Override
     public Object getObject() {
-        return object;
+        return word;
     }
 
     @Override
@@ -47,6 +50,18 @@ public class ItemDataProviderImpl implements ItemDataProvider {
         if (lastAdded) {
             Log.i(logTAG, "Last item (id=" + getItemId() + ") has been set.");
         }
+    }
+
+    public String getName() {
+        return word.getName();
+    }
+
+    public String getTranslation() {
+        return word.getTranslation();
+    }
+
+    public String getContext() {
+        return word.getContext();
     }
 
 }

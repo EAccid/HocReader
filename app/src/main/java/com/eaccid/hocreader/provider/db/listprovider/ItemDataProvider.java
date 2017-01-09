@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.provider.db.dataprovider;
+package com.eaccid.hocreader.provider.db.listprovider;
 
 public interface ItemDataProvider {
     long getItemId();
@@ -12,4 +12,5 @@ public interface ItemDataProvider {
     boolean isLastAdded();
 
     void setLastAdded(boolean lastAdded);
+
 }

@@ -4,15 +4,22 @@ import android.util.Log;
 
 public class LeoServiceStatus {
 
+    private final String LOG_TAG = "LeoServiceStatus";
+
     public ServiceStatus getGeneralServiceStatus(final LingualeoResponse lingualeoResponse) {
-        String error_msg = lingualeoResponse.getString("error_msg");
-        if (!error_msg.isEmpty()) {
-            Log.i("LeoServiceStatus", "error_msg from lingualeo service: " + error_msg);
-            return ServiceStatus.UNAUTHORIZED;
+        if (lingualeoResponse.isEmpty()) {
+            Log.i(LOG_TAG, "Response from Linguleo is empty.");
+            return ServiceStatus.FAILED;
         }
-        if (!lingualeoResponse.getString("is_authorized").isEmpty()
-                && !lingualeoResponse.getBoolean("is_authorized")) {
-           return ServiceStatus.FAILED;
+        String error_msg = lingualeoResponse.getString("error_msg");
+        String is_auth_msg = lingualeoResponse.getString("is_authorized");
+        if (!error_msg.isEmpty()) {
+            if (!is_auth_msg.isEmpty()) {
+                Log.i(LOG_TAG, "User has not been authorized: Error message:" + error_msg);
+                return ServiceStatus.UNAUTHORIZED;
+            }
+            Log.i(LOG_TAG, "Failed response from Lingualeo. Error message: " + error_msg);
+            return ServiceStatus.FAILED;
         }
         return ServiceStatus.SUCCEEDED;
     }

@@ -3,15 +3,20 @@ package com.eaccid.hocreader.presentation.fragment.translation.semantic;
 import android.content.Context;
 import android.widget.ImageView;
 
+import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.injection.ApplicationContext;
 import com.squareup.picasso.Picasso;
+
+import javax.inject.Inject;
 
 public class ImageViewManager {
 
+    @Inject
+    @ApplicationContext
     Context context;
 
-    //TODO inject
     public ImageViewManager(Context context) {
-        this.context = context;
+        App.getAppComponent().inject(this);
     }
 
     public void loadPictureFromUrl(ImageView imageView, String url) {

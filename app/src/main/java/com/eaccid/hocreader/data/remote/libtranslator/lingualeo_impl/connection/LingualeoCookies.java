@@ -17,7 +17,7 @@ class LingualeoCookies {
     }
 
     void setCookies(List<String> cookies) {
-
+        if (cookies == null) return;
         StringBuilder sbCookie = new StringBuilder();
         for (String cookie: cookies
              ) {

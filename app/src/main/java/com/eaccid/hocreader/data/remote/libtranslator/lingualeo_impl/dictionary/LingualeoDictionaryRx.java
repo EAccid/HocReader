@@ -1,6 +1,6 @@
 package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary;
 
-import com.eaccid.hocreader.App;
+import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.data.remote.libtranslator.dictionary.DictionaryRx;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestParameters;

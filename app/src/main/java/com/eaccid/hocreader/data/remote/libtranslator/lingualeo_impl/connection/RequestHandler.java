@@ -6,7 +6,6 @@ import java.net.UnknownHostException;
 public class RequestHandler {
 
     private LingualeoHttpConnection connection;
-    private LingualeoResponse response = new LingualeoResponse();
     private ServiceStatus serviceStatus = ServiceStatus.FAILED;
     private RequestParameters requestParameters;
     private String urlString;
@@ -44,7 +43,7 @@ public class RequestHandler {
                 connection.loadCookies(cookies);
                 connection.sendLingualeoRequest(url, RequestMethod.POST, requestParameters);
                 LeoServiceStatus leoServiceStatus = new LeoServiceStatus();
-                serviceStatus = leoServiceStatus.getGeneralServiceStatus(response);
+                serviceStatus = leoServiceStatus.getGeneralServiceStatus(connection.getResponse());
             } catch (UnknownHostException e) {
                 serviceStatus = ServiceStatus.CONNECTION_ERROR;
                 e.printStackTrace();
@@ -56,7 +55,7 @@ public class RequestHandler {
     }
 
     public LingualeoResponse getResponse() {
-        return  connection.getResponse();
+        return connection.getResponse();
     }
 
     public boolean isHandleRequestSucceeded() {

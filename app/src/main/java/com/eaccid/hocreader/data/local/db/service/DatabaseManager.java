@@ -2,17 +2,20 @@ package com.eaccid.hocreader.data.local.db.service;
 
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 
+import com.eaccid.hocreader.injection.ApplicationContext;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-
 import java.sql.SQLException;
 
 public class DatabaseManager {
 
     private DatabaseHelper databaseHelper;
+    private final String logTAG = "DatabaseManager";
 
-    public DatabaseManager(Context context) {
+    public DatabaseManager(@ApplicationContext Context context) {
         databaseHelper = OpenHelperManager.getHelper(context, DatabaseHelper.class);
+        Log.i(logTAG, "load db manager: " + context.getClass().getName());
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
@@ -34,6 +37,7 @@ public class DatabaseManager {
 
     public void releaseConnection() {
         OpenHelperManager.releaseHelper();
+        Log.i(logTAG, "release db manager");
     }
 
     public BookDaoService getBookService() throws SQLException {

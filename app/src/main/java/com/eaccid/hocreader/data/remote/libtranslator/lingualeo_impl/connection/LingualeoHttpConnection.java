@@ -1,5 +1,7 @@
 package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -27,7 +29,11 @@ class LingualeoHttpConnection {
 
     }
 
+    @NonNull
     LingualeoResponse getResponse() {
+        if (lingualeoResponse == null) {
+            return new LingualeoResponse();
+        }
         return lingualeoResponse;
     }
 

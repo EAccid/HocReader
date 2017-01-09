@@ -1,8 +1,8 @@
 package com.eaccid.hocreader.data.local;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
 import com.eaccid.hocreader.data.local.db.entity.Book;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.data.local.db.service.BookDaoService;
@@ -10,25 +10,26 @@ import com.eaccid.hocreader.data.local.db.service.DatabaseManager;
 import com.eaccid.hocreader.data.local.db.service.WordDaoService;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 //TODO refactor: do it in background
 public class AppDatabaseManager {
 
     private final String logTAG = "AppDatabaseManager";
     private DatabaseManager mDatabaseManager;
-    private static int count = 0; //test
 
-    public void loadDatabaseManager(Context baseContext) {
-        mDatabaseManager = new DatabaseManager(baseContext);
-        Log.i(logTAG, "load db manager from: " + baseContext.getClass().getName() + ", " + ++count);
+    @Inject
+    public AppDatabaseManager(DatabaseManager mDatabaseManager) {
+        this.mDatabaseManager = mDatabaseManager;
     }
 
     public void releaseDatabaseManager() {
         mDatabaseManager.releaseConnection();
-        Log.i(logTAG, "release db manager, " + --count);
     }
 
     private WordFilter currentFilter = WordFilter.NONE;
@@ -124,8 +125,8 @@ public class AppDatabaseManager {
         word.setBook(currentBook);
         try {
             WordDaoService ws = mDatabaseManager.getWordService();
-            ws.createOrUpdate(word);
-            Log.i(logTAG, "word '" + word.getName() + "' has been created / updated.");
+            boolean succeed = ws.createOrUpdate(word);
+            Log.i(logTAG, "Word '" + word.getName() + "' has been created / updated: " + succeed);
         } catch (SQLException e) {
             e.printStackTrace();
         }

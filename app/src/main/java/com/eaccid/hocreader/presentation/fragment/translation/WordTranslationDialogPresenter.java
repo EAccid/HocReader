@@ -19,7 +19,7 @@ import rx.schedulers.Schedulers;
 //TODO: show view animation (image, translation list)
 
 public class WordTranslationDialogPresenter implements BasePresenter<WordTranslationDialogFragment> {
-    private final String logTAG = "TranslationPresenter";
+    private final String LOG_TAG = "TranslationPresenter";
     private WordTranslationDialogFragment mView;
 
     private TranslatedWord mTranslatedWord;
@@ -30,12 +30,12 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     @Override
     public void attachView(WordTranslationDialogFragment wordTranslationDialogFragment) {
         mView = wordTranslationDialogFragment;
-        Log.i(logTAG, "TranslationPresenter has been attached.");
+        Log.i(LOG_TAG, "TranslationPresenter has been attached.");
     }
 
     @Override
     public void detachView() {
-        Log.i(logTAG, "TranslationPresenter has been detached.");
+        Log.i(LOG_TAG, "TranslationPresenter has been detached.");
         mView = null;
         mMediaPlayer.release();
         if (mTranslationSubscription != null) mTranslationSubscription.unsubscribe();
@@ -70,6 +70,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                     @Override
                     public void onNext(TextTranslation textTranslation) {
                         {
+                            Log.i(LOG_TAG, "Text translated status: " + !textTranslation.isEmpty());
                             showTranslationsData(textTranslation);
                             setmNextWordToTranslate(textTranslation.getWord());
                             mTranslatedWord = new TranslatedWord();
