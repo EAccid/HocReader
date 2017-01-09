@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.provider.db.WordItem;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
 import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
@@ -85,14 +86,14 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(WordTranslationViewHolder holder, int position) {
-        final ItemDataProvider item = wordListInteractor.getItem(position);
+        final WordItem item = (WordItem) wordListInteractor.getItem(position);
 
         // if the item is 'pinned', click event comes to the itemView
         holder.itemView.setOnClickListener(mItemViewOnClickListener);
         // if the item is 'not pinned', click event comes to the mContainer
         holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
-//        holder.mTextView.setText(item.getName());
-//        holder.mTranslationView.setText(item.getTranslation());
+        holder.mTextView.setText(item.getName());
+        holder.mTranslationView.setText(item.getTranslation());
 
 
         // set background resource (target view ID: container)
