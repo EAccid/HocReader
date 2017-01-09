@@ -11,11 +11,11 @@ public class WordListInteractor extends DataListProvider {
 
     private static final String logTAG = "WordListInteractor";
     private List<String> sessionWords;
-    private WordListProvider wordListProvider;
+    private WordListFetcher wordListFetcher;
 
-    public WordListInteractor(WordListProvider wordListProvider) {
+    public WordListInteractor(WordListFetcher wordListFetcher) {
         this.sessionWords = new ArrayList<>();
-        this.wordListProvider = wordListProvider;
+        this.wordListFetcher = wordListFetcher;
     }
 
     @Override
@@ -25,16 +25,16 @@ public class WordListInteractor extends DataListProvider {
 
     @Override
     public int undoLastRemoval() {
-        WordItem word = (WordItem) getLastRemovedData();
+        WordProvider word = (WordProvider) getLastRemovedData();
         sessionWords.add(word.getName());
-        wordListProvider.createItemWord(word);
+        wordListFetcher.createItemWord(word);
         return super.undoLastRemoval();
     }
 
     @Override
     public void removeItem(int position) {
         ItemDataProvider item = getDataList().get(position);
-        wordListProvider.removeItem(item);
+        wordListFetcher.removeItem(item);
         Word word = (Word) item.getObject();
         sessionWords.remove(word.getName());
         super.removeItem(position);
@@ -44,7 +44,7 @@ public class WordListInteractor extends DataListProvider {
         if (sessionWords.contains(wordBaseName)) {
             return;
         }
-        WordItem item = (WordItem) wordListProvider.createItemWord(wordBaseName, sessionWords.size());
+        WordProvider item = (WordProvider) wordListFetcher.createItemWord(wordBaseName, sessionWords.size());
         if (item == null) {
             Log.i(logTAG, "Word '" + wordBaseName + "' has not been added to database.");
             return;
@@ -65,15 +65,15 @@ public class WordListInteractor extends DataListProvider {
     }
 
     private List<ItemDataProvider> getWordList() {
-        return wordListProvider.getAll();
+        return wordListFetcher.getAll();
     }
 
     private List<ItemDataProvider> getDataListByBookAndSessionWords() {
-        return wordListProvider.getAllFromDatabase(sessionWords);
+        return wordListFetcher.getAllFromDatabase(sessionWords);
     }
 
     private List<ItemDataProvider> addDataListByBookAndSessionWords() {
-        return wordListProvider.addAllFromDatabase(sessionWords);
+        return wordListFetcher.addAllFromDatabase(sessionWords);
     }
 
 }

@@ -2,7 +2,7 @@ package com.eaccid.hocreader.injection.module;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.injection.WordListScope;
-import com.eaccid.hocreader.provider.db.WordListProvider;
+import com.eaccid.hocreader.provider.db.WordListFetcher;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
 
 import dagger.Module;
@@ -14,14 +14,14 @@ public class WordListModule {
 
     @Provides
     @WordListScope
-    WordListProvider provideWordListProvider(AppDatabaseManager databaseManager) {
-        return new WordListProvider(databaseManager);
+    WordListFetcher provideWordListProvider(AppDatabaseManager databaseManager) {
+        return new WordListFetcher(databaseManager);
     }
 
     @Provides
     @WordListScope
-    WordListInteractor provideWordListInteractor(WordListProvider wordListProvider) {
-        return new WordListInteractor(wordListProvider);
+    WordListInteractor provideWordListInteractor(WordListFetcher wordListFetcher) {
+        return new WordListInteractor(wordListFetcher);
     }
 
 }
