@@ -26,7 +26,6 @@ public class WordListProvider implements Callable<List<ItemDataProvider>> {
 
     private AppDatabaseManager dataManager;
 
-    @Inject
     public WordListProvider(AppDatabaseManager dataManager) {
         this.dataManager = dataManager;
     }

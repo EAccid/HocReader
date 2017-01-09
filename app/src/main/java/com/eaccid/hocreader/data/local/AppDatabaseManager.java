@@ -15,21 +15,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 //TODO refactor: do it in background
 public class AppDatabaseManager {
 
     private final String logTAG = "AppDatabaseManager";
     private DatabaseManager mDatabaseManager;
 
-    @Inject
     public AppDatabaseManager(DatabaseManager mDatabaseManager) {
         this.mDatabaseManager = mDatabaseManager;
-    }
-
-    public void releaseDatabaseManager() {
-        mDatabaseManager.releaseConnection();
     }
 
     private WordFilter currentFilter = WordFilter.NONE;

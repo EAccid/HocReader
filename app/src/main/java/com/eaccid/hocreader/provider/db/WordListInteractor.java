@@ -1,15 +1,11 @@
 package com.eaccid.hocreader.provider.db;
 
 import android.util.Log;
-
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.provider.db.listprovider.DataListProvider;
 import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 public class WordListInteractor extends DataListProvider {
 
@@ -17,7 +13,6 @@ public class WordListInteractor extends DataListProvider {
     private List<String> sessionWords;
     private WordListProvider wordListProvider;
 
-    @Inject
     public WordListInteractor(WordListProvider wordListProvider) {
         this.sessionWords = new ArrayList<>();
         this.wordListProvider = wordListProvider;

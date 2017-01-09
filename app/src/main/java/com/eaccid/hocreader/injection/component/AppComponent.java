@@ -10,9 +10,7 @@ import com.eaccid.hocreader.injection.module.AppModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
 import com.eaccid.hocreader.injection.module.WordListModule;
 import com.eaccid.hocreader.presentation.activity.main.MainPresenter;
-import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
-import com.eaccid.hocreader.presentation.fragment.weditor.WordEditorPresenter;
 import com.eaccid.hocreader.presentation.service.MemorizingPresenter;
 import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesImpl;
 
@@ -35,8 +33,6 @@ public interface AppComponent {
     void inject(MainPresenter mainPresenter);
 
     void inject(MemorizingPresenter memorizingPresenter);
-
-    void inject(PagerPresenter pagerPresenter);
 
     @ApplicationContext
     Context context();

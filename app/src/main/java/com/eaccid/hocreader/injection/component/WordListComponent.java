@@ -18,7 +18,7 @@ public interface WordListComponent {
 
     void inject(SwipeOnLongPressRecyclerViewAdapter swipeOnLongPressRecyclerViewAdapter);
 
-    WordListInteractor wordWordListInteractor();
+    WordListInteractor wordListInteractor();
 
 
 }

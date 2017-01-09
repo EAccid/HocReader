@@ -1,7 +1,6 @@
 package com.eaccid.hocreader.presentation.fragment.weditor;
 
 import android.util.Log;
-
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.provider.db.WordItem;
 import com.eaccid.hocreader.provider.db.WordListInteractor;

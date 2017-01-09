@@ -27,7 +27,6 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     @Override
     public void attachView(PagerActivity pagerActivity) {
         App.plusWordListComponent();
-        App.getAppComponent().inject(this);
         App.getWordListComponent().inject(this);
         mView = pagerActivity;
         Log.i(LOG_TAG, "PagerActivity has been attached.");
