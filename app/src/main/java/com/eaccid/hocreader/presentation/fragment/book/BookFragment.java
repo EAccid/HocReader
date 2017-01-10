@@ -185,7 +185,7 @@ public class BookFragment extends Fragment implements
             moreMenuImg.setImageResource(R.drawable.ic_done_all_24px);
         } else {
             modeText = "Reader mode";
-            moreMenuImg.setImageResource(R.drawable.ic_more_vert_black_24px);
+            moreMenuImg.setImageResource(R.drawable.ic_more_vert_gray_24px);
         }
         Toast.makeText(getContext(), modeText, Toast.LENGTH_SHORT).show();
     }
