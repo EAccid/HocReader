@@ -14,12 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/textView"
+            android:id="@android:id/text2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:gravity="center"/>
     </RelativeLayout>
 
     <FrameLayout
