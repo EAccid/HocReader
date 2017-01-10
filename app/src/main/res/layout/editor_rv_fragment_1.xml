@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="8dp">
@@ -13,9 +12,8 @@
         android:elevation="3dp">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -32,7 +30,6 @@
                 android:layout_alignParentTop="true"
                 android:background="@drawable/gradient_transparent"
                 android:clickable="true">
-
                 <ImageView
                     android:layout_alignParentRight="true"
                     android:id="@+id/menu_more_vert_grey"
@@ -50,4 +47,4 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
