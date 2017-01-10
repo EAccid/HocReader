@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO refactor: do it in background
+//TODO refactor: RxJava
 public class AppDatabaseManager {
 
     private final String logTAG = "AppDatabaseManager";
@@ -135,7 +135,7 @@ public class AppDatabaseManager {
         }
     }
 
-    //TODO create filter and refactor/temp solution
+    //TODO create filter temp solution
 
     public List<Word> getAllWords(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
 

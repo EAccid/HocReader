@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends BaseExpandableListAdapter {
-
     private LayoutInflater layoutInflater;
     private ArrayList<ItemObjectGroup> itemObjectGroupList;
     private ArrayList<ItemObjectGroup> originalList;
@@ -67,7 +66,6 @@ public class SearchAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-
         ItemObjectGroup itemObjectGroup = (ItemObjectGroup) getGroup(groupPosition);
         if (convertView == null)
             convertView = layoutInflater.inflate(R.layout.book_group_item, null);
@@ -79,19 +77,13 @@ public class SearchAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final ItemObjectChild itemObjectChild = (ItemObjectChild) getChild(groupPosition, childPosition);
-
-        if (convertView == null) {
+        if (convertView == null)
             convertView = layoutInflater.inflate(R.layout.book_child_item, null);
-        }
-
         ImageView childIcon = (ImageView) convertView.findViewById(R.id.child_icon);
         childIcon.setImageResource(itemObjectChild.getIcon());
-
         TextView textViewChild = (TextView) convertView.findViewById(R.id.child_text);
         textViewChild.setText(itemObjectChild.getText());
-
         textViewChild.setOnClickListener(new OnChildItemClickListener(itemObjectChild.getFile()));
-
         return convertView;
     }
 
@@ -100,11 +92,10 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    public void filterData(String query) {
+    public void filterDataInList(String query) {
         //example: com.example.user.searchviewexpandablelistview
         query = query.toLowerCase();
         itemObjectGroupList.clear();
-
         if (query.isEmpty()) {
             itemObjectGroupList.addAll(originalList);
         } else {

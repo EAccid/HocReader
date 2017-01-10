@@ -65,7 +65,7 @@ public class PagerActivity extends FragmentActivity implements BaseView,
     }
 
     public void notifyItemChanged() {
-        wordsEditorFragment.notifyItemChanged();
+        wordsEditorFragment.notifyDataSetChanged();
     }
 
     @Override

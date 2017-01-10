@@ -8,7 +8,6 @@ import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import java.io.File;
 
 public class OnChildItemClickListener implements View.OnClickListener{
-
     private File file;
 
     public OnChildItemClickListener(File file) {

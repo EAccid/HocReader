@@ -17,7 +17,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class WordListFetcher implements Callable<List<ItemDataProvider>> {
-    private final static String logTAG = "WordListFetcher";
+    private final static String LOG_TAG = "WordListFetcher";
     private WordFilter wordFilter;
     private List<String> words;
     private int fromIndex;
@@ -79,7 +79,7 @@ public class WordListFetcher implements Callable<List<ItemDataProvider>> {
 
     @Override
     public List<ItemDataProvider> call() throws Exception {
-        Log.i(logTAG, "Updating words from database... start");
+        Log.i(LOG_TAG, "Updating words from database... start");
 
         List<ItemDataProvider> dataList = new ArrayList<>();
         dataManager.setFilter(wordFilter);
@@ -90,7 +90,7 @@ public class WordListFetcher implements Callable<List<ItemDataProvider>> {
             itemDataProvider.setLastAdded(wordFilter == WordFilter.BY_BOOK_AND_WORD_COLLECTION);
             dataList.add(itemDataProvider);
         }
-        Log.i(logTAG, "Updating words from database... end");
+        Log.i(LOG_TAG, "Updating words from database... end");
         return dataList;
     }
 

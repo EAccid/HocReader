@@ -80,7 +80,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
     @Override
     public WordTranslationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View v = inflater.inflate(R.layout.word_item_fragment_1, parent, false);
+        final View v = inflater.inflate(R.layout.editor_word_item_fragment_1, parent, false);
         return new WordTranslationViewHolder(v);
     }
 

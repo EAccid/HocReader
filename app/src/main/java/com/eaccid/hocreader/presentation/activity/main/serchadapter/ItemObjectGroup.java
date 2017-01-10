@@ -3,7 +3,6 @@ package com.eaccid.hocreader.presentation.activity.main.serchadapter;
 import java.util.List;
 
 public class ItemObjectGroup {
-
     private String name;
     private List<ItemObjectChild> itemObjectChildGroupList;
 
@@ -15,7 +14,6 @@ public class ItemObjectGroup {
     public String getName() {
         return name;
     }
-
 
     public List<ItemObjectChild> getItemObjectChildGroupList() {
         return itemObjectChildGroupList;

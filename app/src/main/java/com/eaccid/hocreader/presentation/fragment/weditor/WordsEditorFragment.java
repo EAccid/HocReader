@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
@@ -61,7 +60,7 @@ public class WordsEditorFragment extends Fragment implements BaseView {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.recycler_list_fragment_1, container, false);
+        return inflater.inflate(R.layout.editor_rv_fragment_1, container, false);
     }
 
     @Override
@@ -187,7 +186,7 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         mRecyclerView.scrollToPosition(position);
     }
 
-    public void notifyItemChanged() {
+    public void notifyDataSetChanged() {
         mAdapter.notifyDataSetChanged();
     }
 
