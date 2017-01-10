@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements BaseView,
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.onFabButtonClickListener();
+                mPresenter.onOpenTrainerClickListener();
             }
         });
 
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements BaseView,
 
     @Override
     public boolean onClose() {
-        searchAdapter.filterData("");
+        searchAdapter.filterDataInList("");
         expandListViewGroup();
         return false;
     }
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements BaseView,
     }
 
     private void reloadExpandableListView(String searchText) {
-        searchAdapter.filterData(searchText);
+        searchAdapter.filterDataInList(searchText);
         expandListViewGroup();
     }
 

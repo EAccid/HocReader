@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="0dip"
-    android:background="@color/colorTest4"
-    android:elevation="8dp">
+    android:background="@color/colorTest4">
 
     <ListView
         android:id="@android:id/list"
@@ -34,7 +33,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="12dp"
             android:paddingTop="12dp"
-            android:src="@drawable/ic_more_vert_black_24px"
+            android:src="@drawable/ic_more_vert_gray_24px"
             tools:ignore="RtlSymmetry" />
 
     </RelativeLayout>

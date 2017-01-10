@@ -49,7 +49,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         settings.clearBookSearchHistory(mView.getApplicationContext());
     }
 
-    public void onFabButtonClickListener() {
+    public void onOpenTrainerClickListener() {
         //TEMP
         int words = dataManager.getAllWords(null, null).size();
         int books = dataManager.getAllBooks().size();

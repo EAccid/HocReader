@@ -13,18 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="#ffffff">
+        android:background="@color/windowBackground">
 
     </android.support.v4.view.ViewPager>
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/indicator"
-        style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="4dip"
-        app:fillColor="#FF888888"
-        app:pageColor="#88FF0000"
+        app:fillColor="@color/colorPrimary"
+        app:pageColor="@color/colorAccent"
         android:layout_gravity="end|bottom"/>
 
 </android.support.design.widget.CoordinatorLayout>

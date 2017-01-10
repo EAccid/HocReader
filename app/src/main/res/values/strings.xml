@@ -66,6 +66,7 @@
     <string name="authorized_status">Authorized</string>
     <string name="authorizing_status">Authenticating…</string>
     <string name="unauthorized_status">Unauthorized</string>
+    <string name="menu_more_vert">Menu More Vertical</string>
 
 
 </resources>
