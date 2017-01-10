@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:elevation="8dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="3dp">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="3dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 style="@style/recyclerViewStyleFragment1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/windowBackground"
-                android:paddingTop="?attr/actionBarSize" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/gradient_transparent"
-                android:clickable="true">
-                <ImageView
-                    android:layout_alignParentRight="true"
-                    android:id="@+id/menu_more_vert_grey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="12dp"
-                    android:src="@drawable/ic_more_vert_white_24px"
-                    android:contentDescription="@string/menu_more_vert" />
+                android:background="@color/windowBackground"
+                android:paddingTop="@dimen/half_action_size_bar" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
-            </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/gradient_transparent"
+        android:clickable="true"
+        android:elevation="@dimen/elevation_app_bar">
 
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/menu_more_vert_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            tools:ignore="ContentDescription"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="12dp"
+            android:src="@drawable/ic_more_vert_white_24px" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

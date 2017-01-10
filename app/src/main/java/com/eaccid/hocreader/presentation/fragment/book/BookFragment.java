@@ -217,7 +217,7 @@ public class BookFragment extends Fragment implements
         aster.setResource(R.drawable.ic_find_in_page_blue_24px);
 
         MenuObject bookmark = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.ADD_BOOKMARK, "add bookmark");
-        bookmark.setResource(R.drawable.ic_star_yellow_24px);
+        bookmark.setResource(R.drawable.ic_bookmark_border_yellow_24px);
 
         MenuObject leoTraining = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.OPEN_LINGUALEO, "open Lingualeo");
         leoTraining.setResource(R.drawable.ic_pets_leo_training_24px);

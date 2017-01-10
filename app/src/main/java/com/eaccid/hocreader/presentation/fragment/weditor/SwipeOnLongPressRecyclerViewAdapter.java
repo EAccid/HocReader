@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -63,12 +64,16 @@ public class SwipeOnLongPressRecyclerViewAdapter
         FrameLayout mContainer;
         TextView mTextView;
         TextView mTranslationView;
+        TextView mContext;
+        Button mLearnByHeart;
 
         WordTranslationViewHolder(View v) {
             super(v);
             mContainer = (FrameLayout) v.findViewById(R.id.container);
-            mTextView = (TextView) v.findViewById(android.R.id.text1);
-            mTranslationView = (TextView) v.findViewById(android.R.id.text2);
+            mTextView = (TextView) v.findViewById(R.id.word);
+            mTranslationView = (TextView) v.findViewById(R.id.translation);
+            mContext = (TextView) v.findViewById(R.id.word_context);
+//            mLearnByHeart = (Button) v.findViewById(R.id.learn_by_heart);
         }
 
         @Override
@@ -94,6 +99,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
         holder.mTextView.setText(item.getName());
         holder.mTranslationView.setText(item.getTranslation());
+        holder.mContext.setText(item.getContext());
 
 
         // set background resource (target view ID: container)
