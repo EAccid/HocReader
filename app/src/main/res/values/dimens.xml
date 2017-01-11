@@ -29,12 +29,13 @@
     <dimen name="nav_drawer_profile_image_size">64dp</dimen>
 
 
-    <dimen name="word_image_size">72dp</dimen>
+    <dimen name="word_image_size">48dp</dimen>
 
     <dimen name="elevation_app_bar">4dp</dimen>
     <dimen name="elevation_nav_drawer">16dp</dimen>
 
     <dimen name="circle_diameter_background">64dp</dimen>
     <dimen name="half_action_size_bar">28dp</dimen>
+    <dimen name="action_bottom_size">48dp</dimen>
 
 </resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:showIn="@layout/editor_word_item_fragment_1">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/action_bottom_size"
+        android:background="@color/divider_color" />
+
+    <com.andexert.library.RippleView
+        android:id="@+id/learn_by_heart_false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:rv_color="#1ABDBDBD"
+        app:rv_centered="true"
+        app:rv_framerate="30"
+        android:layout_gravity="end">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_learn_by_heart_border_gray_18px"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/spacing_8" />
+    </com.andexert.library.RippleView>
+
+</FrameLayout>

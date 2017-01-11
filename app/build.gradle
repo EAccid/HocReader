@@ -83,6 +83,10 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.hdodenhof:circleimageview:1.2.1'
+
+    compile 'com.ms-square:expandableTextView:0.1.4'
+
+    compile 'com.github.traex.rippleeffect:library:1.3'
 }
 
 

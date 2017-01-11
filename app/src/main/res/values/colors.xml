@@ -8,10 +8,13 @@
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="colorDivider">#bdbdbd</color>
-    <color name="windowBackground">#ddd</color>
     <color name="windowSecondaryBackground">#B0BEC5</color>
     <color name="colorLightAccent">#fff</color>
     <color name="colorTransparent">#00ffffff</color>
+
+    <color name="windowBackground">#F5F5F5</color>
+    <color name="cardView">#FAFAFA</color>
+    <color name="divider_color">#1800796b</color>
 
     <color name="action_mode_highlight">#F48FB1</color>
 

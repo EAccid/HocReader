@@ -28,10 +28,10 @@ public class WordFromTextProvider {
 //            tv.setText(spanText, TextView.BufferType.SPANNABLE);
             //temp end
 
-//            wordFromText.setSentence(
-//                    getSentenceFromText(
-//                            text, text.subSequence(startOfLine, endOfLine).toString()));
-            wordFromText.setSentence(text.subSequence(startOfLine, endOfLine).toString());
+            wordFromText.setSentence(
+                    getSentenceFromText(
+                            text, text.subSequence(startOfLine, endOfLine).toString()));
+//            wordFromText.setSentence(text.subSequence(startOfLine, endOfLine).toString());
         }
         return wordFromText;
     }
@@ -52,14 +52,14 @@ public class WordFromTextProvider {
 
     private static String getSentenceFromText(CharSequence text, CharSequence subtext) {
         //TODO get all Sentence (now just line)
-        return getMatchingResult(text, Pattern.compile("[A-Za-z,\" ]+" + subtext + "[A-Za-z,\" ]+"));
+        return getMatchingResult(text, Pattern.compile("(?<=\\.)(\\w|\\s|,|'|`)+"+subtext+".+?(\\.)"));
     }
 
     private static String getMatchingResult(CharSequence line, Pattern pattern) {
         Matcher matcher = pattern.matcher(line);
         try {
             if (matcher.find()) {
-                return matcher.group(1);
+                return matcher.group(0);
             }
         } catch (Exception e) {
             e.printStackTrace();

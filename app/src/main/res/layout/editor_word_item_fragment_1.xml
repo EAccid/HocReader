@@ -1,28 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/card_vertical_margin"
     android:layout_marginStart="@dimen/card_vertical_margin"
-    android:minHeight="@dimen/card_view_min_height"
-    app:cardElevation="@dimen/item_card_view_elevation">
+    android:background="@color/colorTransparent"
+    app:cardCornerRadius="@dimen/md_bg_corner_radius"
+    app:cardElevation="@dimen/item_card_view_elevation"
+    android:layout_marginBottom="16dp">
 
     <RelativeLayout
         android:id="@+id/translation_context"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorTransparent">
 
         <TextView
             android:id="@+id/translation"
-            android:text="@string/empty_translation"
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/empty_translation"
+            android:textSize="20sp" />
+
+        <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/expand_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            expandableTextView:animDuration="200"
+            expandableTextView:maxCollapsedLines="3">
+
+            <TextView
+                android:id="@+id/expandable_text"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="42dp"
+                android:text="@string/word_context" />
+
+            <ImageButton
+                android:id="@id/expand_collapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:background="@android:color/transparent"
+                android:padding="16dp" />
+
+        </com.ms.square.android.expandabletextview.ExpandableTextView>
 
     </RelativeLayout>
 
@@ -30,48 +62,56 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/card_frame_item_min_height"
         android:background="@drawable/bg_item_normal_state"
         android:clickable="true"
-        android:elevation="@dimen/item_card_view_elevation"
         android:foreground="?attr/selectableItemBackground"
         android:stateListAnimator="@animator/raise">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="@dimen/word_image_size"
-            android:layout_height="@dimen/word_image_size"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:layout_marginLeft="12dp"
-            android:background="@drawable/empty_circle_background"
-            android:id="@+id/circleView"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginLeft="32dp"
-            android:src="@drawable/ic_image_white_32px"
-            android:id="@+id/empty_image"
-            tools:ignore="ContentDescription"/>
-
-        <TextView
-            android:id="@+id/word"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/empty_word"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="@dimen/card_frame_item_min_height"
-            style="@style/Base.TextAppearance.AppCompat.Headline" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/word_context"
-            android:layout_width="177dp"
-            android:layout_height="match_parent"
-            android:text="@string/empty_word"
-            android:layout_marginTop="48dp"
-            android:layout_marginLeft="@dimen/card_frame_item_min_height"
-            android:textSize="12sp"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/word_image"
+                    android:layout_width="@dimen/word_image_size"
+                    android:layout_height="@dimen/word_image_size"
+                    android:layout_gravity="start"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/empty_circle_background" />
+
+                <TextView
+                    android:id="@+id/word"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/empty_word"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/word_transcription"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginTop="42dp"
+                    android:text="@string/empty_word" />
+
+            </FrameLayout>
+
+            <include layout="@layout/card_action_bottom_buttons" />
+
+        </LinearLayout>
 
     </FrameLayout>
 

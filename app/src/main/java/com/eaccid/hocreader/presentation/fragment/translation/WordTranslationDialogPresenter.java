@@ -51,7 +51,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
             mTranslationSubscription.unsubscribe();
         }
         mTranslationSubscription = new HocTranslatorProvider()
-                .translate(wordFromText)
+                .translate(wordFromText.getText())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<TextTranslation>() {

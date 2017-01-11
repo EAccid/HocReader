@@ -9,6 +9,8 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ImageViewManager {
 
     @Inject
@@ -26,5 +28,6 @@ public class ImageViewManager {
 //                .error(R.drawable.ic_error_fallback)
                 .into(imageView);
     }
+
 
 }

@@ -169,6 +169,7 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         if (position != RecyclerView.NO_POSITION) {
             mPresenter.onItemClicked(position);
         }
+
     }
 
     private void onRefreshRecyclerView() {

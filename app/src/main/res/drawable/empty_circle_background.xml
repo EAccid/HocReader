@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector
-xmlns:android="http://schemas.android.com/apk/res/android">
-<item>
-    <shape android:shape="oval">
-        <solid android:color="@color/windowBackground" />
-        <size android:height="@dimen/circle_diameter_background"
-            android:width="@dimen/circle_diameter_background"/>
-    </shape>
-</item>
-</selector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#4DB6AC" />
+            <size
+                android:width="@dimen/circle_diameter_background"
+                android:height="@dimen/circle_diameter_background" />
+        </shape>
+    </item>
+    <item
+        android:bottom="12dp"
+        android:drawable="@drawable/ic_image_white_32px"
+        android:left="12dp"
+        android:right="12dp"
+        android:top="12dp" />
+</layer-list>
