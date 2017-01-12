@@ -1,25 +1,21 @@
 package com.eaccid.hocreader.provider.db;
 
-import com.eaccid.hocreader.data.local.db.entity.Word;
-import com.eaccid.hocreader.provider.db.listprovider.ItemDataProviderImpl;
+public interface WordProvider {
+    String getWordFromText();
 
+    String getTranslation();
 
-public class WordProvider extends ItemDataProviderImpl {
+    String getContext();
 
-    public WordProvider(int id, Word word) {
-        super(id, word);
-    }
+    String getTranscription();
 
-    public String getName() {
-        return ((Word) getObject()).getName();
-    }
+    String getSoundUrl();
 
-    public String getTranslation() {
-        return ((Word) getObject()).getTranslation();
-    }
+    String getPicUrl();
 
-    public String getContext() {
-        return ((Word) getObject()).getContext();
-    }
+    String getBook();
 
+    int getPage();
+
+    boolean isSetToLearn();
 }
