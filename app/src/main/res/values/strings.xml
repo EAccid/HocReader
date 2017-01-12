@@ -75,5 +75,6 @@
     <string name="learn">Learn</string>
     <string name="delete">Delete</string>
     <string name="copy">Copy</string>
+    <string name="clear_all_words">Clear all words</string>
 
 </resources>

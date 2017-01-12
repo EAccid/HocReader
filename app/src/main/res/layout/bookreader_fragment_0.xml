@@ -23,9 +23,7 @@
         android:layout_height="48dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:background="@color/colorTransparent"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground">
+        android:background="@color/colorTransparent">
 
         <ImageView
             android:id="@+id/menu_more_vert_grey"
