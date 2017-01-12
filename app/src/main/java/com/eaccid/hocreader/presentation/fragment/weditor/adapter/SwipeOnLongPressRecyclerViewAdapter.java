@@ -1,24 +1,24 @@
-package com.eaccid.hocreader.presentation.fragment.weditor;
+package com.eaccid.hocreader.presentation.fragment.weditor.adapter;
 
+import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
-import com.eaccid.hocreader.data.remote.libtranslator.translator.TranslatorRx;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
-import com.eaccid.hocreader.provider.db.WordProvider;
+import com.eaccid.hocreader.presentation.fragment.translation.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.db.WordProviderImpl;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
 import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
-import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
+import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
+import com.eaccid.hocreader.underdevelopment.MemorizingResourcesProvider;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
@@ -33,17 +33,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-/**
- * advanced recycler view library example
- */
 
 public class SwipeOnLongPressRecyclerViewAdapter
-        extends RecyclerView.Adapter<SwipeOnLongPressRecyclerViewAdapter.WordTranslationViewHolder>
-        implements SwipeableItemAdapter<SwipeOnLongPressRecyclerViewAdapter.WordTranslationViewHolder> {
+        extends RecyclerView.Adapter<SwipeOnLongPressRecyclerViewAdapter.WordsEditorViewHolder>
+        implements SwipeableItemAdapter<SwipeOnLongPressRecyclerViewAdapter.WordsEditorViewHolder> {
     private final String LOG_TAG = "SwipeOnLongRVAdapter";
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
@@ -69,11 +63,17 @@ public class SwipeOnLongPressRecyclerViewAdapter
         setHasStableIds(true);// have to implement the getItemId() method
     }
 
-    static class WordTranslationViewHolder extends AbstractSwipeableItemViewHolder {
+    /**
+     * Work with view holder
+     */
+
+    static class WordsEditorViewHolder extends AbstractSwipeableItemViewHolder {
         @BindView(R.id.container)
         FrameLayout container;
         @BindView(R.id.word)
         TextView word;
+        @BindView(R.id.word_transcription)
+        TextView transcription;
         @BindView(R.id.translation)
         TextView translation;
         @BindView(R.id.expand_text_view)
@@ -88,8 +88,9 @@ public class SwipeOnLongPressRecyclerViewAdapter
         ImageView alreadyLearned;
         @BindView(R.id.transcription_speaker)
         ImageView transcriptionSpeaker;
+        MediaPlayer mediaPlayer;
 
-        WordTranslationViewHolder(View v) {
+        WordsEditorViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }
@@ -101,62 +102,65 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     @Override
-    public WordTranslationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WordsEditorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View v = inflater.inflate(R.layout.editor_word_item_fragment_1, parent, false);
-        return new WordTranslationViewHolder(v);
+        return new WordsEditorViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(WordTranslationViewHolder holder, int position) {
-        final WordProvider item = (WordProvider) wordListInteractor.getItem(position);
+    public void onBindViewHolder(WordsEditorViewHolder holder, int position) {
+        setDataToViewFromItem(holder, position);
+        setListenersToViewFromItem(holder, position);
+        setViewHoldersContainerBackGround(holder, position);
+        holder.setSwipeItemHorizontalSlideAmount(
+                getWordListItemProvider(position).isPinned() ? Swipeable.OUTSIDE_OF_THE_WINDOW_LEFT : 0
+        );
+    }
+
+    private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
+        WordProviderImpl item = getWordListItemProvider(position);
+        holder.word.setText(item.getWordFromText());
+        holder.translation.setText(item.getTranslation());
+        holder.context.setText(item.getContext());
+        if (item.getItemId() == 2 || item.getItemId() == 10) {
+            String temp = "I clasp the flask between my hands even though the warmth from the tea has long since leached into the frozen air. My muscles are clenched tight against the cold. If a pack of wild dogs were to appear at this moment, the odds of scaling a tree before they attacked are not in my favor.  I should get up, move around, and work the stiffness from my limbs. But instead I sit, as motionless as the rock beneath me, while the dawn begins to lighten the woods. I can't fight the sun. I can only watch helplessly as it drags me into a day that I've been dreading for months. By noon they will all be at my new house in the Victor's Village. ";
+            holder.context.setText(temp);
+        }
+        new ImageViewManager().loadPictureFromUrl(holder.wordImage, item.getPicUrl());
+        holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(item.getSoundUrl());
+        holder.transcription.setText("[" + item.getTranscription() + "]");
+        holder.alreadyLearned.setImageResource(
+                new MemorizingResourcesProvider().getAlreadyLearnedWordResId(
+                        new MemorizingCalculatorImpl(item)
+                )
+        );
+    }
+
+    private void setListenersToViewFromItem(WordsEditorViewHolder holder, int position) {
         // if the item is 'pinned', click event comes to the itemView
         holder.itemView.setOnClickListener(mItemViewOnClickListener);
         // if the item is 'not pinned', click event comes to the container
         holder.container.setOnClickListener(mSwipeableViewContainerOnClickListener);
+        holder.transcriptionSpeaker.setOnClickListener(
+                v -> new MediaPlayerManager().play(holder.mediaPlayer)
+        );
+        holder.showInPage.setOnClickListener(
+                new OnShowWordInBookPageClickListener(getWordListItemProvider(position))
+        );
+        holder.learnByHeart.setOnClickListener(v ->
+                holder.learnByHeart.setImageResource(
+                        new MemorizingResourcesProvider().getLearnByHeartResId(
+                                getWordListItemProvider(position).isSetToLearn()
+                        )
+                )
+        );
+    }
 
-
-        StringBuilder sb = new StringBuilder(item.getName());
-        sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
-        holder.word.setText(sb.toString());
-
-        holder.translation.setText(item.getTranslation());
-
-        //TODO: delete TEMP DATA + wrap ExpandableTextView
-
-        holder.context.setText(item.getContext());
-//        String temp = "I clasp the flask between my hands even though the warmth from the tea has long since leached into the frozen air. My muscles are clenched tight against the cold. If a pack of wild dogs were to appear at this moment, the odds of scaling a tree before they attacked are not in my favor.  I should get up, move around, and work the stiffness from my limbs. But instead I sit, as motionless as the rock beneath me, while the dawn begins to lighten the woods. I can't fight the sun. I can only watch helplessly as it drags me into a day that I've been dreading for months. By noon they will all be at my new house in the Victor's Village. ";
-//        holder.context.setText(temp);
-        TranslatorRx translator = (TranslatorRx) new HocTranslatorProvider();
-        translator.translate(item.getName())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<TextTranslation>() {
-                    @Override
-                    public void onCompleted() {
-                        unsubscribe();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        unsubscribe();
-                    }
-
-                    @Override
-                    public void onNext(TextTranslation textTranslation) {
-                        {
-                            ImageViewManager imageViewManager = new ImageViewManager(holder.context.getContext());
-                            imageViewManager.loadPictureFromUrl((ImageView) holder.wordImage, textTranslation.getPicUrl());
-                        }
-                    }
-                })
-        ;
-
-        // set background resource (target view ID: container)
+    private void setViewHoldersContainerBackGround(WordsEditorViewHolder holder, int position) {
         final int swipeState = holder.getSwipeStateFlags();
         int bgResId;
-        if (item.isLastAdded()) {
+        if (getWordListItemProvider(position).isLastAdded()) {
             bgResId = R.drawable.bg_item_session_state;
         } else {
             bgResId = R.drawable.bg_item_normal_state;
@@ -171,9 +175,16 @@ public class SwipeOnLongPressRecyclerViewAdapter
          }
          */
         holder.container.setBackgroundResource(bgResId);
-        holder.setSwipeItemHorizontalSlideAmount(
-                item.isPinned() ? Swipeable.OUTSIDE_OF_THE_WINDOW_LEFT : 0);
     }
+
+    private WordProviderImpl getWordListItemProvider(final int position) {
+        return (WordProviderImpl) wordListInteractor.getItem(position);
+    }
+
+    /**
+     * by advanced recycler view library example
+     * todo: separate on different classes
+     */
 
     @Override
     public long getItemId(int position) {
@@ -186,14 +197,14 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     @Override
-    public int onGetSwipeReactionType(WordTranslationViewHolder holder, int position, int x, int y) {
+    public int onGetSwipeReactionType(WordsEditorViewHolder holder, int position, int x, int y) {
         return Swipeable.REACTION_CAN_SWIPE_LEFT | Swipeable.REACTION_MASK_START_SWIPE_LEFT |
                 Swipeable.REACTION_CAN_SWIPE_RIGHT | Swipeable.REACTION_MASK_START_SWIPE_RIGHT |
                 Swipeable.REACTION_START_SWIPE_ON_LONG_PRESS;
     }
 
     @Override
-    public void onSetSwipeBackground(WordTranslationViewHolder holder, int position, int type) {
+    public void onSetSwipeBackground(WordsEditorViewHolder holder, int position, int type) {
         int bgRes = 0;
         switch (type) {
             case Swipeable.DRAWABLE_SWIPE_NEUTRAL_BACKGROUND:
@@ -210,7 +221,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     @Override
-    public SwipeResultAction onSwipeItem(WordTranslationViewHolder holder, final int position, int result) {
+    public SwipeResultAction onSwipeItem(WordsEditorViewHolder holder, final int position, int result) {
         Log.d(LOG_TAG, "onSwipeItem(position = " + position + ", result = " + result + ")");
 
         switch (result) {
@@ -340,4 +351,5 @@ public class SwipeOnLongPressRecyclerViewAdapter
             mAdapter = null;
         }
     }
+
 }

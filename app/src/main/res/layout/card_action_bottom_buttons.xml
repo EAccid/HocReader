@@ -28,16 +28,6 @@
                 android:src="@drawable/ic_learn_by_heart_border_gray_18px" />
         </com.andexert.library.RippleView>
 
-
-        <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
-
-            <ImageView
-                android:id="@+id/already_learned"
-                style="@style/icon_toggles"
-                android:src="@drawable/ic_star_border_black_18px" />
-        </com.andexert.library.RippleView>
-
-
         <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
 
             <ImageView

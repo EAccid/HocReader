@@ -71,5 +71,9 @@
     <string name="empty_word">Word</string>
     <string name="word_context">Word context</string>
 
+    <!--  Action Mode Menu Items -->
+    <string name="learn">Learn</string>
+    <string name="delete">Delete</string>
+    <string name="copy">Copy</string>
 
 </resources>
