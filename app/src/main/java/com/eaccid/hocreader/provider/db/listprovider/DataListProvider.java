@@ -13,7 +13,7 @@ public abstract class DataListProvider {
         mData = new LinkedList<>();
     }
 
-    public abstract void fillDataList();
+    public abstract void populateDataList();
 
     public List<ItemDataProvider> getDataList() {
         return mData;
