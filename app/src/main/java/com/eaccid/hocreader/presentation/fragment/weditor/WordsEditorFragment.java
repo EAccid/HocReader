@@ -11,6 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
@@ -116,6 +119,12 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         mRecyclerViewTouchActionGuardManager.attachRecyclerView(mRecyclerView);
         mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
 
+        FrameLayout startBar = (FrameLayout) getView().findViewById(R.id.start_bar);
+        startBar.setOnClickListener(v -> {
+            if (mAdapter.getItemCount() > 0)
+                //TODO smooth scroll
+                mRecyclerView.scrollToPosition(0);
+        });
     }
 
     @Override
