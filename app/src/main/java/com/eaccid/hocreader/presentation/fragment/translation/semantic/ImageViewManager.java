@@ -9,25 +9,24 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class ImageViewManager {
 
     @Inject
     @ApplicationContext
     Context context;
 
-    public ImageViewManager(Context context) {
+    public ImageViewManager() {
         App.getAppComponent().inject(this);
     }
 
     public void loadPictureFromUrl(ImageView imageView, String url) {
+        if (url.isEmpty())
+            return;
         Picasso.with(context)
                 .load(url)
 //                .placeholder(R.drawable.ic_placeholder)
 //                .error(R.drawable.ic_error_fallback)
                 .into(imageView);
+
     }
-
-
 }

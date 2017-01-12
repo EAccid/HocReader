@@ -48,6 +48,5 @@ public class ItemDataProviderImpl implements ItemDataProvider {
             Log.i(logTAG, "Last item (id=" + getItemId() + ") has been set.");
         }
     }
-
 }
 
