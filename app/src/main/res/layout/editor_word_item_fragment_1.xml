@@ -67,51 +67,7 @@
         android:foreground="?attr/selectableItemBackground"
         android:stateListAnimator="@animator/raise">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/word_image"
-                    android:layout_width="@dimen/word_image_size"
-                    android:layout_height="@dimen/word_image_size"
-                    android:layout_gravity="start"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/empty_circle_background" />
-
-                <TextView
-                    android:id="@+id/word"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/empty_word"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/word_transcription"
-                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginTop="42dp"
-                    android:text="@string/empty_word" />
-
-            </FrameLayout>
-
-            <include layout="@layout/card_action_bottom_buttons" />
-
-        </LinearLayout>
+        <include layout="@layout/word_editor_item_action" />
 
     </FrameLayout>
 

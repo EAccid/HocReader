@@ -25,7 +25,8 @@ public class OnWordFromPageViewTouchListener implements View.OnTouchListener{
         switch (motionEvent.getAction()) {
             case MotionEvent.AXIS_Y:
                 TextView tv = (TextView) view;
-                WordFromText wordFromText = WordFromTextProvider.getWordByMotionEvent(tv, motionEvent);
+                WordFromTextProvider wordFromTextProvider = new WordFromTextProvider();
+                WordFromText wordFromText = wordFromTextProvider.getWordByMotionEvent(tv, motionEvent);
                 wordFromText.setPageNumber(pageNumber);
                 if (!wordFromText.getText().isEmpty()) {
                     try {

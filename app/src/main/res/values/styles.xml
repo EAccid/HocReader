@@ -67,4 +67,29 @@
         <item name="android:textColor">@color/text_white_primary</item>
     </style>
 
+    <style name="icon_toggles_ripple_effect">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="rv_centered">true</item>
+        <item name="rv_color">#1ABDBDBD</item>
+        <item name="rv_framerate">10</item>
+    </style>
+
+    <style name="icon_toggles">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:padding">@dimen/spacing_8</item>
+        <item name="android:contentDescription">Action"</item>
+    </style>
+
+    <style name="frame_divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:layout_marginBottom">@dimen/action_bottom_size</item>
+        <item name="android:background">@color/divider_color</item>
+    </style>
+
 </resources>

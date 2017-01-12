@@ -3,7 +3,6 @@ package com.eaccid.hocreader.presentation.fragment.weditor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
-import com.eaccid.hocreader.data.remote.libtranslator.translator.Translator;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TranslatorRx;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
@@ -21,7 +19,6 @@ import com.eaccid.hocreader.provider.db.WordProvider;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
 import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
 import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
-import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
@@ -34,25 +31,23 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import javax.inject.Inject;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * from advanced recycler view library example
+ * advanced recycler view library example
  */
 
 public class SwipeOnLongPressRecyclerViewAdapter
         extends RecyclerView.Adapter<SwipeOnLongPressRecyclerViewAdapter.WordTranslationViewHolder>
         implements SwipeableItemAdapter<SwipeOnLongPressRecyclerViewAdapter.WordTranslationViewHolder> {
-
-    private static final String logTAG = "SwipeOnLongRVAdapter";
-
+    private final String LOG_TAG = "SwipeOnLongRVAdapter";
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
-
     @Inject
     WordListInteractor wordListInteractor;
 
@@ -75,29 +70,33 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     static class WordTranslationViewHolder extends AbstractSwipeableItemViewHolder {
-        FrameLayout mContainer;
-        TextView mTextView;
-        TextView mTranslationView;
-        //        TextView mContext;
-        Button mLearnByHeart;
-        ImageView mWordImage;
-        ExpandableTextView mContext;
+        @BindView(R.id.container)
+        FrameLayout container;
+        @BindView(R.id.word)
+        TextView word;
+        @BindView(R.id.translation)
+        TextView translation;
+        @BindView(R.id.expand_text_view)
+        ExpandableTextView context;
+        @BindView(R.id.word_image)
+        ImageView wordImage;
+        @BindView(R.id.show_in_page)
+        ImageView showInPage;
+        @BindView(R.id.learn_by_heart_false)
+        ImageView learnByHeart;
+        @BindView(R.id.already_learned)
+        ImageView alreadyLearned;
+        @BindView(R.id.transcription_speaker)
+        ImageView transcriptionSpeaker;
 
         WordTranslationViewHolder(View v) {
             super(v);
-            mContainer = (FrameLayout) v.findViewById(R.id.container);
-            mTextView = (TextView) v.findViewById(R.id.word);
-            mTranslationView = (TextView) v.findViewById(R.id.translation);
-
-            mContext = (ExpandableTextView) v.findViewById(R.id.expand_text_view);
-
-//            mLearnByHeart = (Button) v.findViewById(R.id.learn_by_heart);
-            mWordImage = (ImageView) v.findViewById(R.id.word_image);
+            ButterKnife.bind(this, v);
         }
 
         @Override
         public View getSwipeableContainerView() {
-            return mContainer;
+            return container;
         }
     }
 
@@ -111,20 +110,23 @@ public class SwipeOnLongPressRecyclerViewAdapter
     @Override
     public void onBindViewHolder(WordTranslationViewHolder holder, int position) {
         final WordProvider item = (WordProvider) wordListInteractor.getItem(position);
-
         // if the item is 'pinned', click event comes to the itemView
         holder.itemView.setOnClickListener(mItemViewOnClickListener);
-        // if the item is 'not pinned', click event comes to the mContainer
-        holder.mContainer.setOnClickListener(mSwipeableViewContainerOnClickListener);
+        // if the item is 'not pinned', click event comes to the container
+        holder.container.setOnClickListener(mSwipeableViewContainerOnClickListener);
 
-        holder.mTextView.setText(item.getName());
-        holder.mTranslationView.setText(item.getTranslation());
+
+        StringBuilder sb = new StringBuilder(item.getName());
+        sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+        holder.word.setText(sb.toString());
+
+        holder.translation.setText(item.getTranslation());
 
         //TODO: delete TEMP DATA + wrap ExpandableTextView
 
-        holder.mContext.setText(item.getContext());
+        holder.context.setText(item.getContext());
 //        String temp = "I clasp the flask between my hands even though the warmth from the tea has long since leached into the frozen air. My muscles are clenched tight against the cold. If a pack of wild dogs were to appear at this moment, the odds of scaling a tree before they attacked are not in my favor.  I should get up, move around, and work the stiffness from my limbs. But instead I sit, as motionless as the rock beneath me, while the dawn begins to lighten the woods. I can't fight the sun. I can only watch helplessly as it drags me into a day that I've been dreading for months. By noon they will all be at my new house in the Victor's Village. ";
-//        holder.mContext.setText(temp);
+//        holder.context.setText(temp);
         TranslatorRx translator = (TranslatorRx) new HocTranslatorProvider();
         translator.translate(item.getName())
                 .subscribeOn(Schedulers.io())
@@ -144,8 +146,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
                     @Override
                     public void onNext(TextTranslation textTranslation) {
                         {
-                            ImageViewManager imageViewManager = new ImageViewManager(holder.mContext.getContext());
-                            imageViewManager.loadPictureFromUrl((ImageView) holder.mWordImage, textTranslation.getPicUrl());
+                            ImageViewManager imageViewManager = new ImageViewManager(holder.context.getContext());
+                            imageViewManager.loadPictureFromUrl((ImageView) holder.wordImage, textTranslation.getPicUrl());
                         }
                     }
                 })
@@ -168,7 +170,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
          }
          }
          */
-        holder.mContainer.setBackgroundResource(bgResId);
+        holder.container.setBackgroundResource(bgResId);
         holder.setSwipeItemHorizontalSlideAmount(
                 item.isPinned() ? Swipeable.OUTSIDE_OF_THE_WINDOW_LEFT : 0);
     }
@@ -209,7 +211,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     @Override
     public SwipeResultAction onSwipeItem(WordTranslationViewHolder holder, final int position, int result) {
-        Log.d(logTAG, "onSwipeItem(position = " + position + ", result = " + result + ")");
+        Log.d(LOG_TAG, "onSwipeItem(position = " + position + ", result = " + result + ")");
 
         switch (result) {
             case Swipeable.RESULT_SWIPED_RIGHT:

@@ -1,33 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:showIn="@layout/editor_word_item_fragment_1">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/action_bottom_size"
-        android:background="@color/divider_color" />
+    <View style="@style/frame_divider" />
 
-    <com.andexert.library.RippleView
-        android:id="@+id/learn_by_heart_false"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:rv_color="#1ABDBDBD"
-        app:rv_centered="true"
-        app:rv_framerate="30"
-        android:layout_gravity="end">
+        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_learn_by_heart_border_gray_18px"
-            android:layout_centerInParent="true"
-            android:padding="@dimen/spacing_8" />
-    </com.andexert.library.RippleView>
+        <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+
+            <ImageView
+                android:id="@+id/show_in_page"
+                style="@style/icon_toggles"
+                android:src="@drawable/ic_show_in_page_gray_18px" />
+        </com.andexert.library.RippleView>
+
+        <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+
+            <ImageView
+                android:id="@+id/learn_by_heart_false"
+                style="@style/icon_toggles"
+                android:src="@drawable/ic_learn_by_heart_border_gray_18px" />
+        </com.andexert.library.RippleView>
+
+
+        <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+
+            <ImageView
+                android:id="@+id/already_learned"
+                style="@style/icon_toggles"
+                android:src="@drawable/ic_star_border_black_18px" />
+        </com.andexert.library.RippleView>
+
+
+        <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+
+            <ImageView
+                android:id="@+id/transcription_speaker"
+                style="@style/icon_toggles"
+                android:src="@drawable/ic_volume_up_black_24px" />
+        </com.andexert.library.RippleView>
+
+    </LinearLayout>
 
 </FrameLayout>

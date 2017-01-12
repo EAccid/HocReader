@@ -25,26 +25,26 @@
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/start_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
         android:background="@drawable/gradient_transparent"
         android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:elevation="@dimen/elevation_app_bar">
 
         <ImageView
             android:id="@+id/menu_more_vert_grey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_gravity="end"
             tools:ignore="ContentDescription"
-            android:paddingEnd="12dp"
+            android:paddingEnd="8dp"
             android:paddingStart="12dp"
             android:paddingTop="12dp"
             android:src="@drawable/ic_more_vert_white_24px" />
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </RelativeLayout>
