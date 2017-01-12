@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class WordListFetcher implements Callable<List<ItemDataProvider>> {
+public class WordListFromDatabaseFetcher implements Callable<List<ItemDataProvider>> {
     private final static String LOG_TAG = "WordListFetcher";
     private WordFilter wordFilter;
     private List<String> words;
@@ -24,7 +24,7 @@ public class WordListFetcher implements Callable<List<ItemDataProvider>> {
 
     private AppDatabaseManager dataManager;
 
-    public WordListFetcher(AppDatabaseManager dataManager) {
+    public WordListFromDatabaseFetcher(AppDatabaseManager dataManager) {
         this.dataManager = dataManager;
     }
 
@@ -44,7 +44,7 @@ public class WordListFetcher implements Callable<List<ItemDataProvider>> {
     ItemDataProvider createItemWord(String wordBaseName, int currentId) {
         Word word = dataManager.getCurrentBooksWordByPage(wordBaseName);
         if (word == null) return null;
-        return new WordProvider(currentId, word);
+        return new WordProviderImpl(currentId, word);
     }
 
     private List<ItemDataProvider> getWordItemByCurrentBookList(WordFilter wordFilter, @Nullable List<String> words) {
@@ -86,7 +86,7 @@ public class WordListFetcher implements Callable<List<ItemDataProvider>> {
         List<Word> wordsFromDB = dataManager.getAllWords(words, null);
 
         for (Word word : wordsFromDB) {
-            ItemDataProvider itemDataProvider = new WordProvider(fromIndex + dataList.size(), word);
+            ItemDataProvider itemDataProvider = new WordProviderImpl(fromIndex + dataList.size(), word);
             itemDataProvider.setLastAdded(wordFilter == WordFilter.BY_BOOK_AND_WORD_COLLECTION);
             dataList.add(itemDataProvider);
         }
@@ -99,8 +99,8 @@ public class WordListFetcher implements Callable<List<ItemDataProvider>> {
         dataManager.deleteWord(word);
     }
 
-    void createItemWord(WordProvider word) {
-        dataManager.createOrUpdateWord(word.getName(), word.getTranslation(), word.getContext(), true);
+    void createItemWord(WordProviderImpl word) {
+        dataManager.createOrUpdateWord(word.getWordFromText(), word.getTranslation(), word.getContext(), true);
     }
 
 }

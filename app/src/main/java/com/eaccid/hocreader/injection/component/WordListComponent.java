@@ -4,7 +4,7 @@ import com.eaccid.hocreader.injection.WordListScope;
 import com.eaccid.hocreader.injection.module.WordListModule;
 import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
 import com.eaccid.hocreader.presentation.fragment.carousel.WordCarouselPresenter;
-import com.eaccid.hocreader.presentation.fragment.weditor.SwipeOnLongPressRecyclerViewAdapter;
+import com.eaccid.hocreader.presentation.fragment.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.hocreader.presentation.fragment.weditor.WordEditorPresenter;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
 

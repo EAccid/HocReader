@@ -29,10 +29,11 @@ public class WordFromTextProvider {
             int endOfLine = textLayout.getLineEnd(currentLineOfClickedChar);
             CharSequence text = tv.getText();
             String wordFromLine = getWordFromLine(text, startOfLine, charOffsetInLine, endOfLine);
-            wordFromText.setText(wordFromLine);
+            wordFromText.setText(new StringFromTextManagerImpl().capitalizeFirsChar(wordFromLine));
 //            temp start
             Spannable spanText = new SpannableString(text);
-            spanText.setSpan(new WordClickableSpan(tv.getContext(), wordFromLine, charStart), charStart, charStart + wordFromLine.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spanText.setSpan(new WordClickableSpan(tv.getContext(), wordFromLine, charStart),
+                    charStart, charStart + wordFromLine.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             tv.setText(spanText, TextView.BufferType.SPANNABLE);
 //            temp end
 
@@ -41,6 +42,7 @@ public class WordFromTextProvider {
                             text, text.subSequence(startOfLine, endOfLine).toString()));
 //            wordFromText.setSentence(text.subSequence(startOfLine, endOfLine).toString());
         }
+
         return wordFromText;
     }
 

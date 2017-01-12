@@ -85,8 +85,10 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
 
     private void showTranslationsData(TextTranslation textTranslation) {
         mView.ShowBaseWord(mNextWordToTranslate);
-        new ImageViewManager(mView.getContext()).loadPictureFromUrl(mView.getWordPicture(), textTranslation.getPicUrl());
-        mMediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(textTranslation.getSoundUrl());
+        new ImageViewManager()
+                .loadPictureFromUrl(mView.getWordPicture(), textTranslation.getPicUrl());
+        mMediaPlayer = new MediaPlayerManager()
+                .createAndPreparePlayerFromURL(textTranslation.getSoundUrl());
         mView.showWordTranscription(textTranslation.getTranscription());
         mView.showTranslations(textTranslation.getTranslates());
         mView.showTranslations(textTranslation.getTranslates());

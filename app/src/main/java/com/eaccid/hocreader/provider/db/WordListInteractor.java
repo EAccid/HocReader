@@ -11,11 +11,11 @@ public class WordListInteractor extends DataListProvider {
 
     private static final String logTAG = "WordListInteractor";
     private List<String> sessionWords;
-    private WordListFetcher wordListFetcher;
+    private WordListFromDatabaseFetcher wordListFromDatabaseFetcher;
 
-    public WordListInteractor(WordListFetcher wordListFetcher) {
+    public WordListInteractor(WordListFromDatabaseFetcher wordListFromDatabaseFetcher) {
         this.sessionWords = new ArrayList<>();
-        this.wordListFetcher = wordListFetcher;
+        this.wordListFromDatabaseFetcher = wordListFromDatabaseFetcher;
     }
 
     @Override
@@ -25,16 +25,16 @@ public class WordListInteractor extends DataListProvider {
 
     @Override
     public int undoLastRemoval() {
-        WordProvider word = (WordProvider) getLastRemovedData();
-        sessionWords.add(word.getName());
-        wordListFetcher.createItemWord(word);
+        WordProviderImpl word = (WordProviderImpl) getLastRemovedData();
+        sessionWords.add(word.getWordFromText());
+        wordListFromDatabaseFetcher.createItemWord(word);
         return super.undoLastRemoval();
     }
 
     @Override
     public void removeItem(int position) {
         ItemDataProvider item = getDataList().get(position);
-        wordListFetcher.removeItem(item);
+        wordListFromDatabaseFetcher.removeItem(item);
         Word word = (Word) item.getObject();
         sessionWords.remove(word.getName());
         super.removeItem(position);
@@ -44,7 +44,7 @@ public class WordListInteractor extends DataListProvider {
         if (sessionWords.contains(wordBaseName)) {
             return;
         }
-        WordProvider item = (WordProvider) wordListFetcher.createItemWord(wordBaseName, sessionWords.size());
+        WordProviderImpl item = (WordProviderImpl) wordListFromDatabaseFetcher.createItemWord(wordBaseName, sessionWords.size());
         if (item == null) {
             Log.i(logTAG, "Word '" + wordBaseName + "' has not been added to database.");
             return;
@@ -65,15 +65,15 @@ public class WordListInteractor extends DataListProvider {
     }
 
     private List<ItemDataProvider> getWordList() {
-        return wordListFetcher.getAll();
+        return wordListFromDatabaseFetcher.getAll();
     }
 
     private List<ItemDataProvider> getDataListByBookAndSessionWords() {
-        return wordListFetcher.getAllFromDatabase(sessionWords);
+        return wordListFromDatabaseFetcher.getAllFromDatabase(sessionWords);
     }
 
     private List<ItemDataProvider> addDataListByBookAndSessionWords() {
-        return wordListFetcher.addAllFromDatabase(sessionWords);
+        return wordListFromDatabaseFetcher.addAllFromDatabase(sessionWords);
     }
 
 }
