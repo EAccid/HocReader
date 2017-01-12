@@ -4,6 +4,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -18,7 +19,7 @@ import com.eaccid.hocreader.presentation.BaseView;
 import com.eaccid.hocreader.presentation.fragment.translation.WordTranslationDialogFragment;
 import com.viewpagerindicator.CirclePageIndicator;
 
-public class PagerActivity extends FragmentActivity implements BaseView,
+public class PagerActivity extends AppCompatActivity implements BaseView,
         CharactersDefinerForFullScreenTextView.PageView,
         OnWordFromPageViewTouchListener.OnWordFromTextClickListener,
         WordTranslationDialogFragment.OnWordTranslationClickListener {
