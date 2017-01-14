@@ -11,7 +11,7 @@ public interface WordProvider {
 
     String getSoundUrl();
 
-    String getPicUrl();
+    String getPictureUrl();
 
     String getBook();
 

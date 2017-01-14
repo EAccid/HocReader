@@ -1,11 +1,19 @@
 package com.eaccid.hocreader.provider.db;
 
 import android.util.Log;
+
 import com.eaccid.hocreader.data.local.db.entity.Word;
+
 import com.eaccid.hocreader.provider.db.listprovider.DataListProvider;
 import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
+import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subjects.BehaviorSubject;
 
 public class WordListInteractor extends DataListProvider {
 
@@ -76,4 +84,23 @@ public class WordListInteractor extends DataListProvider {
         return wordListFromDatabaseFetcher.addAllFromDatabase(sessionWords);
     }
 
+    @Override
+    public ItemDataProvider getItem(int index) {
+        return super.getItem(index);
+    }
+
+    public BehaviorSubject<WordProviderImpl> getWordProvider(final int index) {
+        WordProviderImpl word = (WordProviderImpl) getItem(index);
+        BehaviorSubject<WordProviderImpl> subject = BehaviorSubject.create();
+        new HocTranslatorProvider()
+                .translate(word.getWordFromText())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(textTranslation -> {
+                            word.setTranslationToText(textTranslation);
+                            subject.onNext(word);
+                        }, subject::onError
+                );
+        return subject;
+    }
 }
