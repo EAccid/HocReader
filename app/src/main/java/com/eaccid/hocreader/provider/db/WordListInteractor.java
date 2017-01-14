@@ -19,7 +19,7 @@ public class WordListInteractor extends DataListProvider {
     }
 
     @Override
-    public void fillDataList() {
+    public void populateDataList() {
         setDataList(getWordList());
     }
 
