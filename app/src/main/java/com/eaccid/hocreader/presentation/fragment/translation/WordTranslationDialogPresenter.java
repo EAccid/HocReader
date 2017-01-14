@@ -16,8 +16,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-//TODO: show view animation (image, translation list)
-
 public class WordTranslationDialogPresenter implements BasePresenter<WordTranslationDialogFragment> {
     private final String LOG_TAG = "TranslationPresenter";
     private WordTranslationDialogFragment mView;
@@ -79,8 +77,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                             mTranslatedWord.setContext(wordFromText.getSentence());
                         }
                     }
-                })
-        ;
+                });
     }
 
     private void showTranslationsData(TextTranslation textTranslation) {
@@ -95,7 +92,6 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     }
 
     public void OnSpeakerClicked() {
-        //todo onPrepared ?
         mView.showSpeaker(true);
         mMediaPlayer.setOnCompletionListener(mp -> mView.showSpeaker(false));
         new MediaPlayerManager().play(mMediaPlayer);
