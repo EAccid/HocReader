@@ -62,7 +62,7 @@ public class WordProviderImpl extends ItemDataProviderImpl implements WordProvid
     }
 
     @Override
-    public String getPicUrl() {
+    public String getPictureUrl() {
         if (isTranslationEmpty())
             return emptyValue();
         return translation.getPicUrl();
