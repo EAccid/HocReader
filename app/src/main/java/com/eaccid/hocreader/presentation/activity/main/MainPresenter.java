@@ -22,7 +22,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     private final String logTAG = "MainPresenter";
     private MainActivity mView;
     @Inject
-    AppDatabaseManager dataManager; //TODO inject
+    AppDatabaseManager dataManager;
 
     @Override
     public void attachView(MainActivity mainActivity) {
@@ -66,7 +66,6 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     private void loadFilesToExpandableView(List<File> files) {
 
         //TODO: drop on methods, take --R.id-- into main activity
-
         List<ItemObjectGroup> itemObjectGroupList = new ArrayList<>();
         List<String> readableFiles = new ArrayList<>();
 

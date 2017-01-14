@@ -194,9 +194,7 @@ public class BookFragment extends Fragment implements
         return mAdapter.isSelectableItemTextView();
     }
 
-    //TODO refactor: menu outside
-
-    private void initMenuFragment() {
+       private void initMenuFragment() {
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.tool_bar_height));
         menuParams.setMenuObjects(getMenuObjects());

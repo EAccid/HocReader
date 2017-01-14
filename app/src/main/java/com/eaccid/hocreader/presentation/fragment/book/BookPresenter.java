@@ -1,15 +1,19 @@
 package com.eaccid.hocreader.presentation.fragment.book;
 
 import android.util.Log;
+
 import com.eaccid.hocreader.provider.file.BaseFileImpl;
+import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.hocreader.provider.file.pagesplitter.Page;
 import com.eaccid.hocreader.provider.file.pagesplitter.TxtPagesFromFileProvider;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
@@ -44,7 +48,9 @@ public class BookPresenter implements BasePresenter<BookFragment> {
 
     private void setDataToList() {
 
-        TxtPagesFromFileProvider txtPagesFromFileProvider = new TxtPagesFromFileProvider(mView.getActivity());
+        TxtPagesFromFileProvider txtPagesFromFileProvider = new TxtPagesFromFileProvider(
+                new CharactersDefinerForFullScreenTextView(mView.getActivity())
+        );
         BaseFileImpl baseFile = new BaseFileImpl(dataManager.getCurrentBookPath());
         txtPagesFromFileProvider.getPageObservable(baseFile)
                 .subscribeOn(Schedulers.io())
