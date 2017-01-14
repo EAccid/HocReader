@@ -46,4 +46,5 @@ public class AppModule {
     LingualeoServiceCookies provideLingualeoServiceCookies() {
         return new LingualeoServiceCookiesImpl();
     }
+
 }

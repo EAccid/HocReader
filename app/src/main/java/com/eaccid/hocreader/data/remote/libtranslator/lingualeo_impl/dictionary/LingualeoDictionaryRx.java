@@ -11,7 +11,6 @@ import rx.Observable;
 import rx.Subscriber;
 
 public class LingualeoDictionaryRx implements DictionaryRx {
-    //TODO refactor with retrofit using
 
     @Inject
     LingualeoServiceCookies cookies;
@@ -35,8 +34,6 @@ public class LingualeoDictionaryRx implements DictionaryRx {
                 subscriber.onCompleted();
             }
         });
-
-
     }
 
     @Override
@@ -61,7 +58,6 @@ public class LingualeoDictionaryRx implements DictionaryRx {
                 requestParameters.addParameter("word", word);
                 requestParameters.addParameter("textTranslation", textTranslation);
                 requestParameters.addParameter("context", context);
-
                 RequestHandler requestHandler = RequestHandler.newAuthorizedRequestWithParameters("http://lingualeo.com/api/addword", cookies.loadCookies(), requestParameters);
                 requestHandler.handleRequest();
                 subscriber.onNext(requestHandler.isHandleRequestSucceeded());

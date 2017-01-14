@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO refactor: RxJava
 public class AppDatabaseManager {
 
     private final String logTAG = "AppDatabaseManager";
@@ -106,7 +105,6 @@ public class AppDatabaseManager {
     /**
      * words table
      */
-
     public void createOrUpdateWord(String wordname, String translation, String context,
                                    boolean enabledOnline) {
         Word word = new Word();
@@ -135,8 +133,7 @@ public class AppDatabaseManager {
         }
     }
 
-    //TODO create filter temp solution
-
+    //TODO create filter, temp solution
     public List<Word> getAllWords(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
 
         List<Word> lw = new ArrayList<>();

@@ -10,7 +10,6 @@ import rx.Subscriber;
 
 public class LingualeoTranslatorRx implements TranslatorRx {
 
-    //TODO refactor with retrofit using
     @Override
     public Observable<TextTranslation> translate(final String word) {
         return Observable.create(new Observable.OnSubscribe<TextTranslation>() {

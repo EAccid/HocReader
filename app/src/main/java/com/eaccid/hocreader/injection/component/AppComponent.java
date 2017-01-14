@@ -12,6 +12,8 @@ import com.eaccid.hocreader.injection.module.WordListModule;
 import com.eaccid.hocreader.presentation.activity.main.MainPresenter;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
 import com.eaccid.hocreader.presentation.service.MemorizingPresenter;
+import com.eaccid.hocreader.presentation.service.SchedulingMemorizingAlarmManager;
+import com.eaccid.hocreader.provider.db.WordCursorProvider;
 import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesImpl;
 
 import javax.inject.Singleton;
@@ -24,6 +26,15 @@ public interface AppComponent {
 
     WordListComponent plusWordListComponent(WordListModule wordListModule);
 
+    @ApplicationContext
+    Context context();
+
+    SharedPreferences sharedPreferences();
+
+    LingualeoServiceCookies lingualeoServiceCookies();
+
+    AppDatabaseManager appDatabaseManager();
+
     void inject(LingualeoServiceCookiesImpl leoCookies);
 
     void inject(LingualeoDictionaryRx dictionaryRx);
@@ -34,13 +45,8 @@ public interface AppComponent {
 
     void inject(MemorizingPresenter memorizingPresenter);
 
-    @ApplicationContext
-    Context context();
+    void inject(SchedulingMemorizingAlarmManager schedulingMemorizingAlarmManager);
 
-    SharedPreferences sharedPreferences();
-
-    LingualeoServiceCookies lingualeoServiceCookies();
-
-    AppDatabaseManager appDatabaseManager();
-
+    void inject(WordCursorProvider wordCursorProvider);
+    
 }
