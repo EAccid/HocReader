@@ -1,16 +1,14 @@
 package com.eaccid.hocreader.provider.file.pagesplitter;
 
-import android.app.Activity;
 import rx.Observable;
 import rx.Subscriber;
 
 public class TxtPagesFromFileProvider implements FileToPagesReader {
 
-    //TODO: Inject
     private CharactersDefinerForFullScreenTextView parameters;
 
-    public TxtPagesFromFileProvider(Activity activity) {
-        parameters = new CharactersDefinerForFullScreenTextView(activity);
+    public TxtPagesFromFileProvider(CharactersDefinerForFullScreenTextView parameters) {
+        this.parameters = parameters;
     }
 
     public Observable<Page<String>> getPageObservable(BaseFile baseFile) {
@@ -102,4 +100,5 @@ public class TxtPagesFromFileProvider implements FileToPagesReader {
                 }
         );
     }
+
 }

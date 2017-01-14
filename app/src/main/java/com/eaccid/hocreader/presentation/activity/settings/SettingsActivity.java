@@ -20,7 +20,7 @@ public class SettingsActivity extends AppCompatActivity implements OnAlarmManage
 
     @Override
     public void onSchedule(long interval) {
-        SchedulingMemorizingAlarmManager alarm = new SchedulingMemorizingAlarmManager(getBaseContext());
+        SchedulingMemorizingAlarmManager alarm = new SchedulingMemorizingAlarmManager();
         alarm.scheduleAlarm(interval);
         Log.i("MemorizingAlarmManager", "Scheduling repeating memorizing alarms: every " + interval / 60 / 1000 + " minutes");
     }

@@ -37,7 +37,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="commonListItemStyle" />
+    <!--<style name="commonListItemStyle" />-->
 
     <style name="recyclerViewStyleFragment1">
         <item name="android:clipChildren">true</item>

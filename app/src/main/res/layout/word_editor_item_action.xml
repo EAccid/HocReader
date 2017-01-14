@@ -29,9 +29,7 @@
             android:layout_marginLeft="80dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/empty_word"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp" />
+            android:text="@string/empty_word"/>
 
         <TextView
             android:id="@+id/word_transcription"

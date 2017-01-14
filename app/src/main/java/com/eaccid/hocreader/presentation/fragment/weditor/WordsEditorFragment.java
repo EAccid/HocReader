@@ -6,21 +6,26 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
+import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.fragment.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
+import com.eaccid.hocreader.underdevelopment.ToolbarActionMode;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
+import com.h6ah4i.android.widget.advrecyclerview.utils.CustomRecyclerViewUtils;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 public class WordsEditorFragment extends Fragment implements BaseView {
@@ -29,10 +34,11 @@ public class WordsEditorFragment extends Fragment implements BaseView {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-    public RecyclerView.Adapter mAdapter;
+    public SwipeOnLongPressRecyclerViewAdapter mAdapter;
     public RecyclerView.Adapter mWrappedAdapter;
     public RecyclerViewSwipeManager mRecyclerViewSwipeManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
+    private ActionMode mActionMode;
 
     public WordsEditorFragment() {
     }
@@ -63,6 +69,7 @@ public class WordsEditorFragment extends Fragment implements BaseView {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.editor_rv_fragment_1, container, false);
     }
 
@@ -119,12 +126,6 @@ public class WordsEditorFragment extends Fragment implements BaseView {
         mRecyclerViewTouchActionGuardManager.attachRecyclerView(mRecyclerView);
         mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
 
-        FrameLayout startBar = (FrameLayout) getView().findViewById(R.id.start_bar);
-        startBar.setOnClickListener(v -> {
-            if (mAdapter.getItemCount() > 0)
-                //TODO smooth scroll
-                mRecyclerView.scrollToPosition(0);
-        });
     }
 
     @Override
@@ -176,9 +177,11 @@ public class WordsEditorFragment extends Fragment implements BaseView {
     private void onItemViewClick(View v, boolean pinned) {
         int position = mRecyclerView.getChildAdapterPosition(v);
         if (position != RecyclerView.NO_POSITION) {
+            if (mActionMode != null) {
+                onListItemSelect(position);
+            }
             mPresenter.onItemClicked(position);
         }
-
     }
 
     private void onRefreshRecyclerView() {
@@ -198,6 +201,45 @@ public class WordsEditorFragment extends Fragment implements BaseView {
 
     public void notifyDataSetChanged() {
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.edit_words_main_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_recycler_view:
+                int position = CustomRecyclerViewUtils.findFirstVisibleItemPosition(mRecyclerView, false);
+                if (position != RecyclerView.NO_POSITION)
+                    onListItemSelect(position);
+            default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //handle action mode
+    private void onListItemSelect(int position) {
+        mAdapter.toggleSelection(position);
+        boolean isCheckedItems = mAdapter.getSelectedCount() > 0;
+       if (isCheckedItems && mActionMode == null)
+            mActionMode = ((PagerActivity) getActivity()).startSupportActionMode(new ToolbarActionMode(mAdapter));
+        else if (!isCheckedItems && mActionMode != null)
+            mActionMode.finish();
+        if (mActionMode != null)
+            mActionMode.setTitle(String.valueOf(mAdapter.getSelectedCount()) + " selected");
+    }
+
+    public void releaseActionMode() {
+        if (mActionMode != null)
+            mActionMode = null;
+    }
+
+    public void deleteItems() {
+        //todo delete items
     }
 
 }

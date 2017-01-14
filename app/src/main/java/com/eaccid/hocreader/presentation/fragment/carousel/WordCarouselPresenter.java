@@ -4,8 +4,6 @@ import android.util.Log;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.presentation.activity.pager.PagerActivity;
-import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
 import com.eaccid.hocreader.provider.db.WordCursorProvider;
 
 import javax.inject.Inject;
@@ -17,9 +15,12 @@ public class WordCarouselPresenter implements BasePresenter<WordsCarouselFragmen
     @Inject
     AppDatabaseManager dataManager;
 
+    public WordCarouselPresenter() {
+        App.getWordListComponent().inject(this);
+    }
+
     @Override
     public void attachView(WordsCarouselFragment wordsCarouselFragment) {
-        App.getWordListComponent().inject(this);
         mView = wordsCarouselFragment;
         Log.i(logTAG, "WordsCarouselFragment has been attached.");
     }
@@ -30,10 +31,9 @@ public class WordCarouselPresenter implements BasePresenter<WordsCarouselFragmen
         mView = null;
     }
 
-
     public WordCarouselRecyclerViewAdapter createWordCarouselRecyclerViewAdapter() {
         WordCarouselRecyclerViewAdapter adapter = new WordCarouselRecyclerViewAdapter(mView.getContext());
-        WordCursorProvider wordCursorProvider = new WordCursorProvider(mView.getContext(), dataManager);
+        WordCursorProvider wordCursorProvider = new WordCursorProvider();
         return (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(adapter, true);
 
     }

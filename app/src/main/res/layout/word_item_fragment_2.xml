@@ -1,28 +1,66 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version="1.0" encoding="utf-8"?><!--268dp-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/commonListItemStyle"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/card_view_min_height">
+    android:layout_width="268dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top|center_horizontal"
+    android:background="@drawable/bg_item_normal_state_carousel"
+    android:elevation="4dp"
+    android:minHeight="268dp">
 
+    <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+
+        <ImageView
+            android:id="@+id/already_learned"
+            style="@style/icon_toggles"
+            android:src="@drawable/ic_delete_sweep_black_24px" />
+    </com.andexert.library.RippleView>
 
     <TextView
         android:id="@+id/word"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="top|left"
-        android:gravity="center"
-        tools:ignore="RtlHardcoded"
-        android:background="@color/testColor1"
-        />
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:text="@string/empty_word" />
+
+    <TextView
+        android:id="@+id/word_transcription"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="174dp"
+        android:text="@string/transcription" />
 
     <TextView
         android:id="@+id/translation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="top|left"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="198dp"
+        android:text="@string/empty_translation"
         tools:ignore="RtlHardcoded" />
 
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:el_duration="1000"
+        app:el_expanded="true"
+        app:el_parallax="0.5">
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/word_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/empty_circle_background_test" />
+
 </FrameLayout>
+

@@ -24,5 +24,8 @@ public class MediaPlayerManager {
             mediaPlayer.stop();
         }
         mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(
+                MediaPlayer::release
+        );
     }
 }

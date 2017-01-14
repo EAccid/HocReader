@@ -29,6 +29,9 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemView
 import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -42,6 +45,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
+    private List<Integer> mSelectedItemsIds;
     @Inject
     WordListInteractor wordListInteractor;
 
@@ -119,24 +123,28 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
-        WordProviderImpl item = getWordListItemProvider(position);
-        holder.word.setText(item.getWordFromText());
-        holder.translation.setText(item.getTranslation());
-        holder.context.setText(item.getContext());
-        if (item.getItemId() == 2 || item.getItemId() == 10) {
-            String temp = "I clasp the flask between my hands even though the warmth from the tea has long since leached into the frozen air. My muscles are clenched tight against the cold. If a pack of wild dogs were to appear at this moment, the odds of scaling a tree before they attacked are not in my favor.  I should get up, move around, and work the stiffness from my limbs. But instead I sit, as motionless as the rock beneath me, while the dawn begins to lighten the woods. I can't fight the sun. I can only watch helplessly as it drags me into a day that I've been dreading for months. By noon they will all be at my new house in the Victor's Village. ";
-            holder.context.setText(temp);
-        }
-        new ImageViewManager().loadPictureFromUrl(holder.wordImage, item.getPicUrl());
-        holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(item.getSoundUrl());
-        holder.transcription.setText("[" + item.getTranscription() + "]");
-        holder.alreadyLearned.setImageResource(
-                new MemorizingResourcesProvider().getAlreadyLearnedWordResId(
-                        new MemorizingCalculatorImpl(item)
-                )
-        );
+        wordListInteractor.getWordProvider(position).subscribe(item -> {
+            holder.word.setText(item.getWordFromText());
+            holder.translation.setText(item.getTranslation());
+            holder.context.setText(item.getContext());
+            if (item.getItemId() == 2 || item.getItemId() == 10) {
+                String temp = "I clasp the flask between my hands even though the warmth from the tea has long since leached into the frozen air. My muscles are clenched tight against the cold. If a pack of wild dogs were to appear at this moment, the odds of scaling a tree before they attacked are not in my favor.  I should get up, move around, and work the stiffness from my limbs. But instead I sit, as motionless as the rock beneath me, while the dawn begins to lighten the woods. I can't fight the sun. I can only watch helplessly as it drags me into a day that I've been dreading for months. By noon they will all be at my new house in the Victor's Village. ";
+                holder.context.setText(temp);
+            }
+            new ImageViewManager().loadPictureFromUrl(holder.wordImage, item.getPictureUrl());
+            //todo release
+            holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(item.getSoundUrl());
+            holder.transcription.setText("[" + item.getTranscription() + "]");
+            holder.alreadyLearned.setImageResource(
+                    new MemorizingResourcesProvider().getAlreadyLearnedWordResId(
+                            new MemorizingCalculatorImpl(item)
+                    )
+            );
+        }, e -> {
+            //todo handle error
+            e.printStackTrace();
+        });
     }
-
     private void setListenersToViewFromItem(WordsEditorViewHolder holder, int position) {
         // if the item is 'pinned', click event comes to the itemView
         holder.itemView.setOnClickListener(mItemViewOnClickListener);
@@ -183,7 +191,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     /**
      * by advanced recycler view library example
-     * todo: separate on different classes
      */
 
     @Override
@@ -350,6 +357,30 @@ public class SwipeOnLongPressRecyclerViewAdapter
             super.onCleanUp();
             mAdapter = null;
         }
+    }
+
+    /***
+     * Methods required for do selections
+     */
+
+    public void toggleSelection(int position) {
+
+    }
+
+    public void removeSelection() {
+        mSelectedItemsIds = new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+    public void selectView(int position, boolean value) {
+    }
+
+    public int getSelectedCount() {
+        return mSelectedItemsIds.size();
+    }
+
+    public List<Integer> getSelectedIds() {
+        return mSelectedItemsIds;
     }
 
 }

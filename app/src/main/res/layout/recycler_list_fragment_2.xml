@@ -17,13 +17,67 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:elevation="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/windowBackground">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
-        style="@style/recyclerViewStyleFragment1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/testColor2"/>
+        android:layout_marginBottom="204dp"
+        android:layout_marginLeft="@dimen/card_horizontal_margin"
+        android:layout_marginRight="@dimen/card_horizontal_margin" />
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:el_duration="1000"
+        app:el_expanded="false"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="320dp"
+        app:el_parallax="0.5">
+
+        <TextView
+            android:id="@+id/expandable_text"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/word_context" />
+
+        <ImageButton
+            android:id="@id/expand_collapse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:background="@android:color/transparent"
+            android:padding="16dp" />
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/fab_plus" />
+
 
 </RelativeLayout>
+
+
+<!--<android.support.design.widget.FloatingActionButton-->
+<!--android:id="@+id/fab"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_alignParentBottom="true"-->
+<!--android:layout_centerHorizontal="true"-->
+<!--android:layout_marginBottom="78dp"-->
+<!--android:padding="@dimen/spacing_8"-->
+<!--android:src="@drawable/fab_plus" />-->
+

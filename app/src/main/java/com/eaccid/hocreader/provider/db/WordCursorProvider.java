@@ -6,24 +6,30 @@ import android.database.Cursor;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.WordFilter;
 import com.eaccid.hocreader.data.local.db.entity.Word;
+import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.presentation.fragment.carousel.WordCarouselRecyclerViewAdapter;
 import com.eaccid.hocreader.presentation.fragment.carousel.OrmliteCursorRecyclerViewAdapter;
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
 
+import javax.inject.Inject;
+
 public class WordCursorProvider {
 
-    //TODO inject
-    private Context context;
-    private AppDatabaseManager dataManager;
+    @Inject
+    @ApplicationContext
+    Context context;
+    @Inject
+    AppDatabaseManager dataManager;
 
-    public WordCursorProvider(Context context, AppDatabaseManager appDatabaseManager) {
-        this.context = context;
-        this.dataManager = appDatabaseManager;
+    public WordCursorProvider() {
+        App.getAppComponent().inject(this);
     }
 
     public OrmliteCursorRecyclerViewAdapter
     createAdapterWithCursor(WordCarouselRecyclerViewAdapter adapter, boolean filterByBook) {
+
         if (filterByBook)
             dataManager.setFilter(WordFilter.BY_BOOK);
 
