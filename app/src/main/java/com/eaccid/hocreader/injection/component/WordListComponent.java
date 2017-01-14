@@ -7,6 +7,7 @@ import com.eaccid.hocreader.presentation.fragment.carousel.WordCarouselPresenter
 import com.eaccid.hocreader.presentation.fragment.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.hocreader.presentation.fragment.weditor.WordEditorPresenter;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
+import com.eaccid.hocreader.underdevelopment.Toolbar_ActionMode_Callback;
 
 import dagger.Subcomponent;
 
@@ -23,4 +24,7 @@ public interface WordListComponent {
     void inject(WordEditorPresenter wordEditorPresenter);
 
     void inject(SwipeOnLongPressRecyclerViewAdapter swipeOnLongPressRecyclerViewAdapter);
+
+    void inject(Toolbar_ActionMode_Callback toolbar_actionMode_callback);
+
 }
