@@ -13,7 +13,8 @@
             android:id="@+id/recycler_view"
             style="@style/recyclerViewStyleFragment1"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:paddingTop="?attr/actionBarSize"
             android:background="@color/windowBackground"/>
 
         <android.support.v7.widget.Toolbar
