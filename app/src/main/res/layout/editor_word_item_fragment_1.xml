@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/card_vertical_margin"
-    android:layout_marginStart="@dimen/card_vertical_margin"
-    android:background="@color/colorTransparent"
-    app:cardCornerRadius="@dimen/md_bg_corner_radius"
-    app:cardElevation="@dimen/item_card_view_elevation"
-    android:layout_marginBottom="16dp">
-
+    android:minHeight="129dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:background="@color/colorTransparent">
+    <!-- 129 = 121 + card margin 8-->
     <RelativeLayout
         android:id="@+id/translation_context"
         android:layout_width="wrap_content"

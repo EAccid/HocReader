@@ -76,5 +76,6 @@
     <string name="delete">Delete</string>
     <string name="copy">Copy</string>
     <string name="clear_all_words">Clear all words</string>
+    <string name="edit_all_words">Edit all words</string>
 
 </resources>

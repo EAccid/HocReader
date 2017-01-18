@@ -5,8 +5,6 @@
     android:layout_height="wrap_content"
     tools:showIn="@layout/editor_word_item_fragment_1">
 
-    <View style="@style/frame_divider" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +31,9 @@
             <ImageView
                 android:id="@+id/transcription_speaker"
                 style="@style/icon_toggles"
-                android:src="@drawable/ic_volume_up_black_24px" />
+                android:src="@drawable/ic_volume_up_black_24px"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
         </com.andexert.library.RippleView>
 
     </LinearLayout>
