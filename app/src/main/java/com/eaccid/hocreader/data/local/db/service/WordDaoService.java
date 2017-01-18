@@ -2,12 +2,14 @@ package com.eaccid.hocreader.data.local.db.service;
 
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +72,17 @@ public class WordDaoService implements Crud {
             e.printStackTrace();
         }
         return words;
+    }
+
+    public boolean deleteAll(List<Word> words) {
+        try {
+            Integer sizeToDelete = words.size();
+            Integer DeletedWords = dao.delete(words);
+            return sizeToDelete.equals(DeletedWords);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public List<Word> getAllByWordNameCollection(Iterable<String> words) {

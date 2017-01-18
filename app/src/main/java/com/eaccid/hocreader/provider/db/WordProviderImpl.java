@@ -42,12 +42,6 @@ public class WordProviderImpl extends ItemDataProviderImpl implements WordProvid
     }
 
     @Override
-    public boolean isSetToLearn() {
-        //test
-        return getItemId() % 2 != 0;
-    }
-
-    @Override
     public String getTranscription() {
         if (isTranslationEmpty())
             return emptyValue();
@@ -66,6 +60,12 @@ public class WordProviderImpl extends ItemDataProviderImpl implements WordProvid
         if (isTranslationEmpty())
             return emptyValue();
         return translation.getPicUrl();
+    }
+
+    @Override
+    public boolean isSetToLearn() {
+        //test
+        return getItemId() % 2 != 0;
     }
 
     private boolean isTranslationEmpty() {

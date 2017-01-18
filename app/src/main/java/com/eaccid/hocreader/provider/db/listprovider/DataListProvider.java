@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.provider.db.listprovider;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +24,10 @@ public abstract class DataListProvider {
         mData = dataList;
     }
 
+    public void clearDataList() {
+        mData = new LinkedList<>();
+    }
+
     public int getCount() {
         return mData.size();
     }
@@ -42,12 +47,9 @@ public abstract class DataListProvider {
             } else {
                 insertedPosition = mData.size();
             }
-
             mData.add(insertedPosition, mLastRemovedData);
-
             mLastRemovedData = null;
             mLastRemovedPosition = -1;
-
             return insertedPosition;
         } else {
             return -1;

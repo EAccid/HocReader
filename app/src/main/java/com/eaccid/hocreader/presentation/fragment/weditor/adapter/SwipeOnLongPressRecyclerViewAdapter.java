@@ -3,13 +3,13 @@ package com.eaccid.hocreader.presentation.fragment.weditor.adapter;
 import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
@@ -18,7 +18,8 @@ import com.eaccid.hocreader.provider.db.WordProviderImpl;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
 import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
-import com.eaccid.hocreader.underdevelopment.MemorizingResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
@@ -41,11 +42,11 @@ import butterknife.ButterKnife;
 public class SwipeOnLongPressRecyclerViewAdapter
         extends RecyclerView.Adapter<SwipeOnLongPressRecyclerViewAdapter.WordsEditorViewHolder>
         implements SwipeableItemAdapter<SwipeOnLongPressRecyclerViewAdapter.WordsEditorViewHolder> {
-    private final String LOG_TAG = "SwipeOnLongRVAdapter";
+    private final String LOG_TAG = "OnLongPressRVAdapter";
     private EventListener mEventListener;
     private View.OnClickListener mItemViewOnClickListener;
     private View.OnClickListener mSwipeableViewContainerOnClickListener;
-    private List<Integer> mSelectedItemsIds;
+    private SparseBooleanArray mSelectedItemsIds;
     @Inject
     WordListInteractor wordListInteractor;
 
@@ -65,6 +66,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         mItemViewOnClickListener = this::onItemViewClick;
         mSwipeableViewContainerOnClickListener = this::onSwipeableViewContainerClick;
         setHasStableIds(true);// have to implement the getItemId() method
+        mSelectedItemsIds = new SparseBooleanArray();
     }
 
     /**
@@ -123,52 +125,74 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
-        wordListInteractor.getWordProvider(position).subscribe(item -> {
-            holder.word.setText(item.getWordFromText());
-            holder.translation.setText(item.getTranslation());
-            holder.context.setText(item.getContext());
-            if (item.getItemId() == 2 || item.getItemId() == 10) {
-                String temp = "I clasp the flask between my hands even though the warmth from the tea has long since leached into the frozen air. My muscles are clenched tight against the cold. If a pack of wild dogs were to appear at this moment, the odds of scaling a tree before they attacked are not in my favor.  I should get up, move around, and work the stiffness from my limbs. But instead I sit, as motionless as the rock beneath me, while the dawn begins to lighten the woods. I can't fight the sun. I can only watch helplessly as it drags me into a day that I've been dreading for months. By noon they will all be at my new house in the Victor's Village. ";
-                holder.context.setText(temp);
-            }
-            new ImageViewManager().loadPictureFromUrl(holder.wordImage, item.getPictureUrl());
-            //todo release
-            holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(item.getSoundUrl());
-            holder.transcription.setText("[" + item.getTranscription() + "]");
-            holder.alreadyLearned.setImageResource(
-                    new MemorizingResourcesProvider().getAlreadyLearnedWordResId(
-                            new MemorizingCalculatorImpl(item)
-                    )
-            );
-        }, e -> {
-            //todo handle error
-            e.printStackTrace();
-        });
+        Log.i(LOG_TAG, "setting data to view from item: position " + position);
+        wordListInteractor
+                .getWordProvider(position)
+                .subscribe(wordItem -> {
+                    holder.word.setText(wordItem.getWordFromText());
+                    holder.translation.setText(wordItem.getTranslation());
+                    holder.context.setText(wordItem.getContext());
+                    new ImageViewManager().loadPictureFromUrl(holder.wordImage, wordItem.getPictureUrl());
+                    if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
+                        holder.mediaPlayer.release();
+                    holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());
+                    holder.transcription.setText("[" + wordItem.getTranscription() + "]");
+                    holder.alreadyLearned.setImageResource(
+                            new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(
+                                    new MemorizingCalculatorImpl(wordItem)
+                            )
+                    );
+                    holder.learnByHeart.setImageResource(
+                            new IconTogglesResourcesProvider().getLearnByHeartResId(
+                                    getWordListItemProvider(position).isSetToLearn()
+                            )
+                    );
+
+                }, e -> {
+                    new ReaderExceptionHandlerImpl().handleError(e);
+                });
     }
+
     private void setListenersToViewFromItem(WordsEditorViewHolder holder, int position) {
         // if the item is 'pinned', click event comes to the itemView
         holder.itemView.setOnClickListener(mItemViewOnClickListener);
         // if the item is 'not pinned', click event comes to the container
         holder.container.setOnClickListener(mSwipeableViewContainerOnClickListener);
         holder.transcriptionSpeaker.setOnClickListener(
-                v -> new MediaPlayerManager().play(holder.mediaPlayer)
+                speaker -> {
+                    if (holder.mediaPlayer == null) return;
+                    showSpeaker(holder.transcriptionSpeaker, true);
+                    holder.mediaPlayer.setOnCompletionListener(mp ->
+                            showSpeaker(holder.transcriptionSpeaker, false));
+                    new MediaPlayerManager().play(holder.mediaPlayer);
+                }
         );
         holder.showInPage.setOnClickListener(
                 new OnShowWordInBookPageClickListener(getWordListItemProvider(position))
         );
         holder.learnByHeart.setOnClickListener(v ->
                 holder.learnByHeart.setImageResource(
-                        new MemorizingResourcesProvider().getLearnByHeartResId(
+                        new IconTogglesResourcesProvider().getLearnByHeartResId(
                                 getWordListItemProvider(position).isSetToLearn()
                         )
                 )
         );
     }
 
+    public void showSpeaker(ImageView iv, boolean isSpeaking) {
+        iv.setImageResource(
+                new IconTogglesResourcesProvider().getSpeakerResId(isSpeaking)
+        );
+    }
+
     private void setViewHoldersContainerBackGround(WordsEditorViewHolder holder, int position) {
         final int swipeState = holder.getSwipeStateFlags();
         int bgResId;
-        if (getWordListItemProvider(position).isLastAdded()) {
+
+        /** Change background color of the selected items in list view  **/
+        if (mSelectedItemsIds.get(position)){
+            bgResId = R.drawable.bg_item_selected_state;
+        }else if (getWordListItemProvider(position).isLastAdded()) {
             bgResId = R.drawable.bg_item_session_state;
         } else {
             bgResId = R.drawable.bg_item_normal_state;
@@ -364,22 +388,27 @@ public class SwipeOnLongPressRecyclerViewAdapter
      */
 
     public void toggleSelection(int position) {
-
+        selectView(position, !mSelectedItemsIds.get(position));
     }
 
     public void removeSelection() {
-        mSelectedItemsIds = new ArrayList<>();
+        mSelectedItemsIds = new SparseBooleanArray();
         notifyDataSetChanged();
     }
 
     public void selectView(int position, boolean value) {
+        if (value)
+            mSelectedItemsIds.put(position, value);
+        else
+            mSelectedItemsIds.delete(position);
+        notifyItemChanged(position);
     }
 
     public int getSelectedCount() {
         return mSelectedItemsIds.size();
     }
 
-    public List<Integer> getSelectedIds() {
+    public SparseBooleanArray getSelectedIds() {
         return mSelectedItemsIds;
     }
 

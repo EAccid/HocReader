@@ -1,12 +1,17 @@
 package com.eaccid.hocreader.presentation.fragment.weditor;
 
 import android.util.Log;
+import android.util.SparseBooleanArray;
+
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.provider.db.WordProviderImpl;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
 import javax.inject.Inject;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     private final String logTAG = "PagerPresenter";
@@ -17,8 +22,8 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
 
     @Override
     public void attachView(WordsEditorFragment wordsEditorFragment) {
-        App.getWordListComponent().inject(this);
         mView = wordsEditorFragment;
+        App.getWordListComponent().inject(this);
         Log.i(logTAG, "WordsEditorFragment has been attached.");
     }
 
@@ -50,4 +55,27 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
             mView.notifyItemChanged(position);
         }
     }
+
+    public void removeSelected(SparseBooleanArray selected) {
+        wordListInteractor
+                .removeItems(selected)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(succeed -> {
+                    if (succeed)
+                        mView.notifyDataSetChanged();
+                });
+    }
+
+    public void onDeleteAllWords() {
+        wordListInteractor
+                .removeAllItems()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(succeed -> {
+                    if (succeed)
+                        mView.notifyDataSetChanged();
+                });
+    }
 }
+

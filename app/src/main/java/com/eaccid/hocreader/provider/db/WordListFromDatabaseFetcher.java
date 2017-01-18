@@ -103,4 +103,8 @@ public class WordListFromDatabaseFetcher implements Callable<List<ItemDataProvid
         dataManager.createOrUpdateWord(word.getWordFromText(), word.getTranslation(), word.getContext(), true);
     }
 
+    public boolean removeItems() {
+        Log.i(LOG_TAG, "Deleting words from database...");
+        return dataManager.deleteWords(WordFilter.BY_BOOK);
+    }
 }

@@ -1,6 +1,7 @@
 package com.eaccid.hocreader.provider.db;
 
 import android.util.Log;
+import android.util.SparseBooleanArray;
 
 import com.eaccid.hocreader.data.local.db.entity.Word;
 
@@ -9,8 +10,11 @@ import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
 import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
@@ -63,6 +67,10 @@ public class WordListInteractor extends DataListProvider {
         getDataList().add(insertedPosition, item);
     }
 
+    private void clearSessionDataList() {
+        sessionWords = new ArrayList<>();
+    }
+
     public void fillSessionDataList() {
         setDataList(getDataListByBookAndSessionWords());
     }
@@ -89,6 +97,10 @@ public class WordListInteractor extends DataListProvider {
         return super.getItem(index);
     }
 
+    /**
+     * Try RxJava in Android
+     */
+
     public BehaviorSubject<WordProviderImpl> getWordProvider(final int index) {
         WordProviderImpl word = (WordProviderImpl) getItem(index);
         BehaviorSubject<WordProviderImpl> subject = BehaviorSubject.create();
@@ -102,5 +114,31 @@ public class WordListInteractor extends DataListProvider {
                         }, subject::onError
                 );
         return subject;
+    }
+
+    public Observable<Boolean> removeItems(SparseBooleanArray items) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                for (int i = (items.size() - 1); i >= 0; i--) {
+                    removeItem(items.keyAt(i));
+                }
+                subscriber.onNext(true);
+                subscriber.onCompleted();
+            }
+        });
+    }
+
+    public Observable<Boolean> removeAllItems() {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                boolean succeed = wordListFromDatabaseFetcher.removeItems();
+                clearSessionDataList();
+                clearDataList();
+                subscriber.onNext(succeed);
+                subscriber.onCompleted();
+            }
+        });
     }
 }
