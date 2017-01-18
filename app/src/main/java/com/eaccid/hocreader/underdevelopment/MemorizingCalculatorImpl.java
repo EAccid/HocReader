@@ -12,7 +12,7 @@ public class MemorizingCalculatorImpl implements MemorizingCalculator {
 
     @Override
     public int getLevel() {
-        return new Random().nextInt(3);
+        return new Random().nextInt(2);
     }
 
 }
