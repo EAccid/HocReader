@@ -24,10 +24,13 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     @Inject
     AppDatabaseManager dataManager;
 
+    public MainPresenter() {
+        App.getAppComponent().inject(this);
+    }
+
     @Override
     public void attachView(MainActivity mainActivity) {
         mView = mainActivity;
-        App.getAppComponent().inject(this);
         fillExpandableListView();
         Log.i(logTAG, "MainActivity has been attached.");
     }

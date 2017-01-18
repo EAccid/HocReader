@@ -11,7 +11,6 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,6 +85,7 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         Toolbar mToolbar = (Toolbar) getView().findViewById(R.id.toolbar);
         mToolbar.inflateMenu(R.menu.edit_words_main_menu);
         mToolbar.setOnMenuItemClickListener(this);
+        mPresenter.onViewCreated();
     }
 
     private void initRecyclerView() {
@@ -157,6 +157,24 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         super.onDestroyView();
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_recycler_view:
+                int position = CustomRecyclerViewUtils.findFirstVisibleItemPosition(mRecyclerView, false);
+                if (position != RecyclerView.NO_POSITION) {
+                    startActionMode();
+                    onListItemSelect(position);
+                }
+                break;
+            case R.id.action_clear_all_words:
+                mPresenter.onDeleteAllWords();
+                break;
+            default:
+        }
+        return false;
+    }
+
     private void onItemRemove(int position) {
         mPresenter.onItemRemoved(position);
     }
@@ -191,7 +209,6 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
 
     private void onRefreshRecyclerView() {
         mPresenter.onRefreshRecyclerView();
-        mAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -208,27 +225,16 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.edit_recycler_view:
-                int position = CustomRecyclerViewUtils.findFirstVisibleItemPosition(mRecyclerView, false);
-                if (position != RecyclerView.NO_POSITION) {
-                    ToolbarActionModeCallback actionModeCallback = new ToolbarActionModeCallback(mAdapter);
-                    actionModeCallback.setToolbarActionModeListener(this);
-                    mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
-                    onListItemSelect(position);
-                }
-                break;
-            case R.id.action_clear_all_words:
-                mPresenter.onDeleteAllWords();
-                break;
-            default:
-        }
-        return false;
+    /**
+     * Handle action mode
+     */
+
+    private void startActionMode() {
+        ToolbarActionModeCallback actionModeCallback = new ToolbarActionModeCallback(mAdapter);
+        actionModeCallback.setToolbarActionModeListener(this);
+        mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
     }
 
-    //handle action mode
     private void onListItemSelect(int position) {
         mAdapter.toggleSelection(position);
         boolean hasCheckedItems = mAdapter.getSelectedCount() > 0;
@@ -244,10 +250,6 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
             mActionMode = null;
     }
 
-    public void deleteItems() {
-        //todo delete items
-    }
-
     @Override
     public void onModeDestroyed(ActionMode mode) {
         releaseActionMode();
@@ -257,13 +259,15 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
     public void onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
-                mPresenter.removeSelected(mAdapter.getSelectedIds());
+                mPresenter.removeItems(mAdapter.getSelectedIds());
                 break;
             case R.id.action_copy:
                 Toast.makeText(getContext(), "'Copy': under development", Toast.LENGTH_SHORT).show();
+                mPresenter.copyItems(mAdapter.getSelectedIds());
                 mode.finish();
                 break;
             case R.id.action_learn:
+                mPresenter.setToLearnItems(mAdapter.getSelectedIds());
                 mode.finish();
                 break;
         }

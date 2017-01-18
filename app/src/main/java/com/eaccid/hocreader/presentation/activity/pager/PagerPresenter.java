@@ -26,7 +26,6 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
 
     @Override
     public void attachView(PagerActivity pagerActivity) {
-        App.plusWordListComponent();
         App.getWordListComponent().inject(this);
         mView = pagerActivity;
         Log.i(LOG_TAG, "PagerActivity has been attached.");
@@ -58,9 +57,8 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     }
 
     public void onWordTranslated(TranslatedWord translatedWord) {
-        HocDictionaryProvider hocDictionaryProvider = new HocDictionaryProvider();
-
-        hocDictionaryProvider.addTranslatedWord(translatedWord)
+        new HocDictionaryProvider()
+                .addTranslatedWord(translatedWord)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(succeed -> {

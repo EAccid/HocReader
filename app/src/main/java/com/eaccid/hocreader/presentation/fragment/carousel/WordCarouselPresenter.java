@@ -1,6 +1,7 @@
 package com.eaccid.hocreader.presentation.fragment.carousel;
 
 import android.util.Log;
+
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.presentation.BasePresenter;
@@ -15,13 +16,10 @@ public class WordCarouselPresenter implements BasePresenter<WordsCarouselFragmen
     @Inject
     AppDatabaseManager dataManager;
 
-    public WordCarouselPresenter() {
-        App.getWordListComponent().inject(this);
-    }
-
     @Override
     public void attachView(WordsCarouselFragment wordsCarouselFragment) {
         mView = wordsCarouselFragment;
+        App.getWordListComponent().inject(this);
         Log.i(logTAG, "WordsCarouselFragment has been attached.");
     }
 

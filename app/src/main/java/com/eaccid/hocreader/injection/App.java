@@ -25,6 +25,10 @@ public class App extends Application {
     }
 
     public static WordListComponent getWordListComponent() {
+        //TODO delete null check after adding Moxy:
+        //it's a temp solution, on rotate screen getWordListComponent() return null
+        if (wordListComponent == null)
+            plusWordListComponent();
         return wordListComponent;
     }
 

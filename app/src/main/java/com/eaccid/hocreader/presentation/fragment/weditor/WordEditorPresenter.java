@@ -14,7 +14,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
-    private final String logTAG = "PagerPresenter";
+    private final String LOG_TAG = "PagerPresenter";
     private WordsEditorFragment mView;
 
     @Inject
@@ -24,17 +24,23 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     public void attachView(WordsEditorFragment wordsEditorFragment) {
         mView = wordsEditorFragment;
         App.getWordListComponent().inject(this);
-        Log.i(logTAG, "WordsEditorFragment has been attached.");
+        Log.i(LOG_TAG, "WordsEditorFragment has been attached.");
     }
 
     @Override
     public void detachView() {
-        Log.i(logTAG, "WordsEditorFragment has been detached.");
         mView = null;
+        Log.i(LOG_TAG, "WordsEditorFragment has been detached.");
     }
 
     public void onRefreshRecyclerView() {
         wordListInteractor.updateSessionDataList();
+        mView.notifyDataSetChanged();
+    }
+
+    public void onViewCreated() {
+        wordListInteractor.updateSessionDataList();
+        mView.notifyDataSetChanged();
     }
 
     public void onItemRemoved(int position) {
@@ -56,7 +62,7 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
         }
     }
 
-    public void removeSelected(SparseBooleanArray selected) {
+    public void removeItems(SparseBooleanArray selected) {
         wordListInteractor
                 .removeItems(selected)
                 .subscribeOn(Schedulers.io())
@@ -77,5 +83,14 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
                         mView.notifyDataSetChanged();
                 });
     }
+
+    public void copyItems(SparseBooleanArray selectedIds) {
+
+    }
+
+    public void setToLearnItems(SparseBooleanArray toLearnSelectedItems) {
+
+    }
+
 }
 
