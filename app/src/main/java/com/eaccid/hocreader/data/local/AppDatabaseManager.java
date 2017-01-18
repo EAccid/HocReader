@@ -8,6 +8,7 @@ import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.data.local.db.service.BookDaoService;
 import com.eaccid.hocreader.data.local.db.service.DatabaseManager;
 import com.eaccid.hocreader.data.local.db.service.WordDaoService;
+import com.eaccid.hocreader.exception.NotImplementedException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class AppDatabaseManager {
 
-    private final String logTAG = "AppDatabaseManager";
+    private final String LOG_TAG = "AppDatabaseManager";
     private DatabaseManager mDatabaseManager;
 
     public AppDatabaseManager(DatabaseManager mDatabaseManager) {
@@ -73,7 +74,7 @@ public class AppDatabaseManager {
                     ) {
                 if (!bookpaths.contains(book.getPath())) {
                     bookDaoService.delete(book);
-                    Log.i(logTAG, "book '" + book.getName() + "' has been deleted.");
+                    Log.i(LOG_TAG, "book '" + book.getName() + "' has been deleted.");
                 }
             }
         } catch (SQLException e) {
@@ -96,7 +97,7 @@ public class AppDatabaseManager {
             BookDaoService bs = mDatabaseManager.getBookService();
             Book book = new Book(bookPath, bookName);
             bs.createOrUpdate(book);
-            Log.i(logTAG, "book '" + book.getName() + "' has been created / updated");
+            Log.i(LOG_TAG, "book '" + book.getName() + "' has been created / updated");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -117,7 +118,7 @@ public class AppDatabaseManager {
         try {
             WordDaoService ws = mDatabaseManager.getWordService();
             boolean succeed = ws.createOrUpdate(word);
-            Log.i(logTAG, "Word '" + word.getName() + "' has been created / updated: " + succeed);
+            Log.i(LOG_TAG, "Word '" + word.getName() + "' has been created / updated: " + succeed);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,7 +128,7 @@ public class AppDatabaseManager {
         try {
             WordDaoService ws = mDatabaseManager.getWordService();
             ws.delete(word);
-            Log.i(logTAG, "word '" + word.getName() + "' has been deleted.");
+            Log.i(LOG_TAG, "word '" + word.getName() + "' has been deleted.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -235,7 +236,7 @@ public class AppDatabaseManager {
         try {
             WordDaoService ws = mDatabaseManager.getWordService();
             Word word = ws.getRandomWord();
-            Log.i(logTAG, "random word '" + word + "' has been fetched.");
+            Log.i(LOG_TAG, "random word '" + word + "' has been fetched.");
             return word;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -243,4 +244,23 @@ public class AppDatabaseManager {
         return null;
     }
 
+    public boolean deleteWords(WordFilter filter) {
+        if (currentBook == null) return false;
+        if (filter == WordFilter.BY_BOOK) {
+            try {
+                WordDaoService ws = mDatabaseManager.getWordService();
+                List<Word> words = ws.getAllByBookId(currentBook.getPath());
+                boolean succeed = ws.deleteAll(words);
+                Log.i(LOG_TAG, "All words by book '" + currentBook.getName() + "' have been deleted from database: " + succeed);
+                return succeed;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (filter == WordFilter.BY_BOOK) {
+            throw new NotImplementedException("Selection by filter '" + filter + "' not implemented yet.");
+        }
+        Log.i(LOG_TAG, "Words have not been correctly deleted.");
+        return false;
+    }
 }
