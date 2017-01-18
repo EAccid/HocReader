@@ -17,6 +17,7 @@ import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
+import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
 
 import java.util.List;
 
@@ -109,11 +110,9 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
     }
 
     public void showSpeaker(boolean isSpeaking) {
-        if (isSpeaking) {
-            mSpeaker.setImageResource(R.drawable.ic_volume_up_accent_24px);
-        } else {
-            mSpeaker.setImageResource(R.drawable.ic_volume_up_black_24px);
-        }
+        mSpeaker.setImageResource(
+                new IconTogglesResourcesProvider().getSpeakerResId(isSpeaking)
+        );
     }
 
     public void showTranslations(List<String> list) {

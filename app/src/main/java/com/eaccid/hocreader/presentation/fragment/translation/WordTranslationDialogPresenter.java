@@ -35,7 +35,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     public void detachView() {
         Log.i(LOG_TAG, "TranslationPresenter has been detached.");
         mView = null;
-        mMediaPlayer.release();
+        if (mMediaPlayer != null) mMediaPlayer.release();
         if (mTranslationSubscription != null) mTranslationSubscription.unsubscribe();
     }
 
@@ -92,9 +92,10 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     }
 
     public void OnSpeakerClicked() {
-        mView.showSpeaker(true);
-        mMediaPlayer.setOnCompletionListener(mp -> mView.showSpeaker(false));
+        if (mMediaPlayer != null) return;
         new MediaPlayerManager().play(mMediaPlayer);
+        mMediaPlayer.setOnCompletionListener(mp -> mView.showSpeaker(false));
+        mView.showSpeaker(true);
     }
 
     public void OnWordClicked() {
