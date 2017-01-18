@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary;
 
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.RequestExceptionHandlerImpl;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.data.remote.libtranslator.dictionary.DictionaryRx;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestHandler;
@@ -28,6 +29,7 @@ public class LingualeoDictionaryRx implements DictionaryRx {
                 requestParameters.addParameter("email", login);
                 requestParameters.addParameter("password", password);
                 RequestHandler requestHandler = RequestHandler.newUnauthorizedRequestWithParameters("http://lingualeo.com/api/login", requestParameters);
+                requestHandler.setRequestExceptionHandler(new RequestExceptionHandlerImpl());
                 requestHandler.handleRequest();
                 cookies.storeCookies(requestHandler.getCookies());
                 subscriber.onNext(requestHandler.isHandleRequestSucceeded());
@@ -42,6 +44,7 @@ public class LingualeoDictionaryRx implements DictionaryRx {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
                 RequestHandler requestHandler = RequestHandler.newAuthorizedRequest("http://lingualeo.com/api/isauthorized", cookies.loadCookies());
+                requestHandler.setRequestExceptionHandler(new RequestExceptionHandlerImpl());
                 requestHandler.handleRequest();
                 subscriber.onNext(requestHandler.isHandleRequestSucceeded());
                 subscriber.onCompleted();
@@ -59,6 +62,7 @@ public class LingualeoDictionaryRx implements DictionaryRx {
                 requestParameters.addParameter("textTranslation", textTranslation);
                 requestParameters.addParameter("context", context);
                 RequestHandler requestHandler = RequestHandler.newAuthorizedRequestWithParameters("http://lingualeo.com/api/addword", cookies.loadCookies(), requestParameters);
+                requestHandler.setRequestExceptionHandler(new RequestExceptionHandlerImpl());
                 requestHandler.handleRequest();
                 subscriber.onNext(requestHandler.isHandleRequestSucceeded());
                 subscriber.onCompleted();

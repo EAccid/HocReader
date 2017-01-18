@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.translator;
 
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.RequestExceptionHandlerImpl;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestParameters;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
@@ -18,6 +19,7 @@ public class LingualeoTranslatorRx implements TranslatorRx {
                 RequestParameters requestParameters = new RequestParameters();
                 requestParameters.addParameter("word", word);
                 RequestHandler requestHandler = RequestHandler.newUnauthorizedRequestWithParameters("http://lingualeo.com/api/gettranslates", requestParameters);
+                requestHandler.setRequestExceptionHandler(new RequestExceptionHandlerImpl());
                 requestHandler.handleRequest();
                 subscriber.onNext(new WordTranslation(requestHandler.getResponse()));
                 subscriber.onCompleted();

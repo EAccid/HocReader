@@ -10,10 +10,7 @@ public class RequestHandler {
     private RequestParameters requestParameters;
     private String urlString;
     private String cookies;
-
-    private RequestHandler() {
-
-    }
+    private RequestExceptionHandler exceptionHandler;
 
     private RequestHandler(String urlString, String cookies, RequestParameters requestParameters) {
         this.urlString = urlString;
@@ -34,23 +31,29 @@ public class RequestHandler {
         return new RequestHandler(urlString, cookies, requestParameters);
     }
 
+    public void setRequestExceptionHandler(RequestExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
+    }
+
     public void handleRequest() {
+        if (exceptionHandler == null)
+            throw new RuntimeException("RequestExceptionHandler can't be null!");
         if (cookies != null && cookies.isEmpty()) {
             serviceStatus = ServiceStatus.UNAUTHORIZED;
-        } else {
-            try {
-                URL url = new URL(urlString);
-                connection.loadCookies(cookies);
-                connection.sendLingualeoRequest(url, RequestMethod.POST, requestParameters);
-                LeoServiceStatus leoServiceStatus = new LeoServiceStatus();
-                serviceStatus = leoServiceStatus.getGeneralServiceStatus(connection.getResponse());
-            } catch (UnknownHostException e) {
-                serviceStatus = ServiceStatus.CONNECTION_ERROR;
-                e.printStackTrace();
-            } catch (Exception e) {
-                serviceStatus = ServiceStatus.FAILED;
-                e.printStackTrace();
-            }
+            return;
+        }
+        try {
+            URL url = new URL(urlString);
+            connection.loadCookies(cookies);
+            connection.sendLingualeoRequest(url, RequestMethod.POST, requestParameters);
+            LeoServiceStatus leoServiceStatus = new LeoServiceStatus();
+            serviceStatus = leoServiceStatus.getGeneralServiceStatus(connection.getResponse());
+        } catch (UnknownHostException e) {
+            serviceStatus = ServiceStatus.CONNECTION_ERROR;
+            exceptionHandler.handleException(e);
+        } catch (Exception e) {
+            serviceStatus = ServiceStatus.FAILED;
+            exceptionHandler.handleException(e);
         }
     }
 
