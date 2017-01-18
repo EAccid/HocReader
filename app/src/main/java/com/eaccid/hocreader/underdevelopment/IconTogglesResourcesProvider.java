@@ -4,7 +4,7 @@ import android.support.annotation.DrawableRes;
 
 import com.eaccid.hocreader.R;
 
-public class MemorizingResourcesProvider {
+public class IconTogglesResourcesProvider {
 
     public
     @DrawableRes
@@ -31,7 +31,17 @@ public class MemorizingResourcesProvider {
                 result = R.drawable.ic_star_black_18px;
                 break;
         }
-
         return result;
     }
+
+    public
+    @DrawableRes
+    int getSpeakerResId(boolean isSpeaking) {
+        if (isSpeaking) {
+            return R.drawable.ic_volume_up_accent_24px;
+        } else {
+            return R.drawable.ic_volume_up_black_24px;
+        }
+    }
+
 }
