@@ -1,8 +1,9 @@
-package com.eaccid.hocreader.presentation.fragment.carousel;
+package com.eaccid.hocreader.presentation.fragment.carousel.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+
 import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.stmt.PreparedQuery;
 import java.sql.SQLException;
@@ -21,7 +22,7 @@ public abstract class OrmliteCursorRecyclerViewAdapter<T, VH extends RecyclerVie
             onBindViewHolder(viewHolder, this.cursorToObject(cursor));
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        } ;
     }
 
     public final void changeCursor(Cursor cursor) {

@@ -3,13 +3,13 @@ package com.eaccid.hocreader.presentation.fragment.weditor.adapter;
 import android.view.View;
 import android.widget.Toast;
 
-import com.eaccid.hocreader.provider.db.WordProvider;
+import com.eaccid.hocreader.provider.db.WordItem;
 
 public class OnShowWordInBookPageClickListener implements View.OnClickListener {
 
-    private WordProvider wordProvider;
+    private WordItem wordProvider;
 
-    public OnShowWordInBookPageClickListener(WordProvider wordToShowInPage) {
+    public OnShowWordInBookPageClickListener(WordItem wordToShowInPage) {
         this.wordProvider = wordToShowInPage;
     }
 

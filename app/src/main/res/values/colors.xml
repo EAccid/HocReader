@@ -24,7 +24,10 @@
    <!--Book menu icon color-->
     <color name="ic_color_blue">#039BE5</color>
     <color name="ic_color_orange">#FB8C00</color>
-
+    <color name="ic_color_gray">#BDBDBD</color>
+    <color name="ic_color_yellow">#FBC02D</color>
+    <color name="translation_color_don_t_know">#fff45f30</color>
+    <color name="translation_color_don_t_remember">#ff2f8b2a</color>
 
     <!--<color name="windowBackground">#F5F5F5</color>-->
 

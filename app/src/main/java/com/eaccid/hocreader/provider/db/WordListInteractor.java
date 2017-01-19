@@ -10,7 +10,6 @@ import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
 import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
@@ -37,7 +36,7 @@ public class WordListInteractor extends DataListProvider {
 
     @Override
     public int undoLastRemoval() {
-        WordProviderImpl word = (WordProviderImpl) getLastRemovedData();
+        WordItemImpl word = (WordItemImpl) getLastRemovedData();
         sessionWords.add(word.getWordFromText());
         wordListFromDatabaseFetcher.createItemWord(word);
         return super.undoLastRemoval();
@@ -56,7 +55,7 @@ public class WordListInteractor extends DataListProvider {
         if (sessionWords.contains(wordBaseName)) {
             return;
         }
-        WordProviderImpl item = (WordProviderImpl) wordListFromDatabaseFetcher.createItemWord(wordBaseName, sessionWords.size());
+        WordItemImpl item = (WordItemImpl) wordListFromDatabaseFetcher.createItemWord(wordBaseName, sessionWords.size());
         if (item == null) {
             Log.i(logTAG, "Word '" + wordBaseName + "' has not been added to database.");
             return;
@@ -101,9 +100,9 @@ public class WordListInteractor extends DataListProvider {
      * Try RxJava in Android
      */
 
-    public BehaviorSubject<WordProviderImpl> getWordProvider(final int index) {
-        WordProviderImpl word = (WordProviderImpl) getItem(index);
-        BehaviorSubject<WordProviderImpl> subject = BehaviorSubject.create();
+    public BehaviorSubject<WordItem> getWordProvider(final int index) {
+        WordItem word = (WordItem) getItem(index);
+        BehaviorSubject<WordItem> subject = BehaviorSubject.create();
         new HocTranslatorProvider()
                 .translate(word.getWordFromText())
                 .subscribeOn(Schedulers.io())

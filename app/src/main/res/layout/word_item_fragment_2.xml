@@ -1,66 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?><!--268dp-->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="268dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="top|center_horizontal"
     android:background="@drawable/bg_item_normal_state_carousel"
     android:elevation="4dp"
-    android:minHeight="268dp">
+    android:orientation="vertical">
 
-    <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
-
-        <ImageView
-            android:id="@+id/already_learned"
-            style="@style/icon_toggles"
-            android:src="@drawable/ic_delete_sweep_menu_24px" />
-    </com.andexert.library.RippleView>
-
-    <TextView
-        android:id="@+id/word"
-        style="@style/TextAppearance.AppCompat.Title"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="24dp"
-        android:text="@string/empty_word" />
+        android:layout_gravity="end"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/word_transcription"
-        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+        <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+
+            <ImageView
+                android:id="@+id/already_learned"
+                style="@style/icon_toggles"
+                android:src="@drawable/ic_star_border_yellow_24px" />
+        </com.andexert.library.RippleView>
+
+        <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+
+            <ImageView
+                android:id="@+id/action_delete"
+                style="@style/icon_toggles"
+                android:src="@drawable/ic_delete_sweep_gray_24px" />
+        </com.andexert.library.RippleView>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="174dp"
-        android:text="@string/transcription" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/translation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="198dp"
-        android:text="@string/empty_translation"
-        tools:ignore="RtlHardcoded" />
+        <TextView
+            android:id="@+id/word"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/empty_word" />
 
-    <net.cachapa.expandablelayout.ExpandableLayout
-        android:id="@+id/expandable_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:el_duration="1000"
-        app:el_expanded="true"
-        app:el_parallax="0.5">
+        <TextView
+            android:id="@+id/word_transcription"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/transcription" />
 
-    </net.cachapa.expandablelayout.ExpandableLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/word_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="72dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/empty_circle_background_test"
+            android:scaleType="centerCrop" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/word_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="72dp"
-        android:background="@drawable/empty_circle_background_test" />
+        <LinearLayout
+            android:id="@+id/translationContext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-</FrameLayout>
+            <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+
+                <ImageView
+                    android:id="@+id/transcription_speaker"
+                    style="@style/icon_toggles"
+                    android:src="@drawable/ic_volume_up_gray_24px" />
+            </com.andexert.library.RippleView>
+
+            <TextView
+                android:id="@+id/translation"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:text="@string/empty_translation" />
+
+        </LinearLayout>
+
+        <View style="@style/frame_divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/don_t_know"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/don_t_know"
+                android:textColor="@color/colorAccentSecondary" />
+
+            <Button
+                android:id="@+id/remember"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/remember"
+                android:textColor="@color/colorPrimaryDark" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
 

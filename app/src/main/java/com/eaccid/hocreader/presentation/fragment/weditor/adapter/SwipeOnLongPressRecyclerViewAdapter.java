@@ -14,7 +14,7 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.MediaPlayerManager;
-import com.eaccid.hocreader.provider.db.WordProviderImpl;
+import com.eaccid.hocreader.provider.db.WordItemImpl;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
 import com.eaccid.hocreader.provider.db.listprovider.ItemDataProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
@@ -206,8 +206,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.container.setBackgroundResource(bgResId);
     }
 
-    private WordProviderImpl getWordListItemProvider(final int position) {
-        return (WordProviderImpl) wordListInteractor.getItem(position);
+    private WordItemImpl getWordListItemProvider(final int position) {
+        return (WordItemImpl) wordListInteractor.getItem(position);
     }
 
     /**

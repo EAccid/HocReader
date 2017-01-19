@@ -1,10 +1,11 @@
-package com.eaccid.hocreader.presentation.fragment.carousel;
+package com.eaccid.hocreader.presentation.fragment.carousel.adapter;
 
 import android.util.Log;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.presentation.fragment.carousel.WordsCarouselFragment;
 import com.eaccid.hocreader.provider.db.WordCursorProvider;
 
 import javax.inject.Inject;

@@ -23,7 +23,7 @@
             <ImageView
                 android:id="@+id/learn_by_heart_false"
                 style="@style/icon_toggles"
-                android:src="@drawable/ic_learn_by_heart_border_gray_18px" />
+                android:src="@drawable/ic_learn_by_heart_border_gray_24px" />
         </com.andexert.library.RippleView>
 
         <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
@@ -31,9 +31,7 @@
             <ImageView
                 android:id="@+id/transcription_speaker"
                 style="@style/icon_toggles"
-                android:src="@drawable/ic_volume_up_black_24px"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true" />
+                android:src="@drawable/ic_volume_up_gray_24px"/>
         </com.andexert.library.RippleView>
 
     </LinearLayout>

@@ -4,7 +4,7 @@ import android.util.Log;
 import android.util.SparseBooleanArray;
 
 import com.eaccid.hocreader.injection.App;
-import com.eaccid.hocreader.provider.db.WordProviderImpl;
+import com.eaccid.hocreader.provider.db.WordItemImpl;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
@@ -55,7 +55,7 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     }
 
     public void onItemClicked(int position) {
-        WordProviderImpl data = (WordProviderImpl) wordListInteractor.getItem(position);
+        WordItemImpl data = (WordItemImpl) wordListInteractor.getItem(position);
         if (data.isPinned()) {
             data.setPinned(false);
             mView.notifyItemChanged(position);

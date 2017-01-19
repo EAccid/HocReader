@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.fragment.carousel;
+package com.eaccid.hocreader.presentation.fragment.carousel.adapter;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;

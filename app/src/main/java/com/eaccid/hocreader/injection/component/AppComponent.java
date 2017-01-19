@@ -10,6 +10,7 @@ import com.eaccid.hocreader.injection.module.AppModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
 import com.eaccid.hocreader.injection.module.WordListModule;
 import com.eaccid.hocreader.presentation.activity.main.MainPresenter;
+import com.eaccid.hocreader.presentation.activity.notcard.CardWordPresenter;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
 import com.eaccid.hocreader.presentation.service.MemorizingPresenter;
 import com.eaccid.hocreader.presentation.service.SchedulingMemorizingAlarmManager;
@@ -48,5 +49,6 @@ public interface AppComponent {
     void inject(SchedulingMemorizingAlarmManager schedulingMemorizingAlarmManager);
 
     void inject(WordCursorProvider wordCursorProvider);
-    
+
+    void inject(CardWordPresenter cardWordPresenter);
 }

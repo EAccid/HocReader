@@ -1,12 +1,12 @@
 package com.eaccid.hocreader.underdevelopment;
 
-import com.eaccid.hocreader.provider.db.WordProviderImpl;
+import com.eaccid.hocreader.provider.db.WordItem;
 
 import java.util.Random;
 
 public class MemorizingCalculatorImpl implements MemorizingCalculator {
 
-    public MemorizingCalculatorImpl(WordProviderImpl wordProvider) {
+    public MemorizingCalculatorImpl(WordItem wordProvider) {
 
     }
 

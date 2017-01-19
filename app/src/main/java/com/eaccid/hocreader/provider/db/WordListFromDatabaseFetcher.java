@@ -44,7 +44,7 @@ public class WordListFromDatabaseFetcher implements Callable<List<ItemDataProvid
     ItemDataProvider createItemWord(String wordBaseName, int currentId) {
         Word word = dataManager.getCurrentBooksWordByPage(wordBaseName);
         if (word == null) return null;
-        return new WordProviderImpl(currentId, word);
+        return new WordItemImpl(currentId, word);
     }
 
     private List<ItemDataProvider> getWordItemByCurrentBookList(WordFilter wordFilter, @Nullable List<String> words) {
@@ -86,7 +86,7 @@ public class WordListFromDatabaseFetcher implements Callable<List<ItemDataProvid
         List<Word> wordsFromDB = dataManager.getAllWords(words, null);
 
         for (Word word : wordsFromDB) {
-            ItemDataProvider itemDataProvider = new WordProviderImpl(fromIndex + dataList.size(), word);
+            ItemDataProvider itemDataProvider = new WordItemImpl(fromIndex + dataList.size(), word);
             itemDataProvider.setLastAdded(wordFilter == WordFilter.BY_BOOK_AND_WORD_COLLECTION);
             dataList.add(itemDataProvider);
         }
@@ -99,7 +99,7 @@ public class WordListFromDatabaseFetcher implements Callable<List<ItemDataProvid
         dataManager.deleteWord(word);
     }
 
-    void createItemWord(WordProviderImpl word) {
+    void createItemWord(WordItemImpl word) {
         dataManager.createOrUpdateWord(word.getWordFromText(), word.getTranslation(), word.getContext(), true);
     }
 

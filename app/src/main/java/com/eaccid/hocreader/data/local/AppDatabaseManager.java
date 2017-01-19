@@ -244,6 +244,18 @@ public class AppDatabaseManager {
         return null;
     }
 
+    @Nullable
+    public Word getWord(String word) {
+        try {
+            WordDaoService ws = mDatabaseManager.getWordService();
+            Log.i(LOG_TAG, "random word '" + word + "' has been fetched.");
+            return ws.getAllByWordName(word).get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean deleteWords(WordFilter filter) {
         if (currentBook == null) return false;
         if (filter == WordFilter.BY_BOOK) {

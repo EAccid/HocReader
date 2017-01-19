@@ -54,11 +54,10 @@
                 android:text="@string/transcription" />
 
             <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
-
                 <ImageView
                     android:id="@+id/already_learned"
                     style="@style/icon_toggles"
-                    android:src="@drawable/ic_star_border_black_18px" />
+                    android:src="@drawable/ic_star_border_yellow_24px" />
             </com.andexert.library.RippleView>
 
         </FrameLayout>

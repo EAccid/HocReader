@@ -4,31 +4,36 @@ import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 import com.eaccid.hocreader.provider.db.listprovider.ItemDataProviderImpl;
 
-public class WordProviderImpl extends ItemDataProviderImpl implements WordProvider {
+public class WordItemImpl extends ItemDataProviderImpl implements WordItem {
 
     private TextTranslation translation;
 
-    public WordProviderImpl(int id, Word word) {
+    public WordItemImpl(int id, Word word) {
         super(id, word);
     }
 
+    public WordItemImpl(Word word) {
+        super(0, word);
+    }
+
+    @Override
     public void setTranslationToText(TextTranslation textTranslation) {
         this.translation = textTranslation;
     }
 
     @Override
     public String getWordFromText() {
-        return ((Word) getObject()).getName();
+        return getWordValue().getName();
     }
 
     @Override
     public String getTranslation() {
-        return ((Word) getObject()).getTranslation();
+        return getWordValue().getTranslation();
     }
 
     @Override
     public String getContext() {
-        return ((Word) getObject()).getContext();
+        return getWordValue().getContext();
     }
 
     @Override
@@ -74,6 +79,10 @@ public class WordProviderImpl extends ItemDataProviderImpl implements WordProvid
 
     private String emptyValue() {
         return "";
+    }
+
+    private Word getWordValue() {
+        return (Word) getObject();
     }
 
 }
