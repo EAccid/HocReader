@@ -34,7 +34,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 }
                 return wordsFromBookFragment;
             case 2:
-                return WordsCarouselFragment.newInstance();
+                return WordsCarouselFragment.newInstance(true);
             default:
                 throw new IllegalStateException("There isn't such fragment position: " + position);
         }

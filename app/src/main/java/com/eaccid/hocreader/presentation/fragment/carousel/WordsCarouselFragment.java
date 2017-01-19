@@ -15,7 +15,6 @@ import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
-import com.eaccid.hocreader.presentation.fragment.carousel.adapter.WordCarouselPresenter;
 import com.eaccid.hocreader.presentation.fragment.carousel.adapter.WordCarouselRecyclerViewAdapter;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -25,8 +24,12 @@ import butterknife.ButterKnife;
 
 public class WordsCarouselFragment extends Fragment implements BaseView {
 
-    public static WordsCarouselFragment newInstance() {
-        return new WordsCarouselFragment();
+    public static WordsCarouselFragment newInstance(boolean isFilterByBook) {
+        WordsCarouselFragment f = new WordsCarouselFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("is_filter_by_book", isFilterByBook);
+        f.setArguments(bundle);
+        return f;
     }
 
     private WordCarouselPresenter mPresenter;
@@ -78,16 +81,13 @@ public class WordsCarouselFragment extends Fragment implements BaseView {
         recyclerView.addOnScrollListener(new CenterScrollListener());
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isCollapset) {
-                    expandable_layout.expand();
-                } else {
-                    expandable_layout.collapse();
-                }
-                isCollapset = !isCollapset;
+        fab.setOnClickListener(view1 -> {
+            if (isCollapset) {
+                expandable_layout.expand();
+            } else {
+                expandable_layout.collapse();
             }
+            isCollapset = !isCollapset;
         });
     }
 }

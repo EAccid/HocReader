@@ -1,11 +1,11 @@
-package com.eaccid.hocreader.presentation.fragment.carousel.adapter;
+package com.eaccid.hocreader.presentation.fragment.carousel;
 
 import android.util.Log;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.presentation.fragment.carousel.WordsCarouselFragment;
+import com.eaccid.hocreader.presentation.fragment.carousel.adapter.WordCarouselRecyclerViewAdapter;
 import com.eaccid.hocreader.provider.db.WordCursorProvider;
 
 import javax.inject.Inject;
@@ -33,7 +33,7 @@ public class WordCarouselPresenter implements BasePresenter<WordsCarouselFragmen
     public WordCarouselRecyclerViewAdapter createWordCarouselRecyclerViewAdapter() {
         WordCarouselRecyclerViewAdapter adapter = new WordCarouselRecyclerViewAdapter(mView.getContext());
         WordCursorProvider wordCursorProvider = new WordCursorProvider();
-        return (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(adapter, true);
-
+        return (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(adapter,
+                mView.getArguments().getBoolean("is_filter_by_book"));
     }
 }
