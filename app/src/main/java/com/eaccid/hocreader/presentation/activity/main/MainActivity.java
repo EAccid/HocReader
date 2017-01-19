@@ -28,6 +28,7 @@ import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchAdapte
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BaseView,
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements BaseView,
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.onOpenTrainerClickListener();
+                mPresenter.onFabClicked();
             }
         });
 
@@ -144,6 +145,11 @@ public class MainActivity extends AppCompatActivity implements BaseView,
     public void showTestFab(String text) {
         Snackbar.make(getCurrentFocus(), text,
                 Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
+    public void openActivity(Class c) {
+        Intent intent = new Intent(getApplicationContext(), c);
+        startActivity(intent);
     }
 
     public void setItemsToExpandableListView(List<ItemObjectGroup> itemObjectGroupList) {

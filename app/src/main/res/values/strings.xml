@@ -43,7 +43,7 @@
     <string name="pref_leo_sign_in_key">pref_leo_sign_in</string>
     <string name="default_pref_value"> </string>
     <string name="pref_title_notify_frequency">Memorizing notification</string>
-       <string-array name="pref_notify_frequency_titles">
+    <string-array name="pref_notify_frequency_titles">
         <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>

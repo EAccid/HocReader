@@ -5,6 +5,7 @@ import android.webkit.MimeTypeMap;
 
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.presentation.activity.training.TrainingActivity;
 import com.eaccid.hocreader.provider.file.findner.FileOnDeviceProvider;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectChild;
 import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
@@ -21,6 +22,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     private final String logTAG = "MainPresenter";
     private MainActivity mView;
+
     @Inject
     AppDatabaseManager dataManager;
 
@@ -41,7 +43,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         mView = null;
     }
 
-        /**
+    /**
      * TODO:
      * - settings into separate presenter
      * - create fab action
@@ -52,12 +54,8 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         settings.clearBookSearchHistory(mView.getApplicationContext());
     }
 
-    public void onOpenTrainerClickListener() {
-        //TEMP
-        int words = dataManager.getAllWords(null, null).size();
-        int books = dataManager.getAllBooks().size();
-        String text = "books: " + books + ", words: " + words;
-        mView.showTestFab(text);
+    public void onFabClicked() {
+        mView.openActivity(TrainingActivity.class);
     }
 
     private void fillExpandableListView() {
