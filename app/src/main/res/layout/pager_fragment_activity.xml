@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    app:theme="@style/AppTheme.NoActionBar"
+    app:theme="@style/AppThemeLight"
     tools:context="com.eaccid.hocreader.presentation.activity.pager.PagerActivity">
 
     <android.support.v4.view.ViewPager
@@ -22,8 +22,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="4dip"
-        app:fillColor="@color/colorPrimary"
-        app:pageColor="@color/colorAccent"
+        app:fillColor="?attr/colorPrimary"
+        app:pageColor="?attr/colorAccent"
         android:layout_gravity="end|bottom"/>
 
 </android.support.design.widget.CoordinatorLayout>

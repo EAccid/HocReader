@@ -3,55 +3,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:showIn="@layout/editor_word_item_fragment_1">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/word_image"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/empty_picture_background" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/word_image"
-            android:layout_width="@dimen/word_image_size"
-            android:layout_height="@dimen/word_image_size"
-            android:layout_gravity="start"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/empty_circle_background" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/word"
-            style="@style/TextAppearance.AppCompat.Title"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/empty_word"/>
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/word_transcription"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="42dp"
-            android:text="@string/transcription" />
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:id="@+id/word_image"-->
+            <!--android:layout_width="@dimen/word_image_size"-->
+            <!--android:layout_height="@dimen/word_image_size"-->
+            <!--android:layout_gravity="start"-->
+            <!--android:layout_marginBottom="16dp"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:background="@drawable/empty_circle_background" />-->
 
-        <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+            <TextView
+                android:id="@+id/word"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/empty_word" />
 
-            <ImageView
-                android:id="@+id/already_learned"
-                style="@style/icon_toggles"
-                android:src="@drawable/ic_star_border_black_18px" />
-        </com.andexert.library.RippleView>
+            <TextView
+                android:id="@+id/word_transcription"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/transcription" />
 
-    </FrameLayout>
+            <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
 
-    <View style="@style/frame_divider" />
+                <ImageView
+                    android:id="@+id/already_learned"
+                    style="@style/icon_toggles"
+                    android:src="@drawable/ic_star_border_black_18px" />
+            </com.andexert.library.RippleView>
 
-    <include layout="@layout/card_action_bottom_buttons" />
+        </FrameLayout>
+
+        <View style="@style/frame_divider" />
+
+        <include layout="@layout/card_action_bottom_buttons" />
+
+    </LinearLayout>
 
 </LinearLayout>

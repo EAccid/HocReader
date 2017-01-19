@@ -65,8 +65,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
+        android:foreground="?attr/selectableItemBackground"
         android:src="@drawable/fab_plus" />
-
 
 </RelativeLayout>
 

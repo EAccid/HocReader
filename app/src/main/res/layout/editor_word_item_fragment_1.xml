@@ -3,7 +3,7 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="129dp"
+    android:minHeight="127dp"
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
     android:background="@color/colorTransparent">
@@ -16,14 +16,14 @@
 
         <TextView
             android:id="@+id/translation"
-            style="@style/TextAppearance.AppCompat.Title"
+            style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/empty_translation"
-            android:textSize="20sp" />
+            android:textColor="@color/colorPrimaryText"/>
 
         <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"

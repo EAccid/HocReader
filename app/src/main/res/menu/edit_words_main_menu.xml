@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/edit_recycler_view"
-        android:icon="@drawable/ic_mode_edit_gray_24px"
+        android:icon="@drawable/ic_mode_edit_menu_24px"
         android:orderInCategory="100"
         android:title="@string/edit_all_words"
         app:showAsAction="ifRoom|collapseActionView" />
@@ -12,4 +12,5 @@
         android:orderInCategory="100"
         android:title="@string/clear_all_words"
         app:showAsAction="never" />
+
 </menu>
