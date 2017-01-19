@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -79,11 +80,12 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         final ItemObjectChild itemObjectChild = (ItemObjectChild) getChild(groupPosition, childPosition);
         if (convertView == null)
             convertView = layoutInflater.inflate(R.layout.book_child_item, null);
+        FrameLayout childContent = (FrameLayout) convertView.findViewById(R.id.chide_content);
+        childContent.setOnClickListener(new OnChildItemClickListener(itemObjectChild.getFile()));
         ImageView childIcon = (ImageView) convertView.findViewById(R.id.child_icon);
         childIcon.setImageResource(itemObjectChild.getIcon());
         TextView textViewChild = (TextView) convertView.findViewById(R.id.child_text);
         textViewChild.setText(itemObjectChild.getText());
-        textViewChild.setOnClickListener(new OnChildItemClickListener(itemObjectChild.getFile()));
         return convertView;
     }
 

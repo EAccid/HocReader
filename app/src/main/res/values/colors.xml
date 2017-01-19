@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#009688</color>
-    <color name="colorPrimaryDark">#00796b</color>
-    <color name="colorLightPrimary">#70b2dfdb</color>
-    <color name="colorTextIcons">#ffffff</color>
-    <color name="colorAccent">#FF9800</color>
+
+    <!-- Base application theme color -->
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorSecondary">#81C784</color>
+    <color name="colorLightPrimary">#C8E6C9</color>
+    <color name="colorAccent">#E040FB</color>
+    <color name="colorAccentDark">#AA00FF</color>
+    <color name="colorAccentSecondary">#EA80FC</color>
+    <color name="colorTextIcons">#FFFFFF</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
-    <color name="colorDivider">#bdbdbd</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="windowBackground">#EFEFEF</color>
     <color name="windowSecondaryBackground">#B0BEC5</color>
     <color name="colorLightAccent">#fff</color>
     <color name="colorTransparent">#00ffffff</color>
+    <color name="colorActionModeBackground">#616161</color>
+    <color name="colorActionModeHighlight">#F4FF81</color>
+
+   <!--Book menu icon color-->
+    <color name="ic_color_blue">#039BE5</color>
+    <color name="ic_color_orange">#FB8C00</color>
+
 
     <!--<color name="windowBackground">#F5F5F5</color>-->
-    <color name="windowBackground">#efefef</color>
+
     <color name="cardView">#FAFAFA</color>
     <color name="divider_color">#1800796b</color>
 
-    <color name="action_mode_highlight">#F48FB1</color>
-
-    <!--<color name="colorAccent">#ff4081</color>-->
-    <!--<color name="colorLightAccent">#f8bbd0</color>-->
 
     <color name="bg_item_normal_state">#fff0f0f0</color>
     <color name="bg_item_swiping_state">#ffddddff</color>
@@ -36,7 +45,6 @@
     <color name="snackbar_action_color_done">#ffccccff</color>
 
     <color name="ic_color_black">#000000</color>
-    <color name="ic_color_blue">#448AFF</color>
     <color name="ic_color_bookmark">#FFC107</color>
     <color name="ic_color_pets_green">#4CAF50</color>
     <color name="ic_color_pets_brown">#795548</color>
@@ -55,7 +63,6 @@
     <color name="black_alpha_60">#99000000</color>
 
     <color name="text_white_primary">@color/white</color>
-
 
 
 </resources>

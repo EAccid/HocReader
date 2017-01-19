@@ -46,7 +46,7 @@ public class MemorizingService extends IntentService implements BaseView {
         PendingIntent.getActivity(this, REQUEST_CODE, pendingIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationCompat.Builder builder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_pets_white_24px)
+                        .setSmallIcon(R.drawable.ic_pets_menu_24px)
                         .setContentTitle(getString(R.string.memorizing_notification_title))
                         .setContentText(text)
                         .setContentIntent(contentIntent)

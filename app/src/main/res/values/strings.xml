@@ -77,5 +77,7 @@
     <string name="copy">Copy</string>
     <string name="clear_all_words">Clear all words</string>
     <string name="edit_all_words">Edit all words</string>
+    <string name="extension">Extension</string>
+    <string name="book_name">Book name</string>
 
 </resources>

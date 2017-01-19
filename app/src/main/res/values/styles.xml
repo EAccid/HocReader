@@ -1,32 +1,26 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-
-        <!-- action mode -->
-        <item name="android:textColorHighlight">@color/action_mode_highlight</item>
+        <item name="actionMenuTextColor">@color/colorTextIcons</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <!-- Action mode -->
+        <item name="android:textColorHighlight">@color/colorActionModeHighlight</item>
         <!--  It should be true otherwise action mode will not overlay toolbar -->
         <item name="windowActionModeOverlay">true</item>
-        <!--  For Custom Action Mode Background Color/Drawable -->
-        <item name="actionModeBackground">@color/colorAccent</item>
-
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <item name="actionModeBackground">@color/colorActionModeBackground</item>
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
     </style>
 
     <style name="AppTheme.Settings" parent="AppTheme">
@@ -37,8 +31,18 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!--<style name="commonListItemStyle" />-->
 
+
+
+
+
+
+
+
+
+
+
+    <!--<style name="commonListItemStyle" />-->
     <style name="recyclerViewStyleFragment1">
         <item name="android:clipChildren">true</item>
         <item name="android:clipToPadding">false</item>
@@ -99,7 +103,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">end</item>
-          <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingStart">4dp</item>
         <item name="android:paddingEnd">4dp</item>
     </style>
 

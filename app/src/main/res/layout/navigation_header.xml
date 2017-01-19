@@ -21,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/mb_bg_fb_07"
             tools:ignore="ContentDescription" />
 
     </FrameLayout>
