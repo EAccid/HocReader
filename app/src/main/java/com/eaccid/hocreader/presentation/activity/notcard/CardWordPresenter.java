@@ -36,8 +36,8 @@ public class CardWordPresenter implements BasePresenter<CardWordActivity> {
         mView = null;
     }
 
+    //todo temp solution, del after refactor setListenersToViewFromItem in View
     public WordItem getWordItem() {
-        //todo temp solution, del after refactor setListenersToViewFromItem in View
         Word word = databaseManager.getWord(mView.getWord());
         if (word == null)
             word = new Word();
