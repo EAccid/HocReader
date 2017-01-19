@@ -19,6 +19,7 @@
     <color name="colorTransparent">#00ffffff</color>
     <color name="colorActionModeBackground">#616161</color>
     <color name="colorActionModeHighlight">#F4FF81</color>
+    <color name="colorActionModeSelectedItems">#BDBDBD</color>
 
    <!--Book menu icon color-->
     <color name="ic_color_blue">#039BE5</color>

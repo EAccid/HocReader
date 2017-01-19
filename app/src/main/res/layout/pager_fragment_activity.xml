@@ -19,11 +19,11 @@
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/indicator"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dip"
+        android:padding="4dp"
         app:fillColor="?attr/colorPrimary"
         app:pageColor="?attr/colorAccent"
-        android:layout_gravity="end|bottom"/>
+        android:layout_gravity="center|bottom"/>
 
 </android.support.design.widget.CoordinatorLayout>

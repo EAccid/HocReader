@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -14,8 +14,9 @@
             style="@style/recyclerViewStyleFragment1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="60dp"
-            android:background="@color/windowBackground"/>
+            android:background="@color/windowBackground"
+            android:paddingTop="60dp" />
+
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -23,10 +24,11 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorSecondary"
             android:elevation="@dimen/elevation_app_bar"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:theme="@style/AppTheme.AppBarOverlay"/>
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </FrameLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>
+
 
