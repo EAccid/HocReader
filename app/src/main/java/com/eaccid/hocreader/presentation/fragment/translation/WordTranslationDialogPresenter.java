@@ -7,7 +7,7 @@ import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.MediaPlayerManager;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
 import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
-import com.eaccid.hocreader.provider.translator.TranslatedWord;
+import com.eaccid.hocreader.provider.translator.TranslatedWordImpl;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 
@@ -20,7 +20,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     private final String LOG_TAG = "TranslationPresenter";
     private WordTranslationDialogFragment mView;
 
-    private TranslatedWord mTranslatedWord;
+    private TranslatedWordImpl mTranslatedWordImpl;
     private MediaPlayer mMediaPlayer;
     private String mNextWordToTranslate;
     private Subscription mTranslationSubscription;
@@ -71,10 +71,10 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                             Log.i(LOG_TAG, "Text translated status: " + !textTranslation.isEmpty());
                             showTranslationsData(textTranslation);
                             setmNextWordToTranslate(textTranslation.getWord());
-                            mTranslatedWord = new TranslatedWord();
-                            mTranslatedWord.setWordBaseForm(textTranslation.getWord());
-                            mTranslatedWord.setWordFromContext(wordFromText.getText());
-                            mTranslatedWord.setContext(wordFromText.getSentence());
+                            mTranslatedWordImpl = new TranslatedWordImpl();
+                            mTranslatedWordImpl.setWordBaseForm(textTranslation.getWord());
+                            mTranslatedWordImpl.setWordFromContext(wordFromText.getText());
+                            mTranslatedWordImpl.setContext(wordFromText.getSentence());
                         }
                     }
                 });
@@ -109,8 +109,8 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     }
 
     public void onTranslationClick(String text) {
-        mTranslatedWord.setTranslation(text);
-        ((WordTranslationDialogFragment.OnWordTranslationClickListener) mView.getContext()).onWordTranslated(mTranslatedWord);
+        mTranslatedWordImpl.setTranslation(text);
+        ((WordTranslationDialogFragment.OnWordTranslationClickListener) mView.getContext()).onWordTranslated(mTranslatedWordImpl);
         mView.dismiss();
     }
 

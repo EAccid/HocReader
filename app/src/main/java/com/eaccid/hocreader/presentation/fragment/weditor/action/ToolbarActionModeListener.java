@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.underdevelopment.spann;
+package com.eaccid.hocreader.presentation.fragment.weditor.action;
 
 import android.support.v7.view.ActionMode;
 import android.view.MenuItem;

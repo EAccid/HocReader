@@ -1,17 +1,15 @@
-package com.eaccid.hocreader.underdevelopment;
+package com.eaccid.hocreader.presentation.fragment.weditor.action;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.presentation.fragment.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
-import com.eaccid.hocreader.underdevelopment.spann.ToolbarActionModeListener;
 
 import android.support.v7.view.ActionMode;
 

@@ -21,9 +21,9 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
 
+import com.eaccid.hocreader.presentation.fragment.weditor.action.ToolbarActionModeCallback;
+import com.eaccid.hocreader.presentation.fragment.weditor.action.ToolbarActionModeListener;
 import com.eaccid.hocreader.presentation.fragment.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
-import com.eaccid.hocreader.underdevelopment.ToolbarActionModeCallback;
-import com.eaccid.hocreader.underdevelopment.spann.ToolbarActionModeListener;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;

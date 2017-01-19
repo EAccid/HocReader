@@ -1,12 +1,15 @@
 package com.eaccid.hocreader.provider.translator;
 
-public class TranslatedWord {
+import com.eaccid.hocreader.underdevelopment.TranslatedWord;
+
+public class TranslatedWordImpl implements TranslatedWord {
 
     private String wordBaseForm;
     private String wordFromContext;
     private String translation;
     private String context;
 
+    @Override
     public String getWordBaseForm() {
         return wordBaseForm;
     }
@@ -15,6 +18,7 @@ public class TranslatedWord {
         this.wordBaseForm = wordBaseForm;
     }
 
+    @Override
     public String getWordFromContext() {
         return wordFromContext;
     }
@@ -23,6 +27,7 @@ public class TranslatedWord {
         this.wordFromContext = wordFromContext;
     }
 
+    @Override
     public String getTranslation() {
         return translation;
     }
@@ -31,6 +36,7 @@ public class TranslatedWord {
         this.translation = translation;
     }
 
+    @Override
     public String getContext() {
         return context;
     }

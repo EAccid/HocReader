@@ -7,7 +7,7 @@ import com.eaccid.hocreader.presentation.fragment.carousel.WordCarouselPresenter
 import com.eaccid.hocreader.presentation.fragment.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.hocreader.presentation.fragment.weditor.WordEditorPresenter;
 import com.eaccid.hocreader.provider.db.WordListInteractor;
-import com.eaccid.hocreader.underdevelopment.ToolbarActionModeCallback;
+import com.eaccid.hocreader.presentation.fragment.weditor.action.ToolbarActionModeCallback;
 
 import dagger.Subcomponent;
 
