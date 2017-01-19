@@ -47,7 +47,6 @@ public class WordCarouselRecyclerViewAdapter extends OrmliteCursorRecyclerViewAd
         @BindView(R.id.transcription_speaker)
         ImageView transcriptionSpeaker;
         MediaPlayer mediaPlayer;
-        String rememberTranslation;
         @BindView(R.id.don_t_know)
         Button dontKnow;
         @BindView(R.id.remember)
@@ -76,7 +75,6 @@ public class WordCarouselRecyclerViewAdapter extends OrmliteCursorRecyclerViewAd
         new WordItemProvider().getWordItemWithTranslation(word)
                 .subscribe(wordItem -> {
                     holder.word.setText(wordItem.getWordFromText());
-                    holder.rememberTranslation = wordItem.getTranslation();
                     new ImageViewManager().loadPictureFromUrl(holder.wordImage, wordItem.getPictureUrl());
                     holder.transcription.setText("[" + wordItem.getTranscription() + "]");
                     holder.alreadyLearned.setImageResource(
