@@ -52,7 +52,7 @@
                 android:id="@+id/image_word_picture"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:elevation="@dimen/activity_horizontal_margin"
+                android:scaleType="centerCrop"
                 app:srcCompat="@android:drawable/ic_dialog_alert" />
 
         </LinearLayout>
