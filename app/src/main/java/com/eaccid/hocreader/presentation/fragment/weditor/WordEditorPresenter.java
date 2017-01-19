@@ -85,11 +85,11 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     }
 
     public void copyItems(SparseBooleanArray selectedIds) {
-
+        mView.showToast("Under development: COPY_ITEMS");
     }
 
     public void setToLearnItems(SparseBooleanArray toLearnSelectedItems) {
-
+        mView.showToast("Under development: SET_TO_LEARN");
     }
 
 }

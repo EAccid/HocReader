@@ -273,5 +273,8 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         }
     }
 
+    public void showToast(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+    }
 }
 

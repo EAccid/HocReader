@@ -3,29 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:id="@+id/chide_content">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:id="@+id/child_icon" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
+            android:id="@+id/child_icon"
+            android:padding="@dimen/spacing_8"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/child_text"
-            android:paddingLeft="48dp"
-            android:paddingTop="12sp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/child_icon"
+            android:paddingLeft="56dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:layout_gravity="start"
             android:textAppearance="?android:textAppearanceMedium"/>
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </ScrollView>

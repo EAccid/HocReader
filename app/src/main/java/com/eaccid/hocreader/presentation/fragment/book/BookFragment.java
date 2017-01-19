@@ -194,7 +194,7 @@ public class BookFragment extends Fragment implements
         return mAdapter.isSelectableItemTextView();
     }
 
-       private void initMenuFragment() {
+    private void initMenuFragment() {
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.tool_bar_height));
         menuParams.setMenuObjects(getMenuObjects());
@@ -215,10 +215,10 @@ public class BookFragment extends Fragment implements
         aster.setResource(R.drawable.ic_find_in_page_blue_24px);
 
         MenuObject bookmark = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.ADD_BOOKMARK, "add bookmark");
-        bookmark.setResource(R.drawable.ic_bookmark_border_yellow_24px);
+        bookmark.setResource(R.drawable.ic_bookmark_border_blue_24px);
 
         MenuObject leoTraining = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.OPEN_LINGUALEO, "open Lingualeo");
-        leoTraining.setResource(R.drawable.ic_pets_leo_training_24px);
+        leoTraining.setResource(R.drawable.ic_pets_orange_24px);
 
         MenuObject gTranslator = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.OPEN_GOOGLE_TRANSLATOR, "open Google Translator");
         gTranslator.setResource(R.drawable.ic_g_translate_blue_24px);
