@@ -69,7 +69,7 @@
     <string name="menu_more_vert">Menu More Vertical</string>
     <string name="empty_translation">*?</string>
     <string name="empty_word">Word</string>
-    <string name="word_context">"I clasp the flask between my hands even though the warmth from the tea has long since leached into the frozen air. My muscles are clenched tight against the cold. If a pack of wild dogs were to appear at this moment, the odds of scaling a tree before they attacked are not in my favor.  I should get up, move around, and work the stiffness from my limbs. But instead I sit, as motionless as the rock beneath me, while the dawn begins to lighten the woods. I can't fight the sun. I can only watch helplessly as it drags me into a day that I've been dreading for months. By noon they will all be at my new house in the Victor's Village."</string>
+    <string name="word_context">"I clasp the flask between my hands even though the warmth from the tea has long since leached into the frozen air. My muscles are clenched tight against the cold. If a pack of wild dogs were to appear at this moment, the odds of scaling a tree before they attacked are not in my favor.  I should get up, move around, and work the stiffness from my limbs."</string>
 
     <!--  Action Mode Menu Items -->
     <string name="learn">Learn</string>
@@ -81,5 +81,7 @@
     <string name="book_name">Book name</string>
     <string name="remember">REMEMBER</string>
     <string name="don_t_know">DON\'T KNOW</string>
+    <string name="give_me_a_hint"> *? Give me a hint</string>
+    <string name="input_new_word">Input new word</string>
 
 </resources>

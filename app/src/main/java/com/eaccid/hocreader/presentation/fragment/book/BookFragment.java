@@ -1,6 +1,7 @@
 package com.eaccid.hocreader.presentation.fragment.book;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -56,33 +57,27 @@ public class BookFragment extends Fragment implements
         setRetainInstance(true);
         if (mPresenter == null) mPresenter = new BookPresenter();
         mPresenter.attachView(this);
-
         initMenuFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         boolean isSelectableMode = false;
         if (savedInstanceState != null)
             isSelectableMode = savedInstanceState.getBoolean("is_selectable");
 
         View rootView = inflater.inflate(R.layout.bookreader_rv_fragment_0, container, false);
         rootView.setTag(TAG);
-
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-
         mAdapter = mPresenter.createRecyclerViewAdapter();
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
         moreMenuImg = (ImageView) rootView.findViewById(R.id.menu_more_vert_grey);
         moreMenuImg.setOnClickListener(view -> onMoreMenuClicked());
-
         setSelectableText(isSelectableMode);
-
         return rootView;
     }
 

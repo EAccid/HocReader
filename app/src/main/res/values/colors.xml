@@ -67,6 +67,7 @@
     <color name="black_alpha_60">#99000000</color>
 
     <color name="text_white_primary">@color/white</color>
+    <color name="hint_color">#795548</color>
 
 
 </resources>

@@ -1,41 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-       Copyright (C) 2015 Haruki Hasegawa
-
-       Licensed under the Apache License, Version 2.0 (the "License");
-       you may not use this file except in compliance with the License.
-       You may obtain a copy of the License at
-
-           http://www.apache.org/licenses/LICENSE-2.0
-
-       Unless required by applicable law or agreed to in writing, software
-       distributed under the License is distributed on an "AS IS" BASIS,
-       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-       See the License for the specific language governing permissions and
-       limitations under the License.
--->
-
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/windowBackground">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="204dp"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/card_horizontal_margin"
-        android:layout_marginRight="@dimen/card_horizontal_margin" />
+        android:layout_marginRight="@dimen/card_horizontal_margin"
+        android:layout_marginBottom="@dimen/card_vertical_margin"/>
 
     <net.cachapa.expandablelayout.ExpandableLayout
         android:id="@+id/expandable_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="4dp"
         app:el_duration="1000"
         app:el_expanded="false"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="320dp"
         app:el_parallax="0.5">
 
         <TextView
@@ -57,6 +43,50 @@
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
+    <LinearLayout
+        android:id="@+id/hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/hint_text"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/give_me_a_hint"
+            android:textColor="@color/hint_color" />
+
+        <com.andexert.library.RippleView
+            android:id="@+id/ripple_view"
+            style="@style/icon_toggles_ripple_effect"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp">
+
+            <ImageButton
+                android:id="@+id/show_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorTransparent"
+                android:src="@drawable/ic_insert_emoticon_hint_48px" />
+        </com.andexert.library.RippleView>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/new_text"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:hint="@string/input_new_word" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -69,15 +99,4 @@
         android:src="@drawable/fab_plus" />
 
 </RelativeLayout>
-
-
-<!--<android.support.design.widget.FloatingActionButton-->
-<!--android:id="@+id/fab"-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:layout_alignParentBottom="true"-->
-<!--android:layout_centerHorizontal="true"-->
-<!--android:layout_marginBottom="78dp"-->
-<!--android:padding="@dimen/spacing_8"-->
-<!--android:src="@drawable/fab_plus" />-->
 

@@ -54,7 +54,6 @@
         <receiver
             android:name=".presentation.service.MemorizingAlarmReceiver"
             android:process=":remote" />
-
         <activity
             android:name=".presentation.activity.notcard.CardWordActivity"
             android:theme="@style/AppTheme.Dialog" />
@@ -69,6 +68,7 @@
         </activity>
         <activity android:name=".presentation.activity.training.TrainingActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
