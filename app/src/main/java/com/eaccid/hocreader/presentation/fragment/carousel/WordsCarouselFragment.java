@@ -73,7 +73,6 @@ public class WordsCarouselFragment extends Fragment implements BaseView {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.recycler_list_fragment_2, container, false);
         ButterKnife.bind(this, v);
         return v;
@@ -82,36 +81,33 @@ public class WordsCarouselFragment extends Fragment implements BaseView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         final CarouselLayoutManager layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
-
         final RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
-
         recyclerView.setHasFixedSize(true);
-
         WordCarouselRecyclerViewAdapter adapter = mPresenter.createWordCarouselRecyclerViewAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new CenterScrollListener());
-
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(view1 -> {
             new_text.setText("Translation under development");
+            new_text.setTextColor(Color.BLUE);
         });
-
         showHint.setOnClickListener(v -> {
             hint.setVisibility(View.GONE);
             expandable_layout.expand();
         });
-
         expandable_text.setOnClickListener(v -> {
             expandable_layout.collapse();
-            hint.setVisibility(View.VISIBLE);
-            expandable_text.setTextColor(Color.BLUE);
+            expandable_layout.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
+                @Override
+                public void onExpansionUpdate(float expansionFraction) {
+                    if (expansionFraction == 0)
+                        hint.setVisibility(View.VISIBLE);
+                }
+            });
         });
-
     }
 }
