@@ -20,6 +20,7 @@ import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class CardWordActivity extends AppCompatActivity implements BaseView {
 
@@ -56,11 +57,13 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
         /**TODO data from presenter, temp solution*/
         WordItem wordItem = mPresenter.getWordItem();
         setDataToViewFromItem(wordItem);
-        setListenersToViewFromItem(wordItem);
+        setListenersToViewFromItem();
     }
 
-    private void setListenersToViewFromItem(WordItem wordItem) {
-        new WordItemProvider().getWordItemWithTranslation(wordItem)
+    private void setDataToViewFromItem(WordItem wordItem) {
+        new WordItemProvider()
+                .getWordItemWithTranslation(wordItem)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(item -> {
                     word.setText(item.getWordFromText());
                     new ImageViewManager().loadPictureFromUrl(wordImage, item.getPictureUrl());
@@ -75,7 +78,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
                 });
     }
 
-    private void setDataToViewFromItem(WordItem wordItem) {
+    private void setListenersToViewFromItem() {
         deleteWord.setOnClickListener(v -> {
         });
         dontKnow.setOnClickListener(v -> {

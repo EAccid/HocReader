@@ -39,17 +39,17 @@
         <TextView
             android:id="@+id/word"
             style="@style/TextAppearance.AppCompat.Large"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
             android:text="@string/empty_word" />
 
         <TextView
             android:id="@+id/word_transcription"
             style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
             android:text="@string/transcription" />
 
         <de.hdodenhof.circleimageview.CircleImageView

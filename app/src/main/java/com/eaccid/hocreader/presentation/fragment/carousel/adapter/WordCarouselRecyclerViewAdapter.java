@@ -10,12 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
-import com.eaccid.hocreader.provider.db.WordItem;
-import com.eaccid.hocreader.provider.db.WordItemImpl;
 import com.eaccid.hocreader.provider.db.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
@@ -23,6 +20,7 @@ import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class WordCarouselRecyclerViewAdapter extends OrmliteCursorRecyclerViewAdapter<Word, WordCarouselRecyclerViewAdapter.ViewHolder> {
 
@@ -66,29 +64,32 @@ public class WordCarouselRecyclerViewAdapter extends OrmliteCursorRecyclerViewAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, Word word) {
-        WordItem wordProvider = new WordItemImpl(word);
-        setDataToViewFromItem(holder, wordProvider);
-        setListenersToViewFromItem(holder, wordProvider);
+        setDataToViewFromItem(holder, word);
+        setListenersToViewFromItem(holder, word);
     }
 
-    private void setDataToViewFromItem(WordCarouselRecyclerViewAdapter.ViewHolder holder, WordItem word) {
-        new WordItemProvider().getWordItemWithTranslation(word)
+    private void setDataToViewFromItem(WordCarouselRecyclerViewAdapter.ViewHolder holder, Word word) {
+        new WordItemProvider()
+                .getWordItemWithTranslation(word)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(wordItem -> {
-                    holder.word.setText(wordItem.getWordFromText());
-                    new ImageViewManager().loadPictureFromUrl(holder.wordImage, wordItem.getPictureUrl());
-                    holder.transcription.setText("[" + wordItem.getTranscription() + "]");
-                    holder.alreadyLearned.setImageResource(
-                            new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(
-                                    new MemorizingCalculatorImpl(wordItem)
-                            )
-                    );
-                }, e -> {
-                    new ReaderExceptionHandlerImpl().handleError(e);
-                });
+                            holder.word.setText(wordItem.getWordFromText());
+                            new ImageViewManager().loadPictureFromUrl(holder.wordImage, wordItem.getPictureUrl());
+                            holder.transcription.setText("[" + wordItem.getTranscription() + "]");
+                            holder.alreadyLearned.setImageResource(
+                                    new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(
+                                            new MemorizingCalculatorImpl(wordItem)
+                                    )
+                            );
+                        }, e -> {
+                            new ReaderExceptionHandlerImpl().handleError(e);
+
+                        }
+                );
     }
 
     //TODO on click listeners handler (carousel)
-    private void setListenersToViewFromItem(ViewHolder holder, WordItem word) {
+    private void setListenersToViewFromItem(ViewHolder holder, Word word) {
         holder.deleteWord.setOnClickListener(v -> {
         });
         holder.dontKnow.setOnClickListener(v -> {

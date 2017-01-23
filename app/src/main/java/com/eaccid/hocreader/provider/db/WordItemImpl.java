@@ -13,7 +13,7 @@ public class WordItemImpl extends ItemDataProviderImpl implements WordItem {
     }
 
     public WordItemImpl(Word word) {
-        super(0, word);
+        super((int) word.getId(), word);
     }
 
     @Override

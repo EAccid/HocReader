@@ -100,13 +100,12 @@ public class WordListInteractor extends DataListProvider {
      * Try RxJava in Android
      */
 
-    public BehaviorSubject<WordItem> getWordProvider(final int index) {
+    public BehaviorSubject<WordItem> getWordItem(final int index) {
         WordItem word = (WordItem) getItem(index);
         BehaviorSubject<WordItem> subject = BehaviorSubject.create();
         new HocTranslatorProvider()
                 .translate(word.getWordFromText())
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(textTranslation -> {
                             word.setTranslationToText(textTranslation);
                             subject.onNext(word);

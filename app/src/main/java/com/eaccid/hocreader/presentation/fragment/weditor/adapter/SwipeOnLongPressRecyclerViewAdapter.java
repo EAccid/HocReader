@@ -34,6 +34,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
 
 
 public class SwipeOnLongPressRecyclerViewAdapter
@@ -124,7 +125,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
         Log.i(LOG_TAG, "setting data to view from item: position " + position);
         wordListInteractor
-                .getWordProvider(position)
+                .getWordItem(position)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(wordItem -> {
                     holder.word.setText(wordItem.getWordFromText());
                     holder.translation.setText(wordItem.getTranslation());

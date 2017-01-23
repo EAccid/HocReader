@@ -22,7 +22,7 @@ public abstract class OrmliteCursorRecyclerViewAdapter<T, VH extends RecyclerVie
             onBindViewHolder(viewHolder, this.cursorToObject(cursor));
         } catch (SQLException e) {
             e.printStackTrace();
-        } ;
+        }
     }
 
     public final void changeCursor(Cursor cursor) {
