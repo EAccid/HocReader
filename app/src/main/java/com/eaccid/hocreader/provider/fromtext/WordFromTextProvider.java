@@ -30,13 +30,13 @@ public class WordFromTextProvider {
             CharSequence text = tv.getText();
             String wordFromLine = getWordFromLine(text, startOfLine, charOffsetInLine, endOfLine);
             wordFromText.setText(new StringFromTextManagerImpl().capitalizeFirsChar(wordFromLine));
-            Spannable spanText = new SpannableString(text);
-            spanText.setSpan(new WordClickableSpan(),
-                    charStart, charStart + wordFromLine.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            tv.setText(spanText, TextView.BufferType.SPANNABLE);
             wordFromText.setSentence(
                     getSentenceFromText(
-                            text, text.subSequence(startOfLine, endOfLine).toString()));
+                            ((String) text).replace("\n", "").trim(), text.subSequence(startOfLine, endOfLine).toString()));
+//            Spannable spanText = new SpannableString(text);
+//            spanText.setSpan(new WordClickableSpan(),
+//                    charStart, charStart + wordFromLine.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            tv.setText(spanText, TextView.BufferType.SPANNABLE);
         }
         return wordFromText;
     }
@@ -59,7 +59,8 @@ public class WordFromTextProvider {
     }
 
     private String getSentenceFromText(CharSequence text, CharSequence subtext) {
-        return getMatchingResult(text, Pattern.compile("(?<=\\.)(\\w|\\s|,|'|`)+" + subtext + ".+?(\\.)"));
+        return getMatchingResult(text,
+                Pattern.compile("(?<=\\.)(\\w|\\s|,|'|`|-|–)+" + subtext + ".+?(\\.)"));
     }
 
     private String getMatchingResult(CharSequence line, Pattern pattern) {
