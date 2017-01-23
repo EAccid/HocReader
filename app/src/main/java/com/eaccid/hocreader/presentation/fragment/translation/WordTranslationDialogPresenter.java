@@ -69,8 +69,8 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                     public void onNext(TextTranslation textTranslation) {
                         {
                             Log.i(LOG_TAG, "Text translated status: " + !textTranslation.isEmpty());
-                            showTranslationsData(textTranslation);
                             setmNextWordToTranslate(textTranslation.getWord());
+                            showTranslationsData(textTranslation);
                             mTranslatedWordImpl = new TranslatedWordImpl();
                             mTranslatedWordImpl.setWordBaseForm(textTranslation.getWord());
                             mTranslatedWordImpl.setWordFromContext(wordFromText.getText());
@@ -81,18 +81,20 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     }
 
     private void showTranslationsData(TextTranslation textTranslation) {
+
+        mView.showContextWord(mView.getWordFromText().getText());
         mView.ShowBaseWord(mNextWordToTranslate);
+
         new ImageViewManager()
                 .loadPictureFromUrl(mView.getWordPicture(), textTranslation.getPicUrl());
         mMediaPlayer = new MediaPlayerManager()
                 .createAndPreparePlayerFromURL(textTranslation.getSoundUrl());
         mView.showWordTranscription(textTranslation.getTranscription());
         mView.showTranslations(textTranslation.getTranslates());
-        mView.showTranslations(textTranslation.getTranslates());
     }
 
     public void OnSpeakerClicked() {
-        if (mMediaPlayer != null) return;
+        if (mMediaPlayer == null) return;
         new MediaPlayerManager().play(mMediaPlayer);
         mMediaPlayer.setOnCompletionListener(mp -> mView.showSpeaker(false));
         mView.showSpeaker(true);

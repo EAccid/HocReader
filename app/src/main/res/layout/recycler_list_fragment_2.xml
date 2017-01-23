@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         app:el_duration="1000"
         app:el_expanded="false"
         app:el_parallax="0.5">
@@ -65,7 +65,7 @@
             android:id="@+id/ripple_view"
             style="@style/icon_toggles_ripple_effect"
             android:layout_gravity="center"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="16dp">
 
             <ImageButton
                 android:id="@+id/show_hint"

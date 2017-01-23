@@ -45,8 +45,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:textColor="?attr/colorPrimaryDark"
-                android:textStyle="normal|bold" />
+                android:padding="8dp"
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:text="@string/base_word"/>
 
             <ImageView
                 android:id="@+id/image_word_picture"

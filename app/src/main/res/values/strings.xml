@@ -83,5 +83,6 @@
     <string name="don_t_know">DON\'T KNOW</string>
     <string name="give_me_a_hint"> *? Give me a hint</string>
     <string name="input_new_word">Input new word</string>
+    <string name="base_word">Base word</string>
 
 </resources>
