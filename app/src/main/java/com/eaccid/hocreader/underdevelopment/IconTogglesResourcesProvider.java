@@ -12,7 +12,7 @@ public class IconTogglesResourcesProvider {
         if (isSetToLearn) {
             return R.drawable.ic_learn_by_heart_border_gray_24px;
         } else {
-            return R.drawable.ic_learn_by_heart_green_18px;
+            return R.drawable.ic_learn_by_heart_green_24px;
         }
     }
 

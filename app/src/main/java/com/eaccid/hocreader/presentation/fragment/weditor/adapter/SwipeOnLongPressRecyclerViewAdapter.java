@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
@@ -187,24 +188,20 @@ public class SwipeOnLongPressRecyclerViewAdapter
     private void setViewHoldersContainerBackGround(WordsEditorViewHolder holder, int position) {
         final int swipeState = holder.getSwipeStateFlags();
         int bgResId;
-
-        /** Change background color of the selected items in list view  **/
-        if (mSelectedItemsIds.get(position)){
+        if (mSelectedItemsIds.get(position)) {
             bgResId = R.drawable.bg_item_selected_state;
-        }else if (getWordListItemProvider(position).isLastAdded()) {
+        } else if (getWordListItemProvider(position).isLastAdded()) {
             bgResId = R.drawable.bg_item_session_state;
         } else {
             bgResId = R.drawable.bg_item_normal_state;
         }
-        /**
-         if ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0) {
-         if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
-         bgResId = R.drawable.bg_item_session_state;
-         } else if ((swipeState & Swipeable.STATE_FLAG_SWIPING) != 0) {
-         bgResId = R.drawable.bg_item_normal_state;
-         }
-         }
-         */
+        if ((swipeState & Swipeable.STATE_FLAG_IS_UPDATED) != 0) {
+            if ((swipeState & Swipeable.STATE_FLAG_IS_ACTIVE) != 0) {
+                bgResId = R.drawable.bg_item_swiping_active_state;
+            } else if ((swipeState & Swipeable.STATE_FLAG_SWIPING) != 0) {
+                bgResId = R.drawable.bg_item_swiping_state;
+            }
+        }
         holder.container.setBackgroundResource(bgResId);
     }
 

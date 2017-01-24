@@ -22,17 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView-->
-            <!--android:id="@+id/word_image"-->
-            <!--android:layout_width="@dimen/word_image_size"-->
-            <!--android:layout_height="@dimen/word_image_size"-->
-            <!--android:layout_gravity="start"-->
-            <!--android:layout_marginBottom="16dp"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_marginRight="16dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:background="@drawable/empty_circle_background" />-->
-
             <TextView
                 android:id="@+id/word"
                 style="@style/TextAppearance.AppCompat.Title"
@@ -41,6 +30,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
+                android:textColor="@color/color_word_text_dark"
                 android:text="@string/empty_word" />
 
             <TextView

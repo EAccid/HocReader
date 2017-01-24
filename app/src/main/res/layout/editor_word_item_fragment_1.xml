@@ -3,7 +3,7 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="127dp"
+    android:minHeight="129dp"
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
     android:background="@color/colorTransparent">
@@ -23,7 +23,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/empty_translation"
-            android:textColor="@color/colorPrimaryText"/>
+            android:textColor="@color/color_swiping_text_light"/>
 
         <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             expandableTextView:animDuration="200"
-            expandableTextView:maxCollapsedLines="3">
+            expandableTextView:maxCollapsedLines="2">
 
             <TextView
                 android:id="@+id/expandable_text"
@@ -41,6 +41,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="42dp"
+                android:textColor="@color/color_swiping_text_dark"
                 android:text="@string/word_context" />
 
             <ImageButton

@@ -61,7 +61,7 @@
             android:layout_marginEnd="72dp"
             android:layout_marginStart="72dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/empty_circle_background_test"
+            android:background="@drawable/empty_circle_background"
             android:scaleType="centerCrop" />
 
         <LinearLayout

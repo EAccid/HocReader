@@ -17,8 +17,7 @@
     </style>
 
     <style name="AppThemeLight" parent="AppTheme.NoActionBar">
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">

@@ -15,7 +15,7 @@
             <ImageView
                 android:id="@+id/show_in_page"
                 style="@style/icon_toggles"
-                android:src="@drawable/ic_show_in_page_gray_18px" />
+                android:src="@drawable/ic_show_in_page_gray_24px" />
         </com.andexert.library.RippleView>
 
         <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
