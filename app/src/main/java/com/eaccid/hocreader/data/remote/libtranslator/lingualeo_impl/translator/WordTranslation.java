@@ -2,7 +2,7 @@ package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.translator
 
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.LingualeoResponse;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
-import com.eaccid.hocreader.underdevelopment.TextManagerImpl;
+import com.eaccid.hocreader.ins.impl.TextManagerImpl;
 
 import java.util.List;
 

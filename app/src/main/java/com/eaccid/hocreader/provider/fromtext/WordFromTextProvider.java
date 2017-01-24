@@ -7,7 +7,7 @@ import android.text.Spanned;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-import com.eaccid.hocreader.underdevelopment.TextManagerImpl;
+import com.eaccid.hocreader.ins.impl.TextManagerImpl;
 import com.eaccid.hocreader.underdevelopment.spann.WordClickableSpan;
 
 import java.util.regex.Matcher;
@@ -33,7 +33,10 @@ public class WordFromTextProvider {
             wordFromText.setText(new TextManagerImpl().capitalizeFirsChar(wordFromLine));
             wordFromText.setSentence(
                     getSentenceFromText(
-                            ((String) text).replace("\n\n", " ").trim(), text.subSequence(startOfLine, endOfLine).toString()));
+                            (text.toString()).replace("\n\n", " ").trim(),
+                                text.subSequence(startOfLine, endOfLine).toString()
+                    )
+            );
             Spannable spanText = new SpannableString(text);
             spanText.setSpan(new WordClickableSpan(),
                     charStart, charStart + wordFromLine.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -61,7 +64,7 @@ public class WordFromTextProvider {
 
     private String getSentenceFromText(CharSequence text, CharSequence subtext) {
         return getMatchingResult(text,
-                Pattern.compile("(?<=\\.)(\\w|\\s|,|'|`|-|–)+" + subtext + ".+?(\\.)"));
+                Pattern.compile("(?<=\\.)(\\w|\\s|,|'|`|-|–|\")+" + subtext + ".+?(\\.)"));
     }
 
     //todo take out in separate class

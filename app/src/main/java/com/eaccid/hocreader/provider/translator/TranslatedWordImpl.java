@@ -1,6 +1,6 @@
 package com.eaccid.hocreader.provider.translator;
 
-import com.eaccid.hocreader.underdevelopment.TextManagerImpl;
+import com.eaccid.hocreader.ins.impl.TextManagerImpl;
 import com.eaccid.hocreader.underdevelopment.TranslatedWord;
 
 public class TranslatedWordImpl implements TranslatedWord {
