@@ -63,11 +63,11 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(succeed -> {
                     Log.i(LOG_TAG, "Dictionary updated status: " + succeed);
-                    dataManager.createOrUpdateWord(translatedWord.getWordBaseForm(),
+                    dataManager.createOrUpdateWord(translatedWord.getWordFromContext(),
                             translatedWord.getTranslation(),
                             translatedWord.getContext(),
                             succeed);
-                    addWord(translatedWord.getWordBaseForm());
+                    addWord(translatedWord.getWordFromContext());
                 }, Throwable::printStackTrace);
     }
 

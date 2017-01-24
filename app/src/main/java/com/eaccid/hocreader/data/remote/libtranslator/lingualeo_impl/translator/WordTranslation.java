@@ -2,6 +2,7 @@ package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.translator
 
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.LingualeoResponse;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
+import com.eaccid.hocreader.underdevelopment.TextManagerImpl;
 
 import java.util.List;
 
@@ -55,19 +56,17 @@ public class WordTranslation implements TextTranslation {
     }
 
     private void initLingualeoResponse(LingualeoResponse lingualeoResponse) {
-
         this.lingualeoResponse = lingualeoResponse == null ? new LingualeoResponse() : lingualeoResponse;
-
     }
 
     private void loadTranslateData() {
-
-        word = lingualeoResponse.getString("word");
+        word = new TextManagerImpl()
+                .capitalizeFirsChar(lingualeoResponse.getString("word")
+                );
         translates = lingualeoResponse.getListString("value");
         transcription = lingualeoResponse.getString("transcription");
         soundUrl = lingualeoResponse.getString("sound_url");
         picUrl = lingualeoResponse.getString("pic_url");
-
     }
 
     // just for practicing reflection

@@ -1,6 +1,6 @@
-package com.eaccid.hocreader.provider.fromtext;
+package com.eaccid.hocreader.underdevelopment;
 
-public class StringFromTextManagerImpl implements StringFromTextManager {
+public class TextManagerImpl implements TextManager {
     @Override
     public String capitalizeFirsChar(String text) {
         if (text == null || text.isEmpty())

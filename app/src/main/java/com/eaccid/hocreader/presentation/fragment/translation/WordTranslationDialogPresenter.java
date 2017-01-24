@@ -69,7 +69,8 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                     public void onNext(TextTranslation textTranslation) {
                         {
                             Log.i(LOG_TAG, "Text translated status: " + !textTranslation.isEmpty());
-                            setmNextWordToTranslate(textTranslation.getWord());
+                            if (isNextWordToTranslateEmpty())
+                                setmNextWordToTranslate(textTranslation.getWord());
                             showTranslationsData(textTranslation);
                             mTranslatedWordImpl = new TranslatedWordImpl();
                             mTranslatedWordImpl.setWordBaseForm(textTranslation.getWord());
@@ -101,18 +102,17 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     }
 
     public void OnWordClicked() {
-        String nextWord = getmNextWordToTranslate();
+        String nextWord = getNextWordToTranslate();
         WordFromText currentWord = mView.getWordFromText();
-
         setmNextWordToTranslate(currentWord.getText());
         currentWord.setText(nextWord);
-
         translateText(currentWord);
     }
 
     public void onTranslationClick(String text) {
         mTranslatedWordImpl.setTranslation(text);
-        ((WordTranslationDialogFragment.OnWordTranslationClickListener) mView.getContext()).onWordTranslated(mTranslatedWordImpl);
+        ((WordTranslationDialogFragment.OnWordTranslationClickListener) mView.getContext())
+                .onWordTranslated(mTranslatedWordImpl);
         mView.dismiss();
     }
 
@@ -120,8 +120,11 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
         this.mNextWordToTranslate = mNextWordToTranslate;
     }
 
-    private String getmNextWordToTranslate() {
+    private String getNextWordToTranslate() {
         return mNextWordToTranslate;
     }
 
+    public boolean isNextWordToTranslateEmpty() {
+        return mNextWordToTranslate == null || mNextWordToTranslate.isEmpty();
+    }
 }
