@@ -53,7 +53,7 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
 
     public void addWord(String word) {
         wordListInteractor.addItem(word);
-        mView.notifyItemChanged();
+        mView.notifyDataSetChanged();
     }
 
     public void onWordTranslated(TranslatedWord translatedWord) {

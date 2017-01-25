@@ -59,9 +59,9 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (mPresenter == null) mPresenter = new WordEditorPresenter();
         mPresenter.attachView(this);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -217,7 +217,7 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
     }
 
     public void notifyItemInserted(int position) {
-        mAdapter.notifyItemInserted(position);
+        mAdapter.notifyDataSetChanged();
         mRecyclerView.scrollToPosition(position);
     }
 

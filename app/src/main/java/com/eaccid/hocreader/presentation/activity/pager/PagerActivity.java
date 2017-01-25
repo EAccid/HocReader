@@ -64,7 +64,7 @@ public class PagerActivity extends AppCompatActivity implements BaseView,
         return (TextView) viewGroup.findViewById(R.id.text_on_page);
     }
 
-    public void notifyItemChanged() {
+    public void notifyDataSetChanged() {
         wordsEditorFragment.notifyDataSetChanged();
     }
 

@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 public class LingualeoServiceCookiesImpl implements LingualeoServiceCookies {
 
-    private static final String LINGUALEO_COOKIES = "lingualeo_cookies";
+    private final String LINGUALEO_COOKIES = "lingualeo_cookies";
     @Inject
     SharedPreferences sp;
 
