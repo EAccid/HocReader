@@ -14,6 +14,7 @@ import com.eaccid.hocreader.presentation.activity.notcard.CardWordPresenter;
 import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
 import com.eaccid.hocreader.presentation.service.MemorizingPresenter;
 import com.eaccid.hocreader.presentation.service.SchedulingMemorizingAlarmManager;
+import com.eaccid.hocreader.provider.db.BookOnReadProvider;
 import com.eaccid.hocreader.provider.db.WordCursorProvider;
 import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesImpl;
 
@@ -51,4 +52,6 @@ public interface AppComponent {
     void inject(WordCursorProvider wordCursorProvider);
 
     void inject(CardWordPresenter cardWordPresenter);
+
+    void inject(BookOnReadProvider bookOnReadProvider);
 }
