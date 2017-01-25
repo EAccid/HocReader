@@ -19,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
+import com.h6ah4i.android.widget.advrecyclerview.utils.CustomRecyclerViewUtils;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -27,7 +28,6 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class BookFragment extends Fragment implements
         OnMenuItemClickListener, OnMenuItemLongClickListener, BaseView {
@@ -67,7 +67,6 @@ public class BookFragment extends Fragment implements
         boolean isSelectableMode = false;
         if (savedInstanceState != null)
             isSelectableMode = savedInstanceState.getBoolean("is_selectable");
-
         View rootView = inflater.inflate(R.layout.bookreader_rv_fragment_0, container, false);
         rootView.setTag(TAG);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -79,6 +78,12 @@ public class BookFragment extends Fragment implements
         moreMenuImg.setOnClickListener(view -> onMoreMenuClicked());
         setSelectableText(isSelectableMode);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mPresenter.onViewCreated();
     }
 
     @Override
@@ -106,7 +111,7 @@ public class BookFragment extends Fragment implements
             case OPEN_GOOGLE_TRANSLATOR:
                 Intent googleTranslatorIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.google.android.apps.translate");
                 if (googleTranslatorIntent != null) {
-                    startActivity(googleTranslatorIntent);//null pointer check in case package name was not found
+                    startActivity(googleTranslatorIntent);
                 }
                 break;
             case FONT_SIZE:
@@ -136,7 +141,6 @@ public class BookFragment extends Fragment implements
     }
 
     private void showGoToPageFragment(View clickedView) {
-
         new MaterialDialog.Builder(clickedView.getContext())
                 .title(R.string.go_to_page_title)
                 .inputType(InputType.TYPE_CLASS_NUMBER)
@@ -149,7 +153,6 @@ public class BookFragment extends Fragment implements
     }
 
     public void showSnackbarBackToLastOpenedPage(int currentPage, int previousPage) {
-
         Snackbar snackbar = Snackbar.make(
                 mRecyclerView,
                 R.string.previous_page,
@@ -165,6 +168,10 @@ public class BookFragment extends Fragment implements
 
     public void scrollToListPosition(int position, int oldPosition) {
         mRecyclerView.scrollToPosition(position);
+    }
+
+    public int getCurrentPosition() {
+        return CustomRecyclerViewUtils.findFirstVisibleItemPosition(mRecyclerView, false);
     }
 
     public void notifyDataSetChanged() {
@@ -201,7 +208,6 @@ public class BookFragment extends Fragment implements
     }
 
     private List<MenuObject> getMenuObjects() {
-
 
         MenuObject close = new MenuObjectWrapper(MenuObjectWrapper.MenuOption.CLOSE);
         close.setResource(R.drawable.ic_arrow_back_blue_24px);

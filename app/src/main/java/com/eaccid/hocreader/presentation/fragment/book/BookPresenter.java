@@ -2,6 +2,7 @@ package com.eaccid.hocreader.presentation.fragment.book;
 
 import android.util.Log;
 
+import com.eaccid.hocreader.provider.db.BookOnReadProvider;
 import com.eaccid.hocreader.provider.file.BaseFileImpl;
 import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.hocreader.provider.file.pagesplitter.Page;
@@ -38,7 +39,14 @@ public class BookPresenter implements BasePresenter<BookFragment> {
     @Override
     public void detachView() {
         Log.i(logTAG, "BookFragment has been detached.");
+        new BookOnReadProvider().storeCurrentBooksPage(mView.getCurrentPosition());
         mView = null;
+    }
+
+    public void onViewCreated() {
+        setDataToList();
+        int position = new BookOnReadProvider().loadCurrentBooksPage();
+        mView.scrollToListPosition(position, 0);
     }
 
     private void setDataManager() {
