@@ -1,9 +1,8 @@
-package com.eaccid.hocreader.presentation.training.carousel;
+package com.eaccid.hocreader.presentation.training;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -20,26 +19,25 @@ import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.presentation.BaseView;
-import com.eaccid.hocreader.presentation.training.carousel.adapter.WordCarouselRecyclerViewAdapter;
+import com.eaccid.hocreader.presentation.training.carouseladapter.WordCarouselRecyclerViewAdapter;
+import com.eaccid.hocreader.provider.db.words.WordCursorProvider;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class WordsCarouselFragment extends Fragment implements BaseView {
+public class WordTrainingFragment extends Fragment {
 
-    public static WordsCarouselFragment newInstance(boolean isFilterByBook) {
-        WordsCarouselFragment f = new WordsCarouselFragment();
+    public static WordTrainingFragment newInstance(boolean isFilterByBook) {
+        WordTrainingFragment f = new WordTrainingFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("is_filter_by_book", isFilterByBook);
         f.setArguments(bundle);
         return f;
     }
 
-    private WordCarouselPresenter mPresenter;
     @BindView(R.id.expandable_layout)
     ExpandableLayout expandable_layout;
     @BindView(R.id.show_hint)
@@ -52,24 +50,6 @@ public class WordsCarouselFragment extends Fragment implements BaseView {
     EditText new_text;
     @BindView(R.id.hint)
     LinearLayout hint;
-
-    @Override
-    public BasePresenter getPresenter() {
-        return null;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (mPresenter == null) mPresenter = new WordCarouselPresenter();
-        mPresenter.attachView(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mPresenter.detachView();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,27 +67,33 @@ public class WordsCarouselFragment extends Fragment implements BaseView {
         final RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        WordCarouselRecyclerViewAdapter adapter = mPresenter.createWordCarouselRecyclerViewAdapter();
+        WordCarouselRecyclerViewAdapter adapter = new WordCarouselRecyclerViewAdapter(getContext());
+        WordCursorProvider wordCursorProvider = new WordCursorProvider();
+        adapter = (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(adapter,
+                getArguments().getBoolean("is_filter_by_book"));
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new CenterScrollListener());
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(view1 -> {
-            new_text.setText("Translation under development");
-            new_text.setTextColor(Color.BLUE);
-        });
-        showHint.setOnClickListener(v -> {
-            hint.setVisibility(View.GONE);
-            expandable_layout.expand();
-        });
-        expandable_text.setOnClickListener(v -> {
-            expandable_layout.collapse();
-            expandable_layout.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
-                @Override
-                public void onExpansionUpdate(float expansionFraction) {
-                    if (expansionFraction == 0)
-                        hint.setVisibility(View.VISIBLE);
-                }
-            });
+    }
+
+    @OnClick(R.id.fab)
+    public void onFabClick() {
+        new_text.setText("Translation under development");
+        new_text.setTextColor(Color.BLUE);
+    }
+
+    @OnClick(R.id.show_hint)
+    public void OnShowHintClick() {
+        hint.setVisibility(View.GONE);
+        expandable_layout.expand();
+    }
+
+    @OnClick(R.id.expandable_text)
+    public void OnExpandableTextClick() {
+        expandable_layout.collapse();
+        expandable_layout.setOnExpansionUpdateListener(expansionFraction -> {
+            if (expansionFraction == 0)
+                hint.setVisibility(View.VISIBLE);
         });
     }
+
 }

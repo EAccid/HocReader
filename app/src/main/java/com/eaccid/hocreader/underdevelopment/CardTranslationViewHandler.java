@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.temp.underdevelopment;
+package com.eaccid.hocreader.underdevelopment;
 
 public class CardTranslationViewHandler {
 

@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.temp.underdevelopment.cardremember;
+package com.eaccid.hocreader.underdevelopment.cardremember;
 
 import android.util.Log;
 

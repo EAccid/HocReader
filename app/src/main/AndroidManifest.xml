@@ -43,7 +43,7 @@
         </activity>
 
         <service
-            android:name=".temp.underdevelopment.services.LingualeoSyncService"
+            android:name=".underdevelopment.services.LingualeoSyncService"
             android:enabled="true"
             android:exported="false" />
         <service
@@ -55,7 +55,7 @@
             android:name=".presentation.memorizing.MemorizingAlarmReceiver"
             android:process=":remote" />
         <activity
-            android:name=".temp.underdevelopment.cardremember.CardWordActivity"
+            android:name=".underdevelopment.cardremember.CardWordActivity"
             android:theme="@style/AppTheme.Dialog" />
         <activity
             android:name=".presentation.settings.SettingsActivity"

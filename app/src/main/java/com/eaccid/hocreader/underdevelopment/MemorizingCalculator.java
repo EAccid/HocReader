@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.temp.underdevelopment;
+package com.eaccid.hocreader.underdevelopment;
 
 public interface MemorizingCalculator {
     int LOW = 0;

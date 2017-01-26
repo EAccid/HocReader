@@ -1,6 +1,4 @@
-package com.eaccid.hocreader.temp.ins.impl;
-
-import com.eaccid.hocreader.temp.ins.TextManager;
+package com.eaccid.hocreader.provider.fromtext.ins;
 
 public class TextManagerImpl implements TextManager {
     @Override

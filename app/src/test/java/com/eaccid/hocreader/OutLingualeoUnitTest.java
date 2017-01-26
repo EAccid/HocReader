@@ -2,8 +2,8 @@ package com.eaccid.hocreader;
 
 
 import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesImpl;
-import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.deprecated.LingualeoDictionary;
-import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.deprecated.LingualeoTranslator;
+import com.eaccid.hocreader.data.remote.libtranslator.deprecated.LingualeoDictionary;
+import com.eaccid.hocreader.data.remote.libtranslator.deprecated.LingualeoTranslator;
 
 import junit.framework.Assert;
 

@@ -1,6 +1,5 @@
 package com.eaccid.hocreader.provider.file.findner;
 
-
 import android.os.Environment;
 
 import java.io.File;
@@ -16,10 +15,6 @@ public class FileOnDeviceProvider {
         return fileList;
     }
 
-//    public FileExtensions[] getFileExtensions() {
-//        return FileExtensions.values();
-//    }
-
     private void fillFileList() {
         if (isExternalStorageReadable())
             addFilesToList(Environment.getExternalStorageDirectory(), getFormatExtensions(FileExtensions.values()), "");
@@ -31,13 +26,9 @@ public class FileOnDeviceProvider {
     }
 
     private void addFilesToList(File dir, String fileExtensions, String filenameFilter) {
-
         if (dir == null || dir.listFiles() == null) return;
-
-        System.out.println(dir);
         for (File file : dir.listFiles())
             if (file.isDirectory()) {
-
                 //TODO settings: set user directory names or none. temp condition
                 String dirName = file.getName();
                 if (dirName.equalsIgnoreCase("downloads") ||
@@ -52,7 +43,6 @@ public class FileOnDeviceProvider {
                 if (pattern.matcher(file.getName().toLowerCase()).matches())
                     fileList.add(file);
             }
-
     }
 
     /**

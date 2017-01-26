@@ -1,8 +1,9 @@
-package com.eaccid.hocreader.temp.underdevelopment;
+package com.eaccid.hocreader.presentation.weditor;
 
 import android.support.annotation.DrawableRes;
 
 import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.underdevelopment.MemorizingCalculator;
 
 public class IconTogglesResourcesProvider {
 

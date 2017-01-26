@@ -7,7 +7,7 @@ import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.temp.underdevelopment.cardremember.CardWordActivity;
+import com.eaccid.hocreader.underdevelopment.cardremember.CardWordActivity;
 
 import javax.inject.Inject;
 

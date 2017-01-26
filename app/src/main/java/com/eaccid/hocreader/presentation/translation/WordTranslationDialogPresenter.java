@@ -72,10 +72,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                             if (isNextWordToTranslateEmpty())
                                 setmNextWordToTranslate(textTranslation.getWord());
                             showTranslationsData(textTranslation);
-                            mTranslatedWordImpl = new TranslatedWordImpl();
-                            mTranslatedWordImpl.setWordBaseForm(textTranslation.getWord());
-                            mTranslatedWordImpl.setWordFromContext(wordFromText.getText());
-                            mTranslatedWordImpl.setContext(wordFromText.getSentence());
+                            mTranslatedWordImpl = new TranslatedWordImpl(wordFromText.getText(),wordFromText.getSentence());
                         }
                     }
                 });
@@ -84,7 +81,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     private void showTranslationsData(TextTranslation textTranslation) {
 
         mView.showContextWord(mView.getWordFromText().getText());
-        mView.ShowBaseWord(mNextWordToTranslate);
+        mView.showBaseWord(mNextWordToTranslate);
 
         new ImageViewManager()
                 .loadPictureFromUrl(mView.getWordPicture(), textTranslation.getPicUrl());
@@ -110,7 +107,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     }
 
     public void onTranslationClick(String text) {
-        mTranslatedWordImpl.setTranslation(text);
+        mTranslatedWordImpl.addTranslation(text);
         ((WordTranslationDialogFragment.OnWordTranslationClickListener) mView.getContext())
                 .onWordTranslated(mTranslatedWordImpl);
         mView.dismiss();

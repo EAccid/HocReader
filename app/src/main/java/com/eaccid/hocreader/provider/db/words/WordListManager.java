@@ -16,15 +16,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class WordListFromDatabaseFetcher implements Callable<List<ItemDataProvider>> {
-    private final static String LOG_TAG = "WordListFetcher";
+public class WordListManager implements Callable<List<ItemDataProvider>> {
+    private final static String LOG_TAG = "WordListManager";
     private WordFilter wordFilter;
     private List<String> words;
     private int fromIndex;
 
     private AppDatabaseManager dataManager;
 
-    public WordListFromDatabaseFetcher(AppDatabaseManager dataManager) {
+    public WordListManager(AppDatabaseManager dataManager) {
         this.dataManager = dataManager;
     }
 

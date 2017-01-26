@@ -18,9 +18,9 @@ import com.eaccid.hocreader.presentation.translation.semantic.MediaPlayerManager
 import com.eaccid.hocreader.provider.db.words.WordItemImpl;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.provider.db.words.listprovider.ItemDataProvider;
-import com.eaccid.hocreader.temp.underdevelopment.MemorizingCalculatorImpl;
-import com.eaccid.hocreader.temp.underdevelopment.ReaderExceptionHandlerImpl;
-import com.eaccid.hocreader.temp.underdevelopment.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
+import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
+import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
-import com.eaccid.hocreader.temp.underdevelopment.TranslatedWord;
+import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.FragmentTags;
 import com.eaccid.hocreader.presentation.book.OnWordFromPageViewTouchListener;
 import com.eaccid.hocreader.R;

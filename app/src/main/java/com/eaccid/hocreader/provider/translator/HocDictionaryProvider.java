@@ -1,7 +1,6 @@
 package com.eaccid.hocreader.provider.translator;
 
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionaryRx;
-import com.eaccid.hocreader.temp.underdevelopment.TranslatedWord;
 
 import rx.Observable;
 

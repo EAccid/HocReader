@@ -1,8 +1,6 @@
 package com.eaccid.hocreader.data.remote;
 
-import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.deprecated.LingualeoTranslator;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.translator.LingualeoTranslatorRx;
-import com.eaccid.hocreader.data.remote.libtranslator.translator.Translator;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TranslatorRx;
 
 public class TranslatorFactory {

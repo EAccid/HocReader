@@ -229,33 +229,13 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
      * Handle action mode
      */
 
-    private void startActionMode() {
-        ToolbarActionModeCallback actionModeCallback = new ToolbarActionModeCallback(mAdapter);
-        actionModeCallback.setToolbarActionModeListener(this);
-        mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
-    }
-
-    private void onListItemSelect(int position) {
-        mAdapter.toggleSelection(position);
-        boolean hasCheckedItems = mAdapter.getSelectedCount() > 0;
-        if (!hasCheckedItems) {
-            mActionMode.finish();
-        } else {
-            mActionMode.setTitle(String.valueOf(mAdapter.getSelectedCount()) + " selected");
-        }
-    }
-
-    public void releaseActionMode() {
-        if (mActionMode != null)
-            mActionMode = null;
-    }
-
     @Override
     public void onModeDestroyed(ActionMode mode) {
         releaseActionMode();
     }
 
     @Override
+
     public void onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
@@ -273,8 +253,30 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         }
     }
 
+    public void releaseActionMode() {
+        if (mActionMode != null)
+            mActionMode = null;
+    }
+
     public void showToast(String text) {
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
+
+    private void startActionMode() {
+        ToolbarActionModeCallback actionModeCallback = new ToolbarActionModeCallback(mAdapter);
+        actionModeCallback.setToolbarActionModeListener(this);
+        mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
+    }
+
+    private void onListItemSelect(int position) {
+        mAdapter.toggleSelection(position);
+        boolean hasCheckedItems = mAdapter.getSelectedCount() > 0;
+        if (!hasCheckedItems) {
+            mActionMode.finish();
+        } else {
+            mActionMode.setTitle(String.valueOf(mAdapter.getSelectedCount()) + " selected");
+        }
+    }
+
 }
 

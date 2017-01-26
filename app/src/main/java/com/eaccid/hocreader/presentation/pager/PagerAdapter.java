@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.eaccid.hocreader.presentation.book.BookFragment;
-import com.eaccid.hocreader.presentation.training.carousel.WordsCarouselFragment;
+import com.eaccid.hocreader.presentation.training.WordTrainingFragment;
 import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
@@ -34,7 +34,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 }
                 return wordsFromBookFragment;
             case 2:
-                return WordsCarouselFragment.newInstance(true);
+                return WordTrainingFragment.newInstance(true);
             default:
                 throw new IllegalStateException("There isn't such fragment position: " + position);
         }

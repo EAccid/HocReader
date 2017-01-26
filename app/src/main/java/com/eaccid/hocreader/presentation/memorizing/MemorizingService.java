@@ -40,7 +40,6 @@ public class MemorizingService extends IntentService implements BaseView {
     }
 
     public void createMemorizingNotification(Intent pendingIntent, int id, String text) {
-
         final int REQUEST_CODE = id+1;
         PendingIntent contentIntent =
         PendingIntent.getActivity(this, REQUEST_CODE, pendingIntent, PendingIntent.FLAG_CANCEL_CURRENT);

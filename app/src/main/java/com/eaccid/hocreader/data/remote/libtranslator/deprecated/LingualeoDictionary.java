@@ -1,8 +1,7 @@
-package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.deprecated;
+package com.eaccid.hocreader.data.remote.libtranslator.deprecated;
 
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestParameters;
-import com.eaccid.hocreader.data.remote.libtranslator.dictionary.Dictionary;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 
 public class LingualeoDictionary implements Dictionary {

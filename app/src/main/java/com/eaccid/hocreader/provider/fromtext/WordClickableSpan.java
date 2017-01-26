@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.temp.underdevelopment.spann;
+package com.eaccid.hocreader.provider.fromtext;
 
 import android.graphics.Color;
 import android.text.TextPaint;

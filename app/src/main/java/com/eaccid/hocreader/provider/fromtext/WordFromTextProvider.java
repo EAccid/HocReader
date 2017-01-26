@@ -7,8 +7,7 @@ import android.text.Spanned;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-import com.eaccid.hocreader.temp.ins.impl.TextManagerImpl;
-import com.eaccid.hocreader.temp.underdevelopment.spann.WordClickableSpan;
+import com.eaccid.hocreader.provider.fromtext.ins.TextManagerImpl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

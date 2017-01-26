@@ -1,12 +1,12 @@
-package com.eaccid.hocreader.temp.underdevelopment;
+package com.eaccid.hocreader.provider.translator;
 
 public interface TranslatedWord {
-
-    String getWordBaseForm();
 
     String getWordFromContext();
 
     String getTranslation();
 
     String getContext();
+
+    void addTranslation(String translation);
 }

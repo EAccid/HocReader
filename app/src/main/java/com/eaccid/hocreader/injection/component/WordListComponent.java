@@ -3,7 +3,6 @@ package com.eaccid.hocreader.injection.component;
 import com.eaccid.hocreader.injection.WordListScope;
 import com.eaccid.hocreader.injection.module.DataProviderModule;
 import com.eaccid.hocreader.presentation.pager.PagerPresenter;
-import com.eaccid.hocreader.presentation.training.carousel.WordCarouselPresenter;
 import com.eaccid.hocreader.presentation.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.hocreader.presentation.weditor.WordEditorPresenter;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
@@ -16,8 +15,6 @@ import dagger.Subcomponent;
 public interface WordListComponent {
 
     WordListInteractor wordListInteractor();
-
-    void inject(WordCarouselPresenter wordCarouselPresenter);
 
     void inject(PagerPresenter pagerPresenter);
 

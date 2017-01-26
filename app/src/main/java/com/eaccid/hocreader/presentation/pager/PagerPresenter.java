@@ -8,7 +8,7 @@ import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.provider.translator.HocDictionaryProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.temp.underdevelopment.TranslatedWord;
+import com.eaccid.hocreader.provider.translator.TranslatedWord;
 
 import javax.inject.Inject;
 

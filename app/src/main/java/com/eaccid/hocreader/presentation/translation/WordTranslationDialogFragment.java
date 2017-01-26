@@ -15,16 +15,15 @@ import android.widget.TextView;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
-import com.eaccid.hocreader.temp.underdevelopment.TranslatedWord;
-import com.eaccid.hocreader.presentation.BaseView;
-import com.eaccid.hocreader.temp.underdevelopment.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.provider.translator.TranslatedWord;
+import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WordTranslationDialogFragment extends DialogFragment implements BaseView {
+public class WordTranslationDialogFragment extends DialogFragment implements TranslationView {
 
     public interface OnWordTranslationClickListener {
         void onWordTranslated(TranslatedWord translatedWord);
@@ -89,15 +88,13 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
         mPresenter.onViewCreated();
     }
 
-    public WordFromText getWordFromText() {
-        return (WordFromText) getArguments().getSerializable("wordFromText");
-    }
-
+    @Override
     public void showContextWord(String title) {
         getDialog().setTitle(title);
     }
 
-    public void ShowBaseWord(String text) {
+    @Override
+    public void showBaseWord(String text) {
         mBaseWord.setText(text);
     }
 
@@ -105,20 +102,27 @@ public class WordTranslationDialogFragment extends DialogFragment implements Bas
         return mWordPicture;
     }
 
+    @Override
     public void showWordTranscription(String text) {
         mTranscription.setText("[ " + text + " ]");
     }
 
+    @Override
     public void showSpeaker(boolean isSpeaking) {
         mSpeaker.setImageResource(
                 new IconTogglesResourcesProvider().getSpeakerResId(isSpeaking)
         );
     }
 
+    @Override
     public void showTranslations(List<String> list) {
         mAdapter = new ArrayAdapter<String>(
                 getView().getContext(), R.layout.translation_dialog_item, list);
         mTranslations.setAdapter(mAdapter);
+    }
+
+    public WordFromText getWordFromText() {
+        return (WordFromText) getArguments().getSerializable("wordFromText");
     }
 
     public void notifyTranslationsChanged() {

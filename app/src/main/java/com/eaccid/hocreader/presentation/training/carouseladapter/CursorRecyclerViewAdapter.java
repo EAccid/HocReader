@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.training.carousel.adapter;
+package com.eaccid.hocreader.presentation.training.carouseladapter;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;

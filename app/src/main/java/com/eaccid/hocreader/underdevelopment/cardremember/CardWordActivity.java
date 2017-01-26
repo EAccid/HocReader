@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.temp.underdevelopment.cardremember;
+package com.eaccid.hocreader.underdevelopment.cardremember;
 
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -14,9 +14,9 @@ import com.eaccid.hocreader.presentation.BaseView;
 import com.eaccid.hocreader.presentation.translation.semantic.ImageViewManager;
 import com.eaccid.hocreader.provider.db.words.WordItem;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
-import com.eaccid.hocreader.temp.underdevelopment.MemorizingCalculatorImpl;
-import com.eaccid.hocreader.temp.underdevelopment.IconTogglesResourcesProvider;
-import com.eaccid.hocreader.temp.underdevelopment.ReaderExceptionHandlerImpl;
+import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
+import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

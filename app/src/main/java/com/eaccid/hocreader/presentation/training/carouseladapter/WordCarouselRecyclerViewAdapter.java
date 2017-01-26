@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.training.carousel.adapter;
+package com.eaccid.hocreader.presentation.training.carouseladapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,9 +14,9 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.presentation.translation.semantic.ImageViewManager;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
-import com.eaccid.hocreader.temp.underdevelopment.MemorizingCalculatorImpl;
-import com.eaccid.hocreader.temp.underdevelopment.ReaderExceptionHandlerImpl;
-import com.eaccid.hocreader.temp.underdevelopment.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
+import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
+import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

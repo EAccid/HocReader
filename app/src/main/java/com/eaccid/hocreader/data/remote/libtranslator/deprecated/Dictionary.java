@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.data.remote.libtranslator.dictionary;
+package com.eaccid.hocreader.data.remote.libtranslator.deprecated;
 
 public interface Dictionary {
 

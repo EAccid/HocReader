@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.training.carousel.adapter;
+package com.eaccid.hocreader.presentation.training.carouseladapter;
 
 import android.content.Context;
 import android.database.Cursor;

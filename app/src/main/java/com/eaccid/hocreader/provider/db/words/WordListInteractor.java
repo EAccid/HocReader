@@ -21,11 +21,11 @@ public class WordListInteractor extends DataListProvider {
 
     private static final String logTAG = "WordListInteractor";
     private List<String> sessionWords;
-    private WordListFromDatabaseFetcher wordListFromDatabaseFetcher;
+    private WordListManager wordListManager;
 
-    public WordListInteractor(WordListFromDatabaseFetcher wordListFromDatabaseFetcher) {
+    public WordListInteractor(WordListManager wordListManager) {
         this.sessionWords = new ArrayList<>();
-        this.wordListFromDatabaseFetcher = wordListFromDatabaseFetcher;
+        this.wordListManager = wordListManager;
     }
 
     @Override
@@ -37,14 +37,14 @@ public class WordListInteractor extends DataListProvider {
     public int undoLastRemoval() {
         WordItemImpl word = (WordItemImpl) getLastRemovedData();
         sessionWords.add(word.getWordFromText());
-        wordListFromDatabaseFetcher.createItemWord(word);
+        wordListManager.createItemWord(word);
         return super.undoLastRemoval();
     }
 
     @Override
     public void removeItem(int position) {
         ItemDataProvider item = getDataList().get(position);
-        wordListFromDatabaseFetcher.removeItem(item);
+        wordListManager.removeItem(item);
         Word word = (Word) item.getObject();
         sessionWords.remove(word.getName());
         super.removeItem(position);
@@ -54,7 +54,7 @@ public class WordListInteractor extends DataListProvider {
         if (sessionWords.contains(wordBaseName)) {
             return;
         }
-        WordItemImpl item = (WordItemImpl) wordListFromDatabaseFetcher.createItemWord(
+        WordItemImpl item = (WordItemImpl) wordListManager.createItemWord(
                 wordBaseName, sessionWords.size(), translation, context, succeed);
         if (item == null) {
             Log.i(logTAG, "Word '" + wordBaseName + "' has not been added to database.");
@@ -80,15 +80,15 @@ public class WordListInteractor extends DataListProvider {
     }
 
     private List<ItemDataProvider> getWordList() {
-        return wordListFromDatabaseFetcher.getAll();
+        return wordListManager.getAll();
     }
 
     private List<ItemDataProvider> getDataListByBookAndSessionWords() {
-        return wordListFromDatabaseFetcher.getAllFromDatabase(sessionWords);
+        return wordListManager.getAllFromDatabase(sessionWords);
     }
 
     private List<ItemDataProvider> addDataListByBookAndSessionWords() {
-        return wordListFromDatabaseFetcher.addAllFromDatabase(sessionWords);
+        return wordListManager.addAllFromDatabase(sessionWords);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class WordListInteractor extends DataListProvider {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                boolean succeed = wordListFromDatabaseFetcher.removeItems();
+                boolean succeed = wordListManager.removeItems();
                 clearSessionDataList();
                 clearDataList();
                 subscriber.onNext(succeed);

@@ -8,8 +8,8 @@ import com.eaccid.hocreader.data.local.WordFilter;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.injection.ApplicationContext;
-import com.eaccid.hocreader.presentation.training.carousel.adapter.WordCarouselRecyclerViewAdapter;
-import com.eaccid.hocreader.presentation.training.carousel.adapter.OrmliteCursorRecyclerViewAdapter;
+import com.eaccid.hocreader.presentation.training.carouseladapter.WordCarouselRecyclerViewAdapter;
+import com.eaccid.hocreader.presentation.training.carouseladapter.OrmliteCursorRecyclerViewAdapter;
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
 
