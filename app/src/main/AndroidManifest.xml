@@ -14,12 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:name=".presentation.activity.main.serchadapter.SearchSuggestionsProvider"
-            android:authorities="com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider"
+            android:name=".presentation.main.serchadapter.SearchSuggestionsProvider"
+            android:authorities="com.eaccid.hocreader.presentation.main.serchadapter.SearchSuggestionsProvider"
             android:exported="false" />
 
         <activity
-            android:name=".presentation.activity.main.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -34,7 +34,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".presentation.activity.pager.PagerActivity"
+            android:name=".temp.presentation.activity.pager.PagerActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -43,30 +43,30 @@
         </activity>
 
         <service
-            android:name=".underdevelopment.services.LingualeoSyncService"
+            android:name=".temp.underdevelopment.services.LingualeoSyncService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".presentation.service.MemorizingService"
+            android:name=".temp.presentation.service.MemorizingService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name=".presentation.service.MemorizingAlarmReceiver"
+            android:name=".temp.presentation.service.MemorizingAlarmReceiver"
             android:process=":remote" />
         <activity
-            android:name=".presentation.activity.notcard.CardWordActivity"
+            android:name=".temp.presentation.activity.notcard.CardWordActivity"
             android:theme="@style/AppTheme.Dialog" />
         <activity
-            android:name=".presentation.activity.settings.SettingsActivity"
+            android:name=".temp.presentation.activity.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".presentation.activity.main.MainActivity"
+            android:parentActivityName=".presentation.main.MainActivity"
             android:theme="@style/AppTheme.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".presentation.activity.main.MainActivity" />
+                android:value=".presentation.main.MainActivity" />
         </activity>
-        <activity android:name=".presentation.activity.training.TrainingActivity"
+        <activity android:name=".temp.presentation.activity.training.TrainingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>

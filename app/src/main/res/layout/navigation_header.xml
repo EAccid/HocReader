@@ -7,7 +7,7 @@
     android:id="@+id/navigation_drawer_header"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".presentation.activity.main.MainActivity">
+    tools:context=".presentation.main.MainActivity">
 
     <FrameLayout
         android:id="@+id/navigation_drawer_header_clickable"

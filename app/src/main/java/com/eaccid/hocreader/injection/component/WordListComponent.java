@@ -1,17 +1,17 @@
 package com.eaccid.hocreader.injection.component;
 
 import com.eaccid.hocreader.injection.WordListScope;
-import com.eaccid.hocreader.injection.module.WordListModule;
-import com.eaccid.hocreader.presentation.activity.pager.PagerPresenter;
-import com.eaccid.hocreader.presentation.fragment.carousel.WordCarouselPresenter;
-import com.eaccid.hocreader.presentation.fragment.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
-import com.eaccid.hocreader.presentation.fragment.weditor.WordEditorPresenter;
-import com.eaccid.hocreader.provider.db.WordListInteractor;
-import com.eaccid.hocreader.presentation.fragment.weditor.action.ToolbarActionModeCallback;
+import com.eaccid.hocreader.injection.module.DataProviderModule;
+import com.eaccid.hocreader.temp.presentation.activity.pager.PagerPresenter;
+import com.eaccid.hocreader.temp.presentation.fragment.carousel.WordCarouselPresenter;
+import com.eaccid.hocreader.temp.presentation.fragment.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
+import com.eaccid.hocreader.temp.presentation.fragment.weditor.WordEditorPresenter;
+import com.eaccid.hocreader.temp.provider.db.words.WordListInteractor;
+import com.eaccid.hocreader.temp.presentation.fragment.weditor.action.ToolbarActionModeCallback;
 
 import dagger.Subcomponent;
 
-@Subcomponent(modules = WordListModule.class)
+@Subcomponent(modules = DataProviderModule.class)
 @WordListScope
 public interface WordListComponent {
 

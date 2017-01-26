@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     app:theme="@style/AppThemeLight"
-    tools:context="com.eaccid.hocreader.presentation.activity.pager.PagerActivity">
+    tools:context="com.eaccid.hocreader.temp.presentation.activity.pager.PagerActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

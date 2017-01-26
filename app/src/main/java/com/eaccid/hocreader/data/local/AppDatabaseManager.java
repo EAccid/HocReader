@@ -8,7 +8,7 @@ import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.data.local.db.service.BookDaoService;
 import com.eaccid.hocreader.data.local.db.service.DatabaseManager;
 import com.eaccid.hocreader.data.local.db.service.WordDaoService;
-import com.eaccid.hocreader.exception.NotImplementedException;
+import com.eaccid.hocreader.exceptions.NotImplementedException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 

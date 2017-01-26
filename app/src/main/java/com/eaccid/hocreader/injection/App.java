@@ -7,8 +7,8 @@ import com.eaccid.hocreader.injection.component.AppComponent;
 import com.eaccid.hocreader.injection.component.DaggerAppComponent;
 import com.eaccid.hocreader.injection.component.WordListComponent;
 import com.eaccid.hocreader.injection.module.AppModule;
+import com.eaccid.hocreader.injection.module.DataProviderModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
-import com.eaccid.hocreader.injection.module.WordListModule;
 
 public class App extends Application {
     private static AppComponent component;
@@ -43,7 +43,7 @@ public class App extends Application {
 
     public static WordListComponent plusWordListComponent() {
         if (wordListComponent == null) {
-            wordListComponent = component.plusWordListComponent(new WordListModule());
+            wordListComponent = component.plusWordListComponent(new DataProviderModule());
         }
         return wordListComponent;
     }
