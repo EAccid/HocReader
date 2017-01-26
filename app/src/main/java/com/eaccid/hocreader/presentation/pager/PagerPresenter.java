@@ -3,10 +3,10 @@ package com.eaccid.hocreader.presentation.pager;
 import android.util.Log;
 
 import com.eaccid.hocreader.injection.App;
-import com.eaccid.hocreader.temp.provider.db.books.BookInteractor;
-import com.eaccid.hocreader.temp.provider.db.words.WordListInteractor;
-import com.eaccid.hocreader.temp.provider.fromtext.WordFromText;
-import com.eaccid.hocreader.temp.provider.translator.HocDictionaryProvider;
+import com.eaccid.hocreader.provider.db.books.BookInteractor;
+import com.eaccid.hocreader.provider.db.words.WordListInteractor;
+import com.eaccid.hocreader.provider.fromtext.WordFromText;
+import com.eaccid.hocreader.provider.translator.HocDictionaryProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.temp.underdevelopment.TranslatedWord;
 

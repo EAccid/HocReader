@@ -7,14 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.eaccid.hocreader.temp.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
-import com.eaccid.hocreader.temp.provider.fromtext.WordFromText;
-import com.eaccid.hocreader.temp.presentation.fragment.weditor.WordsEditorFragment;
+import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
+import com.eaccid.hocreader.provider.fromtext.WordFromText;
+import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 import com.eaccid.hocreader.temp.underdevelopment.TranslatedWord;
-import com.eaccid.hocreader.temp.presentation.fragment.FragmentTags;
-import com.eaccid.hocreader.temp.presentation.fragment.book.OnWordFromPageViewTouchListener;
+import com.eaccid.hocreader.presentation.FragmentTags;
+import com.eaccid.hocreader.presentation.book.OnWordFromPageViewTouchListener;
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.temp.presentation.fragment.translation.WordTranslationDialogFragment;
+import com.eaccid.hocreader.presentation.translation.WordTranslationDialogFragment;
 import com.viewpagerindicator.CirclePageIndicator;
 
 public class PagerActivity extends AppCompatActivity implements PagerView,

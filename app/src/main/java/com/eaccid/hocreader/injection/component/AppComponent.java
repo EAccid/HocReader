@@ -10,14 +10,14 @@ import com.eaccid.hocreader.injection.module.AppModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
 import com.eaccid.hocreader.injection.module.DataProviderModule;
 import com.eaccid.hocreader.presentation.main.MainReaderPresenter;
-import com.eaccid.hocreader.temp.presentation.activity.notcard.CardWordPresenter;
-import com.eaccid.hocreader.temp.presentation.fragment.book.BookPresenter;
-import com.eaccid.hocreader.temp.presentation.fragment.translation.semantic.ImageViewManager;
-import com.eaccid.hocreader.temp.presentation.service.MemorizingPresenter;
-import com.eaccid.hocreader.temp.presentation.service.SchedulingMemorizingAlarmManager;
-import com.eaccid.hocreader.temp.provider.db.words.BookOnReadProvider;
-import com.eaccid.hocreader.temp.provider.db.words.WordCursorProvider;
-import com.eaccid.hocreader.temp.provider.translator.LingualeoServiceCookiesImpl;
+import com.eaccid.hocreader.temp.underdevelopment.cardremember.CardWordPresenter;
+import com.eaccid.hocreader.presentation.book.BookPresenter;
+import com.eaccid.hocreader.presentation.translation.semantic.ImageViewManager;
+import com.eaccid.hocreader.presentation.memorizing.MemorizingPresenter;
+import com.eaccid.hocreader.presentation.memorizing.SchedulingMemorizingAlarmManager;
+import com.eaccid.hocreader.provider.db.words.BookOnReadProvider;
+import com.eaccid.hocreader.provider.db.words.WordCursorProvider;
+import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesImpl;
 
 import javax.inject.Singleton;
 

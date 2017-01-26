@@ -10,10 +10,10 @@ import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroupImpl;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemObjectChild;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemChild;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
-import com.eaccid.hocreader.temp.presentation.activity.training.TrainingActivity;
-import com.eaccid.hocreader.temp.provider.db.books.BookInteractor;
-import com.eaccid.hocreader.temp.provider.file.findner.FileExtensions;
-import com.eaccid.hocreader.temp.provider.file.findner.FileOnDeviceProvider;
+import com.eaccid.hocreader.presentation.training.TrainingActivity;
+import com.eaccid.hocreader.provider.db.books.BookInteractor;
+import com.eaccid.hocreader.provider.file.findner.FileExtensions;
+import com.eaccid.hocreader.provider.file.findner.FileOnDeviceProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
 import java.io.File;

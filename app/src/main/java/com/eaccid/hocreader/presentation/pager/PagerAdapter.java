@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.eaccid.hocreader.temp.presentation.fragment.book.BookFragment;
-import com.eaccid.hocreader.temp.presentation.fragment.carousel.WordsCarouselFragment;
-import com.eaccid.hocreader.temp.presentation.fragment.weditor.WordsEditorFragment;
+import com.eaccid.hocreader.presentation.book.BookFragment;
+import com.eaccid.hocreader.presentation.training.carousel.WordsCarouselFragment;
+import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 

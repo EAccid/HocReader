@@ -1,6 +1,6 @@
 package com.eaccid.hocreader.temp.underdevelopment;
 
-import com.eaccid.hocreader.temp.provider.db.words.WordItem;
+import com.eaccid.hocreader.provider.db.words.WordItem;
 
 import java.util.Random;
 

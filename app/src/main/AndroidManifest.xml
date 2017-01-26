@@ -47,18 +47,18 @@
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".temp.presentation.service.MemorizingService"
+            android:name=".presentation.memorizing.MemorizingService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name=".temp.presentation.service.MemorizingAlarmReceiver"
+            android:name=".presentation.memorizing.MemorizingAlarmReceiver"
             android:process=":remote" />
         <activity
-            android:name=".temp.presentation.activity.notcard.CardWordActivity"
+            android:name=".temp.underdevelopment.cardremember.CardWordActivity"
             android:theme="@style/AppTheme.Dialog" />
         <activity
-            android:name=".temp.presentation.activity.settings.SettingsActivity"
+            android:name=".presentation.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".presentation.main.MainActivity"
             android:theme="@style/AppTheme.Settings">
@@ -66,7 +66,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".presentation.main.MainActivity" />
         </activity>
-        <activity android:name=".temp.presentation.activity.training.TrainingActivity"
+        <activity android:name=".presentation.training.TrainingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
