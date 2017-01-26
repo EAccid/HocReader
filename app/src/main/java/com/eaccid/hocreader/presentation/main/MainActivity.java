@@ -1,15 +1,13 @@
-package com.eaccid.hocreader.presentation.activity.main;
+package com.eaccid.hocreader.presentation.main;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,25 +17,40 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ExpandableListView;
+
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.presentation.activity.settings.SettingsActivity;
-import com.eaccid.hocreader.presentation.activity.main.serchadapter.ItemObjectGroup;
-import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchAdapter;
-import com.eaccid.hocreader.presentation.activity.main.serchadapter.SearchSuggestionsProvider;
+import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
+import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;
+import com.eaccid.hocreader.presentation.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.presentation.BaseView;
+import com.eaccid.hocreader.presentation.MainView;
+import com.eaccid.hocreader.temp.presentation.activity.settings.SettingsActivity;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements BaseView,
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+//TODO: provide searching handler in separate class
+public class MainActivity extends AppCompatActivity implements MainView<ItemGroup>,
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
         NavigationView.OnNavigationItemSelectedListener {
 
-    private static MainPresenter mPresenter;
-    private ExpandableListView expandableListView;
+    @BindView(R.id.expandableListView_main)
+    ExpandableListView expandableListView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
+    private static MainReaderPresenter mPresenter;
     private SearchAdapter searchAdapter;
 
     @Override
@@ -49,39 +62,25 @@ public class MainActivity extends AppCompatActivity implements BaseView,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        if (mPresenter == null) mPresenter = new MainPresenter();
-
-        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView_main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.onFabClicked();
-            }
-        });
-
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle drawerListener = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerListener);
         drawerListener.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        if (mPresenter == null) mPresenter = new MainReaderPresenter();
         mPresenter.attachView(this);
+    }
 
-        PreferenceManager.setDefaultValues(this.getApplicationContext(), R.xml.preferences, false);
+    @OnClick(R.id.fab)
+    public void onFabClick() {
+        mPresenter.onFabClicked();
     }
 
     @Override
     public boolean onClose() {
-        searchAdapter.filterDataInList("");
-        expandListViewGroup();
+        provideBooksSearching("");
         return false;
     }
 
@@ -96,7 +95,12 @@ public class MainActivity extends AppCompatActivity implements BaseView,
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        setSearchViewParameters(searchView);
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnCloseListener(this);
+        searchView.requestFocus();
         return true;
     }
 
@@ -106,7 +110,9 @@ public class MainActivity extends AppCompatActivity implements BaseView,
             case R.id.action_search:
                 return true;
             case R.id.action_clearSearchHistory:
-                mPresenter.clearBookSearchHistory();
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                        SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
+                suggestions.clearHistory();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -118,13 +124,13 @@ public class MainActivity extends AppCompatActivity implements BaseView,
         SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                 SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
         suggestions.saveRecentQuery(query, null);
-        reloadExpandableListView(query);
+        provideBooksSearching(query);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        reloadExpandableListView(newText);
+        provideBooksSearching(newText);
         return false;
     }
 
@@ -137,28 +143,19 @@ public class MainActivity extends AppCompatActivity implements BaseView,
                 startActivity(intent);
                 break;
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public void showTestFab(String text) {
-        Snackbar.make(getCurrentFocus(), text,
-                Snackbar.LENGTH_LONG).setAction("Action", null).show();
-    }
-
-    public void openActivity(Class c) {
-        Intent intent = new Intent(getApplicationContext(), c);
-        startActivity(intent);
-    }
-
-    public void setItemsToExpandableListView(List<ItemObjectGroup> itemObjectGroupList) {
-        searchAdapter = new SearchAdapter(this, itemObjectGroupList);
+    @Override
+    public void setBooksData(List<ItemGroup> itemGroupList) {
+        searchAdapter = new SearchAdapter(this, itemGroupList);
         expandableListView.setAdapter(searchAdapter);
         expandListViewGroup();
     }
 
-    private void reloadExpandableListView(String searchText) {
+    @Override
+    public void provideBooksSearching(String searchText) {
         searchAdapter.filterDataInList(searchText);
         expandListViewGroup();
     }
@@ -168,15 +165,6 @@ public class MainActivity extends AppCompatActivity implements BaseView,
         for (int i = 0; i < groupCount; i++) {
             expandableListView.expandGroup(i);
         }
-    }
-
-    private void setSearchViewParameters(SearchView searchView) {
-        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
-        searchView.setIconifiedByDefault(false);
-        searchView.setOnQueryTextListener(this);
-        searchView.setOnCloseListener(this);
-        searchView.requestFocus();
     }
 
 }

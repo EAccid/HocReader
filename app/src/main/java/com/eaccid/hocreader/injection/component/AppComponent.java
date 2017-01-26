@@ -8,15 +8,15 @@ import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.
 import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.injection.module.AppModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
-import com.eaccid.hocreader.injection.module.WordListModule;
-import com.eaccid.hocreader.presentation.activity.main.MainPresenter;
-import com.eaccid.hocreader.presentation.activity.notcard.CardWordPresenter;
-import com.eaccid.hocreader.presentation.fragment.translation.semantic.ImageViewManager;
-import com.eaccid.hocreader.presentation.service.MemorizingPresenter;
-import com.eaccid.hocreader.presentation.service.SchedulingMemorizingAlarmManager;
-import com.eaccid.hocreader.provider.db.BookOnReadProvider;
-import com.eaccid.hocreader.provider.db.WordCursorProvider;
-import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesImpl;
+import com.eaccid.hocreader.injection.module.DataProviderModule;
+import com.eaccid.hocreader.presentation.main.MainReaderPresenter;
+import com.eaccid.hocreader.temp.presentation.activity.notcard.CardWordPresenter;
+import com.eaccid.hocreader.temp.presentation.fragment.translation.semantic.ImageViewManager;
+import com.eaccid.hocreader.temp.presentation.service.MemorizingPresenter;
+import com.eaccid.hocreader.temp.presentation.service.SchedulingMemorizingAlarmManager;
+import com.eaccid.hocreader.temp.provider.db.words.BookOnReadProvider;
+import com.eaccid.hocreader.temp.provider.db.words.WordCursorProvider;
+import com.eaccid.hocreader.temp.provider.translator.LingualeoServiceCookiesImpl;
 
 import javax.inject.Singleton;
 
@@ -26,7 +26,7 @@ import dagger.Component;
 @Singleton
 public interface AppComponent {
 
-    WordListComponent plusWordListComponent(WordListModule wordListModule);
+    WordListComponent plusWordListComponent(DataProviderModule dataProviderModule);
 
     @ApplicationContext
     Context context();
@@ -43,7 +43,7 @@ public interface AppComponent {
 
     void inject(ImageViewManager imageViewManager);
 
-    void inject(MainPresenter mainPresenter);
+    void inject(MainReaderPresenter mainReaderPresenter);
 
     void inject(MemorizingPresenter memorizingPresenter);
 
