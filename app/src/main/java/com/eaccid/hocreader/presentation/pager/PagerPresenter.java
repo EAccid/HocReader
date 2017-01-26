@@ -1,11 +1,11 @@
-package com.eaccid.hocreader.temp.presentation.activity.pager;
+package com.eaccid.hocreader.presentation.pager;
 
 import android.util.Log;
 
 import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.temp.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.temp.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.temp.provider.fromtext.WordFromText;
-import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.temp.provider.translator.HocDictionaryProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.temp.underdevelopment.TranslatedWord;
@@ -20,7 +20,7 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     private PagerActivity mView;
 
     @Inject
-    AppDatabaseManager dataManager;
+    BookInteractor bookInteractor;
     @Inject
     WordListInteractor wordListInteractor;
 
@@ -39,21 +39,12 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
         mView = null;
     }
 
-    public AppDatabaseManager getDataManager() {
-        return dataManager;
-    }
-
     private void createOrUpdateCurrentBook() {
         String filePath = mView.getIntent().getStringExtra("filePath");
         String fileName = mView.getIntent().getStringExtra("fileName");
 
-        dataManager.createOrUpdateBook(filePath, fileName);
-        dataManager.setCurrentBookForAddingWord(filePath);
-    }
-
-    public void addWord(String word) {
-        wordListInteractor.addItem(word);
-        mView.notifyDataSetChanged();
+        bookInteractor.createOrUpdateBook(filePath, fileName);
+        bookInteractor.setCurrentBookForAddingWord(filePath);
     }
 
     public void onWordTranslated(TranslatedWord translatedWord) {
@@ -63,16 +54,17 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(succeed -> {
                     Log.i(LOG_TAG, "Dictionary updated status: " + succeed);
-                    dataManager.createOrUpdateWord(translatedWord.getWordFromContext(),
+                    wordListInteractor.addItem(translatedWord.getWordFromContext(),
                             translatedWord.getTranslation(),
                             translatedWord.getContext(),
                             succeed);
-                    addWord(translatedWord.getWordFromContext());
+                    mView.notifyDataSetChanged();
                 }, Throwable::printStackTrace);
     }
 
     public void OnWordFromTextViewClicked(WordFromText wordFromText) {
-        dataManager.setCurrentPageForAddingWord(wordFromText.getPageNumber());
+        bookInteractor.setCurrentPageForAddingWord(wordFromText.getPageNumber());
+        mView.showTranslationDialog(wordFromText);
     }
 
 }

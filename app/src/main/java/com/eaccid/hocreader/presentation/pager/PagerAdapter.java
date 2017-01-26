@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.temp.presentation.activity.pager;
+package com.eaccid.hocreader.presentation.pager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

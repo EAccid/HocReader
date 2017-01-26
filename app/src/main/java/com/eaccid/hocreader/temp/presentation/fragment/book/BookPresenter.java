@@ -2,37 +2,40 @@ package com.eaccid.hocreader.temp.presentation.fragment.book;
 
 import android.util.Log;
 
+import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.temp.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.temp.provider.db.words.BookOnReadProvider;
 import com.eaccid.hocreader.temp.provider.file.BaseFileImpl;
 import com.eaccid.hocreader.temp.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.hocreader.temp.provider.file.pagesplitter.Page;
 import com.eaccid.hocreader.temp.provider.file.pagesplitter.TxtPagesFromFileProvider;
-import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.temp.presentation.activity.pager.PagerActivity;
-import com.eaccid.hocreader.temp.presentation.activity.pager.PagerPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 public class BookPresenter implements BasePresenter<BookFragment> {
     private final String logTAG = "BookPresenter";
-    private AppDatabaseManager dataManager;
     private BookFragment mView;
     private List<Page<String>> mPagesList;
 
+    @Inject
+    BookInteractor bookInteractor;
+
     public BookPresenter() {
         mPagesList = new ArrayList<>();
+        App.getAppComponent().inject(this);
     }
 
     @Override
     public void attachView(BookFragment bookFragment) {
         mView = bookFragment;
         Log.i(logTAG, "BookFragment has been attached.");
-        setDataManager();
         setDataToList();
     }
 
@@ -49,17 +52,12 @@ public class BookPresenter implements BasePresenter<BookFragment> {
         mView.scrollToListPosition(position, 0);
     }
 
-    private void setDataManager() {
-        PagerPresenter pp = ((PagerActivity) mView.getActivity()).getPresenter();
-        dataManager = pp.getDataManager();
-    }
-
     private void setDataToList() {
 
         TxtPagesFromFileProvider txtPagesFromFileProvider = new TxtPagesFromFileProvider(
                 new CharactersDefinerForFullScreenTextView(mView.getActivity())
         );
-        BaseFileImpl baseFile = new BaseFileImpl(dataManager.getCurrentBookPath());
+        BaseFileImpl baseFile = new BaseFileImpl(bookInteractor.getCurrentBookPath());
         txtPagesFromFileProvider.getPageObservable(baseFile)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Page<String>>() {
@@ -85,7 +83,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
     }
 
     public void goToPageClicked(CharSequence input) {
-        int currentPagePosition = dataManager.getCurrentPage() - 1;
+        int currentPagePosition = bookInteractor.getCurrentPage() - 1;
         int fromPage = Integer.parseInt(input.toString()) - 1;
         mView.scrollToListPosition(fromPage, currentPagePosition);
         mView.showSnackbarBackToLastOpenedPage(currentPagePosition, fromPage);

@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.temp.presentation.activity.pager;
+package com.eaccid.hocreader.presentation.pager;
 
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
@@ -14,11 +14,10 @@ import com.eaccid.hocreader.temp.underdevelopment.TranslatedWord;
 import com.eaccid.hocreader.temp.presentation.fragment.FragmentTags;
 import com.eaccid.hocreader.temp.presentation.fragment.book.OnWordFromPageViewTouchListener;
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.presentation.BaseView;
 import com.eaccid.hocreader.temp.presentation.fragment.translation.WordTranslationDialogFragment;
 import com.viewpagerindicator.CirclePageIndicator;
 
-public class PagerActivity extends AppCompatActivity implements BaseView,
+public class PagerActivity extends AppCompatActivity implements PagerView,
         CharactersDefinerForFullScreenTextView.PageView,
         OnWordFromPageViewTouchListener.OnWordFromTextClickListener,
         WordTranslationDialogFragment.OnWordTranslationClickListener {
@@ -37,15 +36,12 @@ public class PagerActivity extends AppCompatActivity implements BaseView,
         setContentView(R.layout.pager_fragment_activity);
         if (mPresenter == null) mPresenter = new PagerPresenter();
         mPresenter.attachView(this);
-
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager.setAdapter(pagerAdapter);
-
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         circleIndicator.setViewPager(pager);
-
         if (savedInstanceState == null) {
             wordsEditorFragment = (WordsEditorFragment) pagerAdapter.getItem(1);
         }
@@ -64,14 +60,18 @@ public class PagerActivity extends AppCompatActivity implements BaseView,
         return (TextView) viewGroup.findViewById(R.id.text_on_page);
     }
 
-    public void notifyDataSetChanged() {
-        wordsEditorFragment.notifyDataSetChanged();
-    }
-
     @Override
     public void onWordClicked(WordFromText wordFromText) {
         mPresenter.OnWordFromTextViewClicked(wordFromText);
+    }
 
+    @Override
+    public void onWordTranslated(TranslatedWord translatedWord) {
+        mPresenter.onWordTranslated(translatedWord);
+    }
+
+    @Override
+    public void showTranslationDialog(WordFromText wordFromText) {
         final DialogFragment dialog = WordTranslationDialogFragment.newInstance(wordFromText);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -79,9 +79,8 @@ public class PagerActivity extends AppCompatActivity implements BaseView,
                 .commit();
     }
 
-    @Override
-    public void onWordTranslated(TranslatedWord translatedWord) {
-        mPresenter.onWordTranslated(translatedWord);
+    public void notifyDataSetChanged() {
+        wordsEditorFragment.notifyDataSetChanged();
     }
 }
 

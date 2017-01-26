@@ -50,11 +50,12 @@ public class WordListInteractor extends DataListProvider {
         super.removeItem(position);
     }
 
-    public void addItem(String wordBaseName) {
+    public void addItem(String wordBaseName, String translation, String context, Boolean succeed) {
         if (sessionWords.contains(wordBaseName)) {
             return;
         }
-        WordItemImpl item = (WordItemImpl) wordListFromDatabaseFetcher.createItemWord(wordBaseName, sessionWords.size());
+        WordItemImpl item = (WordItemImpl) wordListFromDatabaseFetcher.createItemWord(
+                wordBaseName, sessionWords.size(), translation, context, succeed);
         if (item == null) {
             Log.i(logTAG, "Word '" + wordBaseName + "' has not been added to database.");
             return;
@@ -138,4 +139,5 @@ public class WordListInteractor extends DataListProvider {
             }
         });
     }
+
 }

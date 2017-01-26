@@ -41,7 +41,11 @@ public class WordListFromDatabaseFetcher implements Callable<List<ItemDataProvid
     }
 
     @Nullable
-    ItemDataProvider createItemWord(String wordBaseName, int currentId) {
+    ItemDataProvider createItemWord(String wordBaseName, int currentId, String translation, String context, Boolean succeed) {
+        dataManager.createOrUpdateWord(wordBaseName,
+                translation,
+                context,
+                succeed);
         Word word = dataManager.getCurrentBooksWordByPage(wordBaseName);
         if (word == null) return null;
         return new WordItemImpl(currentId, word);
@@ -107,4 +111,5 @@ public class WordListFromDatabaseFetcher implements Callable<List<ItemDataProvid
         Log.i(LOG_TAG, "Deleting words from database...");
         return dataManager.deleteWords(WordFilter.BY_BOOK);
     }
+
 }

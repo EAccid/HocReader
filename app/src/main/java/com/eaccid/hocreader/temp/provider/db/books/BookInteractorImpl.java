@@ -16,4 +16,27 @@ public class BookInteractorImpl implements BookInteractor {
         dataManager.refreshBooks(filePaths);
     }
 
+    @Override
+    public String getCurrentBookPath() {
+        return dataManager.getCurrentBookPath();
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return dataManager.getCurrentPage();
+    }
+
+    @Override
+    public void setCurrentPageForAddingWord(int pageNumber) {
+        dataManager.setCurrentPageForAddingWord(pageNumber);
+    }
+
+    @Override
+    public void createOrUpdateBook(String filePath, String fileName) {
+        dataManager.createOrUpdateBook(filePath, fileName);
+    }
+
+    public void setCurrentBookForAddingWord(String filePath) {
+        dataManager.setCurrentBookForAddingWord(filePath);
+    }
 }

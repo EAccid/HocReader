@@ -2,7 +2,7 @@ package com.eaccid.hocreader.injection.component;
 
 import com.eaccid.hocreader.injection.WordListScope;
 import com.eaccid.hocreader.injection.module.DataProviderModule;
-import com.eaccid.hocreader.temp.presentation.activity.pager.PagerPresenter;
+import com.eaccid.hocreader.presentation.pager.PagerPresenter;
 import com.eaccid.hocreader.temp.presentation.fragment.carousel.WordCarouselPresenter;
 import com.eaccid.hocreader.temp.presentation.fragment.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.hocreader.temp.presentation.fragment.weditor.WordEditorPresenter;

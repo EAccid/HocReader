@@ -34,7 +34,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".temp.presentation.activity.pager.PagerActivity"
+            android:name=".presentation.pager.PagerActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

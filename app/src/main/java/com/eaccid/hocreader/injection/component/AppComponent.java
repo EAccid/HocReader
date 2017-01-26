@@ -11,6 +11,7 @@ import com.eaccid.hocreader.injection.module.DatabaseModule;
 import com.eaccid.hocreader.injection.module.DataProviderModule;
 import com.eaccid.hocreader.presentation.main.MainReaderPresenter;
 import com.eaccid.hocreader.temp.presentation.activity.notcard.CardWordPresenter;
+import com.eaccid.hocreader.temp.presentation.fragment.book.BookPresenter;
 import com.eaccid.hocreader.temp.presentation.fragment.translation.semantic.ImageViewManager;
 import com.eaccid.hocreader.temp.presentation.service.MemorizingPresenter;
 import com.eaccid.hocreader.temp.presentation.service.SchedulingMemorizingAlarmManager;
@@ -54,4 +55,6 @@ public interface AppComponent {
     void inject(CardWordPresenter cardWordPresenter);
 
     void inject(BookOnReadProvider bookOnReadProvider);
+
+    void inject(BookPresenter bookPresenter);
 }

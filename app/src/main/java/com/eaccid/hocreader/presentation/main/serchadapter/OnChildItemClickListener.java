@@ -3,7 +3,7 @@ package com.eaccid.hocreader.presentation.main.serchadapter;
 import android.content.Intent;
 import android.view.View;
 
-import com.eaccid.hocreader.temp.presentation.activity.pager.PagerActivity;
+import com.eaccid.hocreader.presentation.pager.PagerActivity;
 
 import java.io.File;
 
