@@ -9,6 +9,7 @@ import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.data.local.db.service.BookDaoService;
 import com.eaccid.hocreader.data.local.db.service.DatabaseManager;
 import com.eaccid.hocreader.data.local.db.service.WordDaoService;
+import com.eaccid.hocreader.data.local.db.service.WordReaderDaoService;
 import com.eaccid.hocreader.exceptions.NotImplementedException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -198,7 +199,7 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
     @Nullable
     public Word getRandomWord() {
         try {
-            WordDaoService ws = mDatabaseManager.getWordService();
+            WordReaderDaoService ws = mDatabaseManager.getWordService();
             Word word = ws.getRandomWord();
             Log.i(LOG_TAG, "random word '" + word + "' has been fetched.");
             return word;
@@ -212,7 +213,7 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
     @Nullable
     public Word getWord(String word) {
         try {
-            WordDaoService ws = mDatabaseManager.getWordService();
+            WordReaderDaoService ws = mDatabaseManager.getWordService();
             Log.i(LOG_TAG, "random word '" + word + "' has been fetched.");
             return ws.getAllByWordName(word).get(0);
         } catch (SQLException e) {
@@ -225,7 +226,7 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
     public boolean deleteWords(WordFilter filter) {
         if (filter == WordFilter.BY_BOOK) {
             try {
-                WordDaoService ws = mDatabaseManager.getWordService();
+                WordReaderDaoService ws = mDatabaseManager.getWordService();
                 List<Word> words = ws.getAllByBookId(getCurrentBook().getPath());
                 boolean succeed = ws.deleteAll(words);
                 Log.i(LOG_TAG, "All words by book '" + getCurrentBook().getName() + "' have been deleted from database: " + succeed);
@@ -245,7 +246,7 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
         if (currentFilter == null)
             currentFilter = WordFilter.NONE;
         try {
-            WordDaoService ws = mDatabaseManager.getWordService();
+            WordReaderDaoService ws = mDatabaseManager.getWordService();
             switch (currentFilter) {
                 case BY_BOOK:
                     if (getCurrentBook().getPath().isEmpty())
@@ -263,7 +264,7 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
 
     public Dao<Word, String> getWordDao() {
         try {
-            WordDaoService ws = mDatabaseManager.getWordService();
+            WordReaderDaoService ws = mDatabaseManager.getWordService();
             return ws.getWordDao();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -4,7 +4,6 @@ import com.eaccid.hocreader.data.local.db.entity.Book;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +49,7 @@ public class BookDaoService implements Crud {
         return null;
     }
 
+    @Override
     public List<Book> getAll() {
         List<Book> books = new ArrayList<>();
         try {

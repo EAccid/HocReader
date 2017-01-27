@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WordDaoService implements Crud {
+public class WordDaoService implements Crud, WordReaderDaoService {
 
     private Dao<Word, String> dao;
 
@@ -74,6 +74,7 @@ public class WordDaoService implements Crud {
         return words;
     }
 
+    @Override
     public boolean deleteAll(List<Word> words) {
         try {
             Integer sizeToDelete = words.size();
@@ -85,6 +86,7 @@ public class WordDaoService implements Crud {
         return false;
     }
 
+    @Override
     public List<Word> getAllByWordNameCollection(Iterable<String> words) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
@@ -97,6 +99,7 @@ public class WordDaoService implements Crud {
         return new ArrayList<>();
     }
 
+    @Override
     public List<Word> getAllByWordNameCollectionAndBookId(Iterable<String> words, boolean excludeWords, String bookid) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
@@ -116,6 +119,7 @@ public class WordDaoService implements Crud {
         return new ArrayList<>();
     }
 
+    @Override
     public List<Word> getAllByBookId(String bookid) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
@@ -129,6 +133,7 @@ public class WordDaoService implements Crud {
         return new ArrayList<>();
     }
 
+    @Override
     public List<Word> getAllByBookIdAndPage(String bookid, int pageNumber) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
@@ -144,6 +149,7 @@ public class WordDaoService implements Crud {
         return new ArrayList<>();
     }
 
+    @Override
     public PreparedQuery<Word> getAllWordsPreparedQuery() {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
@@ -155,6 +161,7 @@ public class WordDaoService implements Crud {
         return null;
     }
 
+    @Override
     public PreparedQuery<Word> getWordsByBookIdPreparedQuery(String bookid) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
@@ -167,10 +174,12 @@ public class WordDaoService implements Crud {
         return null;
     }
 
+    @Override
     public Dao<Word, String> getWordDao() {
         return dao;
     }
 
+    @Override
     @Nullable
     public Word getWordByBookIdAndPage(String word, String bookid, int pageNumber) {
         try {
@@ -192,6 +201,7 @@ public class WordDaoService implements Crud {
         return null;
     }
 
+    @Override
     @Nullable
     public Word getRandomWord() {
         try {
@@ -210,6 +220,7 @@ public class WordDaoService implements Crud {
         return getWordByBookIdAndPage(word.getName(), word.getBook().getPath(), word.getPage());
     }
 
+    @Override
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public List<Word> getAllByWordName(String word) {
         List<String> words = new ArrayList<>();
