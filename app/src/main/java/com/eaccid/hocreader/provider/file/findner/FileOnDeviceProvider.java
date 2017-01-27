@@ -4,13 +4,15 @@ import android.os.Environment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
-public class FileOnDeviceProvider {
+public class FileOnDeviceProvider implements FileProvider {
 
-    private ArrayList<File> fileList = new ArrayList<>();
+    private List<File> fileList = new ArrayList<>();
 
-    public ArrayList<File> findFiles() {
+    @Override
+    public List<File> findFiles() {
         fillFileList();
         return fileList;
     }

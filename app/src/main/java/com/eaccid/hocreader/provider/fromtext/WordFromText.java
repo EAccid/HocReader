@@ -2,41 +2,18 @@ package com.eaccid.hocreader.provider.fromtext;
 
 import java.io.Serializable;
 
-public class WordFromText implements Serializable{
+public interface WordFromText extends Serializable {
 
-    private String text;
-    private String sentence;
-    private int pageNumber;
+    String getText();
 
-    public String getText() {
-        return text;
-    }
+    String getSentence();
 
-    public String getSentence() {
-        return sentence;
-    }
+    int getPageNumber();
 
-    public void setText(String text) {
-        this.text = text;
-    }
+    void setText(String text);
 
-    public void setSentence(String sentence) {
-        this.sentence = sentence;
-    }
+    void setSentence(String text);
 
-    public int getPageNumber() {
-        return pageNumber;
-    }
+    void setPageNumber(int page);
 
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "WordFromText{" +
-                "text='" + text + '\'' +
-                ", sentence='" + sentence + '\'' +
-                '}';
-    }
 }

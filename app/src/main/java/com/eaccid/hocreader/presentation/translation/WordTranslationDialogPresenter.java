@@ -6,10 +6,11 @@ import android.util.Log;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 import com.eaccid.hocreader.presentation.translation.semantic.MediaPlayerManager;
 import com.eaccid.hocreader.presentation.translation.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.fromtext.WordFromText;
+import com.eaccid.hocreader.provider.fromtext.WordFromTextImpl;
 import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
 import com.eaccid.hocreader.provider.translator.TranslatedWordImpl;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.provider.fromtext.WordFromText;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -100,7 +101,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
 
     public void OnWordClicked() {
         String nextWord = getNextWordToTranslate();
-        WordFromText currentWord = mView.getWordFromText();
+        WordFromTextImpl currentWord = mView.getWordFromText();
         setmNextWordToTranslate(currentWord.getText());
         currentWord.setText(nextWord);
         translateText(currentWord);

@@ -4,16 +4,19 @@ import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.
 
 import rx.Observable;
 
-public class HocDictionaryProvider {
+public class HocDictionaryProvider implements HocDictionary {
 
+    @Override
     public Observable<Boolean> addTranslatedWord(TranslatedWord word) {
         return new LingualeoDictionaryRx()
                 .addWord(word.getWordFromContext(), word.getTranslation(), word.getContext());
     }
 
+    @Override
     public Observable<Boolean> authorize(String email, String password) {
         return new LingualeoDictionaryRx().authorize(email, password);
     }
+
 }
 
 

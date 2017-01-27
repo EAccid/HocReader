@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
+import com.eaccid.hocreader.provider.fromtext.WordFromTextImpl;
 import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
 
@@ -121,8 +122,8 @@ public class WordTranslationDialogFragment extends DialogFragment implements Tra
         mTranslations.setAdapter(mAdapter);
     }
 
-    public WordFromText getWordFromText() {
-        return (WordFromText) getArguments().getSerializable("wordFromText");
+    public WordFromTextImpl getWordFromText() {
+        return (WordFromTextImpl) getArguments().getSerializable("wordFromText");
     }
 
     public void notifyTranslationsChanged() {

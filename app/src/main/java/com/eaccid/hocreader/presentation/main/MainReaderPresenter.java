@@ -15,6 +15,7 @@ import com.eaccid.hocreader.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.provider.file.findner.FileExtensions;
 import com.eaccid.hocreader.provider.file.findner.FileOnDeviceProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.provider.file.findner.FileProvider;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,8 +55,8 @@ public class MainReaderPresenter implements BasePresenter<MainActivity> {
     }
 
     private void fillExpandableListView() {
-        FileOnDeviceProvider fileOnDeviceProvider = new FileOnDeviceProvider();
-        List<File> foundFiles = fileOnDeviceProvider.findFiles();
+        FileProvider fileProvider = new FileOnDeviceProvider();
+        List<File> foundFiles = fileProvider.findFiles();
         loadFilesToExpandableView(foundFiles);
     }
 
