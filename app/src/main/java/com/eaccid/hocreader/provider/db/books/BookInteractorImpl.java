@@ -1,11 +1,13 @@
 package com.eaccid.hocreader.provider.db.books;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
+import com.eaccid.hocreader.data.local.BookReaderMode;
+
 import java.util.List;
 
 public class BookInteractorImpl implements BookInteractor {
 
-    private AppDatabaseManager dataManager;
+    private BookReaderMode dataManager;
 
     public BookInteractorImpl(AppDatabaseManager appDatabaseManager) {
         this.dataManager = appDatabaseManager;
@@ -13,12 +15,12 @@ public class BookInteractorImpl implements BookInteractor {
 
     @Override
     public void loadBooks(List<String> filePaths) {
-        dataManager.refreshBooks(filePaths);
+        dataManager.updateBooks(filePaths);
     }
 
     @Override
     public String getCurrentBookPath() {
-        return dataManager.getCurrentBookPath();
+        return dataManager.getCurrentBook().getPath();
     }
 
     @Override

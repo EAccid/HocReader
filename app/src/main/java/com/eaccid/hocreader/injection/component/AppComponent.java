@@ -2,6 +2,7 @@ package com.eaccid.hocreader.injection.component;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionaryRx;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;

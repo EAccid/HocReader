@@ -30,10 +30,8 @@ public class WordCursorProvider {
     public OrmliteCursorRecyclerViewAdapter
     createAdapterWithCursor(WordCarouselRecyclerViewAdapter adapter, boolean filterByBook) {
 
-        if (filterByBook)
-            dataManager.setFilter(WordFilter.BY_BOOK);
-
-        PreparedQuery<Word> pq = dataManager.getWordPreparedQuery(null, null);
+        WordFilter wordFilter = filterByBook ? WordFilter.BY_BOOK : WordFilter.NONE;
+        PreparedQuery<Word> pq = dataManager.getWordPreparedQuery(wordFilter, null, null);
         OrmLiteCursorLoader<Word> liteCursorLoader = new OrmLiteCursorLoader<>(
                 context,
                 dataManager.getWordDao(),

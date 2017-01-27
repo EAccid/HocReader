@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.data.local;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -16,7 +17,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppDatabaseManager {
+/**
+ * TODO:
+ * 1. extract separate classes for BookReaderMode, AppWordManager
+ * 2. create filter
+ */
+
+public class AppDatabaseManager implements BookReaderMode, AppWordManager {
 
     private final String LOG_TAG = "AppDatabaseManager";
     private DatabaseManager mDatabaseManager;
@@ -25,48 +32,52 @@ public class AppDatabaseManager {
         this.mDatabaseManager = mDatabaseManager;
     }
 
-    private WordFilter currentFilter = WordFilter.NONE;
-    private static Book currentBook;
-    private static int currentPage = 1;
+    /**
+     * reader mode
+     */
+
+    private Book mCurrentBook;
+    private int mCurrentPage = 1;
 
     public void setCurrentBookForAddingWord(String filePath) {
         try {
             BookDaoService bs = mDatabaseManager.getBookService();
-            currentBook = (Book) bs.getById(filePath);
+            mCurrentBook = (Book) bs.getById(filePath);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void setCurrentPageForAddingWord(int pageNumber) {
-        currentPage = pageNumber;
+        mCurrentPage = pageNumber;
     }
 
-    public String getCurrentBookName() {
-        return currentBook.getName();
+    @NonNull
+    @Override
+    public Book getCurrentBook() {
+        if (mCurrentBook == null)
+            mCurrentBook = new Book();
+        return mCurrentBook;
     }
 
-    public String getCurrentBookPath() {
-        return currentBook.getPath();
-    }
-
+    @Override
     public int getCurrentPage() {
-        return currentPage;
+        return mCurrentPage;
     }
 
-    public WordFilter clearFilter() {
-        return currentFilter = WordFilter.NONE;
+    @Nullable
+    public Word getCurrentBooksWordByPage(String word) {
+        try {
+            WordDaoService ws = mDatabaseManager.getWordService();
+            return ws.getWordByBookIdAndPage(word, getCurrentBook().getPath(), getCurrentPage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public void setFilter(WordFilter filter) {
-        currentFilter = filter;
-    }
-
-    /**
-     * books table
-     */
-
-    public void refreshBooks(List<String> bookpaths) {
+    @Override
+    public void updateBooks(List<String> bookpaths) {
         try {
             BookDaoService bookDaoService = mDatabaseManager.getBookService();
             List<Book> booksInDB = bookDaoService.getAll();
@@ -82,6 +93,7 @@ public class AppDatabaseManager {
         }
     }
 
+    @Override
     public List<Book> getAllBooks() {
         try {
             BookDaoService bs = mDatabaseManager.getBookService();
@@ -92,6 +104,7 @@ public class AppDatabaseManager {
         return new ArrayList<>();
     }
 
+    @Override
     public void createOrUpdateBook(String bookPath, String bookName) {
         try {
             BookDaoService bs = mDatabaseManager.getBookService();
@@ -106,15 +119,16 @@ public class AppDatabaseManager {
     /**
      * words table
      */
+    @Override
     public void createOrUpdateWord(String wordname, String translation, String context,
                                    boolean enabledOnline) {
         Word word = new Word();
         word.setName(wordname);
         word.setTranslation(translation);
         word.setContext(context);
-        word.setPage(currentPage);
+        word.setPage(getCurrentPage());
         word.setEnabledOnline(enabledOnline);
-        word.setBook(currentBook);
+        word.setBook(getCurrentBook());
         try {
             WordDaoService ws = mDatabaseManager.getWordService();
             boolean succeed = ws.createOrUpdate(word);
@@ -124,6 +138,7 @@ public class AppDatabaseManager {
         }
     }
 
+    @Override
     public void deleteWord(Word word) {
         try {
             WordDaoService ws = mDatabaseManager.getWordService();
@@ -134,76 +149,112 @@ public class AppDatabaseManager {
         }
     }
 
-    //TODO create filter, temp solution
-    public List<Word> getAllWords(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
-
+    //TODO refactor: make method more readable
+    @Override
+    public List<Word> getAllWords(@Nullable Iterable<String> words, @Nullable WordFilter currentFilter, @Nullable String bookIdFilter) {
+        if (currentFilter == null)
+            currentFilter = WordFilter.NONE;
         List<Word> lw = new ArrayList<>();
         try {
             WordDaoService ws = mDatabaseManager.getWordService();
             switch (currentFilter) {
                 case BY_BOOK:
-
-                    if (bookIdFilter == null && currentBook == null)
-                        throw new RuntimeException("Current book filter has not been set: \n" +
-                                "'dataManager.setFilter( ? )' or argument 'bookIdFilter ?'");
-                    lw = ws.getAllByBookId(bookIdFilter == null ? currentBook.getPath() : bookIdFilter);
+                    if (getCurrentBook().getName().isEmpty())
+                        throw new RuntimeException("Current book has not been set: \n" +
+                                "argument 'bookIdFilter ?'");
+                    lw = ws.getAllByBookId(bookIdFilter == null ? getCurrentBook().getPath() : bookIdFilter);
                     break;
                 case BY_PAGE:
-
-                    lw = ws.getAllByBookIdAndPage(bookIdFilter == null ? currentBook.getPath() : bookIdFilter, currentPage);
+                    lw = ws.getAllByBookIdAndPage(bookIdFilter == null ? getCurrentBook().getPath() : bookIdFilter, getCurrentPage());
                     break;
-
                 case BY_BOOK_AND_WORD_COLLECTION:
-
-                    if (wordsFilter == null)
+                    if (words == null)
                         return lw;
-                    lw = ws.getAllByWordNameCollectionAndBookId(wordsFilter, false, currentBook.getPath());
+                    lw = ws.getAllByWordNameCollectionAndBookId(words, false, getCurrentBook().getPath());
                     break;
-
                 case BY_BOOK_AND_EXCLUDED_WORD_COLLECTION:
-
-                    if (wordsFilter == null)
+                    if (words == null)
                         return lw;
-                    lw = ws.getAllByWordNameCollectionAndBookId(wordsFilter, true, currentBook.getPath());
+                    lw = ws.getAllByWordNameCollectionAndBookId(words, true, getCurrentBook().getPath());
                     break;
-
                 case BY_WORD_COLLECTION:
-
-                    if (wordsFilter == null)
+                    if (words == null)
                         return lw;
-                    lw = ws.getAllByWordNameCollection(wordsFilter);
+                    lw = ws.getAllByWordNameCollection(words);
                     break;
-
                 case NONE:
                     lw = ws.getAll();
                     break;
-
                 default:
                     return lw;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return lw;
     }
 
-    public PreparedQuery<Word> getWordPreparedQuery(@Nullable Iterable<String> wordsFilter, @Nullable String bookIdFilter) {
-
+    @Override
+    @Nullable
+    public Word getRandomWord() {
         try {
             WordDaoService ws = mDatabaseManager.getWordService();
+            Word word = ws.getRandomWord();
+            Log.i(LOG_TAG, "random word '" + word + "' has been fetched.");
+            return word;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    @Override
+    @Nullable
+    public Word getWord(String word) {
+        try {
+            WordDaoService ws = mDatabaseManager.getWordService();
+            Log.i(LOG_TAG, "random word '" + word + "' has been fetched.");
+            return ws.getAllByWordName(word).get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean deleteWords(WordFilter filter) {
+        if (filter == WordFilter.BY_BOOK) {
+            try {
+                WordDaoService ws = mDatabaseManager.getWordService();
+                List<Word> words = ws.getAllByBookId(getCurrentBook().getPath());
+                boolean succeed = ws.deleteAll(words);
+                Log.i(LOG_TAG, "All words by book '" + getCurrentBook().getName() + "' have been deleted from database: " + succeed);
+                return succeed;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (filter == WordFilter.BY_BOOK) {
+            throw new NotImplementedException("Selection by filter '" + filter + "' not implemented yet.");
+        }
+        Log.i(LOG_TAG, "Words have not been deleted successfully.");
+        return false;
+    }
+
+    public PreparedQuery<Word> getWordPreparedQuery(@Nullable WordFilter currentFilter, @Nullable Iterable<String> words, @Nullable String bookIdFilter) {
+        if (currentFilter == null)
+            currentFilter = WordFilter.NONE;
+        try {
+            WordDaoService ws = mDatabaseManager.getWordService();
             switch (currentFilter) {
                 case BY_BOOK:
-                    if (bookIdFilter == null && currentBook == null)
-                        throw new RuntimeException("Current book filter has not been set: \n" +
-                                "'dataManager.setFilter( ? )' or argument 'bookIdFilter ?'");
-                    return ws.getWordsByBookIdPreparedQuery(bookIdFilter == null ? currentBook.getPath() : bookIdFilter);
+                    if (getCurrentBook().getPath().isEmpty())
+                        throw new RuntimeException("Current book has not been set: \n" +
+                                "argument 'bookIdFilter ?'");
+                    return ws.getWordsByBookIdPreparedQuery(bookIdFilter == null ? getCurrentBook().getPath() : bookIdFilter);
                 default:
                     return ws.getAllWordsPreparedQuery();
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -220,59 +271,4 @@ public class AppDatabaseManager {
         return null;
     }
 
-    @Nullable
-    public Word getCurrentBooksWordByPage(String word) {
-        try {
-            WordDaoService ws = mDatabaseManager.getWordService();
-            return ws.getWordByBookIdAndPage(word, currentBook.getPath(), currentPage);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Nullable
-    public Word getRandomWord() {
-        try {
-            WordDaoService ws = mDatabaseManager.getWordService();
-            Word word = ws.getRandomWord();
-            Log.i(LOG_TAG, "random word '" + word + "' has been fetched.");
-            return word;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Nullable
-    public Word getWord(String word) {
-        try {
-            WordDaoService ws = mDatabaseManager.getWordService();
-            Log.i(LOG_TAG, "random word '" + word + "' has been fetched.");
-            return ws.getAllByWordName(word).get(0);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public boolean deleteWords(WordFilter filter) {
-        if (currentBook == null) return false;
-        if (filter == WordFilter.BY_BOOK) {
-            try {
-                WordDaoService ws = mDatabaseManager.getWordService();
-                List<Word> words = ws.getAllByBookId(currentBook.getPath());
-                boolean succeed = ws.deleteAll(words);
-                Log.i(LOG_TAG, "All words by book '" + currentBook.getName() + "' have been deleted from database: " + succeed);
-                return succeed;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        if (filter == WordFilter.BY_BOOK) {
-            throw new NotImplementedException("Selection by filter '" + filter + "' not implemented yet.");
-        }
-        Log.i(LOG_TAG, "Words have not been correctly deleted.");
-        return false;
-    }
 }

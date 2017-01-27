@@ -103,7 +103,6 @@ public class WordDaoServiceTest {
 
         assertFalse("Word should not be enabled online", ws.getAllByWordName("segregate").get(0).isEnabledOnline());
 
-
         word4.setEnabledOnline(true);
         ws.createOrUpdate(word4);
 

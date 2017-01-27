@@ -19,7 +19,8 @@ public class Book implements Serializable{
     private ForeignCollection<Word> words;
 
     public Book() {
-
+        this.path = "";
+        this.name = "";
     }
 
     public Book(String path, String name) {

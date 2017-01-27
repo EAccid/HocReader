@@ -84,11 +84,8 @@ public class WordListManager implements Callable<List<ItemDataProvider>> {
     @Override
     public List<ItemDataProvider> call() throws Exception {
         Log.i(LOG_TAG, "Updating words from database... start");
-
         List<ItemDataProvider> dataList = new ArrayList<>();
-        dataManager.setFilter(wordFilter);
-        List<Word> wordsFromDB = dataManager.getAllWords(words, null);
-
+        List<Word> wordsFromDB = dataManager.getAllWords(words, wordFilter, null);
         for (Word word : wordsFromDB) {
             ItemDataProvider itemDataProvider = new WordItemImpl(fromIndex + dataList.size(), word);
             itemDataProvider.setLastAdded(wordFilter == WordFilter.BY_BOOK_AND_WORD_COLLECTION);

@@ -29,12 +29,12 @@ public class BookOnReadProvider {
 
     private void storeCurrentBooksPageOnDevice(int page) {
         SharedPreferences.Editor editor = sp.edit();
-        editor.putInt(CURRENT_PAGE + databaseManager.getCurrentBookPath(), page);
+        editor.putInt(CURRENT_PAGE + databaseManager.getCurrentBook().getPath(), page);
         editor.apply();
     }
 
     private int loadCurrentBooksPageFromDevice() {
-        return sp.getInt(CURRENT_PAGE + databaseManager.getCurrentBookPath(), 0);
+        return sp.getInt(CURRENT_PAGE + databaseManager.getCurrentBook().getPath(), 0);
     }
 
 }

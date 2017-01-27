@@ -119,7 +119,6 @@ public class BookDaoServiceTest {
 
         TableUtils.dropTable(databaseManager.getDatabaseHelper().getConnectionSource(), Word.class, true);
         TableUtils.dropTable(databaseManager.getDatabaseHelper().getConnectionSource(), Book.class, true);
-//        databaseManager.releaseConnection();
 
     }
 
