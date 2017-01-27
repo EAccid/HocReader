@@ -24,7 +24,6 @@ import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.presentation.MainView;
 import com.eaccid.hocreader.presentation.settings.SettingsActivity;
 
 import java.util.List;

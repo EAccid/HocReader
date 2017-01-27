@@ -48,6 +48,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
 
     public void onViewCreated() {
         setDataToList();
+        mView.setSelectableText(false);
         int position = new BookOnReadProvider().loadCurrentBooksPage();
         mView.scrollToListPosition(position, 0);
     }
@@ -86,7 +87,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
         int currentPagePosition = bookInteractor.getCurrentPage() - 1;
         int fromPage = Integer.parseInt(input.toString()) - 1;
         mView.scrollToListPosition(fromPage, currentPagePosition);
-        mView.showSnackbarBackToLastOpenedPage(currentPagePosition, fromPage);
+        mView.showSnackbarBackToPage(currentPagePosition, fromPage);
     }
 
     public void onSelectTextMenuClicked() {
@@ -100,4 +101,14 @@ public class BookPresenter implements BasePresenter<BookFragment> {
         }
         mView.showMoreMenu();
     }
+
+    public void onGoToPageClicked() {
+        mView.showGoToPage();
+    }
+
+
+    public void onUndoClicked(int currentPage, int previousPage) {
+        mView.scrollToListPosition(currentPage, previousPage);
+    }
+
 }

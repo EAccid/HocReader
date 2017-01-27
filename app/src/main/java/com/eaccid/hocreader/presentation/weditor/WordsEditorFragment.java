@@ -31,7 +31,7 @@ import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchAct
 import com.h6ah4i.android.widget.advrecyclerview.utils.CustomRecyclerViewUtils;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
-public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.OnMenuItemClickListener, ToolbarActionModeListener {
+public class WordsEditorFragment extends Fragment implements WordsEditorView, Toolbar.OnMenuItemClickListener, ToolbarActionModeListener {
 
     private WordEditorPresenter mPresenter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -46,8 +46,8 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
     public WordsEditorFragment() {
     }
 
-    public static WordsEditorFragment newInstance() {
-        WordsEditorFragment f = new WordsEditorFragment();
+    public static WordsEditorView newInstance() {
+        WordsEditorView f = new WordsEditorFragment();
         return f;
     }
 
@@ -86,6 +86,96 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         mToolbar.inflateMenu(R.menu.edit_words_main_menu);
         mToolbar.setOnMenuItemClickListener(this);
         mPresenter.onViewCreated();
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (mRecyclerViewSwipeManager != null) {
+            mRecyclerViewSwipeManager.release();
+            mRecyclerViewSwipeManager = null;
+        }
+        if (mRecyclerViewTouchActionGuardManager != null) {
+            mRecyclerViewTouchActionGuardManager.release();
+            mRecyclerViewTouchActionGuardManager = null;
+        }
+        if (mRecyclerView != null) {
+            mRecyclerView.setItemAnimator(null);
+            mRecyclerView.setAdapter(null);
+            mRecyclerView = null;
+        }
+        if (mWrappedAdapter != null) {
+            WrapperAdapterUtils.releaseAll(mWrappedAdapter);
+            mWrappedAdapter = null;
+        }
+        mAdapter = null;
+        mLayoutManager = null;
+        super.onDestroyView();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_recycler_view:
+                int position = CustomRecyclerViewUtils.findFirstVisibleItemPosition(mRecyclerView, false);
+                if (position != RecyclerView.NO_POSITION) {
+                    startActionMode();
+                    onActionModeListItemSelect(position);
+                }
+                break;
+            case R.id.action_clear_all_words:
+                mPresenter.onDeleteAllWords();
+                break;
+            default:
+        }
+        return false;
+    }
+
+    @Override
+    public void notifyItemChanged(int position) {
+        mAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void notifyItemInserted(int position) {
+        mAdapter.notifyDataSetChanged();
+        mRecyclerView.scrollToPosition(position);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showToast(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Handle action mode
+     */
+
+    @Override
+    public void onModeDestroyed(ActionMode mode) {
+        releaseActionMode();
+    }
+
+    @Override
+    public void onActionItemClicked(ActionMode mode, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                mPresenter.removeItems(mAdapter.getSelectedIds());
+                break;
+            case R.id.action_copy:
+                Toast.makeText(getContext(), "'Copy': under development", Toast.LENGTH_SHORT).show();
+                mPresenter.copyItems(mAdapter.getSelectedIds());
+                mode.finish();
+                break;
+            case R.id.action_learn:
+                mPresenter.setToLearnItems(mAdapter.getSelectedIds());
+                mode.finish();
+                break;
+        }
     }
 
     private void initRecyclerView() {
@@ -133,53 +223,42 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
     }
 
-    @Override
-    public void onDestroyView() {
-        if (mRecyclerViewSwipeManager != null) {
-            mRecyclerViewSwipeManager.release();
-            mRecyclerViewSwipeManager = null;
-        }
-        if (mRecyclerViewTouchActionGuardManager != null) {
-            mRecyclerViewTouchActionGuardManager.release();
-            mRecyclerViewTouchActionGuardManager = null;
-        }
-        if (mRecyclerView != null) {
-            mRecyclerView.setItemAnimator(null);
-            mRecyclerView.setAdapter(null);
-            mRecyclerView = null;
-        }
-        if (mWrappedAdapter != null) {
-            WrapperAdapterUtils.releaseAll(mWrappedAdapter);
-            mWrappedAdapter = null;
-        }
-        mAdapter = null;
-        mLayoutManager = null;
-        super.onDestroyView();
+    private void releaseActionMode() {
+        if (mActionMode != null)
+            mActionMode = null;
     }
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.edit_recycler_view:
-                int position = CustomRecyclerViewUtils.findFirstVisibleItemPosition(mRecyclerView, false);
-                if (position != RecyclerView.NO_POSITION) {
-                    startActionMode();
-                    onListItemSelect(position);
-                }
-                break;
-            case R.id.action_clear_all_words:
-                mPresenter.onDeleteAllWords();
-                break;
-            default:
+    private void startActionMode() {
+        ToolbarActionModeCallback actionModeCallback = new ToolbarActionModeCallback(mAdapter);
+        actionModeCallback.setToolbarActionModeListener(this);
+        mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
+    }
+
+    private void onActionModeListItemSelect(int position) {
+        mAdapter.toggleSelection(position);
+        boolean hasCheckedItems = mAdapter.getSelectedCount() > 0;
+        if (!hasCheckedItems) {
+            mActionMode.finish();
+        } else {
+            mActionMode.setTitle(String.valueOf(mAdapter.getSelectedCount()) + " selected");
         }
-        return false;
     }
 
     private void onItemRemove(int position) {
         mPresenter.onItemRemoved(position);
     }
 
-    public void onItemPin(int position) {
+    private void onItemPin(int position) {
+    }
+
+    private void onItemViewClick(View v, boolean pinned) {
+        int position = mRecyclerView.getChildAdapterPosition(v);
+        if (position != RecyclerView.NO_POSITION) {
+            if (mActionMode != null) {
+                onActionModeListItemSelect(position);
+            }
+            mPresenter.onItemClicked(position);
+        }
     }
 
     public void showRemovedSnackBar(int position) {
@@ -197,85 +276,9 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         snackbar.show();
     }
 
-    private void onItemViewClick(View v, boolean pinned) {
-        int position = mRecyclerView.getChildAdapterPosition(v);
-        if (position != RecyclerView.NO_POSITION) {
-            if (mActionMode != null) {
-                onListItemSelect(position);
-            }
-            mPresenter.onItemClicked(position);
-        }
-    }
-
     private void onRefreshRecyclerView() {
         mPresenter.onRefreshRecyclerView();
         mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    public void notifyItemChanged(int position) {
-        mAdapter.notifyItemChanged(position);
-    }
-
-    public void notifyItemInserted(int position) {
-        mAdapter.notifyDataSetChanged();
-        mRecyclerView.scrollToPosition(position);
-    }
-
-    public void notifyDataSetChanged() {
-        mAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Handle action mode
-     */
-
-    @Override
-    public void onModeDestroyed(ActionMode mode) {
-        releaseActionMode();
-    }
-
-    @Override
-
-    public void onActionItemClicked(ActionMode mode, MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete:
-                mPresenter.removeItems(mAdapter.getSelectedIds());
-                break;
-            case R.id.action_copy:
-                Toast.makeText(getContext(), "'Copy': under development", Toast.LENGTH_SHORT).show();
-                mPresenter.copyItems(mAdapter.getSelectedIds());
-                mode.finish();
-                break;
-            case R.id.action_learn:
-                mPresenter.setToLearnItems(mAdapter.getSelectedIds());
-                mode.finish();
-                break;
-        }
-    }
-
-    public void releaseActionMode() {
-        if (mActionMode != null)
-            mActionMode = null;
-    }
-
-    public void showToast(String text) {
-        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-    }
-
-    private void startActionMode() {
-        ToolbarActionModeCallback actionModeCallback = new ToolbarActionModeCallback(mAdapter);
-        actionModeCallback.setToolbarActionModeListener(this);
-        mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
-    }
-
-    private void onListItemSelect(int position) {
-        mAdapter.toggleSelection(position);
-        boolean hasCheckedItems = mAdapter.getSelectedCount() > 0;
-        if (!hasCheckedItems) {
-            mActionMode.finish();
-        } else {
-            mActionMode.setTitle(String.valueOf(mAdapter.getSelectedCount()) + " selected");
-        }
     }
 
 }

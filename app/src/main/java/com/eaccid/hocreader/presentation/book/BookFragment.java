@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookFragment extends Fragment implements
-        OnMenuItemClickListener, OnMenuItemLongClickListener, BaseView {
+        OnMenuItemClickListener, OnMenuItemLongClickListener, BookView {
 
     private BookPresenter mPresenter;
     private RecyclerView mRecyclerView;
@@ -76,7 +76,6 @@ public class BookFragment extends Fragment implements
         mRecyclerView.setAdapter(mAdapter);
         moreMenuImg = (ImageView) rootView.findViewById(R.id.menu_more_vert_grey);
         moreMenuImg.setOnClickListener(view -> onMoreMenuClicked());
-        setSelectableText(isSelectableMode);
         return rootView;
     }
 
@@ -97,7 +96,7 @@ public class BookFragment extends Fragment implements
         MenuObjectWrapper mo = (MenuObjectWrapper) menuObjects.get(position);
         switch (mo.getTag()) {
             case GO_TO_PAGE:
-                showGoToPageFragment(clickedView);
+                mPresenter.onGoToPageClicked();
                 break;
             case ADD_BOOKMARK:
                 Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
@@ -136,12 +135,14 @@ public class BookFragment extends Fragment implements
         outState.putBoolean("is_selectable", isSelectableMode());
     }
 
+    @Override
     public void showMoreMenu() {
         mMenuDialogFragment.show(getFragmentManager(), ContextMenuDialogFragment.TAG);
     }
 
-    private void showGoToPageFragment(View clickedView) {
-        new MaterialDialog.Builder(clickedView.getContext())
+    @Override
+    public void showGoToPage() {
+        new MaterialDialog.Builder(getContext())
                 .title(R.string.go_to_page_title)
                 .inputType(InputType.TYPE_CLASS_NUMBER)
                 .positiveText(android.R.string.ok)
@@ -152,7 +153,8 @@ public class BookFragment extends Fragment implements
                 .show();
     }
 
-    public void showSnackbarBackToLastOpenedPage(int currentPage, int previousPage) {
+    @Override
+    public void showSnackbarBackToPage(int nextPage, int previousPage) {
         Snackbar snackbar = Snackbar.make(
                 mRecyclerView,
                 R.string.previous_page,
@@ -160,24 +162,28 @@ public class BookFragment extends Fragment implements
         snackbar.setAction(R.string.snack_bar_action_back, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollToListPosition(currentPage, previousPage);
+                mPresenter.onUndoClicked(nextPage, previousPage);
             }
         });
         snackbar.show();
     }
 
+    @Override
     public void scrollToListPosition(int position, int oldPosition) {
         mRecyclerView.scrollToPosition(position);
     }
 
+    @Override
     public int getCurrentPosition() {
         return CustomRecyclerViewUtils.findFirstVisibleItemPosition(mRecyclerView, false);
     }
 
+    @Override
     public void notifyDataSetChanged() {
         mAdapter.notifyDataSetChanged();
     }
 
+    @Override
     public void setSelectableText(boolean isSelectable) {
         mAdapter.setSelectableItemTextView(isSelectable);
         mAdapter.notifyDataSetChanged();
@@ -192,6 +198,7 @@ public class BookFragment extends Fragment implements
         Toast.makeText(getContext(), modeText, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public boolean isSelectableMode() {
         return mAdapter.isSelectableItemTextView();
     }

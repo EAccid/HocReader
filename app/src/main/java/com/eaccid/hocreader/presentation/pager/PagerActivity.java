@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.eaccid.hocreader.presentation.weditor.WordsEditorView;
 import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
-import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.FragmentTags;
 import com.eaccid.hocreader.presentation.book.OnWordFromPageViewTouchListener;
@@ -23,7 +23,7 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
         WordTranslationDialogFragment.OnWordTranslationClickListener {
 
     private PagerPresenter mPresenter;
-    private WordsEditorFragment wordsEditorFragment; //TODO refactor: del from here
+    private WordsEditorView wordsEditorFragment; //TODO refactor: del from here
 
     @Override
     public PagerPresenter getPresenter() {
@@ -43,7 +43,7 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
         CirclePageIndicator circleIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         circleIndicator.setViewPager(pager);
         if (savedInstanceState == null) {
-            wordsEditorFragment = (WordsEditorFragment) pagerAdapter.getItem(1);
+            wordsEditorFragment = (WordsEditorView) pagerAdapter.getItem(1);
         }
     }
 
