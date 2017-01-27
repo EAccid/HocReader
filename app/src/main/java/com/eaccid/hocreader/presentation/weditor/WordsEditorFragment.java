@@ -46,8 +46,8 @@ public class WordsEditorFragment extends Fragment implements WordsEditorView, To
     public WordsEditorFragment() {
     }
 
-    public static WordsEditorView newInstance() {
-        WordsEditorView f = new WordsEditorFragment();
+    public static WordsEditorFragment newInstance() {
+        WordsEditorFragment f = new WordsEditorFragment();
         return f;
     }
 
