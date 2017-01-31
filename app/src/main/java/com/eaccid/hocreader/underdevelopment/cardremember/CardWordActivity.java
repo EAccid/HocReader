@@ -12,6 +12,7 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
 import com.eaccid.hocreader.presentation.translation.semantic.ImageViewManager;
+import com.eaccid.hocreader.presentation.translation.semantic.MediaPlayerManager;
 import com.eaccid.hocreader.provider.db.words.WordItem;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
@@ -73,6 +74,9 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
                                     new MemorizingCalculatorImpl(item)
                             )
                     );
+                    if (mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
+                        mediaPlayer.release();
+                    mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());
                 }, e -> {
                     new ReaderExceptionHandlerImpl().handleError(e);
                 });
@@ -89,8 +93,15 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
             translation.setText(getTranslation());
             translation.setTextColor(Color.parseColor("#ff2f8b2a"));
         });
-        transcriptionSpeaker.setOnClickListener(v -> {
-        });
+        transcriptionSpeaker.setOnClickListener(
+                speaker -> {
+                    if (mediaPlayer == null) return;
+                    showSpeaker(transcriptionSpeaker, true);
+                    mediaPlayer.setOnCompletionListener(mp ->
+                            showSpeaker(transcriptionSpeaker, false));
+                    new MediaPlayerManager().play(mediaPlayer);
+                }
+        );
     }
 
     public String getWord() {
@@ -109,7 +120,15 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mediaPlayer.release();
         mPresenter.detachView();
     }
+
+    private void showSpeaker(ImageView iv, boolean isSpeaking) {
+        iv.setImageResource(
+                new IconTogglesResourcesProvider().getSpeakerResId(isSpeaking)
+        );
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.underdevelopment;
+package com.eaccid.hocreader.presentation.training;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.FragmentTags;
 import com.eaccid.hocreader.presentation.training.WordTrainingFragment;
 
-//TODO temp activity, refactor to separate TrainingFragment
 public class TrainingActivity extends AppCompatActivity {
 
     @Override
