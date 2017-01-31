@@ -5,7 +5,7 @@ import com.eaccid.hocreader.provider.file.pagesplitter.CharsetName;
 
 public class BaseFileImpl implements BaseFile {
 
-    private String filePath;
+    private final String filePath;
 
     public BaseFileImpl(String filePath) {
         this.filePath = filePath;

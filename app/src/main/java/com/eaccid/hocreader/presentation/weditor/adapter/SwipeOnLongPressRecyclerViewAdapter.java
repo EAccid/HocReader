@@ -43,8 +43,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
         implements SwipeableItemAdapter<SwipeOnLongPressRecyclerViewAdapter.WordsEditorViewHolder> {
     private final String LOG_TAG = "OnLongPressRVAdapter";
     private EventListener mEventListener;
-    private View.OnClickListener mItemViewOnClickListener;
-    private View.OnClickListener mSwipeableViewContainerOnClickListener;
+    private final View.OnClickListener mItemViewOnClickListener;
+    private final View.OnClickListener mSwipeableViewContainerOnClickListener;
     private SparseBooleanArray mSelectedItemsIds;
     @Inject
     WordListInteractor wordListInteractor;
@@ -179,7 +179,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         );
     }
 
-    public void showSpeaker(ImageView iv, boolean isSpeaking) {
+    private void showSpeaker(ImageView iv, boolean isSpeaking) {
         iv.setImageResource(
                 new IconTogglesResourcesProvider().getSpeakerResId(isSpeaking)
         );
@@ -392,7 +392,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         notifyDataSetChanged();
     }
 
-    public void selectView(int position, boolean value) {
+    private void selectView(int position, boolean value) {
         if (value)
             mSelectedItemsIds.put(position, value);
         else

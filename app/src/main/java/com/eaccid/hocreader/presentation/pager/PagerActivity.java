@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.presentation.pager;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
     @Override
     public TextView getTextView() {
         //TODO settings: depends on user preferences
-        ViewGroup viewGroup = (ViewGroup) getLayoutInflater().inflate(R.layout.book_page_text_item_0, null, false);
+        @SuppressLint("InflateParams") ViewGroup viewGroup = (ViewGroup) getLayoutInflater().inflate(R.layout.book_page_text_item_0, null, false);
         return (TextView) viewGroup.findViewById(R.id.text_on_page);
     }
 

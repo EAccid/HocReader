@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BookInteractorImpl implements BookInteractor {
 
-    private AppDatabaseManager dataManager;
+    private final AppDatabaseManager dataManager;
 
     public BookInteractorImpl(AppDatabaseManager appDatabaseManager) {
         this.dataManager = appDatabaseManager;

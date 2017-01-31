@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class RequestParameters extends Properties {
 
-    Map<String, String> parameters = new HashMap<>();
+    private final Map<String, String> parameters = new HashMap<>();
 
     public void addParameter(String parameterKey, String parameterValue) {
         parameters.put(parameterKey, parameterValue);

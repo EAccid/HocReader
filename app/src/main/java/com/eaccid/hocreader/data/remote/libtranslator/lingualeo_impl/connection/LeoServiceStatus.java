@@ -8,7 +8,7 @@ public class LeoServiceStatus {
 
     public ServiceStatus getGeneralServiceStatus(final LingualeoResponse lingualeoResponse) {
         if (lingualeoResponse.isEmpty()) {
-            Log.i(LOG_TAG, "Response from Linguleo is empty.");
+            Log.i(LOG_TAG, "Response from Lingualeo is empty.");
             return ServiceStatus.FAILED;
         }
         String error_msg = lingualeoResponse.getString("error_msg");

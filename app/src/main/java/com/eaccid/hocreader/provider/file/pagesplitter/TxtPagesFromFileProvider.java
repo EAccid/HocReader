@@ -5,7 +5,7 @@ import rx.Subscriber;
 
 public class TxtPagesFromFileProvider implements FileToPagesReader {
 
-    private CharactersDefinerForFullScreenTextView parameters;
+    private final CharactersDefinerForFullScreenTextView parameters;
 
     public TxtPagesFromFileProvider(CharactersDefinerForFullScreenTextView parameters) {
         this.parameters = parameters;

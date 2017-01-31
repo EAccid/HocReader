@@ -43,10 +43,7 @@ public class WordDaoService implements Crud {
     public boolean delete(Object word) {
         try {
             Word existedWord = getWord((Word) word);
-            if (existedWord != null) {
-                return dao.delete(existedWord) == 1;
-            }
-            return false;
+            return existedWord != null && dao.delete(existedWord) == 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,11 +94,11 @@ public class WordDaoService implements Crud {
         return new ArrayList<>();
     }
 
-    public List<Word> getAllByWordNameCollectionAndBookId(Iterable<String> words, boolean excludeWords, String bookid) {
+    public List<Word> getAllByWordNameCollectionAndBookId(Iterable<String> words, boolean excludeWords, String bookId) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
             Where<Word, String> where = qb.where();
-            where.eq("book_id", bookid);
+            where.eq("book_id", bookId);
             where.and();
             if (excludeWords) {
                 where.notIn("word", words);
@@ -116,11 +113,11 @@ public class WordDaoService implements Crud {
         return new ArrayList<>();
     }
 
-    public List<Word> getAllByBookId(String bookid) {
+    public List<Word> getAllByBookId(String bookId) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
             Where<Word, String> where = qb.where();
-            where.eq("book_id", bookid);
+            where.eq("book_id", bookId);
             PreparedQuery<Word> preparedQuery = qb.prepare();
             return dao.query(preparedQuery);
         } catch (SQLException e) {
@@ -129,11 +126,11 @@ public class WordDaoService implements Crud {
         return new ArrayList<>();
     }
 
-    public List<Word> getAllByBookIdAndPage(String bookid, int pageNumber) {
+    public List<Word> getAllByBookIdAndPage(String bookId, int pageNumber) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
             Where<Word, String> where = qb.where();
-            where.eq("book_id", bookid);
+            where.eq("book_id", bookId);
             where.and();
             where.eq("page", pageNumber);
             PreparedQuery<Word> preparedQuery = qb.prepare();
@@ -155,11 +152,11 @@ public class WordDaoService implements Crud {
         return null;
     }
 
-    public PreparedQuery<Word> getWordsByBookIdPreparedQuery(String bookid) {
+    public PreparedQuery<Word> getWordsByBookIdPreparedQuery(String bookId) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
             Where<Word, String> where = qb.where();
-            where.eq("book_id", bookid);
+            where.eq("book_id", bookId);
             return qb.prepare();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -172,12 +169,12 @@ public class WordDaoService implements Crud {
     }
 
     @Nullable
-    public Word getWordByBookIdAndPage(String word, String bookid, int pageNumber) {
+    public Word getWordByBookIdAndPage(String word, String bookId, int pageNumber) {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
             Where<Word, String> where = qb.where();
 
-            where.eq("book_id", bookid);
+            where.eq("book_id", bookId);
             where.and();
             where.eq("word", word);
             where.and();

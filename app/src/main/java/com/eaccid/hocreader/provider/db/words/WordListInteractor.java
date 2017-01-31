@@ -19,9 +19,9 @@ import rx.subjects.BehaviorSubject;
 
 public class WordListInteractor extends DataListProvider {
 
-    private static final String logTAG = "WordListInteractor";
+    private final String logTAG = "WordListInteractor";
     private List<String> sessionWords;
-    private WordListManager wordListManager;
+    private final WordListManager wordListManager;
 
     public WordListInteractor(WordListManager wordListManager) {
         this.sessionWords = new ArrayList<>();
@@ -89,11 +89,6 @@ public class WordListInteractor extends DataListProvider {
 
     private List<ItemDataProvider> addDataListByBookAndSessionWords() {
         return wordListManager.addAllFromDatabase(sessionWords);
-    }
-
-    @Override
-    public ItemDataProvider getItem(int index) {
-        return super.getItem(index);
     }
 
     /**

@@ -41,7 +41,6 @@ public class CardWordPresenter implements BasePresenter<CardWordActivity> {
         Word word = databaseManager.getWord(mView.getWord());
         if (word == null)
             word = new Word();
-        WordItemImpl wordItem = new WordItemImpl(word);
-        return wordItem;
+        return new WordItemImpl(word);
     }
 }

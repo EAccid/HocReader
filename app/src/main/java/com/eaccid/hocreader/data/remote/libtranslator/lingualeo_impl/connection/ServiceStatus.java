@@ -6,7 +6,7 @@ public enum ServiceStatus {
 
     SUCCEEDED, FAILED, UNAUTHORIZED, CONNECTION_ERROR;
 
-    private ServiceStatus() {
+    ServiceStatus() {
     }
 
     public boolean getBooleanStatus() {

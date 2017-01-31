@@ -86,4 +86,6 @@
     <string name="base_word">Base word</string>
     <string name="action_words_editor">Words Editor</string>
 
+    <string name="desc">Empty</string>
+
 </resources>

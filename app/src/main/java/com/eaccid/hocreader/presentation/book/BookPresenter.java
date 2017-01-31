@@ -22,7 +22,7 @@ import rx.schedulers.Schedulers;
 public class BookPresenter implements BasePresenter<BookFragment> {
     private final String logTAG = "BookPresenter";
     private BookFragment mView;
-    private List<Page<String>> mPagesList;
+    private final List<Page<String>> mPagesList;
 
     @Inject
     BookInteractor bookInteractor;

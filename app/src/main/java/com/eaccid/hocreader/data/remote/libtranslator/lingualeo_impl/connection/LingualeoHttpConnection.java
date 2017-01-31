@@ -6,13 +6,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
 
 class LingualeoHttpConnection {
 
     private HttpURLConnection connection;
-    private LingualeoResponse lingualeoResponse;
-    private LingualeoCookies cookies;
+    private final LingualeoResponse lingualeoResponse;
+    private final LingualeoCookies cookies;
 
     public LingualeoHttpConnection() {
         lingualeoResponse = new LingualeoResponse();

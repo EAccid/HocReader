@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     tools:showIn="@layout/editor_word_item_fragment_1">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
 
             <ImageView
                 android:id="@+id/show_in_page"
                 style="@style/icon_toggles"
-                android:src="@drawable/ic_show_in_page_gray_24px" />
+                android:src="@drawable/ic_show_in_page_gray_24px"
+                android:contentDescription="@string/desc"/>
         </com.andexert.library.RippleView>
 
         <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
@@ -23,7 +20,8 @@
             <ImageView
                 android:id="@+id/learn_by_heart_false"
                 style="@style/icon_toggles"
-                android:src="@drawable/ic_learn_by_heart_border_gray_24px" />
+                android:src="@drawable/ic_learn_by_heart_border_gray_24px"
+                android:contentDescription="@string/desc"/>
         </com.andexert.library.RippleView>
 
         <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
@@ -31,9 +29,8 @@
             <ImageView
                 android:id="@+id/transcription_speaker"
                 style="@style/icon_toggles"
-                android:src="@drawable/ic_volume_up_gray_24px"/>
+                android:src="@drawable/ic_volume_up_gray_24px"
+                android:contentDescription="@string/desc"/>
         </com.andexert.library.RippleView>
 
     </LinearLayout>
-
-</FrameLayout>

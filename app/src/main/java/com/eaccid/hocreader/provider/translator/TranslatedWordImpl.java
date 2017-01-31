@@ -4,9 +4,9 @@ import com.eaccid.hocreader.provider.fromtext.ins.TextManagerImpl;
 
 public class TranslatedWordImpl implements TranslatedWord {
 
-    private String word;
+    private final String word;
+    private final String context;
     private String translation;
-    private String context;
 
     public TranslatedWordImpl(String word, String context) {
         this.context = context;

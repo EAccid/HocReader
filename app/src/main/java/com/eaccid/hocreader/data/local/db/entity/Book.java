@@ -58,8 +58,8 @@ public class Book implements Serializable{
 
         Book book = (Book) o;
 
-        if (path != null ? !path.equals(book.path) : book.path != null) return false;
-        return name != null ? name.equals(book.name) : book.name == null;
+        return path != null ? path.equals(book.path) : book.path == null
+                && (name != null ? name.equals(book.name) : book.name == null);
 
     }
 

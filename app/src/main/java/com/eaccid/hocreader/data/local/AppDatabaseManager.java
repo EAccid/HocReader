@@ -19,7 +19,7 @@ import java.util.List;
 public class AppDatabaseManager {
 
     private final String LOG_TAG = "AppDatabaseManager";
-    private DatabaseManager mDatabaseManager;
+    private final DatabaseManager mDatabaseManager;
 
     public AppDatabaseManager(DatabaseManager mDatabaseManager) {
         this.mDatabaseManager = mDatabaseManager;
@@ -66,13 +66,13 @@ public class AppDatabaseManager {
      * books table
      */
 
-    public void refreshBooks(List<String> bookpaths) {
+    public void refreshBooks(List<String> bookPaths) {
         try {
             BookDaoService bookDaoService = mDatabaseManager.getBookService();
             List<Book> booksInDB = bookDaoService.getAll();
             for (Book book : booksInDB
                     ) {
-                if (!bookpaths.contains(book.getPath())) {
+                if (!bookPaths.contains(book.getPath())) {
                     bookDaoService.delete(book);
                     Log.i(LOG_TAG, "book '" + book.getName() + "' has been deleted.");
                 }

@@ -1,6 +1,5 @@
 package com.eaccid.hocreader.presentation.training.carouseladapter;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
@@ -22,11 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class WordCarouselRecyclerViewAdapter extends OrmliteCursorRecyclerViewAdapter<Word, WordCarouselRecyclerViewAdapter.ViewHolder> {
-
-    public WordCarouselRecyclerViewAdapter(Context context) {
-        super(context);
-    }
+public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAdapter<Word, WordCarouselRecyclerViewAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

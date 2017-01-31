@@ -53,12 +53,12 @@ public class WordFromTextProvider {
         return firstPartOfWord + lastPartOfWord;
     }
 
-    private String getFirstPartOfWordInLine(CharSequence sublineBeforeClickedChar) {
-        return getMatchingResult(sublineBeforeClickedChar, Pattern.compile("(\\w+)$"));
+    private String getFirstPartOfWordInLine(CharSequence subLineBeforeClickedChar) {
+        return getMatchingResult(subLineBeforeClickedChar, Pattern.compile("(\\w+)$"));
     }
 
-    private String getLastPartOfWordInLine(CharSequence sublineAfterClickedChar) {
-        return getMatchingResult(sublineAfterClickedChar, Pattern.compile("^([\\w\\-]+)"));
+    private String getLastPartOfWordInLine(CharSequence subLineAfterClickedChar) {
+        return getMatchingResult(subLineAfterClickedChar, Pattern.compile("^([\\w\\-]+)"));
     }
 
     private String getSentenceFromText(CharSequence text, CharSequence subtext) {

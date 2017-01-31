@@ -17,7 +17,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String TAG = DatabaseHelper.class.getSimpleName();
     private static final int DATABASE_VERSION = 5;
-    private static String databaseName = "hr.db";
+    private static final String databaseName = "hr.db";
 
     public DatabaseHelper(Context context) {
         super(context, databaseName, null, DATABASE_VERSION);

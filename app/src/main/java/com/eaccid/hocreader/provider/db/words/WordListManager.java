@@ -22,7 +22,7 @@ public class WordListManager implements Callable<List<ItemDataProvider>> {
     private List<String> words;
     private int fromIndex;
 
-    private AppDatabaseManager dataManager;
+    private final AppDatabaseManager dataManager;
 
     public WordListManager(AppDatabaseManager dataManager) {
         this.dataManager = dataManager;

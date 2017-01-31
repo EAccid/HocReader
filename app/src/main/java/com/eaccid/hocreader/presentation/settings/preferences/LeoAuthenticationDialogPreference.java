@@ -3,7 +3,6 @@ package com.eaccid.hocreader.presentation.settings.preferences;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
@@ -41,12 +40,11 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
-        builder.setPositiveButton("SIGN IN", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                authenticate(emailText.getText().toString(), passwordText.getText().toString());
-            }
-        });
+        builder.setPositiveButton("SIGN IN",
+                (dialog, which) ->
+                        authenticate(emailText.getText().toString(), passwordText.getText().toString()
+                        )
+        );
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class FileOnDeviceProvider {
 
-    private ArrayList<File> fileList = new ArrayList<>();
+    private final ArrayList<File> fileList = new ArrayList<>();
 
     public ArrayList<File> findFiles() {
         fillFileList();

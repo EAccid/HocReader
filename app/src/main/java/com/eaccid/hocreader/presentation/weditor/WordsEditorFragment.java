@@ -47,8 +47,7 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
     }
 
     public static WordsEditorFragment newInstance() {
-        WordsEditorFragment f = new WordsEditorFragment();
-        return f;
+        return new WordsEditorFragment();
     }
 
     @Override
@@ -179,7 +178,7 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         mPresenter.onItemRemoved(position);
     }
 
-    public void onItemPin(int position) {
+    private void onItemPin(int position) {
     }
 
     public void showRemovedSnackBar(int position) {
@@ -187,12 +186,7 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
                 getView().findViewById(R.id.container),
                 R.string.snack_bar_text_item_removed,
                 Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_bar_action_undo, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onUndoClick();
-            }
-        });
+        snackbar.setAction(R.string.snack_bar_action_undo, v -> mPresenter.onUndoClick());
         snackbar.setActionTextColor(ContextCompat.getColor(getView().getContext(), R.color.snackbar_action_color_done));
         snackbar.show();
     }
@@ -253,7 +247,7 @@ public class WordsEditorFragment extends Fragment implements BaseView, Toolbar.O
         }
     }
 
-    public void releaseActionMode() {
+    private void releaseActionMode() {
         if (mActionMode != null)
             mActionMode = null;
     }

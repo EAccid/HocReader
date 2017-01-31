@@ -1,6 +1,5 @@
 package com.eaccid.hocreader.presentation.training.carouseladapter;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 
@@ -8,10 +7,10 @@ import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.stmt.PreparedQuery;
 import java.sql.SQLException;
 
-public abstract class OrmliteCursorRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder> extends CursorRecyclerViewAdapter<VH> {
-    protected PreparedQuery<T> preparedQuery;
+public abstract class OrmLiteCursorRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder> extends CursorRecyclerViewAdapter<VH> {
+    private PreparedQuery<T> preparedQuery;
 
-    public OrmliteCursorRecyclerViewAdapter(Context context){
+    public OrmLiteCursorRecyclerViewAdapter(){
         super(null);
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerViewAdapter.ViewHolder> {
     private static final String logTAG = "BookAdapter";
-    private List<Page<String>> mPagesList;
+    private final List<Page<String>> mPagesList;
     private boolean isSelectableItemTextView;
 
     public BookRecyclerViewAdapter(List<Page<String>> mPagesList) {

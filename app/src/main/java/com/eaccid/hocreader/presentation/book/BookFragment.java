@@ -36,14 +36,12 @@ public class BookFragment extends Fragment implements
     private RecyclerView mRecyclerView;
     private BookRecyclerViewAdapter mAdapter;
     private ContextMenuDialogFragment mMenuDialogFragment;
-    private List<MenuObject> menuObjects = new ArrayList<>();
-    private static final String TAG = "BookFragment";
-
-    public ImageView moreMenuImg;
+    private final List<MenuObject> menuObjects = new ArrayList<>();
+    private final String TAG = "BookFragment";
+    private ImageView moreMenuImg;
 
     public static BookFragment newInstance() {
-        BookFragment f = new BookFragment();
-        return f;
+        return new BookFragment();
     }
 
     @Override
@@ -145,9 +143,9 @@ public class BookFragment extends Fragment implements
                 .title(R.string.go_to_page_title)
                 .inputType(InputType.TYPE_CLASS_NUMBER)
                 .positiveText(android.R.string.ok)
-                .input(R.string.input_page, 0, false, (dialog, input) -> {
-                    mPresenter.goToPageClicked(input);
-                })
+                .input(R.string.input_page, 0, false,
+                        (dialog, input) -> mPresenter.goToPageClicked(input)
+                )
                 .negativeText(android.R.string.cancel)
                 .show();
     }
@@ -157,12 +155,9 @@ public class BookFragment extends Fragment implements
                 mRecyclerView,
                 R.string.previous_page,
                 Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_bar_action_back, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollToListPosition(currentPage, previousPage);
-            }
-        });
+        snackbar.setAction(R.string.snack_bar_action_back,
+                v -> scrollToListPosition(currentPage, previousPage)
+        );
         snackbar.show();
     }
 
@@ -181,7 +176,7 @@ public class BookFragment extends Fragment implements
     public void setSelectableText(boolean isSelectable) {
         mAdapter.setSelectableItemTextView(isSelectable);
         mAdapter.notifyDataSetChanged();
-        String modeText = ""; // todo from @string
+        String modeText; // todo from @string
         if (isSelectable) {
             modeText = "Tap twice to select";
             moreMenuImg.setImageResource(R.drawable.ic_done_all_24px);

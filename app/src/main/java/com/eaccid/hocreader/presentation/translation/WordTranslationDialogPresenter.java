@@ -70,7 +70,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                         {
                             Log.i(LOG_TAG, "Text translated status: " + !textTranslation.isEmpty());
                             if (isNextWordToTranslateEmpty())
-                                setmNextWordToTranslate(textTranslation.getWord());
+                                setNextWordToTranslate(textTranslation.getWord());
                             showTranslationsData(textTranslation);
                             mTranslatedWordImpl = new TranslatedWordImpl(wordFromText.getText(),wordFromText.getSentence());
                         }
@@ -101,7 +101,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     public void OnWordClicked() {
         String nextWord = getNextWordToTranslate();
         WordFromText currentWord = mView.getWordFromText();
-        setmNextWordToTranslate(currentWord.getText());
+        setNextWordToTranslate(currentWord.getText());
         currentWord.setText(nextWord);
         translateText(currentWord);
     }
@@ -113,7 +113,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
         mView.dismiss();
     }
 
-    private void setmNextWordToTranslate(String mNextWordToTranslate) {
+    private void setNextWordToTranslate(String mNextWordToTranslate) {
         this.mNextWordToTranslate = mNextWordToTranslate;
     }
 
@@ -121,7 +121,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
         return mNextWordToTranslate;
     }
 
-    public boolean isNextWordToTranslateEmpty() {
+    private boolean isNextWordToTranslateEmpty() {
         return mNextWordToTranslate == null || mNextWordToTranslate.isEmpty();
     }
 }

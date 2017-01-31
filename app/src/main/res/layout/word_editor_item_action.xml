@@ -11,7 +11,8 @@
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/empty_picture_background" />
+        android:src="@drawable/empty_picture_background"
+        android:contentDescription="@string/desc"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -47,7 +48,8 @@
                 <ImageView
                     android:id="@+id/already_learned"
                     style="@style/icon_toggles"
-                    android:src="@drawable/ic_star_border_yellow_24px" />
+                    android:src="@drawable/ic_star_border_yellow_24px"
+                    android:contentDescription="@string/desc"/>
             </com.andexert.library.RippleView>
 
         </FrameLayout>

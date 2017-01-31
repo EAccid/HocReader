@@ -4,9 +4,7 @@
     <!-- Base application theme color -->
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorPrimary">#4CAF50</color>
-    <!--<color name="colorSecondary">#81C784</color>-->
     <color name="colorLightPrimary">#C8E6C9</color>
-
     <color name="colorAccent">#E040FB</color>
     <color name="colorAccentDark">#8E24AA</color>
     <color name="colorAccentSecondary">#EA80FC</color>
@@ -29,51 +27,23 @@
     <color name="ic_color_yellow">#FBC02D</color>
     <color name="translation_color_don_t_know">#fff45f30</color>
     <color name="translation_color_don_t_remember">#ff2f8b2a</color>
-
-    <color name="card_view_background_color">#FAFAFA</color>
-    <color name="divider_color">#1800796b</color>
     <color name="snackbar_action_color_done">#EA80FC</color>
 
+    <!--Card view color-->
+    <color name="card_view_background_color">#FAFAFA</color>
+    <color name="divider_color">#1800796B</color>
     <color name="bg_item_normal_state">#FAFAFA</color>
     <color name="bg_item_swiping_state">#C8E6C9</color>
     <color name="bg_item_swiping_active_state">#CFD8DC</color>
     <color name="bg_item_session_state">#E0F7FA</color>
-
     <color name="color_swiping_text_dark">#2C3E50</color>
     <color name="color_swiping_text_light">#ECF0F1</color>
     <color name="color_word_text_dark">#2C3E50</color>
-
     <color name="bg_swipe_item_neutral">@android:color/transparent</color>
     <color name="bg_swipe_item_pinned">#E67E22</color>
     <color name="bg_swipe_item_dismiss">#EA80FC</color>
-
-
-    <color name="bg_swipe_group_item_pinned">#fff45f30</color>
-    <color name="bg_swipe_group_item_dismiss">#ff295db3</color>
-
-
-    <color name="bg_swipe_item_gray">#757575</color>
-
-
-    <color name="ic_color_black">#000000</color>
-    <color name="ic_color_bookmark">#FFC107</color>
-    <color name="ic_color_pets_green">#4CAF50</color>
-    <color name="ic_color_pets_brown">#795548</color>
-
     <color name="expandable_item_indicator_color">#42000000</color>
-    <color name="testColor1">#ffcaf6</color>
-    <color name="testColor2">#b8fae4</color>
-    <color name="colorTest3">#6d79f9</color>
-    <color name="colorTest4">#faeff7</color>
-
-
-    <color name="test">#9cf4d7</color>
-
-    <color name="black_alpha_40">#66000000</color>
-    <color name="black_alpha_60">#99000000</color>
-
     <color name="text_white_primary">@color/white</color>
     <color name="hint_color">#795548</color>
-
 
 </resources>

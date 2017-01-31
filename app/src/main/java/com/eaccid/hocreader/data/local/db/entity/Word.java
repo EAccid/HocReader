@@ -119,8 +119,7 @@ public class Word implements Serializable {
 
         Word word1 = (Word) o;
 
-        if (!word.equals(word1.word)) return false;
-        return book.equals(word1.book);
+        return word.equals(word1.word) && book.equals(word1.book);
 
     }
 

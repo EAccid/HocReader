@@ -8,7 +8,7 @@ import com.eaccid.hocreader.R;
 
 public class SelectableToTranslateActionMode implements ActionMode.Callback {
 
-    private TextView textView;
+    private final TextView textView;
 
     public SelectableToTranslateActionMode(TextView tv) {
         textView = tv;
@@ -22,8 +22,8 @@ public class SelectableToTranslateActionMode implements ActionMode.Callback {
 
     @Override
     public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-        menu.add(0, 0, 0, "Lingualeo").setIcon(R.drawable.ic_pets_menu_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.add(0, 1, 0, "Google translator").setIcon(R.drawable.ic_g_translate_menu_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(0, 0, 0, "Lingualeo").setIcon(R.drawable.ic_pets_menu_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.add(0, 1, 0, "Google translator").setIcon(R.drawable.ic_g_translate_menu_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 

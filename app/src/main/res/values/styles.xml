@@ -84,7 +84,6 @@
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_centerInParent">true</item>
         <item name="android:padding">@dimen/spacing_8</item>
-        <item name="android:contentDescription">Action"</item>
     </style>
 
     <style name="frame_divider">
