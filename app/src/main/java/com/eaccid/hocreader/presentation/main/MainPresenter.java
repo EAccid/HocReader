@@ -1,6 +1,5 @@
 package com.eaccid.hocreader.presentation.main;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -56,11 +55,11 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     }
 
     private void fillExpandableListView() {
-        mView.showProgressDialog();
+//        mView.showProgressDialog();
+//        mView.dismissProgressDialog();
         FileProvider fileProvider = new FileOnDeviceProvider();
         List<File> foundFiles = fileProvider.findFiles();
         loadFilesToExpandableView(foundFiles);
-        mView.dismissProgressDialog();
     }
 
     private void loadFilesToExpandableView(List<File> files) {
