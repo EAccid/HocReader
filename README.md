@@ -10,7 +10,7 @@ Furthermore, I’ve been diving into Android development...
 
 Features:
 -	words with images and sounds from Lingualeo API, ability to add words to Lingualeo dictionary (online mode)
--	offline dictionary (consists of added words),  words from device database (just words with translations)
+-	offline dictionary (consists of added words),  words from device database (just words with translations or descriptions)
 -	pages navigation, highlight, bookmarks, font sizes, translators navigation
 -	word cards training
 - words editor
