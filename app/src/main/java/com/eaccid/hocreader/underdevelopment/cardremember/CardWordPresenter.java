@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 public class CardWordPresenter implements BasePresenter<CardWordActivity> {
 
-    private final String logTAG = "MainReaderPresenter";
+    private final String logTAG = "MainPresenter";
     private CardWordActivity mView;
 
     //TODO inject provider instead of manager

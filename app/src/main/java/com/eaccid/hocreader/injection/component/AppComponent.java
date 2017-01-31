@@ -10,7 +10,7 @@ import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.injection.module.AppModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
 import com.eaccid.hocreader.injection.module.DataProviderModule;
-import com.eaccid.hocreader.presentation.main.MainReaderPresenter;
+import com.eaccid.hocreader.presentation.main.MainPresenter;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.underdevelopment.cardremember.CardWordPresenter;
 import com.eaccid.hocreader.presentation.book.BookPresenter;
@@ -46,7 +46,7 @@ public interface AppComponent {
 
     void inject(ImageViewManager imageViewManager);
 
-    void inject(MainReaderPresenter mainReaderPresenter);
+    void inject(MainPresenter mainPresenter);
 
     void inject(MemorizingPresenter memorizingPresenter);
 

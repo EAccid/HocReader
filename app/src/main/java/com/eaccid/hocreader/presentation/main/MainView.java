@@ -8,4 +8,8 @@ public interface MainView<T> extends BaseView {
     void setBooksData(List<T> itemGroupList);
 
     void provideBooksSearching(String searchText);
+
+    void showProgressDialog();
+
+    void dismissProgressDialog();
 }

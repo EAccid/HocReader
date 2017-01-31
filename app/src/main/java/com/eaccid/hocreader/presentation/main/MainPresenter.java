@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.presentation.main;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -23,15 +24,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class MainReaderPresenter implements BasePresenter<MainActivity> {
+public class MainPresenter implements BasePresenter<MainActivity> {
 
-    private final String logTAG = "MainReaderPresenter";
+    private final String logTAG = "MainPresenter";
     private MainActivity mView;
 
     @Inject
     BookInteractor bookInteractor;
 
-    public MainReaderPresenter() {
+    public MainPresenter() {
         App.getAppComponent().inject(this);
     }
 
@@ -55,9 +56,11 @@ public class MainReaderPresenter implements BasePresenter<MainActivity> {
     }
 
     private void fillExpandableListView() {
+        mView.showProgressDialog();
         FileProvider fileProvider = new FileOnDeviceProvider();
         List<File> foundFiles = fileProvider.findFiles();
         loadFilesToExpandableView(foundFiles);
+        mView.dismissProgressDialog();
     }
 
     private void loadFilesToExpandableView(List<File> files) {

@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.presentation.main;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
-    private static MainReaderPresenter mPresenter;
+    private static MainPresenter mPresenter;
+    private ProgressDialog progressDialog;
     private SearchAdapter searchAdapter;
 
     @Override
@@ -68,7 +70,9 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         drawerLayout.addDrawerListener(drawerListener);
         drawerListener.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        if (mPresenter == null) mPresenter = new MainReaderPresenter();
+        if (mPresenter == null) mPresenter = new MainPresenter();
+        progressDialog = new ProgressDialog(expandableListView.getContext(),
+                R.style.AppTheme_Dialog);
         mPresenter.attachView(this);
     }
 
@@ -166,5 +170,16 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         }
     }
 
+    @Override
+    public void showProgressDialog() {
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        progressDialog.dismiss();
+    }
 }
 

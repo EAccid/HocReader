@@ -77,7 +77,6 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
                     @Override
                     public void onCompleted() {
                         progressDialog.dismiss();
-                        unsubscribe();
                     }
 
                     @Override
@@ -85,7 +84,6 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
                         e.printStackTrace();
                         progressDialog.dismiss();
                         onAuthorized(false);
-                        unsubscribe();
                     }
 
                     @Override
