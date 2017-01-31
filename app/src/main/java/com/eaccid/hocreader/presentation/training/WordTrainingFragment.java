@@ -95,5 +95,4 @@ public class WordTrainingFragment extends Fragment {
                 hint.setVisibility(View.VISIBLE);
         });
     }
-
 }

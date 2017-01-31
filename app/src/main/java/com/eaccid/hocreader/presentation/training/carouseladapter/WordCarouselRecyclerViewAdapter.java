@@ -9,9 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.db.entity.Word;
+import com.eaccid.hocreader.presentation.training.OnHintShowListener;
 import com.eaccid.hocreader.presentation.translation.semantic.ImageViewManager;
+import com.eaccid.hocreader.presentation.translation.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
 import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
@@ -22,6 +26,12 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAdapter<Word, WordCarouselRecyclerViewAdapter.ViewHolder> {
+
+    OnHintShowListener onHintShowListener;
+
+    public void addOnHintClickListener(OnHintShowListener onHintShowListener) {
+
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -64,6 +74,10 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
     }
 
     private void setDataToViewFromItem(WordCarouselRecyclerViewAdapter.ViewHolder holder, Word word) {
+        if (!new NetworkAvailablenessImpl().isNetworkAvailable()) {
+            holder.word.setText(word.getName());
+            return;
+        }
         new WordItemProvider()
                 .getWordItemWithTranslation(word)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -76,6 +90,10 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                                             new MemorizingCalculatorImpl(wordItem)
                                     )
                             );
+                            if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
+                                holder.mediaPlayer.release();
+                            holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());
+
                         }, e -> {
                             new ReaderExceptionHandlerImpl().handleError(e);
 
@@ -97,6 +115,21 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         });
         holder.transcriptionSpeaker.setOnClickListener(v -> {
         });
+        holder.transcriptionSpeaker.setOnClickListener(
+                speaker -> {
+                    if (holder.mediaPlayer == null) return;
+                    showSpeaker(holder.transcriptionSpeaker, true);
+                    holder.mediaPlayer.setOnCompletionListener(mp ->
+                            showSpeaker(holder.transcriptionSpeaker, false));
+                    new MediaPlayerManager().play(holder.mediaPlayer);
+                }
+        );
+    }
+
+    private void showSpeaker(ImageView iv, boolean isSpeaking) {
+        iv.setImageResource(
+                new IconTogglesResourcesProvider().getSpeakerResId(isSpeaking)
+        );
     }
 
 }
