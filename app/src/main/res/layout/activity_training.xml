@@ -4,6 +4,6 @@
     android:id="@+id/activity_training"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.eaccid.hocreader.presentation.training.TrainingActivity">
+    tools:context="com.eaccid.hocreader.underdevelopment.TrainingActivity">
 
 </RelativeLayout>

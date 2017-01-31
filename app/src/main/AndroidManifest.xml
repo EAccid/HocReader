@@ -70,7 +70,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".presentation.main.MainActivity" />
         </activity>
-        <activity android:name=".presentation.training.TrainingActivity"
+        <activity android:name=".underdevelopment.TrainingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
