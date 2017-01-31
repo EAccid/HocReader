@@ -6,7 +6,7 @@ import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.
 
 public class LingualeoDictionary implements Dictionary {
 
-    private LingualeoServiceCookies cookies;
+    private final LingualeoServiceCookies cookies;
 
     public LingualeoDictionary(LingualeoServiceCookies cookies) {
         this.cookies = cookies;

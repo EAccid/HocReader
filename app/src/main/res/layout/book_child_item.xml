@@ -15,7 +15,8 @@
             android:layout_height="48dp"
             android:layout_gravity="start"
             android:id="@+id/child_icon"
-            android:padding="@dimen/spacing_8"/>
+            android:padding="@dimen/spacing_8"
+            android:contentDescription="@string/desc"/>
 
         <TextView
             android:layout_width="match_parent"

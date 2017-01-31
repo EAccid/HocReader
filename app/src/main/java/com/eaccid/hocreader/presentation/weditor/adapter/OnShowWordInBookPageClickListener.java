@@ -7,7 +7,7 @@ import com.eaccid.hocreader.provider.db.words.WordItem;
 
 public class OnShowWordInBookPageClickListener implements View.OnClickListener {
 
-    private WordItem wordProvider;
+    private final WordItem wordProvider;
 
     public OnShowWordInBookPageClickListener(WordItem wordToShowInPage) {
         this.wordProvider = wordToShowInPage;

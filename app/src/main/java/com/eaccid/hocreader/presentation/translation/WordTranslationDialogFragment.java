@@ -117,7 +117,7 @@ public class WordTranslationDialogFragment extends DialogFragment implements Tra
 
     @Override
     public void showTranslations(List<String> list) {
-        mAdapter = new ArrayAdapter<String>(
+        mAdapter = new ArrayAdapter<>(
                 getView().getContext(), R.layout.translation_dialog_item, list);
         mTranslations.setAdapter(mAdapter);
     }

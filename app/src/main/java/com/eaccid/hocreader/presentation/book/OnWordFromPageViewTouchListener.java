@@ -12,7 +12,7 @@ import com.eaccid.hocreader.provider.fromtext.WordFromTextProviderImpl;
 
 public class OnWordFromPageViewTouchListener implements View.OnTouchListener{
 
-    private int pageNumber;
+    private final int pageNumber;
 
     public interface OnWordFromTextClickListener {
         void onWordClicked(WordFromText wordFromText);

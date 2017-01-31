@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class ToolbarActionModeCallback implements ActionMode.Callback {
 
     private final String LOG_TAG = "ToolbarAMCallback";
-    private SwipeOnLongPressRecyclerViewAdapter recyclerView_adapter;
+    private final SwipeOnLongPressRecyclerViewAdapter recyclerView_adapter;
     private ToolbarActionModeListener actionModeListener;
 
     @Inject
@@ -45,9 +45,9 @@ public class ToolbarActionModeCallback implements ActionMode.Callback {
 
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        menu.findItem(R.id.action_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.findItem(R.id.action_copy).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.findItem(R.id.action_learn).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.findItem(R.id.action_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.findItem(R.id.action_copy).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.findItem(R.id.action_learn).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 

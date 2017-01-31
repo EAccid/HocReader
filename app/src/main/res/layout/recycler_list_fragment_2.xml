@@ -39,7 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
             android:background="@android:color/transparent"
-            android:padding="16dp" />
+            android:padding="16dp"
+            android:contentDescription="@string/desc"/>
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
@@ -72,7 +73,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/colorTransparent"
-                android:src="@drawable/ic_insert_emoticon_hint_48px" />
+                android:src="@drawable/ic_insert_emoticon_hint_48px"
+                android:contentDescription="@string/desc"/>
         </com.andexert.library.RippleView>
 
     </LinearLayout>

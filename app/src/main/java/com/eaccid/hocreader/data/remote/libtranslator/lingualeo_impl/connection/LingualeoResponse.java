@@ -52,8 +52,7 @@ public class LingualeoResponse {
     }
 
     public Boolean getBoolean(String key) {
-        if (isEmpty()) return false;
-        return jsonObject.getBoolean(key, false);
+        return !isEmpty() && jsonObject.getBoolean(key, false);
     }
 
     public boolean isEmpty() {

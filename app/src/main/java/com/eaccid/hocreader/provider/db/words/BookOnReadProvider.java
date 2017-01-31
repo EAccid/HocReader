@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 public class BookOnReadProvider {
 
-    private String CURRENT_PAGE = "current_page_";
+    private final String CURRENT_PAGE = "current_page_";
     @Inject
     SharedPreferences sp;
     @Inject

@@ -54,7 +54,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
         setFinishOnTouchOutside(true);
         ButterKnife.bind(this);
 
-        /**TODO delete gettinhg data from presenter, temp solution*/
+        /**TODO delete getting data from presenter, temp solution*/
         WordItem wordItem = mPresenter.getWordItem();
         setDataToViewFromItem(wordItem);
         setListenersToViewFromItem();

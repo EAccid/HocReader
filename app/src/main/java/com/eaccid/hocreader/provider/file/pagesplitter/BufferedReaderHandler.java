@@ -11,20 +11,19 @@ public class BufferedReaderHandler {
 
     private BufferedReader bufferedReader;
     private boolean eof;
-    private BaseFile baseFile;
+    private final BaseFile baseFile;
 
     public BufferedReaderHandler(BaseFile baseFile) {
         this.baseFile = baseFile;
     }
 
     @Nullable
-    public BufferedReader openBufferedReader() {
+    public void openBufferedReader() {
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(baseFile.getFilePath()), baseFile.getCharsetName()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return bufferedReader;
     }
 
     public void closeBufferedReader() {
@@ -53,7 +52,7 @@ public class BufferedReaderHandler {
         return eof;
     }
 
-    public void setEof(boolean eof) {
+    private void setEof(boolean eof) {
         this.eof = eof;
     }
 }

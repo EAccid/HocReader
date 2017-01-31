@@ -5,11 +5,11 @@ import java.net.UnknownHostException;
 
 public class RequestHandler {
 
-    private LingualeoHttpConnection connection;
+    private final LingualeoHttpConnection connection;
     private ServiceStatus serviceStatus = ServiceStatus.FAILED;
-    private RequestParameters requestParameters;
-    private String urlString;
-    private String cookies;
+    private final RequestParameters requestParameters;
+    private final String urlString;
+    private final String cookies;
     private RequestExceptionHandler exceptionHandler;
 
     private RequestHandler(String urlString, String cookies, RequestParameters requestParameters) {

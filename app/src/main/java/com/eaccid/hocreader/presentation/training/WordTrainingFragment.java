@@ -67,7 +67,7 @@ public class WordTrainingFragment extends Fragment {
         final RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        WordCarouselRecyclerViewAdapter adapter = new WordCarouselRecyclerViewAdapter(getContext());
+        WordCarouselRecyclerViewAdapter adapter = new WordCarouselRecyclerViewAdapter();
         WordCursorProvider wordCursorProvider = new WordCursorProvider();
         adapter = (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(adapter,
                 getArguments().getBoolean("is_filter_by_book"));

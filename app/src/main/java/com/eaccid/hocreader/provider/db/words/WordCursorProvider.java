@@ -9,7 +9,7 @@ import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.presentation.training.carouseladapter.WordCarouselRecyclerViewAdapter;
-import com.eaccid.hocreader.presentation.training.carouseladapter.OrmliteCursorRecyclerViewAdapter;
+import com.eaccid.hocreader.presentation.training.carouseladapter.OrmLiteCursorRecyclerViewAdapter;
 import com.j256.ormlite.android.apptools.OrmLiteCursorLoader;
 import com.j256.ormlite.stmt.PreparedQuery;
 
@@ -27,7 +27,7 @@ public class WordCursorProvider {
         App.getAppComponent().inject(this);
     }
 
-    public OrmliteCursorRecyclerViewAdapter
+    public OrmLiteCursorRecyclerViewAdapter
     createAdapterWithCursor(WordCarouselRecyclerViewAdapter adapter, boolean filterByBook) {
 
         WordFilter wordFilter = filterByBook ? WordFilter.BY_BOOK : WordFilter.NONE;

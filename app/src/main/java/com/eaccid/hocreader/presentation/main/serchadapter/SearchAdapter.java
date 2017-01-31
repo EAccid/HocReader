@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.presentation.main.serchadapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends BaseExpandableListAdapter {
-    private LayoutInflater layoutInflater;
-    private ArrayList<ItemGroup> itemGroupList;
-    private ArrayList<ItemGroup> originalList;
+    private final LayoutInflater layoutInflater;
+    private final ArrayList<ItemGroup> itemGroupList;
+    private final ArrayList<ItemGroup> originalList;
 
     public SearchAdapter(Context context, List<ItemGroup> itemGroupList) {
         this.itemGroupList = new ArrayList<>();
@@ -65,6 +66,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         ItemGroup itemGroup = (ItemGroup) getGroup(groupPosition);
@@ -75,6 +77,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final ItemChild itemChild = (ItemChild) getChild(groupPosition, childPosition);
@@ -102,6 +105,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
             itemGroupList.addAll(originalList);
         } else {
             for (ItemGroup parentRow : originalList) {
+                @SuppressWarnings("unchecked")
                 List<ItemChild> childList = parentRow.getItemObjectChildGroupList();
                 List<ItemChild> newList = new ArrayList<>();
 

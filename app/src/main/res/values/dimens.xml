@@ -1,41 +1,26 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-
-    <!-- Default fragment1 settings -->
     <dimen name="card_horizontal_margin">16dp</dimen>
     <dimen name="card_vertical_margin">16dp</dimen>
     <dimen name="item_card_view_elevation">2dp</dimen>
     <dimen name="item_card_view_picked_up_elevation">8dp</dimen>
-
     <dimen name="card_view_min_height">112dp</dimen>
     <dimen name="card_frame_item_min_height">96dp</dimen>
-
-
     <dimen name="tool_bar_height">56dp</dimen>
-
     <dimen name="text_size_default">20sp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
-
     <dimen name="navigation_drawer_max_width">280dp</dimen>
-
     <dimen name="spacing_8">8dp</dimen>
     <dimen name="spacing_56">56dp</dimen>
     <dimen name="vertical_keyline_first">16dp</dimen>
     <dimen name="nav_drawer_profile_image_size">64dp</dimen>
-
-
     <dimen name="word_image_size">48dp</dimen>
-
     <dimen name="elevation_app_bar">4dp</dimen>
     <dimen name="elevation_nav_drawer">16dp</dimen>
-
     <dimen name="circle_diameter_background">64dp</dimen>
     <dimen name="half_action_size_bar">28dp</dimen>
     <dimen name="action_bottom_size">48dp</dimen>
-
 </resources>
