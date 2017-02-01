@@ -4,7 +4,7 @@
     <!-- Base application theme color -->
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorPrimary">#4CAF50</color>
-    <color name="colorLightPrimary">#C8E6C9</color>
+    <color name="colorLightPrimary">#81C784</color>
     <color name="colorAccent">#E040FB</color>
     <color name="colorAccentDark">#8E24AA</color>
     <color name="colorAccentSecondary">#EA80FC</color>
