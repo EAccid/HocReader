@@ -35,7 +35,7 @@ public class BookFragment extends Fragment implements
     private BookRecyclerViewAdapter mAdapter;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private List<MenuObject> menuObjects;
-    private static final String TAG = "BookFragment";
+    private final String TAG = "BookFragment";
 
     public ImageView moreMenuImg;
 
