@@ -48,7 +48,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
 
     public void onViewCreated() {
         setDataToList();
-        mView.setSelectableText(false);
+        mView.setSelectableText(mView.isSelectableMode());
         int position = new BookOnReadProvider().loadCurrentBooksPage();
         mView.scrollToListPosition(position, 0);
     }
