@@ -36,8 +36,7 @@ public class BookFragment extends Fragment implements
     private ContextMenuDialogFragment mMenuDialogFragment;
     private List<MenuObject> menuObjects;
     private final String TAG = "BookFragment";
-
-    public ImageView moreMenuImg;
+    private ImageView moreMenuImg;
 
     public static BookFragment newInstance() {
         BookFragment f = new BookFragment();
