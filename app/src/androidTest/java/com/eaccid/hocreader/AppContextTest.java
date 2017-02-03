@@ -23,7 +23,7 @@ public class AppContextTest {
 
     @Test
     public void useAppContext() throws Exception {
-        assertEquals("Package name should be 'com.eaccid.bookreader'.","com.eaccid.bookreader", appContext.getPackageName());
+        assertEquals("Package name should be 'com.eaccid.hocreader'.","com.eaccid.hocreader", appContext.getPackageName());
     }
 
 }
