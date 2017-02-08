@@ -38,6 +38,7 @@ public class WordTrainingFragment extends Fragment {
         return f;
     }
 
+    private WordCarouselRecyclerViewAdapter adapter;
     @BindView(R.id.expandable_layout)
     ExpandableLayout expandable_layout;
     @BindView(R.id.show_hint)
@@ -67,7 +68,7 @@ public class WordTrainingFragment extends Fragment {
         final RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        WordCarouselRecyclerViewAdapter adapter = new WordCarouselRecyclerViewAdapter();
+        adapter = new WordCarouselRecyclerViewAdapter();
         WordCursorProvider wordCursorProvider = new WordCursorProvider();
         adapter = (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(adapter,
                 getArguments().getBoolean("is_filter_by_book"));

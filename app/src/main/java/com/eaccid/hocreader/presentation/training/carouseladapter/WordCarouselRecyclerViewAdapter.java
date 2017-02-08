@@ -27,10 +27,10 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAdapter<Word, WordCarouselRecyclerViewAdapter.ViewHolder> {
 
-    OnHintShowListener onHintShowListener;
+    private OnHintShowListener onHintShowListener;
 
     public void addOnHintClickListener(OnHintShowListener onHintShowListener) {
-
+        this.onHintShowListener = onHintShowListener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
