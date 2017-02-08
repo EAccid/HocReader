@@ -25,7 +25,7 @@
         <activity
             android:name=".presentation.main.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH" />
@@ -40,7 +40,7 @@
         <activity
             android:name=".presentation.pager.PagerActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.OPEN_DOCUMENT" />
             </intent-filter>
@@ -73,7 +73,7 @@
         <activity android:name=".presentation.training.TrainingActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar"/>
     </application>
 
 </manifest>
