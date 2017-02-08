@@ -1,7 +1,11 @@
 package com.eaccid.hocreader.presentation.main;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.support.v13.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.eaccid.hocreader.injection.App;
@@ -38,7 +42,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     @Override
     public void attachView(MainActivity mainActivity) {
         mView = mainActivity;
-        fillExpandableListView();
+        checkPermission();
         PreferenceManager.setDefaultValues(mView.getApplicationContext(), R.xml.preferences, false);
         Log.i(logTAG, "MainActivity has been attached.");
     }
@@ -55,8 +59,9 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     }
 
     private void fillExpandableListView() {
-//        mView.showProgressDialog();
-//        mView.dismissProgressDialog();
+        // todo make asynchronous
+        // mView.showProgressDialog();
+        // mView.dismissProgressDialog();
         FileProvider fileProvider = new FileOnDeviceProvider();
         List<File> foundFiles = fileProvider.findFiles();
         loadFilesToExpandableView(foundFiles);
@@ -91,5 +96,36 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         bookInteractor.loadBooks(readableFiles);
     }
 
+    private void checkPermission() {
+        if (checkExternalStoragePermission() == PackageManager.PERMISSION_DENIED) {
+            if (shouldShowRequestPermissionRationale()) {
+                mView.showPermissionExplanation();
+                return;
+            }
+            requestReadExtStorage();
+        }
+        readExternalStorageGranted();
+    }
 
+    public void readExternalStorageGranted() {
+        fillExpandableListView();
+    }
+
+    public void requestReadExtStorage() {
+        ActivityCompat.requestPermissions(mView,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                PermissionRequest.PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+    }
+
+    private boolean shouldShowRequestPermissionRationale() {
+        return ActivityCompat.shouldShowRequestPermissionRationale(
+                mView, Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    private int checkExternalStoragePermission() {
+        return ContextCompat.checkSelfPermission(
+                mView,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        );
+    }
 }

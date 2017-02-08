@@ -50,7 +50,7 @@ public class FileOnDeviceProvider implements FileProvider {
     /**
      * f.e. (txt|pdf)
      */
-    private static String getFormatExtensions(FileExtensions[] values) {
+    private String getFormatExtensions(FileExtensions[] values) {
         StringBuilder sb = new StringBuilder();
         int size = values.length;
         sb.append("(");
