@@ -189,13 +189,8 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PermissionRequest.PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (permissionGranted(grantResults)) {
                     mPresenter.readExternalStorageGranted();
-
-                } else {
-
-
                 }
                 return;
             }
@@ -203,16 +198,16 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    public void showExplanation() {
+    public void showPermissionExplanation() {
         final String message = "Storage permission is needed to show books";
-        Snackbar.make(expandableListView, message, Snackbar.LENGTH_LONG)
-                .setAction("GRANT", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mPresenter.requestReadExtStorage();
-                    }
-                })
+        Snackbar.make(expandableListView, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction("GRANT", v -> mPresenter.requestReadExtStorage())
                 .show();
+    }
+
+    private boolean permissionGranted(int[] grantResults) {
+        return grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 }
 

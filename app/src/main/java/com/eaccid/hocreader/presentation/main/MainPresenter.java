@@ -59,8 +59,8 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     }
 
     private void fillExpandableListView() {
-        //make asynchronous
-        //mView.showProgressDialog();
+        // todo make asynchronous
+        // mView.showProgressDialog();
         // mView.dismissProgressDialog();
         FileProvider fileProvider = new FileOnDeviceProvider();
         List<File> foundFiles = fileProvider.findFiles();
@@ -97,23 +97,14 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     }
 
     private void checkPermission() {
-        int permissionCheck = ContextCompat.checkSelfPermission(
-                mView,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-        );
-        if (permissionCheck == PackageManager.PERMISSION_DENIED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    mView, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    ) {
-                mView.showExplanation();
-                readExternalStorageGranted();
-            } else {
-                requestReadExtStorage();
+        if (checkExternalStoragePermission() == PackageManager.PERMISSION_DENIED) {
+            if (shouldShowRequestPermissionRationale()) {
+                mView.showPermissionExplanation();
+                return;
             }
-        } else {
-            readExternalStorageGranted();
+            requestReadExtStorage();
         }
-
+        readExternalStorageGranted();
     }
 
     public void readExternalStorageGranted() {
@@ -124,5 +115,17 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         ActivityCompat.requestPermissions(mView,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 PermissionRequest.PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+    }
+
+    private boolean shouldShowRequestPermissionRationale() {
+        return ActivityCompat.shouldShowRequestPermissionRationale(
+                mView, Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    private int checkExternalStoragePermission() {
+        return ContextCompat.checkSelfPermission(
+                mView,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        );
     }
 }
