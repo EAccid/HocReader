@@ -29,6 +29,10 @@
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
     </style>
 
+    <style name="WithTitleDialog" parent="AppTheme.Dialog">
+        <item name="windowNoTitle">false</item>
+    </style>
+
     <style name="AppTheme.Settings" parent="AppTheme">
         <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
     </style>

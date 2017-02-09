@@ -9,13 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/linearLayoutTranscription"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_gravity="end"
             android:orientation="horizontal">
 
             <ImageButton
@@ -23,18 +23,17 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@color/colorTransparent"
-                android:src="@drawable/ic_volume_up_gray_24px"
-                android:contentDescription="@string/desc"/>
+                android:contentDescription="@string/desc"
+                android:src="@drawable/ic_volume_up_gray_24px" />
 
             <TextView
                 android:id="@+id/text_transcription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
                 android:text="@string/transcription" />
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,20 +42,20 @@
 
             <TextView
                 android:id="@+id/word"
+                style="@style/Base.TextAppearance.AppCompat.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:padding="8dp"
-                style="@style/Base.TextAppearance.AppCompat.Small"
-                android:text="@string/base_word"/>
+                android:text="@string/base_word"
+                android:textAlignment="center" />
 
             <ImageView
                 android:id="@+id/image_word_picture"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:contentDescription="@string/desc"
                 android:scaleType="centerCrop"
-                app:srcCompat="@android:drawable/ic_dialog_alert"
-                android:contentDescription="@string/desc"/>
+                app:srcCompat="@android:drawable/ic_dialog_alert" />
 
         </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.eaccid.hocreader.presentation.translation;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WordTranslationDialogFragment extends DialogFragment implements TranslationView {
+public class WordTranslationDialogFragment extends AppCompatDialogFragment implements TranslationView {
 
     public interface OnWordTranslationClickListener {
         void onWordTranslated(TranslatedWord translatedWord);
@@ -99,8 +100,9 @@ public class WordTranslationDialogFragment extends DialogFragment implements Tra
         mBaseWord.setText(text);
     }
 
-    public ImageView getWordPicture() {
-        return mWordPicture;
+    @Override
+    public int getTheme() {
+        return R.style.WithTitleDialog;
     }
 
     @Override
@@ -122,6 +124,10 @@ public class WordTranslationDialogFragment extends DialogFragment implements Tra
         mTranslations.setAdapter(mAdapter);
     }
 
+    public ImageView getWordPicture() {
+        return mWordPicture;
+    }
+
     public WordFromTextImpl getWordFromText() {
         return (WordFromTextImpl) getArguments().getSerializable("wordFromText");
     }
@@ -130,5 +136,5 @@ public class WordTranslationDialogFragment extends DialogFragment implements Tra
         if (mAdapter != null)
             mAdapter.notifyDataSetChanged();
     }
-
+    
 }
