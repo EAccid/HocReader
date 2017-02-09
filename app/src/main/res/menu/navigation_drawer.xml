@@ -1,18 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/edit_words"
-            android:icon="@drawable/ic_mode_edit_black_24px"
-            android:title="@string/action_words_editor" />
-    </group>
+    <item
+        android:id="@+id/edit_words"
+        android:icon="@drawable/ic_mode_edit_black_24px"
+        android:title="@string/action_words_editor" />
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/settings"
-            android:icon="@drawable/ic_settings_black_24px"
-            android:title="@string/action_settings" />
-    </group>
+    <item
+        android:id="@+id/directories"
+        android:title="@string/directories">
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/alldir"
+                    android:title="@string/all_directories"
+                    android:icon="@drawable/ic_folder_special_black_24px"/>
+                <item
+                    android:id="@+id/download"
+                    android:title="@string/download"
+                    android:icon="@drawable/ic_folder_black_24px"/>
+            </group>
+        </menu>
 
+    </item>
+
+    <item
+        android:id="@+id/other"
+        android:title="@string/other">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/settings"
+                    android:icon="@drawable/ic_settings_black_24px"
+                    android:title="@string/action_settings" />
+                <item
+                    android:id="@+id/about"
+                    android:icon="@drawable/ic_info_outline_black_24px"
+                    android:title="@string/about" />
+            </group>
+        </menu>
+    </item>
 </menu>

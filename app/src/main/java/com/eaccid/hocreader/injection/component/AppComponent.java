@@ -10,6 +10,7 @@ import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.injection.module.AppModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
 import com.eaccid.hocreader.injection.module.DataProviderModule;
+import com.eaccid.hocreader.presentation.main.CustomDirectories;
 import com.eaccid.hocreader.presentation.main.MainPresenter;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.underdevelopment.cardremember.CardWordPresenter;
@@ -61,4 +62,5 @@ public interface AppComponent {
     void inject(BookPresenter bookPresenter);
 
     void inject(NetworkAvailablenessImpl networkAvailableness);
+
 }

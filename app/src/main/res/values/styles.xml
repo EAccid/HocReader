@@ -41,6 +41,23 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+    <style name="FilePickerTheme" parent="NNF_BaseTheme.Light">
+        <item name="nnf_list_item_divider">?android:attr/listDivider</item>
+        <item name="alertDialogTheme">@style/FilePickerAlertDialogTheme</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccentSecondary</item>
+        <item name="actionMenuTextColor">@color/colorTextIcons</item>
+    </style>
+
+    <style name="FilePickerAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccentSecondary</item>
+    </style>
+
+
     <!--Recycler View Style"-->
     <style name="recyclerViewStyleFragment1">
         <item name="android:clipChildren">true</item>

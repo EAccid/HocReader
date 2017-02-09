@@ -1,13 +1,17 @@
 package com.eaccid.hocreader.presentation.main;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
+import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -15,12 +19,15 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
@@ -28,8 +35,12 @@ import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.settings.SettingsActivity;
+import com.nononsenseapps.filepicker.FilePickerActivity;
+import com.nononsenseapps.filepicker.Utils;
 
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     NavigationView navigationView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-
+    private final int FILE_CODE = 16;
     private static MainPresenter mPresenter;
     private ProgressDialog progressDialog;
     private SearchAdapter searchAdapter;
@@ -196,8 +207,35 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 }
                 return;
             }
-         }
+        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == FILE_CODE && resultCode == Activity.RESULT_OK) {
+            ArrayList<String> paths = intent.getStringArrayListExtra(FilePickerActivity.EXTRA_PATHS);
+            if (paths != null) {
+                Menu m = navigationView.getMenu();
+                SubMenu topMenu = m.findItem(R.id.directories).getSubMenu();
+                for (String path : paths) {
+                    Uri uri = Uri.parse(path);
+                    File file = Utils.getFileForUri(uri);
+                    topMenu
+                            .add(0, topMenu.size(), 0, file.getName())
+                            .setIcon(R.drawable.ic_folder_black_24px);
+                }
+            }
+        }
+    }
+
+    public void openDirectoryChooser() {
+        Intent i = new Intent(this, FilePickerActivity.class);
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, true);
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
+        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
+        i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
+        startActivityForResult(i, FILE_CODE);
     }
 
     public void showPermissionExplanation(String message, int permission) {
@@ -211,8 +249,5 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 
-    public void openDirectoryChooser() {
-
-    }
 }
 
