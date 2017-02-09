@@ -153,7 +153,7 @@ public class WordDaoService implements Crud, WordReaderDaoService {
     public PreparedQuery<Word> getAllWordsPreparedQuery() {
         try {
             QueryBuilder<Word, String> qb = dao.queryBuilder();
-            qb.selectColumns("word", "translation");
+            qb.selectColumns("word", "translation", "context", "book_id", "page");
             return qb.prepare();
         } catch (SQLException e) {
             e.printStackTrace();
