@@ -37,7 +37,7 @@ public abstract class OrmLiteCursorRecyclerViewAdapter<T, VH extends RecyclerVie
         this.preparedQuery = preparedQuery;
     }
 
-    public T getTypedItem(int position) {
+    public T getTypedItem(int position) throws Exception{
         try {
             return this.cursorToObject((Cursor)getItem(position));
         } catch (SQLException var3) {

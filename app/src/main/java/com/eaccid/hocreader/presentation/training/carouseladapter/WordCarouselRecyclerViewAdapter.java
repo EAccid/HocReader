@@ -68,8 +68,14 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
     }
 
     public String getCurrentContext(int position) {
-        Word word = getTypedItem(position);
-        return word.getContext();
+        String context = "";
+        try {
+            Word word = getTypedItem(position);
+            context = word.getContext();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return context;
     }
 
     private void setDataToViewFromItem(WordCarouselRecyclerViewAdapter.ViewHolder holder, Word word) {

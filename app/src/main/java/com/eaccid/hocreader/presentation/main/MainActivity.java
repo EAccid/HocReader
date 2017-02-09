@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     private static MainPresenter mPresenter;
     private ProgressDialog progressDialog;
     private SearchAdapter searchAdapter;
+
+    //todo take CustomDirectories handler out from activity
     private CustomDirectories directories;
 
     @Override
