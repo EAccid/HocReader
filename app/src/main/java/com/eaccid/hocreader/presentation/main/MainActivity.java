@@ -20,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ExpandableListView;
 
 import com.eaccid.hocreader.R;
@@ -29,6 +28,7 @@ import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.settings.SettingsActivity;
+
 
 import java.util.List;
 
@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                         SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
                 suggestions.clearHistory();
                 return true;
+            case R.id.action_choose_directory:
+                mPresenter.onDirectoryChosen();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -194,20 +196,23 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 }
                 return;
             }
-        }
+         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    public void showPermissionExplanation() {
-        final String message = "Storage permission is needed to show books";
+    public void showPermissionExplanation(String message, int permission) {
         Snackbar.make(expandableListView, message, Snackbar.LENGTH_INDEFINITE)
-                .setAction("GRANT", v -> mPresenter.requestReadExtStorage())
+                .setAction("GRANT", v -> mPresenter.requestPermission(permission))
                 .show();
     }
 
     private boolean permissionGranted(int[] grantResults) {
         return grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public void openDirectoryChooser() {
+
     }
 }
 

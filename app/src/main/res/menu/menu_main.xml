@@ -4,14 +4,19 @@
     tools:context="com.eaccid.hocreader.presentation.main.MainActivity">
     <item
         android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
         android:orderInCategory="100"
         android:title="@string/search"
-        android:icon="@android:drawable/ic_menu_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
     <item
         android:id="@+id/action_clearSearchHistory"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:title="@string/action_clear_search_history"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_choose_directory"
+        android:orderInCategory="300"
+        android:title="@string/choose_the_directory"
         app:showAsAction="never" />
 </menu>

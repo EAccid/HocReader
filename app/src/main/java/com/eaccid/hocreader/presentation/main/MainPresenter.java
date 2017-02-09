@@ -1,6 +1,6 @@
 package com.eaccid.hocreader.presentation.main;
 
-import android.Manifest;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
@@ -42,7 +42,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     @Override
     public void attachView(MainActivity mainActivity) {
         mView = mainActivity;
-        checkPermission();
+        checkReadExtStoragePermission();
         PreferenceManager.setDefaultValues(mView.getApplicationContext(), R.xml.preferences, false);
         Log.i(logTAG, "MainActivity has been attached.");
     }
@@ -57,6 +57,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         Intent intent = new Intent(mView.getApplicationContext(), TrainingActivity.class);
         mView.startActivity(intent);
     }
+
 
     private void fillExpandableListView() {
         // todo make asynchronous
@@ -96,36 +97,49 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         bookInteractor.loadBooks(readableFiles);
     }
 
-    private void checkPermission() {
-        if (checkExternalStoragePermission() == PackageManager.PERMISSION_DENIED) {
-            if (shouldShowRequestPermissionRationale()) {
-                mView.showPermissionExplanation();
-                return;
-            }
-            requestReadExtStorage();
-        }
-        readExternalStorageGranted();
+    public void onDirectoryChosen() {
+        mView.openDirectoryChooser();
     }
+
+    /***
+     * check permission
+     */
 
     public void readExternalStorageGranted() {
         fillExpandableListView();
     }
 
-    public void requestReadExtStorage() {
+    public void requestPermission(int permission) {
         ActivityCompat.requestPermissions(mView,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                PermissionRequest.PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                new String[]{PermissionRequest.getManifestPermission(permission)},
+                permission);
     }
 
-    private boolean shouldShowRequestPermissionRationale() {
+    private void checkReadExtStoragePermission() {
+        int checkedPermission = PermissionRequest.PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
+        if (checkPermission(checkedPermission) == PackageManager.PERMISSION_DENIED) {
+            if (shouldShowRequestPermissionRationale(checkedPermission)) {
+                mView.showPermissionExplanation(
+                        "Storage permission is needed to show books",
+                        checkedPermission
+                );
+                return;
+            }
+            requestPermission(checkedPermission);
+        }
+        readExternalStorageGranted();
+    }
+
+    private boolean shouldShowRequestPermissionRationale(int permission) {
         return ActivityCompat.shouldShowRequestPermissionRationale(
-                mView, Manifest.permission.READ_EXTERNAL_STORAGE);
+                mView, PermissionRequest.getManifestPermission(permission));
     }
 
-    private int checkExternalStoragePermission() {
+    private int checkPermission(int permission) {
         return ContextCompat.checkSelfPermission(
                 mView,
-                Manifest.permission.READ_EXTERNAL_STORAGE
+                PermissionRequest.getManifestPermission(permission)
         );
     }
+
 }

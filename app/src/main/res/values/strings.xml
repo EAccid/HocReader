@@ -87,5 +87,6 @@
     <string name="action_words_editor">Words Editor</string>
 
     <string name="desc">Empty</string>
+    <string name="choose_the_directory">Choose the directory</string>
 
 </resources>
