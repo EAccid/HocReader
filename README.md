@@ -1,6 +1,6 @@
 # Reader “Hoc Reader”
 
-Reader with translator, basic words training part and “memorizing” notifications. This application was developed in order to improve my English vocabulary through reading books and adding unknown words to my favorite Online Dictionary <a href="https://lingualeo.com">Lingualeo</a>.
+Reader with a translator, basic words training part and “memorizing” notifications. This application was developed in order to improve my English vocabulary through reading books and adding unknown words to my favorite Online Dictionary <a href="https://lingualeo.com">Lingualeo</a>.
 Furthermore, I’ve been diving into Android development... 
 <p align="center">
   <img src="assets/main_screen.jpg" width="180" height="320"/>
