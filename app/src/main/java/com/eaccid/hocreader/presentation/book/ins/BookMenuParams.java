@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.book;
+package com.eaccid.hocreader.presentation.book.ins;
 
 import android.content.Context;
 

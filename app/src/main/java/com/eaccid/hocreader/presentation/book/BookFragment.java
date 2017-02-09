@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.presentation.book.ins.BookMenuParamsImpl;
+import com.eaccid.hocreader.presentation.book.ins.MenuObjectWrapper;
 import com.h6ah4i.android.widget.advrecyclerview.utils.CustomRecyclerViewUtils;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;

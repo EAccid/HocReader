@@ -13,7 +13,7 @@ import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullS
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.FragmentTags;
-import com.eaccid.hocreader.presentation.book.OnWordFromPageViewTouchListener;
+import com.eaccid.hocreader.presentation.book.ins.OnWordFromPageViewTouchListener;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.translation.WordTranslationDialogFragment;
 import com.viewpagerindicator.CirclePageIndicator;
