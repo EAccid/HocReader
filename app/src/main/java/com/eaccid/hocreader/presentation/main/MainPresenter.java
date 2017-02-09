@@ -10,6 +10,8 @@ import android.util.Log;
 
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.presentation.main.ins.IconsProvider;
+import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroupImpl;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemObjectChild;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemChild;

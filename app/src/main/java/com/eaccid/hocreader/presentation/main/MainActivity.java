@@ -34,6 +34,9 @@ import android.widget.ExpandableListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.presentation.main.ins.CustomDirectories;
+import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
+import com.eaccid.hocreader.presentation.main.ins.Storage;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchSuggestionsProvider;

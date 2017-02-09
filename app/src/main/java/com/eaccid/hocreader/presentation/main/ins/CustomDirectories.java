@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.main;
+package com.eaccid.hocreader.presentation.main.ins;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.main;
+package com.eaccid.hocreader.presentation.main.ins;
 
 import android.support.annotation.DrawableRes;
 

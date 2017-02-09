@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.main;
+package com.eaccid.hocreader.presentation.main.ins;
 
 import android.os.Environment;
 import android.support.annotation.Nullable;
