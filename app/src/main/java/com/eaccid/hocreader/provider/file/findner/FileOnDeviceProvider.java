@@ -1,6 +1,6 @@
 package com.eaccid.hocreader.provider.file.findner;
 
-import android.os.Environment;
+import com.eaccid.hocreader.presentation.main.Storage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,33 +13,41 @@ public class FileOnDeviceProvider implements FileProvider {
 
     @Override
     public List<File> findFiles() {
-        fillFileList();
+        fillFileList(null);
         return fileList;
     }
 
-    private void fillFileList() {
+    @Override
+    public List<File> findFiles(File directory) {
+        fillFileList(directory);
+        return fileList;
+    }
+
+    private void fillFileList(File directory) {
+        if (directory != null) {
+            addFilesToList(directory, getFormatExtensions(FileExtensions.values()), "");
+            return;
+        }
         if (isExternalStorageReadable())
-            addFilesToList(Environment.getExternalStorageDirectory(), getFormatExtensions(FileExtensions.values()), "");
+            addFilesToList(new Storage().getExternalStorage(), getFormatExtensions(FileExtensions.values()), "");
+        if (isMountedStorageReadable())
+            addFilesToList(new Storage().getMountedStorage(), getFormatExtensions(FileExtensions.values()), "");
     }
 
     private boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
+        return new Storage().isExternalStorageReadable();
+    }
+
+    private boolean isMountedStorageReadable() {
+        return new Storage().isMountedStorageReadable();
     }
 
     private void addFilesToList(File dir, String fileExtensions, String filenameFilter) {
         if (dir == null || dir.listFiles() == null) return;
         for (File file : dir.listFiles())
             if (file.isDirectory()) {
-                //TODO settings: set user directory names or none. temp condition
-                String dirName = file.getName();
-                if (dirName.equalsIgnoreCase("downloads") ||
-                        dirName.equalsIgnoreCase("books") ||
-                        dirName.equalsIgnoreCase("download") ||
-                        dirName.equalsIgnoreCase("book")) {
+                if (!file.getName().equalsIgnoreCase("Android"))
                     addFilesToList(file, fileExtensions, filenameFilter);
-                }
-
             } else {
                 Pattern pattern = Pattern.compile(".*" + filenameFilter.toLowerCase() + fileExtensions + "");
                 if (pattern.matcher(file.getName().toLowerCase()).matches())
