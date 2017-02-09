@@ -142,4 +142,13 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         );
     }
 
+    public void onCustomDirectorySelected(File file) {
+        FileProvider fileProvider = new FileOnDeviceProvider();
+        List<File> foundFiles = fileProvider.findFiles(file);
+        loadFilesToExpandableView(foundFiles);
+    }
+
+    public void onAllDirectorySelected() {
+        fillExpandableListView();
+    }
 }

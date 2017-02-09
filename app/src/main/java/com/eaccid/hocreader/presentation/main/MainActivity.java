@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
-import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -19,7 +18,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
@@ -27,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
@@ -67,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     private static MainPresenter mPresenter;
     private ProgressDialog progressDialog;
     private SearchAdapter searchAdapter;
+    private CustomDirectories directories;
 
     @Override
     public BasePresenter getPresenter() {
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         progressDialog = new ProgressDialog(expandableListView.getContext(),
                 R.style.AppTheme_Dialog);
         mPresenter.attachView(this);
+        directories = new CustomDirectories();
     }
 
     @OnClick(R.id.fab)
@@ -161,6 +160,13 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.alldir:
+                mPresenter.onAllDirectorySelected();
+                break;
+        }
+        if (id < directories.getSize()) {
+            File file = directories.getFile(id);
+            mPresenter.onCustomDirectorySelected(file);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -222,8 +228,9 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                     Uri uri = Uri.parse(path);
                     File file = Utils.getFileForUri(uri);
                     topMenu
-                            .add(0, topMenu.size(), 0, file.getName())
+                            .add(0, directories.getSize(), 0, file.getName())
                             .setIcon(R.drawable.ic_folder_black_24px);
+                    directories.addDirectory(file);
                 }
             }
         }
