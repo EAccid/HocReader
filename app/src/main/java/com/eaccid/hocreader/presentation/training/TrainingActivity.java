@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.FragmentTags;
-import com.eaccid.hocreader.presentation.training.WordTrainingFragment;
 
 public class TrainingActivity extends AppCompatActivity {
 
@@ -17,4 +16,5 @@ public class TrainingActivity extends AppCompatActivity {
                 .add(R.id.activity_training, WordTrainingFragment.newInstance(false), FragmentTags.WORDS_CAROUSEL)
                 .commit();
     }
+
 }

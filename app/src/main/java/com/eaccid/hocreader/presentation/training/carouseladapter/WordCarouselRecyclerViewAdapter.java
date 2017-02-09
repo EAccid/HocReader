@@ -27,12 +27,6 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAdapter<Word, WordCarouselRecyclerViewAdapter.ViewHolder> {
 
-    private OnHintShowListener onHintShowListener;
-
-    public void addOnHintClickListener(OnHintShowListener onHintShowListener) {
-        this.onHintShowListener = onHintShowListener;
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.word)
@@ -73,6 +67,11 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         setListenersToViewFromItem(holder, word);
     }
 
+    public String getCurrentContext(int position) {
+        Word word = getTypedItem(position);
+        return word.getContext();
+    }
+
     private void setDataToViewFromItem(WordCarouselRecyclerViewAdapter.ViewHolder holder, Word word) {
         if (!new NetworkAvailablenessImpl().isNetworkAvailable()) {
             holder.word.setText(word.getName());
@@ -84,6 +83,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                 .subscribe(wordItem -> {
                             holder.word.setText(wordItem.getWordFromText());
                             new ImageViewManager().loadPictureFromUrl(holder.wordImage, wordItem.getPictureUrl());
+                            holder.translation.setText("*?");
                             holder.transcription.setText("[" + wordItem.getTranscription() + "]");
                             holder.alreadyLearned.setImageResource(
                                     new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(
@@ -131,5 +131,4 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                 new IconTogglesResourcesProvider().getSpeakerResId(isSpeaking)
         );
     }
-
 }
