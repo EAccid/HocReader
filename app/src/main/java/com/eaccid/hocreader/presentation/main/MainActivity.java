@@ -7,8 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+
 import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,15 +18,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+
 import android.support.v7.app.AppCompatActivity;
+
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+
 import android.view.MenuInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+
+import android.widget.Button;
 import android.widget.ExpandableListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;
@@ -34,7 +41,6 @@ import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.settings.SettingsActivity;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.nononsenseapps.filepicker.Utils;
-
 
 import java.io.File;
 import java.util.ArrayList;
@@ -165,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 break;
         }
         if (id < directories.getSize()) {
+            item.setChecked(true);
             File file = directories.getFile(id);
             mPresenter.onCustomDirectorySelected(file);
         }
@@ -227,22 +234,39 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 for (String path : paths) {
                     Uri uri = Uri.parse(path);
                     File file = Utils.getFileForUri(uri);
-                    topMenu
-                            .add(0, directories.getSize(), 0, file.getName())
-                            .setIcon(R.drawable.ic_folder_black_24px);
+                    int id = directories.getSize();
                     directories.addDirectory(file);
+                    topMenu
+                            .add(0, id, 0, directories.getName(id))
+                            .setIcon(R.drawable.ic_folder_black_24px);
                 }
             }
         }
     }
 
     public void openDirectoryChooser() {
-        Intent i = new Intent(this, FilePickerActivity.class);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, true);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
-        startActivityForResult(i, FILE_CODE);
+
+        MaterialDialog materialDialog = new MaterialDialog.Builder(this)
+                .title(Build.MODEL)
+                .customView(R.layout.choose_directory_dialog, false)
+                .build();
+
+        Button internal_storage = (Button) materialDialog.getView().findViewById(R.id.internal_storage);
+        internal_storage.setOnClickListener(v -> {
+            startOnResultDirectoryChooser(new Storage().getExternalStorage().getPath());
+            materialDialog.cancel();
+            directories.setParentDir(".../Internal storage/");
+        });
+
+        Button sd_card = (Button) materialDialog.getView().findViewById(R.id.sd_card);
+        sd_card.setOnClickListener(v -> {
+
+            startOnResultDirectoryChooser(new Storage().getMountedStorage().getPath());
+            materialDialog.cancel();
+            directories.setParentDir(".../SD card/");
+        });
+        materialDialog.show();
+
     }
 
     public void showPermissionExplanation(String message, int permission) {
@@ -256,5 +280,13 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 
+    private void startOnResultDirectoryChooser(String filePath) {
+        Intent i = new Intent(getBaseContext(), FilePickerActivity.class);
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, true);
+        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
+        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
+        i.putExtra(FilePickerActivity.EXTRA_START_PATH, filePath);
+        startActivityForResult(i, FILE_CODE);
+    }
 }
 

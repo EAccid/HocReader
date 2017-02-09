@@ -6,23 +6,50 @@ import java.util.List;
 
 public class CustomDirectories {
 
-    private List<File> files;
+    private String parentDir;
+    private List<Directory> directories;
 
     public CustomDirectories() {
-        files = new ArrayList<>();
+        directories = new ArrayList<>();
+        parentDir = ".../";
     }
 
     public void addDirectory(File file) {
-        files.add(file);
+        directories.add(new Directory(parentDir + file.getName(), file));
     }
 
-
     public int getSize() {
-        return files.size();
+        return directories.size();
     }
 
     public File getFile(int id) {
-        return files.get(id);
+        return directories.get(id).getFile();
+    }
+
+    public void setParentDir(String parentDir) {
+        this.parentDir = parentDir;
+    }
+
+    public String getName(int id) {
+        return directories.get(id).getName();
+    }
+
+    private class Directory {
+        String name;
+        File file;
+
+        public Directory(String name, File file) {
+            this.name = name;
+            this.file = file;
+        }
+
+        public File getFile() {
+            return file;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
 }

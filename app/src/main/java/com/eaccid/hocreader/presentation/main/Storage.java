@@ -1,6 +1,7 @@
 package com.eaccid.hocreader.presentation.main;
 
 import android.os.Environment;
+import android.support.annotation.Nullable;
 
 import java.io.File;
 
@@ -13,7 +14,7 @@ public class Storage {
     }
 
     public File getMountedStorage() {
-        return new File(System.getenv(ANDROID_STORAGE));
+        return readStorage();
     }
 
     public boolean isExternalStorageReadable() {
@@ -22,7 +23,20 @@ public class Storage {
     }
 
     public boolean isMountedStorageReadable() {
-        File storage = new File(System.getenv(ANDROID_STORAGE));
-        return storage.exists();
+        return readStorage() != null;
+    }
+
+    //todo delete: temp solutions
+    @Nullable
+    private File readStorage() {
+        File dir = new File(System.getenv(ANDROID_STORAGE));
+        if (dir.listFiles() == null) return null;
+        for (File file : dir.listFiles())
+            if (file.isDirectory()
+                    && file.list() != null
+                    && file.list().length != 0) {
+                return file;
+            }
+        return null;
     }
 }
