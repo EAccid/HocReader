@@ -6,51 +6,42 @@ import java.util.List;
 
 public class CustomDirectories {
 
-    private String parentDir;
-    private List<Directory> directories;
+    private final int CONSTANT_ID;
+    private List<File> directories;
 
-    public CustomDirectories() {
-        directories = new ArrayList<>();
-        parentDir = ".../";
+    public CustomDirectories(int fromId) {
+        this.CONSTANT_ID = fromId;
+        this.directories = new ArrayList<>();
     }
 
-    public void addDirectory(File file) {
-        directories.add(new Directory(parentDir + file.getName(), file));
+    public int addDirectory(File file) {
+        int newId = directories.size();
+        directories.add(file);
+        return getCustomId(newId);
     }
 
     public int getSize() {
         return directories.size();
     }
 
-    public File getFile(int id) {
-        return directories.get(id).getFile();
-    }
-
-    public void setParentDir(String parentDir) {
-        this.parentDir = parentDir;
-    }
-
     public String getName(int id) {
-        return directories.get(id).getName();
+        return directories.get(getDirectoriesId(id)).getName();
     }
 
-    private class Directory {
-        String name;
-        File file;
-
-        public Directory(String name, File file) {
-            this.name = name;
-            this.file = file;
-        }
-
-        public File getFile() {
-            return file;
-        }
-
-        public String getName() {
-            return name;
-        }
+    public int getCustomId(int id) {
+        return id + CONSTANT_ID;
     }
 
+    public File getFile(int id) {
+        return directories.get(getDirectoriesId(id));
+    }
+
+    public boolean hasId(int id) {
+        return getDirectoriesId(id) < directories.size();
+    }
+
+    private int getDirectoriesId(int customId) {
+        return customId - CONSTANT_ID;
+    }
 }
 

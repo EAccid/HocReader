@@ -1,8 +1,7 @@
 package com.eaccid.hocreader.presentation.main;
 
-
-import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v13.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -10,18 +9,19 @@ import android.util.Log;
 
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.presentation.main.ins.CustomDirectories;
 import com.eaccid.hocreader.presentation.main.ins.IconsProvider;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroupImpl;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemObjectChild;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemChild;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
-import com.eaccid.hocreader.presentation.training.TrainingActivity;
 import com.eaccid.hocreader.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.provider.file.findner.FileExtensions;
 import com.eaccid.hocreader.provider.file.findner.FileOnDeviceProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.provider.file.findner.FileProvider;
+import com.nononsenseapps.filepicker.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,11 +33,13 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     private final String logTAG = "MainPresenter";
     private MainActivity mView;
+    private CustomDirectories directories;
 
     @Inject
     BookInteractor bookInteractor;
 
     public MainPresenter() {
+        directories = new CustomDirectories(100);
         App.getAppComponent().inject(this);
     }
 
@@ -55,19 +57,38 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         mView = null;
     }
 
+    /***
+     * on 'menu item clicked' actions handlers
+     */
+
     public void onFabClicked() {
-        Intent intent = new Intent(mView.getApplicationContext(), TrainingActivity.class);
-        mView.startActivity(intent);
+        mView.navigateToTraining();
     }
 
+    public void onSettingsMenuSelected() {
+        mView.navigateToSettings();
+    }
+
+    public void onAllDirectoryMenuSelected() {
+        fillExpandableListView();
+    }
+
+    /**
+     * todo make asynchronous
+     * mView.showProgressDialog();
+     * mView.dismissProgressDialog();
+     */
 
     private void fillExpandableListView() {
-        // todo make asynchronous
-        // mView.showProgressDialog();
-        // mView.dismissProgressDialog();
-        FileProvider fileProvider = new FileOnDeviceProvider();
-        List<File> foundFiles = fileProvider.findFiles();
-        loadFilesToExpandableView(foundFiles);
+        loadFilesToExpandableView(
+                new FileOnDeviceProvider().findFiles()
+        );
+    }
+
+    private void fillExpandableListView(File file) {
+        loadFilesToExpandableView(
+                new FileOnDeviceProvider().findFiles(file)
+        );
     }
 
     private void loadFilesToExpandableView(List<File> files) {
@@ -99,10 +120,6 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         bookInteractor.loadBooks(readableFiles);
     }
 
-    public void onDirectoryChosen() {
-        mView.openDirectoryChooser();
-    }
-
     /***
      * check permission
      */
@@ -129,7 +146,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
             }
             requestPermission(checkedPermission);
         }
-        readExternalStorageGranted();
+        fillExpandableListView();
     }
 
     private boolean shouldShowRequestPermissionRationale(int permission) {
@@ -144,13 +161,30 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         );
     }
 
-    public void onCustomDirectorySelected(File file) {
-        FileProvider fileProvider = new FileOnDeviceProvider();
-        List<File> foundFiles = fileProvider.findFiles(file);
-        loadFilesToExpandableView(foundFiles);
+    /***
+     * custom directories menu
+     */
+
+    public void onDirectoryChosen() {
+        new DirectoryChooser().startOnResultDirectoryChooser(mView);
     }
 
-    public void onAllDirectorySelected() {
-        fillExpandableListView();
+    public void OnDirectoryChooserResult(ArrayList<String> paths) {
+        for (String path : paths) {
+            Uri uri = Uri.parse(path);
+            File file = Utils.getFileForUri(uri);
+            int newId = directories.addDirectory(file);
+            mView.addCustomMenuItem(newId, directories.getName(newId));
+        }
     }
+
+    public boolean onNavigationItemSelected(int id) {
+        if (directories.hasId(id)) {
+            File file = directories.getFile(id);
+            fillExpandableListView(file);
+            return true;
+        }
+        return false;
+    }
+
 }

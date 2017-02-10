@@ -6,8 +6,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import android.provider.SearchRecentSuggestions;
@@ -29,23 +27,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 
-import android.widget.Button;
 import android.widget.ExpandableListView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.presentation.main.ins.CustomDirectories;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
-import com.eaccid.hocreader.presentation.main.ins.Storage;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.settings.SettingsActivity;
+import com.eaccid.hocreader.presentation.training.TrainingActivity;
 import com.nononsenseapps.filepicker.FilePickerActivity;
-import com.nononsenseapps.filepicker.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,13 +62,10 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     NavigationView navigationView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    private final int FILE_CODE = 16;
     private static MainPresenter mPresenter;
     private ProgressDialog progressDialog;
     private SearchAdapter searchAdapter;
-
-    //todo take CustomDirectories handler out from activity
-    private CustomDirectories directories;
+    private SubMenu customizedMenu;
 
     @Override
     public BasePresenter getPresenter() {
@@ -93,11 +83,10 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         drawerLayout.addDrawerListener(drawerListener);
         drawerListener.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        customizedMenu = navigationView.getMenu().findItem(R.id.directories).getSubMenu();
+        customizedMenu.setGroupCheckable(customizedMenu.getItem().getGroupId(), true, true);
         if (mPresenter == null) mPresenter = new MainPresenter();
-        progressDialog = new ProgressDialog(expandableListView.getContext(),
-                R.style.AppTheme_Dialog);
         mPresenter.attachView(this);
-        directories = new CustomDirectories();
     }
 
     @OnClick(R.id.fab)
@@ -168,19 +157,15 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         int id = item.getItemId();
         switch (id) {
             case R.id.settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
+                mPresenter.onSettingsMenuSelected();
                 break;
             case R.id.alldir:
-                mPresenter.onAllDirectorySelected();
+                mPresenter.onAllDirectoryMenuSelected();
                 break;
         }
-        if (id < directories.getSize()) {
-            item.setChecked(true);
-            File file = directories.getFile(id);
-            mPresenter.onCustomDirectorySelected(file);
-        }
         drawerLayout.closeDrawer(GravityCompat.START);
+        if (mPresenter.onNavigationItemSelected(id))
+            setCheckedMenuItem(id);
         return true;
     }
 
@@ -206,6 +191,8 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
 
     @Override
     public void showProgressDialog() {
+        progressDialog = new ProgressDialog(expandableListView.getContext(),
+                R.style.AppTheme_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
@@ -214,6 +201,16 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     @Override
     public void dismissProgressDialog() {
         progressDialog.dismiss();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == DirectoryChooser.FILE_CODE && resultCode == Activity.RESULT_OK) {
+            ArrayList<String> paths = intent.getStringArrayListExtra(FilePickerActivity.EXTRA_PATHS);
+            if (paths != null) {
+                mPresenter.OnDirectoryChooserResult(paths);
+            }
+        }
     }
 
     @Override
@@ -229,51 +226,6 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == FILE_CODE && resultCode == Activity.RESULT_OK) {
-            ArrayList<String> paths = intent.getStringArrayListExtra(FilePickerActivity.EXTRA_PATHS);
-            if (paths != null) {
-                Menu m = navigationView.getMenu();
-                SubMenu topMenu = m.findItem(R.id.directories).getSubMenu();
-                for (String path : paths) {
-                    Uri uri = Uri.parse(path);
-                    File file = Utils.getFileForUri(uri);
-                    int id = directories.getSize();
-                    directories.addDirectory(file);
-                    topMenu
-                            .add(0, id, 0, directories.getName(id))
-                            .setIcon(R.drawable.ic_folder_black_24px);
-                }
-            }
-        }
-    }
-
-    public void openDirectoryChooser() {
-
-        MaterialDialog materialDialog = new MaterialDialog.Builder(this)
-                .title(Build.MODEL)
-                .customView(R.layout.choose_directory_dialog, false)
-                .build();
-
-        Button internal_storage = (Button) materialDialog.getView().findViewById(R.id.internal_storage);
-        internal_storage.setOnClickListener(v -> {
-            startOnResultDirectoryChooser(new Storage().getExternalStorage().getPath());
-            materialDialog.cancel();
-            directories.setParentDir(".../Internal storage/");
-        });
-
-        Button sd_card = (Button) materialDialog.getView().findViewById(R.id.sd_card);
-        sd_card.setOnClickListener(v -> {
-
-            startOnResultDirectoryChooser(new Storage().getMountedStorage().getPath());
-            materialDialog.cancel();
-            directories.setParentDir(".../SD card/");
-        });
-        materialDialog.show();
-
-    }
-
     public void showPermissionExplanation(String message, int permission) {
         Snackbar.make(expandableListView, message, Snackbar.LENGTH_INDEFINITE)
                 .setAction("GRANT", v -> mPresenter.requestPermission(permission))
@@ -285,13 +237,31 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void startOnResultDirectoryChooser(String filePath) {
-        Intent i = new Intent(getBaseContext(), FilePickerActivity.class);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, true);
-        i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
-        i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
-        i.putExtra(FilePickerActivity.EXTRA_START_PATH, filePath);
-        startActivityForResult(i, FILE_CODE);
+    public void addCustomMenuItem(int id, String name) {
+        customizedMenu
+                .add(customizedMenu.getItem().getGroupId(), id, customizedMenu.size(), name)
+                .setIcon(R.drawable.ic_folder_black_24px)
+                .setCheckable(true);
     }
+
+    private void setCheckedMenuItem(int id) {
+        customizedMenu.findItem(id).setChecked(true);
+    }
+
+    /**
+     * Router
+     */
+
+    public void navigateToTraining() {
+        Intent intent = new Intent(getApplicationContext(), TrainingActivity.class);
+        startActivity(intent);
+    }
+
+    public void navigateToSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
 }
+
 
