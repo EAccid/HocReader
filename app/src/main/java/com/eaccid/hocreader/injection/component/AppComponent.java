@@ -11,6 +11,8 @@ import com.eaccid.hocreader.injection.module.AppModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
 import com.eaccid.hocreader.injection.module.DataProviderModule;
 import com.eaccid.hocreader.presentation.main.MainPresenter;
+import com.eaccid.hocreader.presentation.main.ins.DirectoriesPreferences;
+import com.eaccid.hocreader.presentation.main.ins.DirectoryChooser;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.underdevelopment.cardremember.CardWordPresenter;
 import com.eaccid.hocreader.presentation.book.BookPresenter;
@@ -40,6 +42,8 @@ public interface AppComponent {
 
     AppDatabaseManager appDatabaseManager();
 
+    DirectoriesPreferences customDirectoriesPreferences();
+
     void inject(LingualeoServiceCookiesImpl leoCookies);
 
     void inject(LingualeoDictionaryRx dictionaryRx);
@@ -62,4 +66,7 @@ public interface AppComponent {
 
     void inject(NetworkAvailablenessImpl networkAvailableness);
 
+    void inject(DirectoriesPreferences customDirectories);
+
+    void inject(DirectoryChooser directoryChooser);
 }

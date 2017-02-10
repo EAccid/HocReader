@@ -87,7 +87,7 @@
     <string name="action_words_editor">Words Editor</string>
 
     <string name="desc">Empty</string>
-    <string name="choose_the_directory">Choose directory...</string>
+    <string name="choose_the_directory">Edit directories...</string>
     <string name="directories">Directories</string>
     <string name="download">Download</string>
     <string name="all_directories">All Directories</string>
@@ -95,5 +95,6 @@
     <string name="about">About</string>
     <string name="internal_storage">Internal storage /...</string>
     <string name="sd_card">SD card /...</string>
+    <string name="delete_directories">delete directories...</string>
 
 </resources>

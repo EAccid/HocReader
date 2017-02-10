@@ -48,4 +48,7 @@ public class DatabaseManager {
         return new WordDaoService(databaseHelper);
     }
 
+    public DirectoryDaoService getDirectoryService() throws SQLException {
+        return new DirectoryDaoService(databaseHelper);
+    }
 }

@@ -8,6 +8,7 @@ import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 import com.eaccid.hocreader.injection.ApplicationContext;
+import com.eaccid.hocreader.presentation.main.ins.DirectoriesPreferences;
 import com.eaccid.hocreader.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.provider.db.books.BookInteractorImpl;
 import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesImpl;
@@ -55,6 +56,13 @@ public class AppModule {
     @Singleton
     BookInteractor provideBookInteractor(AppDatabaseManager databaseManager) {
         return new BookInteractorImpl(databaseManager);
+    }
+
+    //TODO delete after transferring directories into db
+    @Provides
+    @Singleton
+    DirectoriesPreferences provideDirectoriesPreferences(SharedPreferences sharedPreferences) {
+        return new DirectoriesPreferences(sharedPreferences, 100);
     }
 
 }

@@ -9,7 +9,8 @@ import android.util.Log;
 
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.presentation.main.ins.CustomDirectories;
+import com.eaccid.hocreader.presentation.main.ins.DirectoriesPreferences;
+import com.eaccid.hocreader.presentation.main.ins.DirectoryChooser;
 import com.eaccid.hocreader.presentation.main.ins.IconsProvider;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroupImpl;
@@ -20,7 +21,6 @@ import com.eaccid.hocreader.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.provider.file.findner.FileExtensions;
 import com.eaccid.hocreader.provider.file.findner.FileOnDeviceProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.provider.file.findner.FileProvider;
 import com.nononsenseapps.filepicker.Utils;
 
 import java.io.File;
@@ -33,13 +33,13 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     private final String logTAG = "MainPresenter";
     private MainActivity mView;
-    private CustomDirectories directories;
 
+    @Inject
+    DirectoriesPreferences directories;
     @Inject
     BookInteractor bookInteractor;
 
     public MainPresenter() {
-        directories = new CustomDirectories(100);
         App.getAppComponent().inject(this);
     }
 
@@ -48,7 +48,16 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         mView = mainActivity;
         checkReadExtStoragePermission();
         PreferenceManager.setDefaultValues(mView.getApplicationContext(), R.xml.preferences, false);
+        loadCustomMenu();
         Log.i(logTAG, "MainActivity has been attached.");
+    }
+
+    private void loadCustomMenu() {
+        for (File dir :
+                directories.getFileList()) {
+            int id = directories.getCustomId(dir);
+            mView.addCustomMenuItem(id, directories.getName(id));
+        }
     }
 
     @Override
@@ -169,7 +178,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         new DirectoryChooser().startOnResultDirectoryChooser(mView);
     }
 
-    public void OnDirectoryChooserResult(ArrayList<String> paths) {
+    public void OnDirectoryChooserResult(List<String> paths) {
         for (String path : paths) {
             Uri uri = Uri.parse(path);
             File file = Utils.getFileForUri(uri);

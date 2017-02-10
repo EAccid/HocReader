@@ -13,7 +13,7 @@
         android:layout_weight="1"
         android:gravity="start"
         android:text="@string/internal_storage"
-        android:textColor="@color/colorAccentSecondary" />
+        android:textColor="@color/colorAccent" />
 
     <View style="@style/frame_divider" />
 
@@ -25,6 +25,16 @@
         android:layout_weight="1"
         android:gravity="start"
         android:text="@string/sd_card"
+        android:textColor="@color/colorAccent" />
+
+    <Button
+        android:id="@+id/delete_directories"
+        style="?attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:text="@string/delete_directories"
         android:textColor="@color/colorAccentSecondary" />
 
 </LinearLayout>
