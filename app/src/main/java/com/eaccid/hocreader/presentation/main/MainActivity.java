@@ -30,7 +30,7 @@ import android.view.SubMenu;
 import android.widget.ExpandableListView;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.presentation.main.ins.DirectoryChooser;
+import com.eaccid.hocreader.underdevelopment.DirectoryChooser;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;
@@ -238,14 +238,23 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 
+    public void clearCustomMenuItem() {
+        customizedMenu.clear();
+        customizedMenu.add(customizedMenu.getItem().getGroupId(), 0, 0, "Directories")
+                .setIcon(R.drawable.ic_folder_special_black_24px)
+                .setCheckable(true);
+    }
+
     public void addCustomMenuItem(int id, String name) {
+        if (customizedMenu.findItem(100) != null)
+            customizedMenu.removeItem(id);
         customizedMenu
-                .add(customizedMenu.getItem().getGroupId(), id, customizedMenu.size(), name)
+                .add(customizedMenu.getItem().getGroupId(), id, id, name)
                 .setIcon(R.drawable.ic_folder_black_24px)
                 .setCheckable(true);
     }
 
-    private void setCheckedMenuItem(int id) {
+    public void setCheckedMenuItem(int id) {
         customizedMenu.findItem(id).setChecked(true);
     }
 

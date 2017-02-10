@@ -9,8 +9,8 @@ import android.util.Log;
 
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.presentation.main.ins.DirectoriesPreferences;
-import com.eaccid.hocreader.presentation.main.ins.DirectoryChooser;
+import com.eaccid.hocreader.underdevelopment.DirectoriesPreferences;
+import com.eaccid.hocreader.underdevelopment.DirectoryChooser;
 import com.eaccid.hocreader.presentation.main.ins.IconsProvider;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroupImpl;
@@ -48,14 +48,17 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         mView = mainActivity;
         checkReadExtStoragePermission();
         PreferenceManager.setDefaultValues(mView.getApplicationContext(), R.xml.preferences, false);
-        loadCustomMenu();
+        directories.setOnDirectoriesChangedListener(id -> {
+            mView.clearCustomMenuItem();
+            loadCustomMenu();
+        });
         Log.i(logTAG, "MainActivity has been attached.");
     }
 
     private void loadCustomMenu() {
         for (File dir :
                 directories.getFileList()) {
-            int id = directories.getCustomId(dir);
+            int id = directories.getId(dir);
             mView.addCustomMenuItem(id, directories.getName(id));
         }
     }
@@ -155,6 +158,13 @@ public class MainPresenter implements BasePresenter<MainActivity> {
             }
             requestPermission(checkedPermission);
         }
+        loadCustomMenu();
+        File file = directories.getDefault();
+        if (file != null) {
+            fillExpandableListView(file);
+            mView.setCheckedMenuItem(directories.getId(file));
+            return;
+        }
         fillExpandableListView();
     }
 
@@ -189,6 +199,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     public boolean onNavigationItemSelected(int id) {
         if (directories.hasId(id)) {
+            directories.setDefault(id);
             File file = directories.getFile(id);
             fillExpandableListView(file);
             return true;

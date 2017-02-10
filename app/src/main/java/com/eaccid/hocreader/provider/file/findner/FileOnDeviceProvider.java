@@ -1,6 +1,6 @@
 package com.eaccid.hocreader.provider.file.findner;
 
-import com.eaccid.hocreader.presentation.main.ins.Storage;
+import com.eaccid.hocreader.presentation.main.ins.directories.Storage;
 
 import java.io.File;
 import java.util.ArrayList;
