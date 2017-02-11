@@ -161,6 +161,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
             return;
         }
         fillExpandableListView();
+        mView.setCheckedMenuItem(0);
     }
 
     private boolean shouldShowRequestPermissionRationale(int permission) {
