@@ -3,8 +3,7 @@ package com.eaccid.hocreader.underdevelopment;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.util.ArraySet;
-
-import com.eaccid.hocreader.injection.App;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,12 +12,13 @@ import java.util.Set;
 
 public class DirectoriesPreferences {
 
-    private SharedPreferences sp;
+    private final String LOG_TAG = "DirectoriesPreferences";
     private final String KEY_DIRECTORIES = "DIRECTORIES";
     private final String KEY_DEFAULT = "DEFAULT_DIRECTORY";
     private final int CONSTANT_ID;
     private List<File> directories = new ArrayList<>();
     private OnDirectoriesChangedListener listener;
+    private SharedPreferences sp;
 
     public interface OnDirectoriesChangedListener {
         void onDirectoryDeleted(int id);
@@ -32,7 +32,6 @@ public class DirectoriesPreferences {
         this.sp = sp;
         this.CONSTANT_ID = idFromIndex;
         this.directories = restoreDirectoriesFromFilesSet();
-        App.getAppComponent().inject(this);
     }
 
     public int addDirectory(File file) {
@@ -41,8 +40,25 @@ public class DirectoriesPreferences {
             return getCustomId(newId);
         newId = directories.size();
         directories.add(file);
-        storeDirectoriesOnDevice();
+        onDirectoryAdded();
         return getCustomId(newId);
+    }
+
+    public void deleteByPath(String path) {
+        File file = new File(path);
+        if (!file.exists())
+            return;
+        int id = directories.indexOf(file);
+        if (id < 0)
+            return;
+        directories.remove(id);
+        if (listener != null)
+            listener.onDirectoryDeleted(getCustomId(id));
+        onDirectoryDeleted();
+    }
+
+    public List<File> getFileList() {
+        return directories;
     }
 
     public int getSize() {
@@ -65,10 +81,6 @@ public class DirectoriesPreferences {
         return getDirectoriesId(id) < directories.size();
     }
 
-    private int getDirectoriesId(int customId) {
-        return customId - CONSTANT_ID;
-    }
-
     public CharSequence[] getFiles() {
         CharSequence[] list = new CharSequence[directories.size()];
         for (int i = 0; i < list.length; i++) {
@@ -77,36 +89,25 @@ public class DirectoriesPreferences {
         return list;
     }
 
-    public List<File> getFileList() {
-        return directories;
-    }
-
-    public void deleteByPath(String path) {
-        File file = new File(path);
-        if (!file.exists())
-            return;
-        int id = directories.indexOf(file);
-        if (id < 0)
-            return;
-        directories.remove(id);
-        if (listener != null)
-            listener.onDirectoryDeleted(getCustomId(id));
-        storeDirectoriesOnDevice();
-    }
-
-    public void setDefault(int id) {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(KEY_DEFAULT, getFile(id).getPath());
-        editor.apply();
+    public void setDefaultFile(int id) {
+        storeDefaultOnDevice(id);
     }
 
     @Nullable
-    public File getDefault() {
-        String path = sp.getString(KEY_DEFAULT, "");
-        File file = new File(path);
-        if (path.isEmpty() || !directories.contains(file))
-            return null;
-        return file;
+    public File getDefaultFile() {
+        return loadDefaultFromDevice();
+    }
+
+    private void onDirectoryDeleted() {
+        storeDirectoriesOnDevice();
+    }
+
+    private void onDirectoryAdded() {
+        storeDirectoriesOnDevice();
+    }
+
+    private int getDirectoriesId(int customId) {
+        return customId - CONSTANT_ID;
     }
 
     private int getCustomId(int id) {
@@ -129,18 +130,8 @@ public class DirectoriesPreferences {
                 files.add(file);
             }
         }
-        storeDirectoriesOnDevice();
+        Log.i(LOG_TAG, "restoreDirectoriesFromFilesSet");
         return files;
-    }
-
-    private Set<String> loadDirectoriesFromDevice() {
-        return sp.getStringSet(KEY_DIRECTORIES, new ArraySet<>());
-    }
-
-    private void storeDirectoriesOnDevice() {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putStringSet(KEY_DIRECTORIES, getFilesSet());
-        editor.apply();
     }
 
     private String getShortName(File file) {
@@ -155,6 +146,35 @@ public class DirectoriesPreferences {
             result = file.getName();
         }
         return result;
+    }
+
+    private void storeDirectoriesOnDevice() {
+        SharedPreferences.Editor editor = sp.edit();
+        Set<String> set = getFilesSet();
+        editor.putStringSet(KEY_DIRECTORIES, set);
+        Log.i(LOG_TAG, "Storing directories on device: " + set);
+        editor.apply();
+
+    }
+
+    private Set<String> loadDirectoriesFromDevice() {
+        Set<String> set = sp.getStringSet(KEY_DIRECTORIES, new ArraySet<>());
+        Log.i(LOG_TAG, "Loading directories from device:" + set);
+        return set;
+    }
+
+    private void storeDefaultOnDevice(int id) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(KEY_DEFAULT, getFile(id).getPath());
+        editor.apply();
+    }
+
+    private File loadDefaultFromDevice() {
+        String path = sp.getString(KEY_DEFAULT, "");
+        File file = new File(path);
+        if (path.isEmpty() || !directories.contains(file))
+            return null;
+        return file;
     }
 
 }

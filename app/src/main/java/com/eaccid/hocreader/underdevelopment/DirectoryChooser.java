@@ -78,9 +78,7 @@ public class DirectoryChooser {
                     }
                     dialog.dismiss();
                 })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    dialog.cancel();
-                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
                 .show();
     }
 }

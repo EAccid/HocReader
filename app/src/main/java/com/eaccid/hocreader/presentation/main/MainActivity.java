@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         drawerListener.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         customizedMenu = navigationView.getMenu().findItem(R.id.directories).getSubMenu();
-        customizedMenu.setGroupCheckable(customizedMenu.getItem().getGroupId(), true, true);
+        resetCustomMenu();
         if (mPresenter == null) mPresenter = new MainPresenter();
         mPresenter.attachView(this);
     }
@@ -238,15 +238,20 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 
-    public void clearCustomMenuItem() {
+    /**
+     * menu customization
+     */
+
+    public void resetCustomMenu() {
         customizedMenu.clear();
-        customizedMenu.add(customizedMenu.getItem().getGroupId(), 0, 0, "Directories")
+        customizedMenu.setGroupCheckable(customizedMenu.getItem().getGroupId(), true, true);
+        customizedMenu.add(customizedMenu.getItem().getGroupId(), R.id.alldir, 0, R.string.all_directories)
                 .setIcon(R.drawable.ic_folder_special_black_24px)
                 .setCheckable(true);
     }
 
     public void addCustomMenuItem(int id, String name) {
-        if (customizedMenu.findItem(100) != null)
+        if (customizedMenu.findItem(id) != null)
             customizedMenu.removeItem(id);
         customizedMenu
                 .add(customizedMenu.getItem().getGroupId(), id, id, name)

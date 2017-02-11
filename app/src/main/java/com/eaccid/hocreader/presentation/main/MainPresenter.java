@@ -31,7 +31,7 @@ import javax.inject.Inject;
 
 public class MainPresenter implements BasePresenter<MainActivity> {
 
-    private final String logTAG = "MainPresenter";
+    private final String LOG_TAG = "MainPresenter";
     private MainActivity mView;
 
     @Inject
@@ -46,26 +46,17 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     @Override
     public void attachView(MainActivity mainActivity) {
         mView = mainActivity;
-        checkReadExtStoragePermission();
+        Log.i(LOG_TAG, "MainActivity has been attached.");
         PreferenceManager.setDefaultValues(mView.getApplicationContext(), R.xml.preferences, false);
         directories.setOnDirectoriesChangedListener(id -> {
-            mView.clearCustomMenuItem();
             loadCustomMenu();
         });
-        Log.i(logTAG, "MainActivity has been attached.");
-    }
-
-    private void loadCustomMenu() {
-        for (File dir :
-                directories.getFileList()) {
-            int id = directories.getId(dir);
-            mView.addCustomMenuItem(id, directories.getName(id));
-        }
+        checkReadExtStoragePermission();
     }
 
     @Override
     public void detachView() {
-        Log.i(logTAG, "MainActivity has been detached.");
+        Log.i(LOG_TAG, "MainActivity has been detached.");
         mView = null;
     }
 
@@ -158,8 +149,12 @@ public class MainPresenter implements BasePresenter<MainActivity> {
             }
             requestPermission(checkedPermission);
         }
+        onPermissionChecked();
+    }
+
+    private void onPermissionChecked() {
         loadCustomMenu();
-        File file = directories.getDefault();
+        File file = directories.getDefaultFile();
         if (file != null) {
             fillExpandableListView(file);
             mView.setCheckedMenuItem(directories.getId(file));
@@ -199,12 +194,21 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     public boolean onNavigationItemSelected(int id) {
         if (directories.hasId(id)) {
-            directories.setDefault(id);
+            directories.setDefaultFile(id);
             File file = directories.getFile(id);
             fillExpandableListView(file);
             return true;
         }
         return false;
+    }
+
+    private void loadCustomMenu() {
+        mView.resetCustomMenu();
+        for (File dir :
+                directories.getFileList()) {
+            int id = directories.getId(dir);
+            mView.addCustomMenuItem(id, directories.getName(id));
+        }
     }
 
 }

@@ -42,7 +42,7 @@ public interface AppComponent {
 
     AppDatabaseManager appDatabaseManager();
 
-    DirectoriesPreferences customDirectoriesPreferences();
+    DirectoriesPreferences directoriesPreferences();
 
     void inject(LingualeoServiceCookiesImpl leoCookies);
 
