@@ -30,7 +30,7 @@ import android.view.SubMenu;
 import android.widget.ExpandableListView;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.underdevelopment.DirectoryChooser;
+import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;

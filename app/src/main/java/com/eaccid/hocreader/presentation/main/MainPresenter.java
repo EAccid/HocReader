@@ -9,8 +9,8 @@ import android.util.Log;
 
 import com.eaccid.hocreader.injection.App;
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.underdevelopment.DirectoriesPreferences;
-import com.eaccid.hocreader.underdevelopment.DirectoryChooser;
+import com.eaccid.hocreader.presentation.main.ins.directories.DirectoriesPreferences;
+import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;
 import com.eaccid.hocreader.presentation.main.ins.IconsProvider;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroupImpl;

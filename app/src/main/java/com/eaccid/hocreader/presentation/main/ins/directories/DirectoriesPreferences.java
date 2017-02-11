@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.underdevelopment;
+package com.eaccid.hocreader.presentation.main.ins.directories;
 
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.underdevelopment;
+package com.eaccid.hocreader.presentation.main.ins.directories;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,7 +10,6 @@ import android.widget.ListView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.injection.App;
-import com.eaccid.hocreader.presentation.main.ins.directories.Storage;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import javax.inject.Inject;
