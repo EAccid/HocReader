@@ -124,14 +124,16 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
-        Log.i(LOG_TAG, "setting data to view from item: position " + position);
+        Log.i(LOG_TAG, "Setting data to view from item: position " + position);
         wordListInteractor
                 .getWordItem(position)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(wordItem -> {
                     holder.word.setText(wordItem.getWordFromText());
                     holder.translation.setText(wordItem.getTranslation());
-                    holder.context.setText(wordItem.getContext());
+                    SparseBooleanArray collapsedPositions = new SparseBooleanArray();
+                    collapsedPositions.put(0, true);
+                    holder.context.setText(wordItem.getContext(), collapsedPositions, 0);
                     new ImageViewManager().loadPictureFromUrl(holder.wordImage, wordItem.getPictureUrl());
                     if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
                         holder.mediaPlayer.release();
@@ -147,7 +149,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
                                     getWordListItemProvider(position).isSetToLearn()
                             )
                     );
-
                 }, e -> {
                     new ReaderExceptionHandlerImpl().handleError(e);
                 });

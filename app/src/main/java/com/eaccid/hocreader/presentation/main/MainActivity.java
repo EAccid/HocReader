@@ -14,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 
@@ -49,8 +50,6 @@ import butterknife.OnClick;
 
 //TODO: provide searching handler in separate class
 public class MainActivity extends AppCompatActivity implements MainView<ItemGroup>,
-        SearchView.OnQueryTextListener,
-        SearchView.OnCloseListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.expandableListView_main)
@@ -96,12 +95,6 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     }
 
     @Override
-    public boolean onClose() {
-        provideBooksSearching("");
-        return false;
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
@@ -115,11 +108,49 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
         searchView.setIconifiedByDefault(false);
-        searchView.setOnQueryTextListener(this);
-        searchView.setOnCloseListener(this);
         searchView.requestFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getBaseContext(),
+                        SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
+                suggestions.saveRecentQuery(query, null);
+                provideBooksSearching(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                provideBooksSearching(newText);
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(() -> {
+            provideBooksSearching("");
+            mPresenter.onCloseSearchView();
+            return true;
+        });
+
+
+        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.action_search), new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                provideBooksSearching("");
+                mPresenter.onCloseSearchView();
+                return true;
+            }
+        });
+
+
+
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -139,18 +170,12 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
-        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-                SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
-        suggestions.saveRecentQuery(query, null);
-        provideBooksSearching(query);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        provideBooksSearching(newText);
-        return false;
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            provideBooksSearching(query);
+        }
     }
 
     @Override

@@ -155,6 +155,10 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     private void onPermissionChecked() {
         loadCustomMenu();
+        fillBooks();
+    }
+
+    void fillBooks() {
         File file = directories.getDefaultFile();
         if (file != null) {
             fillExpandableListView(file);
@@ -212,4 +216,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         }
     }
 
+    public void onCloseSearchView() {
+        fillBooks();
+    }
 }

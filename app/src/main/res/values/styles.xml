@@ -18,7 +18,18 @@
 
     <style name="AppThemeNoActionBar" parent="AppTheme.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="autoCompleteTextViewStyle">@style/autoCompleteTextViewStyle</item>
+        <item name="textAppearanceSearchResultTitle">@style/searchResultStyle</item>
      </style>
+
+    <style name="autoCompleteTextViewStyle" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:popupBackground">@color/windowBackground</item>
+    </style>
+
+    <style name="searchResultStyle" parent="TextAppearance.AppCompat.SearchResult.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="windowNoTitle">true</item>
