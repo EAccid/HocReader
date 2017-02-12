@@ -6,6 +6,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.provider.SearchRecentSuggestions;
@@ -130,8 +131,6 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
             mPresenter.onCloseSearchView();
             return true;
         });
-
-
         MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.action_search), new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -145,9 +144,6 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 return true;
             }
         });
-
-
-
         return true;
     }
 
