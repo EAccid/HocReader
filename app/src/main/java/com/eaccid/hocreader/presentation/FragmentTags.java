@@ -2,6 +2,7 @@ package com.eaccid.hocreader.presentation;
 
 public class FragmentTags {
 
+    public static final String BOOK_READER = "data provider";
     public static final String DATA_PROVIDER = "data provider";
     public static final String WORDS_LIST_VIEW = "list view";
     public static final String WORDS_CAROUSEL = "carousel";

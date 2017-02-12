@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/pager_activity"
     tools:context="com.eaccid.hocreader.presentation.pager.PagerActivity">
 
     <android.support.v4.view.ViewPager

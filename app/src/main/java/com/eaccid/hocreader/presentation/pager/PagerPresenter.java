@@ -29,7 +29,6 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
         App.getWordListComponent().inject(this);
         mView = pagerActivity;
         Log.i(LOG_TAG, "PagerActivity has been attached.");
-        createOrUpdateCurrentBook();
     }
 
     @Override
@@ -39,10 +38,7 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
         mView = null;
     }
 
-    private void createOrUpdateCurrentBook() {
-        String filePath = mView.getIntent().getStringExtra("filePath");
-        String fileName = mView.getIntent().getStringExtra("fileName");
-
+    public void createOrUpdateCurrentBook(String fileName, String filePath) {
         bookInteractor.createOrUpdateBook(filePath, fileName);
         bookInteractor.setCurrentBookForAddingWord(filePath);
     }
