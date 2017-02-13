@@ -25,8 +25,7 @@ public class SearchAdapter extends BaseExpandableListAdapter {
         this.itemGroupList.addAll(itemGroupList);
         this.originalList = new ArrayList<>();
         this.originalList.addAll(itemGroupList);
-
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override

@@ -122,6 +122,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
         super.onDestroy();
         mediaPlayer.release();
         mPresenter.detachView();
+        finish();
     }
 
     private void showSpeaker(ImageView iv, boolean isSpeaking) {

@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
+        searchAdapter = new SearchAdapter(this, new ArrayList<>());
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle drawerListener = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

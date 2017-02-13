@@ -185,7 +185,9 @@ public class MainPresenter implements BasePresenter<MainActivity> {
      */
 
     public void onDirectoryChosen() {
-        new DirectoryChooser().startOnResultDirectoryChooser(mView);
+        if (checkPermission(PermissionRequest.PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_DENIED)
+            new DirectoryChooser().startOnResultDirectoryChooser(mView);
     }
 
     public void OnDirectoryChooserResult(List<String> paths) {
