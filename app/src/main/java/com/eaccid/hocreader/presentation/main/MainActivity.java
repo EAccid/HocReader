@@ -28,7 +28,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 
+import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;
@@ -62,8 +65,11 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     NavigationView navigationView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+    @BindView(R.id.progress_bar_layout)
+    LinearLayout progressBarLinearLayout;
     private static MainPresenter mPresenter;
-    private ProgressDialog progressDialog;
     private SearchAdapter searchAdapter;
     private SubMenu customizedMenu;
 
@@ -213,16 +219,16 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
 
     @Override
     public void showProgressDialog() {
-        progressDialog = new ProgressDialog(expandableListView.getContext(),
-                R.style.AppTheme_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+        progressBar.setVisibility(View.VISIBLE);
+        progressBarLinearLayout.setVisibility(View.VISIBLE);
+        expandableListView.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void dismissProgressDialog() {
-        progressDialog.dismiss();
+        progressBar.setVisibility(View.GONE);
+        progressBarLinearLayout.setVisibility(View.GONE);
+        expandableListView.setVisibility(View.VISIBLE);
     }
 
     @Override

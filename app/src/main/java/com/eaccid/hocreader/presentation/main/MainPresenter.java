@@ -2,7 +2,9 @@ package com.eaccid.hocreader.presentation.main;
 
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.annotation.Size;
 import android.support.v13.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -74,54 +76,11 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
     public void onAllDirectoryMenuSelected() {
         loadCustomMenu();
-        fillExpandableListView();
+        fillBooks(true);
     }
 
-    /**
-     * todo make asynchronous
-     * mView.showProgressDialog();
-     * mView.dismissProgressDialog();
-     */
-
-    private void fillExpandableListView() {
-        loadFilesToExpandableView(
-                new FileOnDeviceProvider().findFiles()
-        );
-    }
-
-    private void fillExpandableListView(File file) {
-        loadFilesToExpandableView(
-                new FileOnDeviceProvider().findFiles(file)
-        );
-    }
-
-    private void loadFilesToExpandableView(List<File> files) {
-        List<ItemGroup> itemGroupList = new ArrayList<>();
-        List<String> readableFiles = new ArrayList<>();
-        List<ItemChild> childObjectItemTXT = new ArrayList<>();
-        List<ItemChild> childObjectItemPDF = new ArrayList<>();
-        for (File file : files) {
-            FileExtensions extension = FileExtensions.getFileExtension(file);
-            if (extension == FileExtensions.PDF) {
-                childObjectItemPDF.add(
-                        new ItemObjectChild(
-                                new IconsProvider().getFileExtensionsIconResId(extension), file.getName(), file)
-                );
-                readableFiles.add(file.getPath());
-            }
-            if (extension == FileExtensions.TXT) {
-                childObjectItemTXT.add(new ItemObjectChild(
-                        new IconsProvider().getFileExtensionsIconResId(extension), file.getName(), file)
-                );
-                readableFiles.add(file.getPath());
-            }
-        }
-        ItemGroup itemGroupTXT = new ItemGroupImpl(FileExtensions.TXT.name().toUpperCase(), childObjectItemTXT);
-        itemGroupList.add(itemGroupTXT);
-        ItemGroup itemGroupPDF = new ItemGroupImpl(FileExtensions.PDF.name().toUpperCase(), childObjectItemPDF);
-        itemGroupList.add(itemGroupPDF);
-        mView.setBooksData(itemGroupList);
-        bookInteractor.loadBooks(readableFiles);
+    public void onCloseSearchView() {
+        fillBooks(false);
     }
 
     /***
@@ -129,7 +88,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
      */
 
     public void readExternalStorageGranted() {
-        fillExpandableListView();
+        fillBooks(true);
     }
 
     public void requestPermission(int permission) {
@@ -153,21 +112,6 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         onPermissionChecked();
     }
 
-    private void onPermissionChecked() {
-        loadCustomMenu();
-        fillBooks();
-    }
-
-    void fillBooks() {
-        File file = directories.getDefaultFile();
-        if (file != null) {
-            fillExpandableListView(file);
-            mView.setCheckedMenuItem(directories.getId(file));
-            return;
-        }
-        fillExpandableListView();
-    }
-
     private boolean shouldShowRequestPermissionRationale(int permission) {
         return ActivityCompat.shouldShowRequestPermissionRationale(
                 mView, PermissionRequest.getManifestPermission(permission));
@@ -178,6 +122,26 @@ public class MainPresenter implements BasePresenter<MainActivity> {
                 mView,
                 PermissionRequest.getManifestPermission(permission)
         );
+    }
+
+    private void onPermissionChecked() {
+        loadCustomMenu();
+        fillBooks(false);
+    }
+
+    private void fillBooks(boolean showAll) {
+        new LoadingList().execute(showAll);
+        loadCustomMenu();
+        if (!showAll)
+            setCheckedDirectory();
+
+    }
+
+    private void setCheckedDirectory() {
+        File file = directories.getDefaultFile();
+        if (file != null) {
+            mView.setCheckedMenuItem(directories.getId(file));
+        }
     }
 
     /***
@@ -202,8 +166,7 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     public boolean onNavigationItemSelected(int id) {
         if (directories.hasId(id)) {
             directories.setDefaultFile(id);
-            File file = directories.getFile(id);
-            fillExpandableListView(file);
+            fillBooks(false);
             return true;
         }
         return false;
@@ -218,7 +181,73 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         }
     }
 
-    public void onCloseSearchView() {
-        fillBooks();
+    private class LoadingList extends AsyncTask<Boolean, Void, List<ItemGroup>> {
+
+        @Override
+        protected void onPreExecute() {
+            mView.showProgressDialog();
+        }
+
+        @Override
+        protected List<ItemGroup> doInBackground(@Size(min = 1) Boolean... fillByAll) {
+            if (fillByAll[0]) {
+                return fillExpandableListView();
+            }
+            File file = directories.getDefaultFile();
+            if (file != null) {
+                return fillExpandableListView(file);
+            }
+            return new ArrayList<>();
+        }
+
+        @Override
+        protected void onPostExecute(List<ItemGroup> result) {
+            mView.dismissProgressDialog();
+            mView.setBooksData(result);
+        }
+
+
+        private List<ItemGroup> fillExpandableListView() {
+            return loadFilesToExpandableView(
+                    new FileOnDeviceProvider().findFiles()
+            );
+        }
+
+        private List<ItemGroup> fillExpandableListView(File file) {
+            return loadFilesToExpandableView(
+                    new FileOnDeviceProvider().findFiles(file)
+            );
+        }
+
+        private List<ItemGroup> loadFilesToExpandableView(List<File> files) {
+            List<ItemGroup> itemGroupList = new ArrayList<>();
+            List<String> readableFiles = new ArrayList<>();
+            List<ItemChild> childObjectItemTXT = new ArrayList<>();
+            List<ItemChild> childObjectItemPDF = new ArrayList<>();
+            for (File file : files) {
+                FileExtensions extension = FileExtensions.getFileExtension(file);
+                if (extension == FileExtensions.PDF) {
+                    childObjectItemPDF.add(
+                            new ItemObjectChild(
+                                    new IconsProvider().getFileExtensionsIconResId(extension), file.getName(), file)
+                    );
+                    readableFiles.add(file.getPath());
+                }
+                if (extension == FileExtensions.TXT) {
+                    childObjectItemTXT.add(new ItemObjectChild(
+                            new IconsProvider().getFileExtensionsIconResId(extension), file.getName(), file)
+                    );
+                    readableFiles.add(file.getPath());
+                }
+            }
+            ItemGroup itemGroupTXT = new ItemGroupImpl(FileExtensions.TXT.name().toUpperCase(), childObjectItemTXT);
+            itemGroupList.add(itemGroupTXT);
+            ItemGroup itemGroupPDF = new ItemGroupImpl(FileExtensions.PDF.name().toUpperCase(), childObjectItemPDF);
+            itemGroupList.add(itemGroupPDF);
+            bookInteractor.loadBooks(readableFiles);
+            return itemGroupList;
+        }
+
     }
+
 }

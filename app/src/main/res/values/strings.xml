@@ -96,5 +96,6 @@
     <string name="internal_storage">Internal storage /...</string>
     <string name="sd_card">SD card /...</string>
     <string name="delete_directories">delete directories...</string>
+    <string name="loading_books">Loading books...</string>
 
 </resources>
