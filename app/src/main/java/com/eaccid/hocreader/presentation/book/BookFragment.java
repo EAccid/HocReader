@@ -159,12 +159,7 @@ public class BookFragment extends Fragment implements
                 mRecyclerView,
                 R.string.previous_page,
                 Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_bar_action_back, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onUndoClicked(nextPage, previousPage);
-            }
-        });
+        snackbar.setAction(R.string.snack_bar_action_back, v -> mPresenter.onUndoClicked(nextPage, previousPage));
         snackbar.show();
     }
 
@@ -189,7 +184,7 @@ public class BookFragment extends Fragment implements
         mAdapter.notifyDataSetChanged();
         String modeText = ""; // todo from @string
         if (isSelectable) {
-            modeText = "Tap twice to select";
+            modeText = "Hold a long press to select";
             moreMenuImg.setImageResource(R.drawable.ic_done_all_24px);
         } else {
             modeText = "Reader mode";
