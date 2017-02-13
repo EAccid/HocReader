@@ -190,14 +190,10 @@ public class MainPresenter implements BasePresenter<MainActivity> {
 
         @Override
         protected List<ItemGroup> doInBackground(@Size(min = 1) Boolean... fillByAll) {
-            if (fillByAll[0]) {
-                return fillExpandableListView();
-            }
             File file = directories.getDefaultFile();
-            if (file != null) {
-                return fillExpandableListView(file);
-            }
-            return new ArrayList<>();
+            if (fillByAll[0] || file == null)
+                return fillExpandableListView();
+            return fillExpandableListView(file);
         }
 
         @Override
@@ -205,7 +201,6 @@ public class MainPresenter implements BasePresenter<MainActivity> {
             mView.dismissProgressDialog();
             mView.setBooksData(result);
         }
-
 
         private List<ItemGroup> fillExpandableListView() {
             return loadFilesToExpandableView(

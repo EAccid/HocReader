@@ -42,7 +42,7 @@ public class AppModule {
     @Provides
     @Singleton
     SharedPreferences provideSharedPreferences() {
-        return appContext.getSharedPreferences("demo-prefs", Context.MODE_PRIVATE);
+        return appContext.getSharedPreferences("hoc-reader-prefs", Context.MODE_PRIVATE);
     }
 
     @Provides

@@ -3,14 +3,18 @@ package com.eaccid.hocreader.presentation.settings.preferences;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
+import android.util.ArraySet;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
+
+import java.util.Set;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,6 +31,7 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
 
     public LeoAuthenticationDialogPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.persistentValue = "";
         setStringAuthStatusFromContext(context);
     }
 
@@ -40,6 +45,13 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
+        loadEmail();
+        if (persistentValue.equals(authorized_status)) {
+            emailText.setClickable(false);
+            passwordText.setVisibility(View.GONE);
+            builder.setPositiveButton("SIGN OUT", (dialog, which) -> authenticate("", ""));
+            return;
+        }
         builder.setPositiveButton("SIGN IN",
                 (dialog, which) ->
                         authenticate(emailText.getText().toString(), passwordText.getText().toString()
@@ -97,10 +109,24 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
         if (isAuth) {
             showAuthorizedToast();
             persistValue(authorized_status);
+
         } else {
             showUnauthorizedToast();
             persistValue(unauthorized_status);
         }
+        saveEmail();
+    }
+
+    private void saveEmail() {
+        SharedPreferences.Editor editor =
+                getContext().getSharedPreferences("auth-prefs", Context.MODE_PRIVATE).edit();
+        editor.putString("EMAIL_LEO", emailText.getText().toString());
+        editor.apply();
+    }
+
+    private void loadEmail() {
+        SharedPreferences sp = getContext().getSharedPreferences("auth-prefs", Context.MODE_PRIVATE);
+        emailText.setText(sp.getString("EMAIL_LEO", ""));
     }
 
     private void showAuthorizedToast() {
