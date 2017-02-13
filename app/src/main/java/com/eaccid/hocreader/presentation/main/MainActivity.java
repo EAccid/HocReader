@@ -34,14 +34,17 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.presentation.FragmentTags;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchAdapter;
 import com.eaccid.hocreader.presentation.main.serchadapter.SearchSuggestionsProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.presentation.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.settings.SettingsActivity;
 import com.eaccid.hocreader.presentation.training.TrainingActivity;
+import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.util.ArrayList;
@@ -190,6 +193,12 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
             case R.id.alldir:
                 mPresenter.onAllDirectoryMenuSelected();
                 break;
+//            case R.id.edit_words:
+//                drawerLayout.closeDrawer(GravityCompat.START);
+//                Intent intent = new Intent(this, PagerActivity.class);
+//                intent.setAction("EDIT_WORDS");
+//                startActivity(intent);
+//                return true;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         if (mPresenter.onNavigationItemSelected(id))

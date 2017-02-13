@@ -34,12 +34,16 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     }
 
     public void onRefreshRecyclerView() {
-        wordListInteractor.updateSessionDataList();
-        mView.notifyDataSetChanged();
+        updateDataList();
     }
 
     public void onViewCreated() {
-        wordListInteractor.updateSessionDataList();
+        updateDataList();
+    }
+
+    private void updateDataList() {
+        final boolean isFilteredByBook = mView.getArguments().getBoolean("filter_by_book", false);
+        wordListInteractor.updateSessionDataList(isFilteredByBook);
         mView.notifyDataSetChanged();
     }
 
@@ -74,8 +78,9 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     }
 
     public void onDeleteAllWords() {
+        final boolean isFilteredByBook = mView.getArguments().getBoolean("filter_by_book", false);
         wordListInteractor
-                .removeAllItems()
+                .removeAllItems(isFilteredByBook)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(succeed -> {

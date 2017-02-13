@@ -235,7 +235,18 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
                 e.printStackTrace();
             }
         }
-        if (filter == WordFilter.BY_BOOK) {
+        if (filter == WordFilter.NONE) {
+            try {
+                WordReaderDaoService ws = mDatabaseManager.getWordService();
+                List<Word> words = ws.getAllWords();
+                boolean succeed = ws.deleteAll(words);
+                Log.i(LOG_TAG, "All words have been deleted from database: " + succeed);
+                return succeed;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (filter != WordFilter.BY_BOOK || filter != WordFilter.NONE) {
             throw new NotImplementedException("Selection by filter '" + filter + "' not implemented yet.");
         }
         Log.i(LOG_TAG, "Words have not been deleted successfully.");

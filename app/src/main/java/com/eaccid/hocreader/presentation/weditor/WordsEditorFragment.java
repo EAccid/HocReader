@@ -46,8 +46,11 @@ public class WordsEditorFragment extends Fragment implements WordsEditorView, To
     public WordsEditorFragment() {
     }
 
-    public static WordsEditorFragment newInstance() {
+    public static WordsEditorFragment newInstance(boolean filterByBook) {
         WordsEditorFragment f = new WordsEditorFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("filter_by_book", filterByBook);
+        f.setArguments(bundle);
         return f;
     }
 

@@ -13,6 +13,8 @@ public interface WordReaderDaoService {
 
     boolean deleteAll(List<Word> words);
 
+    List<Word> getAllWords();
+
     List<Word> getAllByWordNameCollection(Iterable<String> words);
 
     List<Word> getAllByWordNameCollectionAndBookId(Iterable<String> words, boolean excludeWords, String bookid);

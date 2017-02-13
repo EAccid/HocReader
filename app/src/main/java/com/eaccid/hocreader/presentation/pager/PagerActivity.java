@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eaccid.hocreader.presentation.book.BookFragment;
+import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 import com.eaccid.hocreader.presentation.weditor.WordsEditorView;
 import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
@@ -41,6 +42,13 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
         setContentView(R.layout.pager_fragment_activity);
         if (mPresenter == null) mPresenter = new PagerPresenter();
         mPresenter.attachView(this);
+
+        if (getIntent().getAction().equals("EDIT_WORDS")) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.pager_activity, WordsEditorFragment.newInstance(false), FragmentTags.WORDS_LIST_VIEW)
+                    .commit();
+            return;
+        }
 
         //TODO delete after refactoring BookFileViaIntent
         BookFileViaIntent book = new BookFileViaIntent();

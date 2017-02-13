@@ -32,8 +32,12 @@ public class WordListManager implements Callable<List<ItemDataProvider>> {
         return getWordItemByCurrentBookList(WordFilter.BY_BOOK_AND_EXCLUDED_WORD_COLLECTION, excludeWords);
     }
 
-    List<ItemDataProvider> getAllFromDatabase(List<String> words) {
-        return getWordItemByCurrentBookList(WordFilter.BY_BOOK_AND_WORD_COLLECTION, words);
+    List<ItemDataProvider> getAllFromDatabase(List<String> words, boolean isFilteredByBook) {
+        WordFilter filter = WordFilter.NONE;
+        if (isFilteredByBook) {
+            filter = WordFilter.BY_BOOK_AND_WORD_COLLECTION;
+        }
+        return getWordItemByCurrentBookList(filter, words);
     }
 
     List<ItemDataProvider> getAll() {
@@ -104,9 +108,13 @@ public class WordListManager implements Callable<List<ItemDataProvider>> {
         dataManager.createOrUpdateWord(word.getWordFromText(), word.getTranslation(), word.getContext(), true);
     }
 
-    public boolean removeItems() {
+    public boolean removeItems(boolean isFilteredByBook) {
+        WordFilter filter = WordFilter.NONE;
+        if (isFilteredByBook) {
+            filter = WordFilter.BY_BOOK;
+        }
         Log.i(LOG_TAG, "Deleting words from database...");
-        return dataManager.deleteWords(WordFilter.BY_BOOK);
+        return dataManager.deleteWords(filter);
     }
 
 }

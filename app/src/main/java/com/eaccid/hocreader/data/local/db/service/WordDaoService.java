@@ -228,4 +228,9 @@ public class WordDaoService implements Crud, WordReaderDaoService {
         return getAllByWordNameCollection(words);
     }
 
+    @Override
+    public List<Word> getAllWords() {
+        return getAll();
+    }
+
 }

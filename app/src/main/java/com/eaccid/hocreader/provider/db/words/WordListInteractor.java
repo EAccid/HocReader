@@ -43,11 +43,15 @@ public class WordListInteractor extends DataListProvider {
 
     @Override
     public void removeItem(int position) {
-        ItemDataProvider item = getDataList().get(position);
-        wordListManager.removeItem(item);
-        Word word = (Word) item.getObject();
-        sessionWords.remove(word.getName());
-        super.removeItem(position);
+        try {
+            ItemDataProvider item = getDataList().get(position);
+            wordListManager.removeItem(item);
+            Word word = (Word) item.getObject();
+            sessionWords.remove(word.getName());
+            super.removeItem(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void addItem(String wordBaseName, String translation, String context, Boolean succeed) {
@@ -70,12 +74,12 @@ public class WordListInteractor extends DataListProvider {
         sessionWords = new ArrayList<>();
     }
 
-    public void fillSessionDataList() {
-        setDataList(getDataListByBookAndSessionWords());
+    public void fillSessionDataList(boolean isFilteredByBook) {
+        setDataList(getDataListByBookAndSessionWords(isFilteredByBook));
     }
 
-    public void updateSessionDataList() {
-        setDataList(getDataListByBookAndSessionWords());
+    public void updateSessionDataList(boolean isFilteredByBook) {
+        setDataList(getDataListByBookAndSessionWords(isFilteredByBook));
         getDataList().addAll(addDataListByBookAndSessionWords());
     }
 
@@ -83,8 +87,8 @@ public class WordListInteractor extends DataListProvider {
         return wordListManager.getAll();
     }
 
-    private List<ItemDataProvider> getDataListByBookAndSessionWords() {
-        return wordListManager.getAllFromDatabase(sessionWords);
+    private List<ItemDataProvider> getDataListByBookAndSessionWords(boolean isFilteredByBook) {
+        return wordListManager.getAllFromDatabase(sessionWords, isFilteredByBook);
     }
 
     private List<ItemDataProvider> addDataListByBookAndSessionWords() {
@@ -122,11 +126,11 @@ public class WordListInteractor extends DataListProvider {
         });
     }
 
-    public Observable<Boolean> removeAllItems() {
+    public Observable<Boolean> removeAllItems(boolean isFilteredByBook) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                boolean succeed = wordListManager.removeItems();
+                boolean succeed = wordListManager.removeItems(isFilteredByBook);
                 clearSessionDataList();
                 clearDataList();
                 subscriber.onNext(succeed);
