@@ -83,6 +83,10 @@ public class MainPresenter implements BasePresenter<MainActivity> {
         fillBooks(true);
     }
 
+    public void onAboutSelected() {
+        mView.navigateToAbout();
+    }
+
     public void onCloseSearchView() {
         fillBooks(false);
     }

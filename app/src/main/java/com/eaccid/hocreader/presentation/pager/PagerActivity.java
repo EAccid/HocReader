@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eaccid.hocreader.presentation.about.AboutFragment;
 import com.eaccid.hocreader.presentation.book.BookFragment;
 import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 import com.eaccid.hocreader.presentation.weditor.WordsEditorView;
@@ -46,6 +47,12 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
         if (getIntent().getAction() != null && getIntent().getAction().equals("EDIT_WORDS")) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.pager_activity, WordsEditorFragment.newInstance(false), FragmentTags.WORDS_LIST_VIEW)
+                    .commit();
+            return;
+        }
+        if (getIntent().getAction() != null && getIntent().getAction().equals("ABOUT")) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.pager_activity, new AboutFragment(), FragmentTags.ABOUT)
                     .commit();
             return;
         }

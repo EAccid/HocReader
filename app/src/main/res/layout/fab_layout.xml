@@ -11,7 +11,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_cards_white_24px"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccentDark"
+        app:backgroundTint="@color/ic_color_blue"
         app:fabSize="mini" />
 
     <android.support.design.widget.FloatingActionButton
@@ -22,7 +22,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_mode_edit_menu_24px"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorAccentDark"
+        app:backgroundTint="@color/ic_color_blue"
         app:fabSize="mini" />
 
 </FrameLayout>

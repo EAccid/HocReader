@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Hoc reader</string>
+    <string name="app_name">Hoc Reader</string>
+    <string name="author_name">Olena Brygynets</string>
     <string name="action_settings">Settings</string>
     <string name="search">Search</string>
     <string name="app_label">hello reader search label</string>
@@ -103,6 +104,6 @@
     <string name="grant">GRANT</string>
     <string name="sign_in_succeed">Sign in succeed</string>
     <string name="sign_out_succeed">Sign out succeed</string>
-    <string name="sign_in_failed" >Sign in failed</string>
+    <string name="sign_in_failed">Sign in failed</string>
 
 </resources>

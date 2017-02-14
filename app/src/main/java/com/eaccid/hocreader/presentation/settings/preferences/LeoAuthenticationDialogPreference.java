@@ -141,8 +141,8 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     }
 
     private void loadEmail() {
-        SharedPreferences sp = getContext().getSharedPreferences("auth-prefs", Context.MODE_PRIVATE);
-        emailText.setText(sp.getString("EMAIL_LEO", ""));
+        SharedPreferences sp = getContext().getSharedPreferences(Preference.SHP_NAME_AUTH, Context.MODE_PRIVATE);
+        emailText.setText(sp.getString(Preference.EMAIL_LEO, ""));
     }
 
     private void showAuthorizedToast() {
