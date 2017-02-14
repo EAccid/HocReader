@@ -67,7 +67,11 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(item -> {
                     word.setText(item.getWordFromText());
-                    new ImageViewManager().loadPictureFromUrl(wordImage, item.getPictureUrl());
+                    new ImageViewManager().loadPictureFromUrl(
+                            wordImage,
+                            item.getPictureUrl(),
+                            R.drawable.empty_circle_background,
+                            R.drawable.empty_circle_background);
                     transcription.setText("[" + item.getTranscription() + "]");
                     alreadyLearned.setImageResource(
                             new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(

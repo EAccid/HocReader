@@ -36,6 +36,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
+import com.eaccid.hocreader.presentation.main.ins.ActionBarDrawerToggleForReader;
 import com.eaccid.hocreader.presentation.main.ins.MainFabProvider;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
@@ -97,8 +98,14 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         ButterKnife.bind(this);
         searchAdapter = new SearchAdapter(this, new ArrayList<>());
         setSupportActionBar(toolbar);
-        ActionBarDrawerToggle drawerListener = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle drawerListener = new ActionBarDrawerToggleForReader(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close,
+                navigationView
+        );
         drawerLayout.addDrawerListener(drawerListener);
         drawerListener.syncState();
         navigationView.setNavigationItemSelectedListener(this);
@@ -106,24 +113,6 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         resetCustomMenu();
         if (mPresenter == null) mPresenter = new MainPresenter();
         mPresenter.attachView(this);
-
-        //todo delete from here
-        SharedPreferences sp = getBaseContext().getSharedPreferences("auth-prefs", Context.MODE_PRIVATE);
-        String FULL_NAME_LEO = sp.getString("FULL_NAME_LEO", "");
-        String PICTURE_URL_LEO = sp.getString("PICTURE_URL_LEO", "");
-        String EMAIL_LEO = sp.getString("EMAIL_LEO", "");
-
-        View hView =  navigationView.getHeaderView(0);
-
-        ImageView imageView = (ImageView) hView.findViewById(R.id.navigation_drawer_user_account_picture_profile);
-        new ImageViewManager().loadPictureFromUrl(imageView, PICTURE_URL_LEO);
-
-        TextView name = (TextView) hView.findViewById(R.id.navigation_drawer_account_information_display_name);
-        TextView email = (TextView) hView.findViewById(R.id.navigation_drawer_account_information_email);
-
-        name.setText(FULL_NAME_LEO);
-        email.setText(EMAIL_LEO);
-
     }
 
     @OnClick(R.id.fab)
@@ -212,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         });
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -322,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
 
     public void showPermissionExplanation(String message, int permission) {
         Snackbar.make(expandableListView, message, Snackbar.LENGTH_INDEFINITE)
-                .setAction("GRANT", v -> mPresenter.requestPermission(permission))
+                .setAction(getString(R.string.grant), v -> mPresenter.requestPermission(permission))
                 .show();
     }
 

@@ -28,7 +28,7 @@ public class AuthParameters {
     }
 
     private void loadData() {
-        fullName = lingualeoResponse.getString("fullName").replace("\"", "");
+        fullName = lingualeoResponse.getString("fullname").replace("\"", "");
         picUrl = lingualeoResponse.getString("avatar_mini").replace("\"", "");
     }
 

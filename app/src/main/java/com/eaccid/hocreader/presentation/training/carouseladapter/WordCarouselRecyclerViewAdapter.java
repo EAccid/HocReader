@@ -87,7 +87,11 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(wordItem -> {
                             holder.word.setText(wordItem.getWordFromText());
-                            new ImageViewManager().loadPictureFromUrl(holder.wordImage, wordItem.getPictureUrl());
+                            new ImageViewManager().loadPictureFromUrl(
+                                    holder.wordImage,
+                                    wordItem.getPictureUrl(),
+                                    R.drawable.empty_circle_background,
+                                    R.drawable.empty_circle_background);
                             holder.translation.setText("*?");
                             holder.transcription.setText("[" + wordItem.getTranscription() + "]");
                             holder.alreadyLearned.setImageResource(

@@ -3,6 +3,7 @@ package com.eaccid.hocreader.presentation.translation;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
 import com.eaccid.hocreader.provider.semantic.ImageViewManager;
@@ -80,12 +81,15 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     }
 
     private void showTranslationsData(TextTranslation textTranslation) {
-
         mView.showContextWord(mView.getWordFromText().getText());
         mView.showBaseWord(mNextWordToTranslate);
-
         new ImageViewManager()
-                .loadPictureFromUrl(mView.getWordPicture(), textTranslation.getPicUrl());
+                .loadPictureFromUrl(
+                        mView.getWordPicture(),
+                        textTranslation.getPicUrl(),
+                        R.drawable.empty_picture_background,
+                        R.drawable.empty_picture_background
+                );
         mMediaPlayer = new MediaPlayerManager()
                 .createAndPreparePlayerFromURL(textTranslation.getSoundUrl());
         mView.showWordTranscription(textTranslation.getTranscription());

@@ -119,7 +119,7 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
         editor.putString(Preference.FULL_NAME_LEO, authParameters.getFullName());
         editor.putString(Preference.PICTURE_URL_LEO, authParameters.getPicUrl());
         editor.apply();
-        saveEmail(Preference.EMAIL_LEO);
+        saveEmail(emailText.getText().toString());
     }
 
     private void onAuthorized(boolean isAuth) {
@@ -146,13 +146,13 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     }
 
     private void showAuthorizedToast() {
-        Toast.makeText(getContext(), "Sign in succeed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), getContext().getString(R.string.sign_in_succeed), Toast.LENGTH_SHORT).show();
     }
 
     private void showUnauthorizedToast() {
-        String msg = "Sign in failed";
+        String msg = getContext().getString(R.string.sign_in_failed);
         if (sing_out)
-            msg = "Sign out succeed";
+            msg = getContext().getString(R.string.sign_out_succeed);
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 

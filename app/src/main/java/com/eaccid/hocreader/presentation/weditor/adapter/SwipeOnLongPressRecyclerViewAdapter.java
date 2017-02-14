@@ -134,7 +134,12 @@ public class SwipeOnLongPressRecyclerViewAdapter
                     SparseBooleanArray collapsedPositions = new SparseBooleanArray();
                     collapsedPositions.put(0, true);
                     holder.context.setText(wordItem.getContext(), collapsedPositions, 0);
-                    new ImageViewManager().loadPictureFromUrl(holder.wordImage, wordItem.getPictureUrl());
+                    new ImageViewManager().loadPictureFromUrl(
+                            holder.wordImage,
+                            wordItem.getPictureUrl(),
+                            R.drawable.empty_circle_background,
+                            R.drawable.empty_circle_background
+                    );
                     if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
                         holder.mediaPlayer.release();
                     holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());

@@ -100,5 +100,9 @@
 
     <string name="sign_in">SIGN IN</string>
     <string name="sign_out">SIGN OUT</string>
+    <string name="grant">GRANT</string>
+    <string name="sign_in_succeed">Sign in succeed</string>
+    <string name="sign_out_succeed">Sign out succeed</string>
+    <string name="sign_in_failed" >Sign in failed</string>
 
 </resources>
