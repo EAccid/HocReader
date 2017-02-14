@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.provider.translator;
 
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.AuthParameters;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionaryRx;
 
 import rx.Observable;
@@ -15,6 +16,11 @@ public class HocDictionaryProvider implements HocDictionary {
     @Override
     public Observable<Boolean> authorize(String email, String password) {
         return new LingualeoDictionaryRx().authorize(email, password);
+    }
+
+    @Override
+    public Observable<AuthParameters> authorizeAndReturn(String email, String password) {
+        return new LingualeoDictionaryRx().authorizeAndReturn(email, password);
     }
 
 }

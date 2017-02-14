@@ -44,6 +44,11 @@ public class LingualeoResponse {
                         if (!value.isEmpty())
                             listResponse.add(value);
                     }
+                if (jv.getValueType() == JsonValue.ValueType.OBJECT) {
+                    JsonObject jsonObject = (JsonObject) jv;
+                    String value = jsonObject.get(key).toString();
+                    listResponse.add(value);
+                }
             }
 
         } catch (Exception ignored) {

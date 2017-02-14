@@ -6,15 +6,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
-import android.util.ArraySet;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
-
-import java.util.Set;
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.AuthParameters;
+import com.eaccid.hocreader.presentation.settings.Preference;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,6 +27,7 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     private String authorized_status;
     private String authorizing_status;
     private String unauthorized_status;
+    private boolean sing_out;
 
     public LeoAuthenticationDialogPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,20 +43,27 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     }
 
     @Override
+    public void onActivityDestroy() {
+        super.onActivityDestroy();
+    }
+
+    @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
         loadEmail();
         if (persistentValue.equals(authorized_status)) {
             emailText.setClickable(false);
             passwordText.setVisibility(View.GONE);
-            builder.setPositiveButton("SIGN OUT", (dialog, which) -> authenticate("", ""));
+            builder.setPositiveButton(getContext().getString(R.string.sign_out), (dialog, which) -> authenticate("", ""));
+            sing_out = true;
             return;
         }
-        builder.setPositiveButton("SIGN IN",
+        builder.setPositiveButton(getContext().getString(R.string.sign_in),
                 (dialog, which) ->
                         authenticate(emailText.getText().toString(), passwordText.getText().toString()
                         )
         );
+        sing_out = false;
     }
 
     @Override
@@ -82,10 +89,10 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
         progressDialog.setMessage(authorizing_status);
         progressDialog.show();
         new LeoAuthenticationSettings()
-                .leoSignInObservable(email, password)
+                .leoSignInAndReturnObservable(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Boolean>() {
+                .subscribe(new Subscriber<AuthParameters>() {
                     @Override
                     public void onCompleted() {
                         progressDialog.dismiss();
@@ -99,10 +106,20 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
                     }
 
                     @Override
-                    public void onNext(Boolean isAuth) {
-                        onAuthorized(isAuth);
+                    public void onNext(AuthParameters authParameters) {
+                        onAuthorized(authParameters);
                     }
                 });
+    }
+
+    private void onAuthorized(AuthParameters authParameters) {
+        onAuthorized(authParameters.isAuth());
+        SharedPreferences.Editor editor =
+                getContext().getSharedPreferences(Preference.SHP_NAME_AUTH, Context.MODE_PRIVATE).edit();
+        editor.putString(Preference.FULL_NAME_LEO, authParameters.getFullName());
+        editor.putString(Preference.PICTURE_URL_LEO, authParameters.getPicUrl());
+        editor.apply();
+        saveEmail(Preference.EMAIL_LEO);
     }
 
     private void onAuthorized(boolean isAuth) {
@@ -114,13 +131,12 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
             showUnauthorizedToast();
             persistValue(unauthorized_status);
         }
-        saveEmail();
     }
 
-    private void saveEmail() {
+    private void saveEmail(String email) {
         SharedPreferences.Editor editor =
-                getContext().getSharedPreferences("auth-prefs", Context.MODE_PRIVATE).edit();
-        editor.putString("EMAIL_LEO", emailText.getText().toString());
+                getContext().getSharedPreferences(Preference.SHP_NAME_AUTH, Context.MODE_PRIVATE).edit();
+        editor.putString(Preference.EMAIL_LEO, email);
         editor.apply();
     }
 
@@ -134,7 +150,10 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     }
 
     private void showUnauthorizedToast() {
-        Toast.makeText(getContext(), "Sign in failed", Toast.LENGTH_SHORT).show();
+        String msg = "Sign in failed";
+        if (sing_out)
+            msg = "Sign out succeed";
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     private void persistValue(String value) {

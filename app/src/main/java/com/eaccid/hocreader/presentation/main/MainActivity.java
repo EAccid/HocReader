@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -29,8 +30,10 @@ import android.view.SubMenu;
 
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.main.ins.MainFabProvider;
@@ -43,6 +46,7 @@ import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.settings.SettingsActivity;
 import com.eaccid.hocreader.presentation.training.TrainingActivity;
+import com.eaccid.hocreader.provider.semantic.ImageViewManager;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.util.ArrayList;
@@ -102,6 +106,24 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         resetCustomMenu();
         if (mPresenter == null) mPresenter = new MainPresenter();
         mPresenter.attachView(this);
+
+        //todo delete from here
+        SharedPreferences sp = getBaseContext().getSharedPreferences("auth-prefs", Context.MODE_PRIVATE);
+        String FULL_NAME_LEO = sp.getString("FULL_NAME_LEO", "");
+        String PICTURE_URL_LEO = sp.getString("PICTURE_URL_LEO", "");
+        String EMAIL_LEO = sp.getString("EMAIL_LEO", "");
+
+        View hView =  navigationView.getHeaderView(0);
+
+        ImageView imageView = (ImageView) hView.findViewById(R.id.navigation_drawer_user_account_picture_profile);
+        new ImageViewManager().loadPictureFromUrl(imageView, PICTURE_URL_LEO);
+
+        TextView name = (TextView) hView.findViewById(R.id.navigation_drawer_account_information_display_name);
+        TextView email = (TextView) hView.findViewById(R.id.navigation_drawer_account_information_email);
+
+        name.setText(FULL_NAME_LEO);
+        email.setText(EMAIL_LEO);
+
     }
 
     @OnClick(R.id.fab)

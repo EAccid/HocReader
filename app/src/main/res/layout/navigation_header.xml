@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.percent.PercentRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_drawer_header"
@@ -37,11 +36,19 @@
         app:layout_aspectRatio="178%"
         app:layout_widthPercent="100%">
 
-        <ImageView
+        <!--<ImageView-->
+        <!--android:id="@+id/navigation_drawer_user_account_picture_profile"-->
+        <!--android:layout_width="@dimen/nav_drawer_profile_image_size"-->
+        <!--android:layout_height="@dimen/nav_drawer_profile_image_size"-->
+        <!--app:srcCompat="@drawable/ic_account_circle_white_64dp"-->
+        <!--tools:ignore="ContentDescription" />-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/navigation_drawer_user_account_picture_profile"
             android:layout_width="@dimen/nav_drawer_profile_image_size"
             android:layout_height="@dimen/nav_drawer_profile_image_size"
-            app:srcCompat="@drawable/ic_account_circle_white_64dp"
+            android:background="@drawable/empty_circle_background_account"
+            android:scaleType="centerCrop"
             tools:ignore="ContentDescription" />
 
         <LinearLayout

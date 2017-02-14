@@ -16,7 +16,7 @@ import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.underdevelopment.cardremember.CardWordPresenter;
 import com.eaccid.hocreader.presentation.book.BookPresenter;
-import com.eaccid.hocreader.presentation.translation.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.semantic.ImageViewManager;
 import com.eaccid.hocreader.presentation.memorizing.MemorizingPresenter;
 import com.eaccid.hocreader.presentation.memorizing.SchedulingMemorizingAlarmManager;
 import com.eaccid.hocreader.provider.db.words.BookOnReadProvider;

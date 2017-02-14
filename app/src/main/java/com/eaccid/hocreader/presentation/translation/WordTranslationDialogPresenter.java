@@ -4,8 +4,8 @@ import android.media.MediaPlayer;
 import android.util.Log;
 
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
-import com.eaccid.hocreader.presentation.translation.semantic.MediaPlayerManager;
-import com.eaccid.hocreader.presentation.translation.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.semantic.ImageViewManager;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.provider.fromtext.WordFromTextImpl;
 import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;

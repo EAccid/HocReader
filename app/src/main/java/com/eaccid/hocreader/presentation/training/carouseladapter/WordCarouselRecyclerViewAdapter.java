@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.db.entity.Word;
-import com.eaccid.hocreader.presentation.training.OnHintShowListener;
-import com.eaccid.hocreader.presentation.translation.semantic.ImageViewManager;
-import com.eaccid.hocreader.presentation.translation.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;

@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.presentation.translation.semantic;
+package com.eaccid.hocreader.provider.semantic;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;

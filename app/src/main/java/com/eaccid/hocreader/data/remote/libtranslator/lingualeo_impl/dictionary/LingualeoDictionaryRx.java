@@ -39,6 +39,27 @@ public class LingualeoDictionaryRx implements DictionaryRx {
     }
 
     @Override
+    public Observable<AuthParameters> authorizeAndReturn(final String login, final String password) {
+        return Observable.create(new Observable.OnSubscribe<AuthParameters>() {
+            @Override
+            public void call(Subscriber<? super AuthParameters> subscriber) {
+                RequestParameters requestParameters = new RequestParameters();
+                requestParameters.addParameter("email", login);
+                requestParameters.addParameter("password", password);
+                RequestHandler requestHandler = RequestHandler.newUnauthorizedRequestWithParameters("http://lingualeo.com/api/login", requestParameters);
+                requestHandler.setRequestExceptionHandler(new RequestExceptionHandlerImpl());
+                requestHandler.handleRequest();
+                cookies.storeCookies(requestHandler.getCookies());
+                AuthParameters authParameters = new AuthParameters(requestHandler.getResponse());
+                authParameters.setAuth(requestHandler.isHandleRequestSucceeded());
+                authParameters.setEmail(login);
+                subscriber.onNext(authParameters);
+                subscriber.onCompleted();
+            }
+        });
+    }
+
+    @Override
     public Observable<Boolean> isAuth() {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
