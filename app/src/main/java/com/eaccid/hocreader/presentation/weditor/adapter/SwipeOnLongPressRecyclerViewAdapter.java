@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.injection.App;
@@ -21,6 +22,7 @@ import com.eaccid.hocreader.provider.db.words.listprovider.ItemDataProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
 import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
 import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
@@ -94,6 +96,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         @BindView(R.id.transcription_speaker)
         ImageView transcriptionSpeaker;
         MediaPlayer mediaPlayer;
+        boolean isSetToLearn;
 
         WordsEditorViewHolder(View v) {
             super(v);
@@ -137,8 +140,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
                     new ImageViewManager().loadPictureFromUrl(
                             holder.wordImage,
                             wordItem.getPictureUrl(),
-                            R.drawable.empty_circle_background,
-                            R.drawable.empty_circle_background
+                            R.drawable.empty_picture_background,
+                            R.drawable.empty_picture_background
                     );
                     if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
                         holder.mediaPlayer.release();
@@ -154,6 +157,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
                                     getWordListItemProvider(position).isSetToLearn()
                             )
                     );
+                    //Temp:
+                    holder.isSetToLearn = getWordListItemProvider(position).isSetToLearn();
                 }, e -> {
                     new ReaderExceptionHandlerImpl().handleError(e);
                 });
@@ -176,13 +181,18 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.showInPage.setOnClickListener(
                 new OnShowWordInBookPageClickListener(getWordListItemProvider(position))
         );
-        holder.learnByHeart.setOnClickListener(v ->
-                holder.learnByHeart.setImageResource(
-                        new IconTogglesResourcesProvider().getLearnByHeartResId(
-                                getWordListItemProvider(position).isSetToLearn()
-                        )
-                )
-        );
+        holder.learnByHeart.setOnClickListener(v -> {
+            holder.isSetToLearn = !holder.isSetToLearn;
+            holder.learnByHeart.setImageResource(
+                    new IconTogglesResourcesProvider().getLearnByHeartResId(
+                            holder.isSetToLearn //getWordListItemProvider(position).isSetToLearn()
+                    )
+            );
+            Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
+        });
+        holder.alreadyLearned.setOnClickListener(v -> {
+            Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void showSpeaker(ImageView iv, boolean isSpeaking) {

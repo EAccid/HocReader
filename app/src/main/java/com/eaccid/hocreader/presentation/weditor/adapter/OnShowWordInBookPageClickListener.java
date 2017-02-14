@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.eaccid.hocreader.provider.db.words.WordItem;
+import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
 
 public class OnShowWordInBookPageClickListener implements View.OnClickListener {
 
@@ -16,7 +17,7 @@ public class OnShowWordInBookPageClickListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         //TODO: define an interface, f.i. InteractivePage
-        Toast.makeText(v.getContext(), "Under development", Toast.LENGTH_SHORT).show();
+        Toast.makeText(v.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
     }
 
 }

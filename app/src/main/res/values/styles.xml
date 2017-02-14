@@ -107,8 +107,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">end</item>
         <item name="rv_centered">true</item>
-        <item name="rv_color">#1ABDBDBD</item>
+        <item name="rv_color">@color/colorRippleEffect</item>
         <item name="rv_framerate">10</item>
+        <item name="rv_rippleDuration">300</item>
     </style>
 
     <style name="icon_toggles">

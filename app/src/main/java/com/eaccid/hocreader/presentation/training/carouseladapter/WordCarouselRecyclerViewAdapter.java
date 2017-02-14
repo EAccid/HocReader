@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.db.entity.Word;
@@ -19,6 +20,7 @@ import com.eaccid.hocreader.provider.db.words.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
 import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
 import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +38,8 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         TextView translation;
         @BindView(R.id.word_image)
         ImageView wordImage;
-        @BindView(R.id.action_delete)
-        ImageView deleteWord;
+        @BindView(R.id.learn_by_heart_false)
+        ImageView learnByHeart;
         @BindView(R.id.already_learned)
         ImageView alreadyLearned;
         @BindView(R.id.transcription_speaker)
@@ -47,6 +49,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         Button dontKnow;
         @BindView(R.id.remember)
         Button remember;
+        boolean isSetToLearn;
 
         public ViewHolder(View drawerView) {
             super(drawerView);
@@ -103,6 +106,13 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                                 holder.mediaPlayer.release();
                             holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());
 
+                            //Temp:
+                            holder.learnByHeart.setImageResource(
+                                    new IconTogglesResourcesProvider().getLearnByHeartResId(
+                                            true
+                                    )
+                            );
+                            holder.isSetToLearn = true;
                         }, e -> {
                             new ReaderExceptionHandlerImpl().handleError(e);
 
@@ -112,7 +122,14 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
 
     //TODO on click listeners handler (carousel)
     private void setListenersToViewFromItem(ViewHolder holder, Word word) {
-        holder.deleteWord.setOnClickListener(v -> {
+        holder.learnByHeart.setOnClickListener(v -> {
+            holder.isSetToLearn = !holder.isSetToLearn;
+            holder.learnByHeart.setImageResource(
+                    new IconTogglesResourcesProvider().getLearnByHeartResId(
+                            holder.isSetToLearn //getWordListItemProvider(position).isSetToLearn()
+                    )
+            );
+            Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
         });
         holder.dontKnow.setOnClickListener(v -> {
             holder.translation.setText(word.getTranslation());
@@ -133,6 +150,9 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                     new MediaPlayerManager().play(holder.mediaPlayer);
                 }
         );
+        holder.alreadyLearned.setOnClickListener(v -> {
+            Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void showSpeaker(ImageView iv, boolean isSpeaking) {

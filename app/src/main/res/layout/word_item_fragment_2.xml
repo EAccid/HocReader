@@ -25,9 +25,9 @@
         <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
 
             <ImageView
-                android:id="@+id/action_delete"
+                android:id="@+id/learn_by_heart_false"
                 style="@style/icon_toggles"
-                android:src="@drawable/ic_delete_sweep_gray_24px"
+                android:src="@drawable/ic_learn_by_heart_border_gray_24px"
                 android:contentDescription="@string/desc"/>
         </com.andexert.library.RippleView>
 

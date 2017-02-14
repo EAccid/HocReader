@@ -19,6 +19,7 @@
     <color name="colorActionModeBackground">#616161</color>
     <color name="colorActionModeHighlight">#F4FF81</color>
     <color name="colorActionModeSelectedItems">#BDBDBD</color>
+    <color name="colorRippleEffect">#32000000</color>
 
     <!--Book menu icon color-->
     <color name="ic_color_blue">#039BE5</color>

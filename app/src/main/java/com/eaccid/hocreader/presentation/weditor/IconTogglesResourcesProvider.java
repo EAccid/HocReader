@@ -11,9 +11,9 @@ public class IconTogglesResourcesProvider {
     @DrawableRes
     int getLearnByHeartResId(boolean isSetToLearn) {
         if (isSetToLearn) {
-            return R.drawable.ic_learn_by_heart_border_gray_24px;
-        } else {
             return R.drawable.ic_learn_by_heart_green_24px;
+        } else {
+            return R.drawable.ic_learn_by_heart_border_gray_24px;
         }
     }
 
