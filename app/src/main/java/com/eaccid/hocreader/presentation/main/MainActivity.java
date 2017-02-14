@@ -1,7 +1,6 @@
 package com.eaccid.hocreader.presentation.main;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.presentation.FragmentTags;
+import com.eaccid.hocreader.presentation.main.ins.MainFabProvider;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;
 import com.eaccid.hocreader.presentation.main.ins.PermissionRequest;
 import com.eaccid.hocreader.presentation.main.serchadapter.ItemGroup;
@@ -44,7 +43,6 @@ import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.settings.SettingsActivity;
 import com.eaccid.hocreader.presentation.training.TrainingActivity;
-import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.util.ArrayList;
@@ -76,6 +74,13 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     private SearchAdapter searchAdapter;
     private SubMenu customizedMenu;
 
+    @BindView(R.id.fab1)
+    FloatingActionButton fab1;
+    @BindView(R.id.fab2)
+    FloatingActionButton fab2;
+
+    private boolean isFabExpanded;
+
     @Override
     public BasePresenter getPresenter() {
         return mPresenter;
@@ -101,7 +106,37 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-        mPresenter.onFabClicked();
+        if (isFabExpanded) {
+            hideFabMenu();
+        } else {
+            displayFabMenu();
+        }
+    }
+
+    private void displayFabMenu() {
+        MainFabProvider fabProvider = new MainFabProvider();
+        fabProvider.displayFab(this, fab1, 1.7, 0.6, R.anim.fab1_show);
+        fabProvider.displayFab(this, fab2, 0.8, 1.65, R.anim.fab2_show);
+        isFabExpanded = true;
+    }
+
+    private void hideFabMenu() {
+        MainFabProvider fabProvider = new MainFabProvider();
+        fabProvider.hideFab(this, fab1, 1.7, 0.6, R.anim.fab1_hide);
+        fabProvider.hideFab(this, fab2, 0.8, 1.65, R.anim.fab2_hide);
+        isFabExpanded = false;
+    }
+
+    @OnClick(R.id.fab1)
+    public void onFab1Click() {
+        mPresenter.onFab1Clicked();
+        hideFabMenu();
+    }
+
+    @OnClick(R.id.fab2)
+    public void onFab2Click() {
+        mPresenter.onFab2Clicked();
+        hideFabMenu();
     }
 
     @Override
@@ -313,6 +348,11 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
         startActivity(intent);
     }
 
+    public void navigateToEditing() {
+        Intent intent = new Intent(getApplicationContext(), PagerActivity.class);
+        intent.setAction("EDIT_WORDS");
+        startActivity(intent);
+    }
 }
 
 

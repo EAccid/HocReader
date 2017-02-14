@@ -66,8 +66,12 @@ public class MainPresenter implements BasePresenter<MainActivity> {
      * on 'menu item clicked' actions handlers
      */
 
-    public void onFabClicked() {
+    public void onFab1Clicked() {
         mView.navigateToTraining();
+    }
+
+    public void onFab2Clicked() {
+        mView.navigateToEditing();
     }
 
     public void onSettingsMenuSelected() {

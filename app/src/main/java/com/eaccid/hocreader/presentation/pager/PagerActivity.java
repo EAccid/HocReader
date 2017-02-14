@@ -43,6 +43,13 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
         if (mPresenter == null) mPresenter = new PagerPresenter();
         mPresenter.attachView(this);
 
+        if (getIntent().getAction() != null && getIntent().getAction().equals("EDIT_WORDS")) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.pager_activity, WordsEditorFragment.newInstance(false), FragmentTags.WORDS_LIST_VIEW)
+                    .commit();
+            return;
+        }
+
         //TODO delete after refactoring BookFileViaIntent
         BookFileViaIntent book = new BookFileViaIntent();
         if (!book.readFile(this)) {
