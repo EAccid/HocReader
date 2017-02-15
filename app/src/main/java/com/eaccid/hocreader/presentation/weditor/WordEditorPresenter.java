@@ -97,5 +97,8 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
         mView.showToast("Under development: SET_TO_LEARN");
     }
 
+    public void onStartActionMode() {
+        updateDataList();
+    }
 }
 

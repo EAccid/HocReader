@@ -232,6 +232,7 @@ public class WordsEditorFragment extends Fragment implements WordsEditorView, To
     }
 
     private void startActionMode() {
+        mPresenter.onStartActionMode();
         ToolbarActionModeCallback actionModeCallback = new ToolbarActionModeCallback(mAdapter);
         actionModeCallback.setToolbarActionModeListener(this);
         mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
