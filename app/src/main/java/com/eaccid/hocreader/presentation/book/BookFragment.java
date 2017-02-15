@@ -119,6 +119,8 @@ public class BookFragment extends Fragment implements
             case SELECT_TEXT:
                 mPresenter.onSelectTextMenuClicked();
                 break;
+            case CLOSE:
+                break;
             default:
                 throw new RuntimeException("There is no such menu item: position " + position);
         }
