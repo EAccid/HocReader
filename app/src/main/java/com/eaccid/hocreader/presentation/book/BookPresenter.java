@@ -10,6 +10,7 @@ import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullS
 import com.eaccid.hocreader.provider.file.pagesplitter.Page;
 import com.eaccid.hocreader.provider.file.pagesplitter.TxtPagesFromFileProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,6 @@ public class BookPresenter implements BasePresenter<BookFragment> {
     public void attachView(BookFragment bookFragment) {
         mView = bookFragment;
         Log.i(logTAG, "BookFragment has been attached.");
-        setDataToList();
     }
 
     @Override
@@ -54,7 +54,6 @@ public class BookPresenter implements BasePresenter<BookFragment> {
     }
 
     private void setDataToList() {
-
         TxtPagesFromFileProvider txtPagesFromFileProvider = new TxtPagesFromFileProvider(
                 new CharactersDefinerForFullScreenTextView(mView.getActivity())
         );
@@ -69,7 +68,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
 
                     @Override
                     public void onError(Throwable e) {
-                        //TODO on error
+                        new ReaderExceptionHandlerImpl().handleError(e);
                     }
 
                     @Override
