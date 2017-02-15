@@ -36,17 +36,17 @@ public class RequestHandler {
     }
 
     public void handleRequest() {
+        LeoServiceStatus leoServiceStatus = new LeoServiceStatus();
         if (exceptionHandler == null)
             throw new RuntimeException("RequestExceptionHandler can't be null!");
         if (cookies != null && cookies.isEmpty()) {
-            serviceStatus = ServiceStatus.UNAUTHORIZED;
+            serviceStatus = leoServiceStatus.getGeneralServiceStatus(null);
             return;
         }
         try {
             URL url = new URL(urlString);
             connection.loadCookies(cookies);
             connection.sendLingualeoRequest(url, RequestMethod.POST, requestParameters);
-            LeoServiceStatus leoServiceStatus = new LeoServiceStatus();
             serviceStatus = leoServiceStatus.getGeneralServiceStatus(connection.getResponse());
         } catch (UnknownHostException e) {
             serviceStatus = ServiceStatus.CONNECTION_ERROR;

@@ -51,12 +51,13 @@ class LingualeoHttpConnection {
         connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod(requestMethod.getName());
         connection.setDoOutput(true);
+        connection.setDoInput(true);
     }
 
     private void setHttpHeadersAndCookies() throws IOException {
         connection.setRequestProperty("Accept-Language", "UTF-8");
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        connection.setRequestProperty("cookie", cookies.getCookies());
+        connection.setRequestProperty("Cookie", cookies.getCookies());
     }
 
     private void setHttpRequestParameters(RequestParameters requestParameters) throws IOException {

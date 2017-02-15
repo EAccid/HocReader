@@ -7,6 +7,10 @@ public class LeoServiceStatus {
     private final String LOG_TAG = "LeoServiceStatus";
 
     public ServiceStatus getGeneralServiceStatus(final LingualeoResponse lingualeoResponse) {
+        if (lingualeoResponse == null) {
+            Log.i(LOG_TAG, "User has not been authorized yet.");
+            return ServiceStatus.UNAUTHORIZED;
+        }
         if (lingualeoResponse.isEmpty()) {
             Log.i(LOG_TAG, "Response from Lingualeo is empty.");
             return ServiceStatus.FAILED;
