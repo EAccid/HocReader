@@ -36,6 +36,7 @@ public class WordListInteractor extends DataListProvider {
     @Override
     public int undoLastRemoval() {
         WordItemImpl word = (WordItemImpl) getLastRemovedData();
+        if (word == null) return -1;
         sessionWords.add(word.getWordFromText());
         wordListManager.createItemWord(word);
         return super.undoLastRemoval();

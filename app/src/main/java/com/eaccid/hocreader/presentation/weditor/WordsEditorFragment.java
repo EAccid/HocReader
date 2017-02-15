@@ -270,11 +270,8 @@ public class WordsEditorFragment extends Fragment implements WordsEditorView, To
                 getView().findViewById(R.id.container),
                 R.string.snack_bar_text_item_removed,
                 Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.snack_bar_action_undo, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.onUndoClick();
-            }
+        snackbar.setAction(R.string.snack_bar_action_undo, v -> {
+            mPresenter.onUndoClick();
         });
         snackbar.setActionTextColor(ContextCompat.getColor(getView().getContext(), R.color.snackbar_action_color_done));
         snackbar.show();
