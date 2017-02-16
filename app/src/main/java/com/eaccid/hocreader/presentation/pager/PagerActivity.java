@@ -43,19 +43,8 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
         setContentView(R.layout.pager_fragment_activity);
         if (mPresenter == null) mPresenter = new PagerPresenter();
         mPresenter.attachView(this);
-
-        if (getIntent().getAction() != null && getIntent().getAction().equals("EDIT_WORDS")) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.pager_activity, WordsEditorFragment.newInstance(false), FragmentTags.WORDS_LIST_VIEW)
-                    .commit();
-            return;
-        }
-        if (getIntent().getAction() != null && getIntent().getAction().equals("ABOUT")) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.pager_activity, new AboutFragment(), FragmentTags.ABOUT)
-                    .commit();
-            return;
-        }
+        if (addWordsEditorFragment()) return;
+        if (addAboutFragment()) return;
 
         //TODO delete after refactoring BookFileViaIntent
         BookFileViaIntent book = new BookFileViaIntent();
@@ -64,12 +53,7 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
             finish();
         }
         mPresenter.createOrUpdateCurrentBook(book.getFileName(), book.getFilePath());
-        if (getIntent().getData() != null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.pager_activity, BookFragment.newInstance(), FragmentTags.BOOK_READER)
-                    .commit();
-            return;
-        }
+        if (addBookFragment()) return;
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setPageTransformer(true, new ZoomOutPageTransformer());
@@ -117,6 +101,35 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
         wordsEditorFragment.notifyDataSetChanged();
     }
 
+    private boolean addWordsEditorFragment() {
+        if (getIntent().getAction() != null && getIntent().getAction().equals("EDIT_WORDS")) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.pager_activity, WordsEditorFragment.newInstance(false), FragmentTags.WORDS_LIST_VIEW)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean addAboutFragment() {
+        if (getIntent().getAction() != null && getIntent().getAction().equals("ABOUT")) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.pager_activity, new AboutFragment(), FragmentTags.ABOUT)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean addBookFragment() {
+        if (getIntent().getData() != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.pager_activity, BookFragment.newInstance(), FragmentTags.BOOK_READER)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
 }
 
 
