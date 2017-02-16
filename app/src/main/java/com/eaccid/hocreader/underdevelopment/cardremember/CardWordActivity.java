@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
@@ -18,6 +19,7 @@ import com.eaccid.hocreader.provider.db.words.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
 import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
 import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
+import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,8 +35,8 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
     TextView translation;
     @BindView(R.id.word_image)
     ImageView wordImage;
-    @BindView(R.id.action_delete)
-    ImageView deleteWord;
+    @BindView(R.id.learn_by_heart_false)
+    ImageView learnByHeart;
     @BindView(R.id.already_learned)
     ImageView alreadyLearned;
     @BindView(R.id.transcription_speaker)
@@ -44,6 +46,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
     Button dontKnow;
     @BindView(R.id.remember)
     Button remember;
+    boolean isSetToLearn;
     private static CardWordPresenter mPresenter;
 
     @Override
@@ -81,13 +84,27 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
                     if (mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
                         mediaPlayer.release();
                     mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());
+                    //Temp:
+                    learnByHeart.setImageResource(
+                            new IconTogglesResourcesProvider().getLearnByHeartResId(
+                                    true
+                            )
+                    );
+                    isSetToLearn = true;
                 }, e -> {
                     new ReaderExceptionHandlerImpl().handleError(e);
                 });
     }
 
     private void setListenersToViewFromItem() {
-        deleteWord.setOnClickListener(v -> {
+        learnByHeart.setOnClickListener(v -> {
+            isSetToLearn = !isSetToLearn;
+            learnByHeart.setImageResource(
+                    new IconTogglesResourcesProvider().getLearnByHeartResId(
+                            isSetToLearn
+                    )
+            );
+            Toast.makeText(getBaseContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
         });
         dontKnow.setOnClickListener(v -> {
             translation.setText(getTranslation());
