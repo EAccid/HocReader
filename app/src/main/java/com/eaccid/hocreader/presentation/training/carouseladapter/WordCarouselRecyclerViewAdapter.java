@@ -94,7 +94,8 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                                     holder.wordImage,
                                     wordItem.getPictureUrl(),
                                     R.drawable.empty_circle_background,
-                                    R.drawable.empty_circle_background);
+                                    R.drawable.empty_circle_background,
+                                    false);
                             holder.translation.setText("*?");
                             holder.transcription.setText("[" + wordItem.getTranscription() + "]");
                             holder.alreadyLearned.setImageResource(

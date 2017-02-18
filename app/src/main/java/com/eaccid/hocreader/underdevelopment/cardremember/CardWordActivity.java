@@ -74,7 +74,8 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
                             wordImage,
                             item.getPictureUrl(),
                             R.drawable.empty_circle_background,
-                            R.drawable.empty_circle_background);
+                            R.drawable.empty_circle_background,
+                            false);
                     transcription.setText("[" + item.getTranscription() + "]");
                     alreadyLearned.setImageResource(
                             new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(

@@ -141,7 +141,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
                             holder.wordImage,
                             wordItem.getPictureUrl(),
                             R.drawable.empty_picture_background,
-                            R.drawable.empty_picture_background
+                            R.drawable.empty_picture_background,
+                            false
                     );
                     if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
                         holder.mediaPlayer.release();

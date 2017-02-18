@@ -45,7 +45,8 @@ public class ActionBarDrawerToggleForReader extends ActionBarDrawerToggle {
                 imageView,
                 PICTURE_URL_LEO,
                 R.drawable.empty_circle_background_account,
-                R.drawable.empty_circle_background_account
+                R.drawable.empty_circle_background_account,
+                true
         );
         TextView name = (TextView) hView.findViewById(R.id.navigation_drawer_account_information_display_name);
         TextView email = (TextView) hView.findViewById(R.id.navigation_drawer_account_information_email);

@@ -88,7 +88,8 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                         mView.getWordPicture(),
                         textTranslation.getPicUrl(),
                         R.drawable.empty_picture_background,
-                        R.drawable.empty_picture_background
+                        R.drawable.empty_picture_background,
+                        false
                 );
         mMediaPlayer = new MediaPlayerManager()
                 .createAndPreparePlayerFromURL(textTranslation.getSoundUrl());
