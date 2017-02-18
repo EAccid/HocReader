@@ -10,7 +10,7 @@ Furthermore, I’ve been diving into Android development...
 
 Features:
 -	words with images and sounds from Lingualeo API, ability to add words to Lingualeo dictionary (online mode)
--	offline dictionary (consists of added words),  words from device database (just words with translations or descriptions)
+-	offline dictionary (consists of added words), words from device database (just words with translations or descriptions)
 -	pages navigation, highlight, bookmarks, font sizes, translators navigation
 -	word cards training
 - words editor
@@ -54,4 +54,4 @@ TODO:
 - refactor MENU actions: in Book, WordEditor fragments;
 - add new words in Training activity;
 - edit word in translation dialog, (f.i., to create phrasal verbs).
-- synchronize words with Lingualeo Dictionary (added in offline mode)
+- synchronize words with Lingualeo Dictionary (added in offline mode, delete words from dictionary)
