@@ -1,37 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+    <include layout="@layout/loading_progress_bar" />
 
     <RelativeLayout
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorTransparent"
-        android:clickable="true"
-        android:padding="@dimen/spacing_8">
+        android:id="@+id/book"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
 
-            <ImageView
-                android:id="@+id/menu_more_vert_grey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="4dp"
-                android:layout_marginTop="4dp"
-                android:src="@drawable/ic_more_vert_gray_24px"
-                android:contentDescription="@string/desc"/>
-        </com.andexert.library.RippleView>
+        <RelativeLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorTransparent"
+            android:clickable="true"
+            android:padding="@dimen/spacing_8">
+
+            <com.andexert.library.RippleView style="@style/icon_toggles_ripple_effect">
+
+                <ImageView
+                    android:id="@+id/menu_more_vert_grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginTop="4dp"
+                    android:contentDescription="@string/desc"
+                    android:src="@drawable/ic_more_vert_gray_24px" />
+            </com.andexert.library.RippleView>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

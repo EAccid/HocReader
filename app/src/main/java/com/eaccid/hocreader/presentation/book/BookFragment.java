@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -39,12 +41,17 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
     private BookRecyclerViewAdapter mAdapter;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private List<MenuObject> menuObjects;
-
+    private int page = 0;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.menu_more_vert_grey)
     ImageView moreMenuImg;
-
+    @BindView(R.id.progress_bar_layout)
+    View progressBarLinearLayout;
+    @BindView(R.id.book)
+    View bookView;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     public static BookFragment newInstance() {
         BookFragment f = new BookFragment();
@@ -72,15 +79,12 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
         View rootView = inflater.inflate(R.layout.bookreader_rv_fragment_0, container, false);
         rootView.setTag(FragmentTags.BOOK_READER);
         ButterKnife.bind(this, rootView);
+        TextView textView = (TextView) progressBarLinearLayout.findViewById(R.id.text_loading);
+        textView.setText("Loading book");
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = mPresenter.createRecyclerViewAdapter();
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        setAdapterToRecyclerView();
         moreMenuImg.setOnClickListener(view -> onMoreMenuClicked());
-        if (savedInstanceState != null) {
-            boolean isSelectableText = savedInstanceState.getBoolean("is_selectable");
-            setSelectableText(isSelectableText);
-        }
         return rootView;
     }
 
@@ -88,6 +92,11 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPresenter.onViewCreated();
+        if (savedInstanceState != null) {
+            boolean isSelectableText = savedInstanceState.getBoolean("is_selectable");
+            setSelectableText(isSelectableText);
+            page = savedInstanceState.getInt("page_number");
+        }
     }
 
     @Override
@@ -134,6 +143,7 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("is_selectable", isSelectableMode());
+        outState.putInt("page_number", getCurrentPosition());
     }
 
     @Override
@@ -176,7 +186,8 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
 
     @Override
     public void notifyDataSetChanged() {
-        mAdapter.notifyDataSetChanged();
+        //TODO add mAdapter.notifyDataSetChanged() to; temp
+        setAdapterToRecyclerView();
     }
 
     @Override
@@ -208,6 +219,18 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
     }
 
     @Override
+    public void showProgressDialog() {
+        progressBarLinearLayout.setVisibility(View.VISIBLE);
+        bookView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        progressBarLinearLayout.setVisibility(View.GONE);
+        bookView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void navigateToLingualeoApp() {
         Intent leoIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.lingualeo.android");
         if (leoIntent != null) {
@@ -223,8 +246,17 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
         }
     }
 
+    public int getSavedPage() {
+        return page;
+    }
+
     private void onMoreMenuClicked() {
         mPresenter.onMoreMenuClicked();
+    }
+
+    private void setAdapterToRecyclerView() {
+        mAdapter = mPresenter.createRecyclerViewAdapter();
+        mRecyclerView.setAdapter(mAdapter);
     }
 
 }

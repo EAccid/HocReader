@@ -19,13 +19,16 @@ import javax.inject.Inject;
 
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
+import static java.lang.Math.max;
 
 public class BookPresenter implements BasePresenter<BookFragment> {
     private final String logTAG = "BookPresenter";
     private BookFragment mView;
-    private final List<Page<String>> mPagesList;
+    private List<Page<String>> mPagesList;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
@@ -56,30 +59,33 @@ public class BookPresenter implements BasePresenter<BookFragment> {
     }
 
     private void setDataToList() {
-        final int position = new BookOnReadProvider().loadCurrentBooksPage();
         TxtPagesFromFileProvider txtPagesFromFileProvider = new TxtPagesFromFileProvider(
                 new CharactersDefinerForFullScreenTextView(mView.getActivity())
         );
         BaseFileImpl baseFile = new BaseFileImpl(bookInteractor.getCurrentBookPath());
+        mView.showProgressDialog();
         Subscription subscription = txtPagesFromFileProvider
-                .getPageObservable(baseFile)
+                .getPagesObservable(baseFile)
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<Page<String>>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Page<String>>>() {
                     @Override
                     public void onCompleted() {
+                        mView.dismissProgressDialog();
                         mView.notifyDataSetChanged();
+                        int position = max(new BookOnReadProvider().loadCurrentBooksPage(), mView.getSavedPage());
+                        mView.scrollToListPosition(position, 0);
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        mView.dismissProgressDialog();
                         new ReaderExceptionHandlerImpl().handleError(e);
                     }
 
                     @Override
-                    public void onNext(Page<String> page) {
-                        mPagesList.add(page);
-                        if (position + 1 == page.getPageNumber())
-                            mView.scrollToListPosition(position, 0);
+                    public void onNext(List<Page<String>> pages) {
+                        mPagesList = pages;
                     }
                 });
         compositeSubscription.add(subscription);

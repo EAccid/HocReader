@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -30,8 +29,6 @@ import android.view.SubMenu;
 
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.main.ins.ActionBarDrawerToggleForReader;
@@ -68,10 +65,8 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     NavigationView navigationView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    @BindView(R.id.progress_bar)
-    ProgressBar progressBar;
     @BindView(R.id.progress_bar_layout)
-    LinearLayout progressBarLinearLayout;
+    View progressBarLinearLayout;
     @BindView(R.id.fab1)
     FloatingActionButton fab1;
     @BindView(R.id.fab2)
@@ -264,14 +259,12 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
 
     @Override
     public void showProgressDialog() {
-        progressBar.setVisibility(View.VISIBLE);
         progressBarLinearLayout.setVisibility(View.VISIBLE);
         expandableListView.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void dismissProgressDialog() {
-        progressBar.setVisibility(View.GONE);
         progressBarLinearLayout.setVisibility(View.GONE);
         expandableListView.setVisibility(View.VISIBLE);
     }

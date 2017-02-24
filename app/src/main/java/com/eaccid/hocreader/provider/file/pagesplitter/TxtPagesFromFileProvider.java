@@ -1,9 +1,12 @@
 package com.eaccid.hocreader.provider.file.pagesplitter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import rx.Observable;
 import rx.Subscriber;
 
-public class TxtPagesFromFileProvider implements FileToPagesReader {
+public class TxtPagesFromFileProvider implements FileToPagesReader<String> {
 
     private final CharactersDefinerForFullScreenTextView parameters;
 
@@ -11,9 +14,9 @@ public class TxtPagesFromFileProvider implements FileToPagesReader {
         this.parameters = parameters;
     }
 
-    public Observable<Page<String>> getPageObservable(BaseFile baseFile) {
+    public Observable<List<Page<String>>> getPagesObservable(BaseFile baseFile) {
         return Observable.create(
-                new Observable.OnSubscribe<Page<String>>() {
+                new Observable.OnSubscribe<List<Page<String>>>() {
                     private StringBuilder currentPage = new StringBuilder();
                     private StringBuilder currentStringIsAboutToWriteOnPage = new StringBuilder();
                     private int pageNumber = 0;
@@ -21,18 +24,23 @@ public class TxtPagesFromFileProvider implements FileToPagesReader {
                     private int emptyLinesNumberOnCurrentPage = 0;
 
                     @Override
-                    public void call(Subscriber<? super Page<String>> sub) {
+                    public void call(Subscriber<? super List<Page<String>>> sub) {
+
+                        //TODO take this list creation into separate class
+                        List<Page<String>> pages = new ArrayList<>();
                         BufferedReaderHandler br = new BufferedReaderHandler(baseFile);
                         br.openBufferedReader();
                         while (!br.isEof()) {
                             readCurrentLineFromBufferedReader(br);
                             writeCurrentLineToCurrentPage();
                             if (isEndOfCurrentPage || br.isEof()) {
-                                sub.onNext(getSubTxtPage());
+                                pages.add(getSubTxtPage());
                                 updateFieldsForNewPage();
                             }
                         }
                         br.closeBufferedReader();
+
+                        sub.onNext(pages);
                         sub.onCompleted();
                     }
 

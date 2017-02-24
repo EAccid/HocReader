@@ -18,4 +18,8 @@ public interface BookView extends BaseView, BookReaderRouter {
     void setSelectableText(boolean isSelectable);
 
     boolean isSelectableMode();
+
+    void showProgressDialog();
+
+    void dismissProgressDialog();
 }

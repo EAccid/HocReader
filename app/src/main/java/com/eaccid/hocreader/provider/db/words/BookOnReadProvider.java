@@ -24,7 +24,7 @@ public class BookOnReadProvider {
     }
 
     public int loadCurrentBooksPage() {
-        return loadCurrentBooksPageFromDevice();
+        return loadSavedBooksPageFromDevice();
     }
 
     private void storeCurrentBooksPageOnDevice(int page) {
@@ -33,7 +33,7 @@ public class BookOnReadProvider {
         editor.apply();
     }
 
-    private int loadCurrentBooksPageFromDevice() {
+    private int loadSavedBooksPageFromDevice() {
         return sp.getInt(CURRENT_PAGE + databaseManager.getCurrentBook().getPath(), 0);
     }
 
