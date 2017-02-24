@@ -1,7 +1,7 @@
 package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary;
 
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.RequestExceptionHandlerImpl;
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.data.remote.libtranslator.dictionary.DictionaryRx;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestParameters;
@@ -25,13 +25,7 @@ public class LingualeoDictionaryRx implements DictionaryRx {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                RequestParameters requestParameters = new RequestParameters();
-                requestParameters.addParameter("email", login);
-                requestParameters.addParameter("password", password);
-                RequestHandler requestHandler = RequestHandler.newUnauthorizedRequestWithParameters("http://lingualeo.com/api/login", requestParameters);
-                requestHandler.setRequestExceptionHandler(new RequestExceptionHandlerImpl());
-                requestHandler.handleRequest();
-                cookies.storeCookies(requestHandler.getCookies());
+                RequestHandler requestHandler = createAndHandleAuthRequestHandler(login, password);
                 subscriber.onNext(requestHandler.isHandleRequestSucceeded());
                 subscriber.onCompleted();
             }
@@ -43,13 +37,7 @@ public class LingualeoDictionaryRx implements DictionaryRx {
         return Observable.create(new Observable.OnSubscribe<AuthParameters>() {
             @Override
             public void call(Subscriber<? super AuthParameters> subscriber) {
-                RequestParameters requestParameters = new RequestParameters();
-                requestParameters.addParameter("email", login);
-                requestParameters.addParameter("password", password);
-                RequestHandler requestHandler = RequestHandler.newUnauthorizedRequestWithParameters("http://lingualeo.com/api/login", requestParameters);
-                requestHandler.setRequestExceptionHandler(new RequestExceptionHandlerImpl());
-                requestHandler.handleRequest();
-                cookies.storeCookies(requestHandler.getCookies());
+                RequestHandler requestHandler = createAndHandleAuthRequestHandler(login, password);
                 AuthParameters authParameters = new AuthParameters(requestHandler.getResponse());
                 authParameters.setAuth(requestHandler.isHandleRequestSucceeded());
                 authParameters.setEmail(login);
@@ -90,4 +78,16 @@ public class LingualeoDictionaryRx implements DictionaryRx {
             }
         });
     }
+
+    private RequestHandler createAndHandleAuthRequestHandler(final String login, final String password) {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.addParameter("email", login);
+        requestParameters.addParameter("password", password);
+        RequestHandler requestHandler = RequestHandler.newUnauthorizedRequestWithParameters("http://lingualeo.com/api/login", requestParameters);
+        requestHandler.setRequestExceptionHandler(new RequestExceptionHandlerImpl());
+        requestHandler.handleRequest();
+        cookies.storeCookies(requestHandler.getCookies());
+        return requestHandler;
+    }
+
 }

@@ -3,7 +3,7 @@ package com.eaccid.hocreader.provider.db.words;
 import android.content.SharedPreferences;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 
 import javax.inject.Inject;
 

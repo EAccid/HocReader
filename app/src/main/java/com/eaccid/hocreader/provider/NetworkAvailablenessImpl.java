@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.injection.ApplicationContext;
 
 import javax.inject.Inject;

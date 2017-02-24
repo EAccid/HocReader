@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.presentation.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;

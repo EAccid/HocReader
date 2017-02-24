@@ -215,11 +215,6 @@ public class WordDaoService implements Crud, WordReaderDaoService {
         return null;
     }
 
-    @Nullable
-    private Word getWord(Word word) {
-        return getWordByBookIdAndPage(word.getName(), word.getBook().getPath(), word.getPage());
-    }
-
     @Override
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public List<Word> getAllByWordName(String word) {
@@ -231,6 +226,11 @@ public class WordDaoService implements Crud, WordReaderDaoService {
     @Override
     public List<Word> getAllWords() {
         return getAll();
+    }
+
+    @Nullable
+    private Word getWord(Word word) {
+        return getWordByBookIdAndPage(word.getName(), word.getBook().getPath(), word.getPage());
     }
 
 }

@@ -10,13 +10,17 @@ public interface AppWordManager {
 
     void createOrUpdateWord(String wordname, String translation, String context, boolean enabledOnline);
 
-    void deleteWord(Word word);
-
     List<Word> getAllWords(@Nullable Iterable<String> words, @Nullable WordFilter currentFilter, @Nullable String bookIdFilter);
 
     Word getRandomWord();
 
     Word getWord(String word);
 
+    @Nullable
+    Word getCurrentBooksWordByPage(String word);
+
+    void deleteWord(Word word);
+
     boolean deleteWords(WordFilter filter);
+
 }

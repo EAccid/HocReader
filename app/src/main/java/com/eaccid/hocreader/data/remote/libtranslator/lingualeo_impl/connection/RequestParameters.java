@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class RequestParameters extends Properties {
-
+public class RequestParameters {
     private final Map<String, String> parameters = new HashMap<>();
 
     public void addParameter(String parameterKey, String parameterValue) {
@@ -14,7 +13,6 @@ public class RequestParameters extends Properties {
     }
 
     public String getEncodedParameters() {
-
         if (parameters.isEmpty()) return "";
         StringBuilder sbEncodedParameters = new StringBuilder();
         try {
@@ -29,12 +27,6 @@ public class RequestParameters extends Properties {
             e.printStackTrace();
         }
         return sbEncodedParameters.substring(0, sbEncodedParameters.length() - 1);
-
     }
-
-    public Map<String, String> getParameters() {
-        return parameters;
-    }
-
 }
 

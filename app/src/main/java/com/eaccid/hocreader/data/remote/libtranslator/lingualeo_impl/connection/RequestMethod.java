@@ -1,8 +1,7 @@
 package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection;
 
 enum RequestMethod {
-    POST;
-
+    POST, GET;
     String getName() {
         return name();
     }

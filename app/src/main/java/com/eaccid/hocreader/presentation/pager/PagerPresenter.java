@@ -2,7 +2,7 @@ package com.eaccid.hocreader.presentation.pager;
 
 import android.util.Log;
 
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;

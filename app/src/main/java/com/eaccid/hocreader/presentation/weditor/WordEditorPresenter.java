@@ -3,7 +3,7 @@ package com.eaccid.hocreader.presentation.weditor;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.provider.db.words.WordItemImpl;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.presentation.BasePresenter;

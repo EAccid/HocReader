@@ -7,16 +7,13 @@ import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.
 import java.net.UnknownHostException;
 
 public class RequestExceptionHandlerImpl implements RequestExceptionHandler {
-
-    private final String LOG_TAG = "RequestExceptionHandler";
+    private final String LOG_TAG = RequestExceptionHandlerImpl.class.getSimpleName();
 
     @Override
     public void handleException(Exception e) {
-
         if (e instanceof UnknownHostException) {
             Log.e(LOG_TAG, "There is no internet connection");
         } else
             e.printStackTrace();
-
     }
 }

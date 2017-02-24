@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.db.entity.Word;
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.provider.db.words.WordItem;
 import com.eaccid.hocreader.provider.db.words.WordItemImpl;

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.provider.semantic.ImageViewManager;
 import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
 import com.eaccid.hocreader.provider.db.words.WordItemImpl;

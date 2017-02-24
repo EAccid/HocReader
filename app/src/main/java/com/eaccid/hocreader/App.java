@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.injection;
+package com.eaccid.hocreader;
 
 import android.app.Application;
 import android.support.annotation.VisibleForTesting;

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
+import com.eaccid.hocreader.presentation.FragmentTags;
 import com.eaccid.hocreader.presentation.book.ins.BookMenuParamsImpl;
 import com.eaccid.hocreader.presentation.book.ins.MenuObjectWrapper;
 import com.h6ah4i.android.widget.advrecyclerview.utils.CustomRecyclerViewUtils;
@@ -29,16 +30,21 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 import java.util.List;
 
-public class BookFragment extends Fragment implements
-        OnMenuItemClickListener, OnMenuItemLongClickListener, BookView {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
+public class BookFragment extends Fragment implements OnMenuItemClickListener, OnMenuItemLongClickListener, BookView {
     private BookPresenter mPresenter;
-    private RecyclerView mRecyclerView;
+
     private BookRecyclerViewAdapter mAdapter;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private List<MenuObject> menuObjects;
-    private final String TAG = "BookFragment";
-    private ImageView moreMenuImg;
+
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.menu_more_vert_grey)
+    ImageView moreMenuImg;
+
 
     public static BookFragment newInstance() {
         BookFragment f = new BookFragment();
@@ -64,13 +70,12 @@ public class BookFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         View rootView = inflater.inflate(R.layout.bookreader_rv_fragment_0, container, false);
-        rootView.setTag(TAG);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        rootView.setTag(FragmentTags.BOOK_READER);
+        ButterKnife.bind(this, rootView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mAdapter = mPresenter.createRecyclerViewAdapter();
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-        moreMenuImg = (ImageView) rootView.findViewById(R.id.menu_more_vert_grey);
         moreMenuImg.setOnClickListener(view -> onMoreMenuClicked());
         if (savedInstanceState != null) {
             boolean isSelectableText = savedInstanceState.getBoolean("is_selectable");
@@ -102,16 +107,10 @@ public class BookFragment extends Fragment implements
                 Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
                 break;
             case OPEN_LINGUALEO:
-                Intent leoIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.lingualeo.android");
-                if (leoIntent != null) {
-                    startActivity(leoIntent);
-                }
+                mPresenter.onOpenLingualeoClicked();
                 break;
             case OPEN_GOOGLE_TRANSLATOR:
-                Intent googleTranslatorIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.google.android.apps.translate");
-                if (googleTranslatorIntent != null) {
-                    startActivity(googleTranslatorIntent);
-                }
+                mPresenter.onOpenGoogleTranslatorClicked();
                 break;
             case FONT_SIZE:
                 Toast.makeText(clickedView.getContext(), "under development: " + mo.getTag(), Toast.LENGTH_SHORT).show();
@@ -206,6 +205,22 @@ public class BookFragment extends Fragment implements
         mMenuDialogFragment.setItemClickListener(this);
         mMenuDialogFragment.setItemLongClickListener(this);
         menuObjects = menuParams.getMenuObjects();
+    }
+
+    @Override
+    public void navigateToLingualeoApp() {
+        Intent leoIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.lingualeo.android");
+        if (leoIntent != null) {
+            startActivity(leoIntent);
+        }
+    }
+
+    @Override
+    public void navigateToGoogleTranslator() {
+        Intent googleTranslatorIntent = getActivity().getPackageManager().getLaunchIntentForPackage("com.google.android.apps.translate");
+        if (googleTranslatorIntent != null) {
+            startActivity(googleTranslatorIntent);
+        }
     }
 
     private void onMoreMenuClicked() {

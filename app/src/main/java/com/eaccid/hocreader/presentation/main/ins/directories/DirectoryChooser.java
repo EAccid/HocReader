@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import javax.inject.Inject;

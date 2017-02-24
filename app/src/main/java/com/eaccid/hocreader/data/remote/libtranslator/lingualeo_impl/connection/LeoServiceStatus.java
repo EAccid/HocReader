@@ -3,8 +3,7 @@ package com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection
 import android.util.Log;
 
 public class LeoServiceStatus {
-
-    private final String LOG_TAG = "LeoServiceStatus";
+    private final String LOG_TAG = LeoServiceStatus.class.getSimpleName();
 
     public ServiceStatus getGeneralServiceStatus(final LingualeoResponse lingualeoResponse) {
         if (lingualeoResponse == null) {

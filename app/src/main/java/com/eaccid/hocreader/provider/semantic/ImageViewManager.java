@@ -5,7 +5,7 @@ import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.injection.ApplicationContext;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;

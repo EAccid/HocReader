@@ -4,10 +4,11 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.Serializable;
 
 @DatabaseTable(tableName = "books")
-public class Book implements Serializable{
+public class Book implements Serializable {
 
     @DatabaseField(columnName = "id", canBeNull = false, id = true)
     private String path;
@@ -47,7 +48,7 @@ public class Book implements Serializable{
     @Override
     public String toString() {
         return "Book{" +
-                "id = '" + path +'\'' +
+                "id = '" + path + '\'' +
                 ", name = '" + name +
                 '}';
     }
@@ -56,12 +57,9 @@ public class Book implements Serializable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Book book = (Book) o;
-
         return path != null ? path.equals(book.path) : book.path == null
                 && (name != null ? name.equals(book.name) : book.name == null);
-
     }
 
     @Override

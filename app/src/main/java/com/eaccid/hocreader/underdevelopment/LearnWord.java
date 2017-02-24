@@ -1,5 +1,6 @@
-package com.eaccid.hocreader.data.local.db.entity;
+package com.eaccid.hocreader.underdevelopment;
 
+import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.j256.ormlite.field.DatabaseField;
 
 public class LearnWord {

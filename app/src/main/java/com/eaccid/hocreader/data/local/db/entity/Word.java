@@ -24,13 +24,18 @@ public class Word implements Serializable {
     private int page;
 
     @DatabaseField(foreign = true, foreignColumnName = "id")
-    private  Book book;
+    private Book book;
 
     @DatabaseField
     private boolean enabledOnline;
 
     public Word() {
-
+        this.word = "";
+        this.translation = "";
+        this.context = "";
+        this.page = 0;
+        this.book = null;
+        this.enabledOnline = false;
     }
 
     public Word(String word, String translation, String context, int page, Book book, boolean enabledOnline) {
@@ -116,11 +121,8 @@ public class Word implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Word word1 = (Word) o;
-
         return word.equals(word1.word) && book.equals(word1.book);
-
     }
 
     @Override

@@ -34,10 +34,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         {
             TableUtils.createTable(connectionSource, Word.class);
             TableUtils.createTable(connectionSource, Book.class);
-            Log.e(TAG, "database '" + databaseName + "' v." + DATABASE_VERSION + " has been created/updated.");
+            Log.e(TAG, "Database '" + databaseName + "' v." + DATABASE_VERSION + " has been created/updated.");
         }
         catch (SQLException e){
-            Log.e(TAG, "error creating database '" + databaseName + "' v." + DATABASE_VERSION);
+            Log.e(TAG, "Error creating database '" + databaseName + "' v." + DATABASE_VERSION);
             throw new RuntimeException(e);
         }
     }
@@ -51,7 +51,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             onCreate(database, connectionSource);
         }
         catch (SQLException e){
-            Log.e(TAG,"error upgrading database '" + databaseName + "' v." + oldVersion);
+            Log.e(TAG,"Error upgrading database '" + databaseName + "' v." + oldVersion);
             throw new RuntimeException(e);
         }
     }

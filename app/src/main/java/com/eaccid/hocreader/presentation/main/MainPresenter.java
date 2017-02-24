@@ -9,7 +9,7 @@ import android.support.v13.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoriesPreferences;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;

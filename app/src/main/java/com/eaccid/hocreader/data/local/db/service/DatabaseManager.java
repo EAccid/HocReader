@@ -5,13 +5,14 @@ import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.eaccid.hocreader.injection.ApplicationContext;
+import com.eaccid.hocreader.underdevelopment.DirectoryDaoService;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import java.sql.SQLException;
 
 public class DatabaseManager {
 
     private DatabaseHelper databaseHelper;
-    private final String logTAG = "DatabaseManager";
+    private final String logTAG = DatabaseManager.class.getSimpleName();
 
     public DatabaseManager(@ApplicationContext Context context) {
         databaseHelper = OpenHelperManager.getHelper(context, DatabaseHelper.class);

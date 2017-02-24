@@ -4,7 +4,6 @@ import java.util.List;
 
 
 class LingualeoCookies {
-
     private String cookies = "";
 
     void setCookies(String cookies) {

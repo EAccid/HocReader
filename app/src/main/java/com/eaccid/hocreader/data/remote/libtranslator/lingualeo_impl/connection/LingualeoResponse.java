@@ -16,23 +16,18 @@ public class LingualeoResponse {
 
     public String getString(String key) {
         if (isEmpty()) return "";
-
         String returnValue = jsonObject.getString(key, "");
-
         if (returnValue.isEmpty()) {
             try {
                 returnValue = getListString(key).get(0);
             } catch (Exception ignored) {
             }
         }
-
         return returnValue;
-
     }
 
     public ArrayList<String> getListString(String key) {
         ArrayList<String> listResponse = new ArrayList<>();
-
         try {
             for (JsonValue jv : jsonObject.values()
                     ) {
@@ -50,8 +45,8 @@ public class LingualeoResponse {
                     listResponse.add(value);
                 }
             }
-
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return listResponse;
     }

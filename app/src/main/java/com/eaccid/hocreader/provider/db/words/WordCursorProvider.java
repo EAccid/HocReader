@@ -6,7 +6,7 @@ import android.database.Cursor;
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.WordFilter;
 import com.eaccid.hocreader.data.local.db.entity.Word;
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.presentation.training.carouseladapter.WordCarouselRecyclerViewAdapter;
 import com.eaccid.hocreader.presentation.training.carouseladapter.OrmLiteCursorRecyclerViewAdapter;

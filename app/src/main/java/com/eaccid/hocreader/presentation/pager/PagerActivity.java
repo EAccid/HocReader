@@ -93,7 +93,7 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
         final DialogFragment dialog = WordTranslationDialogFragment.newInstance(wordFromText);
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(dialog, FragmentTags.ITEM_PINNED_DIALOG)
+                .add(dialog, FragmentTags.WORD_TRANSLATIONS)
                 .commit();
     }
 
@@ -104,7 +104,7 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
     private boolean addWordsEditorFragment() {
         if (getIntent().getAction() != null && getIntent().getAction().equals("EDIT_WORDS")) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.pager_activity, WordsEditorFragment.newInstance(false), FragmentTags.WORDS_LIST_VIEW)
+                    .add(R.id.pager_activity, WordsEditorFragment.newInstance(false), FragmentTags.WORDS_EDITOR)
                     .commit();
             return true;
         }

@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class LingualeoHttpConnection {
-
     private HttpURLConnection connection;
     private final LingualeoResponse lingualeoResponse;
     private final LingualeoCookies cookies;
@@ -29,9 +28,6 @@ class LingualeoHttpConnection {
 
     @NonNull
     LingualeoResponse getResponse() {
-        if (lingualeoResponse == null) {
-            return new LingualeoResponse();
-        }
         return lingualeoResponse;
     }
 
@@ -62,10 +58,7 @@ class LingualeoHttpConnection {
 
     private void setHttpRequestParameters(RequestParameters requestParameters) throws IOException {
         String data = requestParameters.getEncodedParameters();
-        //the number of bytes which will be written to the OutputStream.
         connection.setFixedLengthStreamingMode(data.length());
-        //an OutputStreamWriter is a bridge from character streams to byte streams:
-        // characters written to it are encoded into bytes using a specified charset
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
         outputStreamWriter.write(data);
         outputStreamWriter.close();
@@ -78,4 +71,5 @@ class LingualeoHttpConnection {
     private void closeHttpURLConnection() throws IOException {
         connection.disconnect();
     }
+
 }

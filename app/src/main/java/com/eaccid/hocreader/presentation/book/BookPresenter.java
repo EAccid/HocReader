@@ -2,7 +2,7 @@ package com.eaccid.hocreader.presentation.book;
 
 import android.util.Log;
 
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.provider.db.words.BookOnReadProvider;
 import com.eaccid.hocreader.provider.file.BaseFileImpl;
@@ -105,9 +105,16 @@ public class BookPresenter implements BasePresenter<BookFragment> {
         mView.showGoToPage();
     }
 
-
     public void onUndoClicked(int currentPage, int previousPage) {
         mView.scrollToListPosition(currentPage, previousPage);
+    }
+
+    public void onOpenLingualeoClicked() {
+        mView.navigateToLingualeoApp();
+    }
+
+    public void onOpenGoogleTranslatorClicked() {
+        mView.navigateToGoogleTranslator();
     }
 
 }

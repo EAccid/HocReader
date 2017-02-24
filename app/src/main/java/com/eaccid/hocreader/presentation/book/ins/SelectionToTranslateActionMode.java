@@ -10,13 +10,12 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.provider.fromtext.ins.TextViewManagetImpl;
 
 public class SelectionToTranslateActionMode implements ActionMode.Callback {
-
     private final TextView textView;
     private final int GT_ITEM_ID = 16;
 
     public SelectionToTranslateActionMode(TextView tv) {
         textView = tv;
-        textView.setTextIsSelectable(true); //todo false selectable
+        textView.setTextIsSelectable(true);
     }
 
     @Override

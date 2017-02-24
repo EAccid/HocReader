@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
-import com.eaccid.hocreader.injection.App;
+import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoriesPreferences;

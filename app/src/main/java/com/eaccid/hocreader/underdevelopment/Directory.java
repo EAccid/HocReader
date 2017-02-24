@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.data.local.db.entity;
+package com.eaccid.hocreader.underdevelopment;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

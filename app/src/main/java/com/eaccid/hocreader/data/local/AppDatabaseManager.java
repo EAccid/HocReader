@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO:
+ * TODO refactor:
  * 1. extract separate classes for BookReaderMode, AppWordManager
  * 2. create filter
  */
 
-public class AppDatabaseManager implements BookReaderMode, AppWordManager {
+public class AppDatabaseManager implements BookReaderMode, AppWordManager, CardTrainingMode {
 
-    private final String LOG_TAG = "AppDatabaseManager";
+    private final String LOG_TAG = AppDatabaseManager.class.getSimpleName();
     private DatabaseManager mDatabaseManager;
 
     public AppDatabaseManager(DatabaseManager mDatabaseManager) {
@@ -64,17 +64,6 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
     @Override
     public int getCurrentPage() {
         return mCurrentPage;
-    }
-
-    @Nullable
-    public Word getCurrentBooksWordByPage(String word) {
-        try {
-            WordDaoService ws = mDatabaseManager.getWordService();
-            return ws.getWordByBookIdAndPage(word, getCurrentBook().getPath(), getCurrentPage());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override
@@ -121,10 +110,9 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
      * words table
      */
     @Override
-    public void createOrUpdateWord(String wordname, String translation, String context,
-                                   boolean enabledOnline) {
+    public void createOrUpdateWord(String wordName, String translation, String context, boolean enabledOnline) {
         Word word = new Word();
-        word.setName(wordname);
+        word.setName(wordName);
         word.setTranslation(translation);
         word.setContext(context);
         word.setPage(getCurrentPage());
@@ -153,9 +141,9 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
     //TODO refactor: make method more readable
     @Override
     public List<Word> getAllWords(@Nullable Iterable<String> words, @Nullable WordFilter currentFilter, @Nullable String bookIdFilter) {
+        List<Word> lw = new ArrayList<>();
         if (currentFilter == null)
             currentFilter = WordFilter.NONE;
-        List<Word> lw = new ArrayList<>();
         try {
             WordDaoService ws = mDatabaseManager.getWordService();
             switch (currentFilter) {
@@ -197,6 +185,18 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
 
     @Override
     @Nullable
+    public Word getCurrentBooksWordByPage(String word) {
+        try {
+            WordDaoService ws = mDatabaseManager.getWordService();
+            return ws.getWordByBookIdAndPage(word, getCurrentBook().getPath(), getCurrentPage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    @Nullable
     public Word getRandomWord() {
         try {
             WordReaderDaoService ws = mDatabaseManager.getWordService();
@@ -234,8 +234,7 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-        if (filter == WordFilter.NONE) {
+        } else if (filter == WordFilter.NONE) {
             try {
                 WordReaderDaoService ws = mDatabaseManager.getWordService();
                 List<Word> words = ws.getAllWords();
@@ -245,14 +244,15 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-        if (filter != WordFilter.BY_BOOK || filter != WordFilter.NONE) {
+        } else {
+            Log.i(LOG_TAG, "Words have not been deleted successfully.");
             throw new NotImplementedException("Selection by filter '" + filter + "' not implemented yet.");
         }
-        Log.i(LOG_TAG, "Words have not been deleted successfully.");
         return false;
     }
 
+    @Override
+    @Nullable
     public PreparedQuery<Word> getWordPreparedQuery(@Nullable WordFilter currentFilter, @Nullable Iterable<String> words, @Nullable String bookIdFilter) {
         if (currentFilter == null)
             currentFilter = WordFilter.NONE;
@@ -273,6 +273,8 @@ public class AppDatabaseManager implements BookReaderMode, AppWordManager {
         return null;
     }
 
+    @Override
+    @Nullable
     public Dao<Word, String> getWordDao() {
         try {
             WordReaderDaoService ws = mDatabaseManager.getWordService();

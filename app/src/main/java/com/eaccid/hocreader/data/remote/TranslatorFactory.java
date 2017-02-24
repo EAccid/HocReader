@@ -12,10 +12,10 @@ public class TranslatorFactory {
         switch (tr) {
             case LINGUALEO_ONLINE:
                 return new LingualeoTranslatorRx();
-//            case LIVIO_TRANSLATOR:
+            case LIVIO_TRANSLATOR:
             default:
-                throw new RuntimeException("Something went wrong!");
+                throw new RuntimeException("Not implemented yet!");
         }
-
     }
+
 }

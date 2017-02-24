@@ -1,6 +1,8 @@
-package com.eaccid.hocreader.data.local.db.service;
+package com.eaccid.hocreader.underdevelopment;
 
-import com.eaccid.hocreader.data.local.db.entity.Directory;
+import com.eaccid.hocreader.data.local.db.service.Crud;
+import com.eaccid.hocreader.data.local.db.service.DatabaseHelper;
+import com.eaccid.hocreader.underdevelopment.Directory;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 
@@ -12,7 +14,7 @@ public class DirectoryDaoService implements Crud {
 
     private Dao<Directory, String> dao = null;
 
-    DirectoryDaoService(DatabaseHelper dbHelper) throws SQLException {
+    public DirectoryDaoService(DatabaseHelper dbHelper) throws SQLException {
         dao = DaoManager.createDao(dbHelper.getConnectionSource(), Directory.class);
     }
 
