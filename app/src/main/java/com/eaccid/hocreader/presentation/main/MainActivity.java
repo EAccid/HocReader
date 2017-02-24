@@ -30,10 +30,8 @@ import android.view.SubMenu;
 
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.main.ins.ActionBarDrawerToggleForReader;
@@ -47,7 +45,6 @@ import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.pager.PagerActivity;
 import com.eaccid.hocreader.presentation.settings.SettingsActivity;
 import com.eaccid.hocreader.presentation.training.TrainingActivity;
-import com.eaccid.hocreader.provider.semantic.ImageViewManager;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.util.ArrayList;
@@ -240,12 +237,6 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
                 break;
             case R.id.about:
                 mPresenter.onAboutSelected();
-//            case R.id.edit_words:
-//                drawerLayout.closeDrawer(GravityCompat.START);
-//                Intent intent = new Intent(this, PagerActivity.class);
-//                intent.setAction("EDIT_WORDS");
-//                startActivity(intent);
-//                return true;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         if (mPresenter.onNavigationItemSelected(id))

@@ -70,4 +70,5 @@ public class Book implements Serializable{
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
+
 }
