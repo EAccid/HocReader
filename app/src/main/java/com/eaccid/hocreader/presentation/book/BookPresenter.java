@@ -53,11 +53,10 @@ public class BookPresenter implements BasePresenter<BookFragment> {
     public void onViewCreated() {
         setDataToList();
         mView.setSelectableText(mView.isSelectableMode());
-        int position = new BookOnReadProvider().loadCurrentBooksPage();
-        mView.scrollToListPosition(position, 0);
     }
 
     private void setDataToList() {
+        final int position = new BookOnReadProvider().loadCurrentBooksPage();
         TxtPagesFromFileProvider txtPagesFromFileProvider = new TxtPagesFromFileProvider(
                 new CharactersDefinerForFullScreenTextView(mView.getActivity())
         );
@@ -79,6 +78,8 @@ public class BookPresenter implements BasePresenter<BookFragment> {
                     @Override
                     public void onNext(Page<String> page) {
                         mPagesList.add(page);
+                        if (position + 1 == page.getPageNumber())
+                            mView.scrollToListPosition(position, 0);
                     }
                 });
         compositeSubscription.add(subscription);

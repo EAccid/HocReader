@@ -3,6 +3,7 @@ package com.eaccid.hocreader.presentation.pager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import com.eaccid.hocreader.presentation.book.BookFragment;
 import com.eaccid.hocreader.presentation.training.WordTrainingFragment;
@@ -50,5 +51,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             return POSITION_NONE;
         }
         return super.getItemPosition(object);
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        if (object instanceof BookFragment)
+            return;
+        super.destroyItem(container, position, object);
     }
 }
