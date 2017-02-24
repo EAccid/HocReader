@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 public class DirectoriesPreferences {
-
-    private final String LOG_TAG = "DirectoriesPreferences";
+    private final String LOG_TAG = DirectoriesPreferences.class.getSimpleName();
     private final String KEY_DIRECTORIES = "DIRECTORIES";
     private final String KEY_DEFAULT = "DEFAULT_DIRECTORY";
     private final int CONSTANT_ID;

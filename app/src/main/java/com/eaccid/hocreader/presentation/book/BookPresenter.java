@@ -18,12 +18,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Subscriber;
+import rx.Subscription;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class BookPresenter implements BasePresenter<BookFragment> {
     private final String logTAG = "BookPresenter";
     private BookFragment mView;
     private final List<Page<String>> mPagesList;
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     @Inject
     BookInteractor bookInteractor;
@@ -43,6 +46,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
     public void detachView() {
         Log.i(logTAG, "BookFragment has been detached.");
         new BookOnReadProvider().storeCurrentBooksPage(mView.getCurrentPosition());
+        compositeSubscription.clear();
         mView = null;
     }
 
@@ -58,7 +62,8 @@ public class BookPresenter implements BasePresenter<BookFragment> {
                 new CharactersDefinerForFullScreenTextView(mView.getActivity())
         );
         BaseFileImpl baseFile = new BaseFileImpl(bookInteractor.getCurrentBookPath());
-        txtPagesFromFileProvider.getPageObservable(baseFile)
+        Subscription subscription = txtPagesFromFileProvider
+                .getPageObservable(baseFile)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Page<String>>() {
                     @Override
@@ -76,6 +81,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
                         mPagesList.add(page);
                     }
                 });
+        compositeSubscription.add(subscription);
     }
 
     public BookRecyclerViewAdapter createRecyclerViewAdapter() {

@@ -27,7 +27,6 @@ public class BufferedReaderHandler {
     }
 
     public void closeBufferedReader() {
-
         if (bufferedReader != null) {
             try {
                 bufferedReader.close();

@@ -14,21 +14,15 @@ import com.eaccid.hocreader.presentation.about.AboutFragment;
 import com.eaccid.hocreader.presentation.book.BookFragment;
 import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 import com.eaccid.hocreader.presentation.weditor.WordsEditorView;
-import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullScreenTextView;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.FragmentTags;
-import com.eaccid.hocreader.presentation.book.ins.OnWordFromPageViewTouchListener;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.translation.WordTranslationDialogFragment;
 import com.eaccid.hocreader.underdevelopment.BookFileViaIntent;
 import com.viewpagerindicator.CirclePageIndicator;
 
-public class PagerActivity extends AppCompatActivity implements PagerView,
-        CharactersDefinerForFullScreenTextView.PageView,
-        OnWordFromPageViewTouchListener.OnWordFromTextClickListener,
-        WordTranslationDialogFragment.OnWordTranslationClickListener {
-
+public class PagerActivity extends AppCompatActivity implements PagerView {
     private PagerPresenter mPresenter;
     private WordsEditorView wordsEditorFragment;
 
@@ -49,11 +43,12 @@ public class PagerActivity extends AppCompatActivity implements PagerView,
         //TODO delete after refactoring BookFileViaIntent
         BookFileViaIntent book = new BookFileViaIntent();
         if (!book.readFile(this)) {
-            Toast.makeText(this, "The file cannot be opened", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "The file can't be opened", Toast.LENGTH_SHORT).show();
             finish();
         }
         mPresenter.createOrUpdateCurrentBook(book.getFileName(), book.getFilePath());
         if (addBookFragment()) return;
+
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setPageTransformer(true, new ZoomOutPageTransformer());

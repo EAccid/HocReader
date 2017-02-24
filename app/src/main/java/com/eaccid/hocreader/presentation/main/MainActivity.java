@@ -72,15 +72,13 @@ public class MainActivity extends AppCompatActivity implements MainView<ItemGrou
     ProgressBar progressBar;
     @BindView(R.id.progress_bar_layout)
     LinearLayout progressBarLinearLayout;
-    private static MainPresenter mPresenter;
-    private SearchAdapter searchAdapter;
-    private SubMenu customizedMenu;
-
     @BindView(R.id.fab1)
     FloatingActionButton fab1;
     @BindView(R.id.fab2)
     FloatingActionButton fab2;
-
+    private static MainPresenter mPresenter;
+    private SearchAdapter searchAdapter;
+    private SubMenu customizedMenu;
     private boolean isFabExpanded;
 
     @Override

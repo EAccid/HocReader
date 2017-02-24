@@ -33,7 +33,7 @@ import javax.inject.Inject;
 
 public class MainPresenter implements BasePresenter<MainActivity> {
 
-    private final String LOG_TAG = "MainPresenter";
+    private final String LOG_TAG = MainPresenter.class.getSimpleName();
     private MainActivity mView;
 
     @Inject

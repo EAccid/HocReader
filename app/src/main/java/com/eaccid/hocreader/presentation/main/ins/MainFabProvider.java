@@ -10,23 +10,23 @@ import android.widget.FrameLayout;
 public class MainFabProvider {
 
     public boolean displayFab(Activity context, FloatingActionButton fab, double rightMargin, double bottomMargin, @AnimRes int anim) {
-        Animation show_fab_1 = AnimationUtils.loadAnimation(context.getApplication(), anim);
+        Animation show_fab = AnimationUtils.loadAnimation(context.getApplication(), anim);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fab.getLayoutParams();
         layoutParams.rightMargin += (int) (fab.getWidth() * rightMargin);
         layoutParams.bottomMargin += (int) (fab.getHeight() * bottomMargin);
         fab.setLayoutParams(layoutParams);
-        fab.startAnimation(show_fab_1);
+        fab.startAnimation(show_fab);
         fab.setClickable(true);
         return true;
     }
 
     public boolean hideFab(Activity context, FloatingActionButton fab, double rightMargin, double bottomMargin, @AnimRes int anim) {
-        Animation hide_fab_1 = AnimationUtils.loadAnimation(context.getApplication(), anim);
+        Animation hide_fab = AnimationUtils.loadAnimation(context.getApplication(), anim);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fab.getLayoutParams();
         layoutParams.rightMargin -= (int) (fab.getWidth() * rightMargin);
         layoutParams.bottomMargin -= (int) (fab.getHeight() * bottomMargin);
         fab.setLayoutParams(layoutParams);
-        fab.startAnimation(hide_fab_1);
+        fab.startAnimation(hide_fab);
         fab.setClickable(false);
         return false;
     }

@@ -9,8 +9,8 @@ import com.eaccid.hocreader.presentation.training.WordTrainingFragment;
 import com.eaccid.hocreader.presentation.weditor.WordsEditorFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-
     private Fragment wordsFromBookFragment;
+    private Fragment readerBookFragment;
     private static final int NUM_ITEMS = 3;
 
     public PagerAdapter(FragmentManager fm) {
@@ -26,7 +26,11 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return BookFragment.newInstance();
+                if (readerBookFragment == null) {
+                    readerBookFragment = BookFragment.newInstance();
+                    return readerBookFragment;
+                }
+                return readerBookFragment;
             case 1:
                 if (wordsFromBookFragment == null) {
                     wordsFromBookFragment = WordsEditorFragment.newInstance(true);

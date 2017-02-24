@@ -31,7 +31,6 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
     public void onBindViewHolder(ViewHolder holder, int position) {
         Page<String> page = mPagesList.get(position);
         TextView textOnPage = holder.getTextOnPageTextView();
-
         textOnPage.setText(page.getDataFromPage());
         holder.getPageNumberTextView().setText(
                 String.valueOf(position + 1) +

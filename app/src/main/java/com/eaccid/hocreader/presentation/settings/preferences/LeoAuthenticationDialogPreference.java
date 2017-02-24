@@ -16,11 +16,13 @@ import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.
 import com.eaccid.hocreader.presentation.settings.Preference;
 
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class LeoAuthenticationDialogPreference extends DialogPreference {
-
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
     private EditText emailText;
     private EditText passwordText;
     private String persistentValue;
@@ -45,6 +47,7 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
     @Override
     public void onActivityDestroy() {
         super.onActivityDestroy();
+        compositeSubscription.clear();
     }
 
     @Override
@@ -88,7 +91,7 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage(authorizing_status);
         progressDialog.show();
-        new LeoAuthenticationSettings()
+        Subscription subscription = new LeoAuthenticationSettings()
                 .leoSignInAndReturnObservable(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -110,6 +113,7 @@ public class LeoAuthenticationDialogPreference extends DialogPreference {
                         onAuthorized(authParameters);
                     }
                 });
+        compositeSubscription.add(subscription);
     }
 
     private void onAuthorized(AuthParameters authParameters) {

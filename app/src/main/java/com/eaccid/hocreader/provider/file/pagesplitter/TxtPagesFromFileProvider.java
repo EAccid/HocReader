@@ -14,7 +14,6 @@ public class TxtPagesFromFileProvider implements FileToPagesReader {
     public Observable<Page<String>> getPageObservable(BaseFile baseFile) {
         return Observable.create(
                 new Observable.OnSubscribe<Page<String>>() {
-
                     private StringBuilder currentPage = new StringBuilder();
                     private StringBuilder currentStringIsAboutToWriteOnPage = new StringBuilder();
                     private int pageNumber = 0;
@@ -23,7 +22,6 @@ public class TxtPagesFromFileProvider implements FileToPagesReader {
 
                     @Override
                     public void call(Subscriber<? super Page<String>> sub) {
-
                         BufferedReaderHandler br = new BufferedReaderHandler(baseFile);
                         br.openBufferedReader();
                         while (!br.isEof()) {
@@ -35,7 +33,7 @@ public class TxtPagesFromFileProvider implements FileToPagesReader {
                             }
                         }
                         br.closeBufferedReader();
-                        sub.unsubscribe();
+                        sub.onCompleted();
                     }
 
                     private TxtPage getSubTxtPage() {
@@ -97,6 +95,7 @@ public class TxtPagesFromFileProvider implements FileToPagesReader {
                                 currentStringIsAboutToWriteOnPage.length());
                         currentStringIsAboutToWriteOnPage = new StringBuilder(textBringToNextPage);
                     }
+
                 }
         );
     }
