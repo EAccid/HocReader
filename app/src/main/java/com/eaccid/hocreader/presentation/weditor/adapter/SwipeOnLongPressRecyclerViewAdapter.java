@@ -37,8 +37,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-
+import rx.subscriptions.CompositeSubscription;
 
 public class SwipeOnLongPressRecyclerViewAdapter
         extends RecyclerView.Adapter<SwipeOnLongPressRecyclerViewAdapter.WordsEditorViewHolder>
@@ -48,6 +49,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
     private final View.OnClickListener mItemViewOnClickListener;
     private final View.OnClickListener mSwipeableViewContainerOnClickListener;
     private SparseBooleanArray mSelectedItemsIds;
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
     @Inject
     WordListInteractor wordListInteractor;
 
@@ -97,6 +99,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         ImageView transcriptionSpeaker;
         MediaPlayer mediaPlayer;
         boolean isSetToLearn;
+        public Subscription subscription;
 
         WordsEditorViewHolder(View v) {
             super(v);
@@ -128,7 +131,9 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
         Log.i(LOG_TAG, "Setting data to view from item: position " + position);
-        wordListInteractor
+        if (holder.subscription != null && !holder.subscription.isUnsubscribed())
+            compositeSubscription.remove(holder.subscription);
+        holder.subscription = wordListInteractor
                 .getWordItem(position)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(wordItem -> {
@@ -163,6 +168,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
                 }, e -> {
                     new ReaderExceptionHandlerImpl().handleError(e);
                 });
+        compositeSubscription.add(holder.subscription);
     }
 
     private void setListenersToViewFromItem(WordsEditorViewHolder holder, int position) {
@@ -194,6 +200,11 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.alreadyLearned.setOnClickListener(v -> {
             Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
         });
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        compositeSubscription.unsubscribe();
     }
 
     private void showSpeaker(ImageView iv, boolean isSpeaking) {
