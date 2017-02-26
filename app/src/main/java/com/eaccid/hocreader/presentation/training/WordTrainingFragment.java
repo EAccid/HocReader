@@ -47,7 +47,9 @@ public class WordTrainingFragment extends Fragment {
 
     private WordCarouselRecyclerViewAdapter adapter;
     private CarouselLayoutManager layoutManager;
-    private RecyclerView recyclerView;
+
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
     @BindView(R.id.expandable_layout)
     ExpandableLayout expandable_layout;
     @BindView(R.id.show_hint)
@@ -76,7 +78,6 @@ public class WordTrainingFragment extends Fragment {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         layoutManager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, true);
         layoutManager.setPostLayoutListener(new CarouselZoomPostLayoutListener());
-        recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

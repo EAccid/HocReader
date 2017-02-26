@@ -63,6 +63,7 @@ public class WordsEditorFragment extends Fragment implements WordsEditorView, To
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
         if (mPresenter == null) mPresenter = new WordEditorPresenter();
         mPresenter.attachView(this);
     }
@@ -82,9 +83,6 @@ public class WordsEditorFragment extends Fragment implements WordsEditorView, To
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorSecondaryText);
-        mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorLightAccent);
-        mSwipeRefreshLayout.setOnRefreshListener(this::onRefreshRecyclerView);
         Toolbar mToolbar = (Toolbar) getView().findViewById(R.id.toolbar);
         mToolbar.inflateMenu(R.menu.edit_words_main_menu);
         mToolbar.setOnMenuItemClickListener(this);
@@ -184,15 +182,15 @@ public class WordsEditorFragment extends Fragment implements WordsEditorView, To
     private void initRecyclerView() {
         //noinspection ConstantConditions
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorSecondaryText);
+        mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(R.color.colorLightAccent);
+        mSwipeRefreshLayout.setOnRefreshListener(this::onRefreshRecyclerView);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-
         // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)
         mRecyclerViewTouchActionGuardManager = new RecyclerViewTouchActionGuardManager();
         mRecyclerViewTouchActionGuardManager.setInterceptVerticalScrollingWhileAnimationRunning(true);
         mRecyclerViewTouchActionGuardManager.setEnabled(true);
-
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
         final SwipeOnLongPressRecyclerViewAdapter myItemAdapter = new SwipeOnLongPressRecyclerViewAdapter();
         myItemAdapter.setEventListener(new SwipeOnLongPressRecyclerViewAdapter.EventListener() {
@@ -211,17 +209,14 @@ public class WordsEditorFragment extends Fragment implements WordsEditorView, To
                 onItemViewClick(v, pinned);
             }
         });
-
         mAdapter = myItemAdapter;
         mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mAdapter);
         final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
         animator.setSupportsChangeAnimations(false);
         animator.setRemoveDuration(300);
-
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
         mRecyclerView.setItemAnimator(animator);
-
         mRecyclerViewTouchActionGuardManager.attachRecyclerView(mRecyclerView);
         mRecyclerViewSwipeManager.attachRecyclerView(mRecyclerView);
     }
