@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.db.entity.Word;
-import com.eaccid.hocreader.provider.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
@@ -90,7 +90,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(wordItem -> {
                             holder.word.setText(wordItem.getWordFromText());
-                            new ImageViewManager().loadPictureFromUrl(
+                            new ImageViewLoader().loadPictureFromUrl(
                                     holder.wordImage,
                                     wordItem.getPictureUrl(),
                                     R.drawable.empty_circle_background,

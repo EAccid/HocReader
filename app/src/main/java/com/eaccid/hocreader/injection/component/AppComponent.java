@@ -16,7 +16,7 @@ import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.underdevelopment.cardremember.CardWordPresenter;
 import com.eaccid.hocreader.presentation.book.BookPresenter;
-import com.eaccid.hocreader.provider.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.presentation.memorizing.MemorizingPresenter;
 import com.eaccid.hocreader.presentation.memorizing.SchedulingMemorizingAlarmManager;
 import com.eaccid.hocreader.provider.db.words.BookOnReadProvider;
@@ -48,7 +48,7 @@ public interface AppComponent {
 
     void inject(LingualeoDictionaryRx dictionaryRx);
 
-    void inject(ImageViewManager imageViewManager);
+    void inject(ImageViewLoader imageViewManager);
 
     void inject(MainPresenter mainPresenter);
 

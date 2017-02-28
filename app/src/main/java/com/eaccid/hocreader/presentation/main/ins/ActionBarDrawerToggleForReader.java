@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.settings.Preference;
-import com.eaccid.hocreader.provider.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 
 public class ActionBarDrawerToggleForReader extends ActionBarDrawerToggle {
 
@@ -41,7 +41,7 @@ public class ActionBarDrawerToggleForReader extends ActionBarDrawerToggle {
         String EMAIL_LEO = sp.getString(Preference.EMAIL_LEO, drawerView.getContext().getString(R.string.helloreader_eaccid_com));
         View hView = navigationView.getHeaderView(0);
         ImageView imageView = (ImageView) hView.findViewById(R.id.navigation_drawer_user_account_picture_profile);
-        new ImageViewManager().loadPictureFromUrl(
+        new ImageViewLoader().loadPictureFromUrl(
                 imageView,
                 PICTURE_URL_LEO,
                 R.drawable.empty_circle_background_account,

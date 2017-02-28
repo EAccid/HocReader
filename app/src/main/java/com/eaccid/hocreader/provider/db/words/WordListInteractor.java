@@ -15,7 +15,6 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
 
 public class WordListInteractor extends DataListProvider {
 
@@ -97,21 +96,20 @@ public class WordListInteractor extends DataListProvider {
     }
 
     /**
-     * Try RxJava in Android
+     * Try RxJava temp
      */
 
-    public BehaviorSubject<WordItem> getWordItem(final int index) {
+    public Observable<WordItem> getWordItem(final int index) {
         WordItem word = (WordItem) getItem(index);
-        BehaviorSubject<WordItem> subject = BehaviorSubject.create();
-        new HocTranslatorProvider()
+        return Observable.create(subscriber -> new HocTranslatorProvider()
                 .translate(word.getWordFromText())
                 .subscribeOn(Schedulers.io())
                 .subscribe(textTranslation -> {
                             word.setTranslationToText(textTranslation);
-                            subject.onNext(word);
-                        }, subject::onError
-                );
-        return subject;
+                            subscriber.onNext(word);
+                            subscriber.onCompleted();
+                        }, subscriber::onError
+                ));
     }
 
     public Observable<Boolean> removeItems(SparseBooleanArray items) {

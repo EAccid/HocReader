@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
-import com.eaccid.hocreader.provider.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
 import com.eaccid.hocreader.provider.db.words.WordItem;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
@@ -70,7 +70,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(item -> {
                     word.setText(item.getWordFromText());
-                    new ImageViewManager().loadPictureFromUrl(
+                    new ImageViewLoader().loadPictureFromUrl(
                             wordImage,
                             item.getPictureUrl(),
                             R.drawable.empty_circle_background,

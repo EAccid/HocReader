@@ -13,14 +13,14 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
-public class ImageViewManager {
+public class ImageViewLoader {
 
     @Inject
     @ApplicationContext
     Context context;
-    private final String LOG_TAG = "ImageViewManager";
+    private final String LOG_TAG = "ImageViewLoader";
 
-    public ImageViewManager() {
+    public ImageViewLoader() {
         App.getAppComponent().inject(this);
     }
 

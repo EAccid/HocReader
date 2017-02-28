@@ -6,7 +6,7 @@ import android.util.Log;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
-import com.eaccid.hocreader.provider.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.provider.fromtext.WordFromTextImpl;
 import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
@@ -83,7 +83,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     private void showTranslationsData(TextTranslation textTranslation) {
         mView.showContextWord(mView.getWordFromText().getText());
         mView.showBaseWord(mNextWordToTranslate);
-        new ImageViewManager()
+        new ImageViewLoader()
                 .loadPictureFromUrl(
                         mView.getWordPicture(),
                         textTranslation.getPicUrl(),

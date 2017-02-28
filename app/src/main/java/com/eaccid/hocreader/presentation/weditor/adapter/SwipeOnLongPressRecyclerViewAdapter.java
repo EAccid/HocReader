@@ -14,7 +14,8 @@ import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.App;
-import com.eaccid.hocreader.provider.semantic.ImageViewManager;
+import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
+import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
 import com.eaccid.hocreader.provider.db.words.WordItemImpl;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
@@ -99,7 +100,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         ImageView transcriptionSpeaker;
         MediaPlayer mediaPlayer;
         boolean isSetToLearn;
-        public Subscription subscription;
+        Subscription subscription;
 
         WordsEditorViewHolder(View v) {
             super(v);
@@ -129,6 +130,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         );
     }
 
+    //TODO refactor 'try RxJava' -> does not work correctly
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
         Log.i(LOG_TAG, "Setting data to view from item: position " + position);
         if (holder.subscription != null && !holder.subscription.isUnsubscribed())
@@ -142,12 +144,12 @@ public class SwipeOnLongPressRecyclerViewAdapter
                     SparseBooleanArray collapsedPositions = new SparseBooleanArray();
                     collapsedPositions.put(0, true);
                     holder.context.setText(wordItem.getContext(), collapsedPositions, 0);
-                    new ImageViewManager().loadPictureFromUrl(
+                    new ImageViewLoader().loadPictureFromUrl(
                             holder.wordImage,
                             wordItem.getPictureUrl(),
                             R.drawable.empty_picture_background,
                             R.drawable.empty_picture_background,
-                            false
+                            new NetworkAvailablenessImpl().isNetworkAvailable()
                     );
                     if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
                         holder.mediaPlayer.release();
