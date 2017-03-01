@@ -22,6 +22,6 @@ public interface WordListComponent {
 
     void inject(SwipeOnLongPressRecyclerViewAdapter swipeOnLongPressRecyclerViewAdapter);
 
-    void inject(ToolbarActionModeCallback toolbar_actionMode_);
+    void inject(ToolbarActionModeCallback toolbarActionModeCallback);
 
 }
