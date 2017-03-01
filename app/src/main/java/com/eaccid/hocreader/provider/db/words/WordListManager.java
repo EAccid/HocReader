@@ -9,6 +9,7 @@ import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.provider.db.words.listprovider.ItemDataProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -90,6 +91,7 @@ public class WordListManager implements Callable<List<ItemDataProvider>> {
         Log.i(LOG_TAG, "Updating words from database... start");
         List<ItemDataProvider> dataList = new ArrayList<>();
         List<Word> wordsFromDB = dataManager.getAllWords(words, wordFilter, null);
+        Collections.sort(wordsFromDB);
         for (Word word : wordsFromDB) {
             ItemDataProvider itemDataProvider = new WordItemImpl(fromIndex + dataList.size(), word);
             itemDataProvider.setLastAdded(wordFilter == WordFilter.BY_BOOK_AND_WORD_COLLECTION);

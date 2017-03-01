@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 @DatabaseTable(tableName = "words")
-public class Word implements Serializable {
+public class Word implements Serializable, Comparable<Word> {
 
     @DatabaseField(generatedId = true, allowGeneratedIdInsert = true, columnName = "_id")
     private long id;
@@ -130,5 +130,10 @@ public class Word implements Serializable {
         int result = word.hashCode();
         result = 31 * result + book.hashCode();
         return result;
+    }
+
+    @Override
+    public int compareTo(Word w) {
+        return this.getName().compareTo(w.getName());
     }
 }
