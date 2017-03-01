@@ -1,28 +1,15 @@
 package com.eaccid.hocreader.provider.semantic;
 
-import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.widget.ImageView;
-
-import com.eaccid.hocreader.App;
-import com.eaccid.hocreader.injection.ApplicationContext;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import javax.inject.Inject;
-
 public class ImageViewLoader {
 
-    @Inject
-    @ApplicationContext
-    Context context;
     private final String LOG_TAG = "ImageViewLoader";
-
-    public ImageViewLoader() {
-        App.getAppComponent().inject(this);
-    }
 
     public void loadPictureFromUrl(final ImageView imageView, final String url, final @DrawableRes int placeholderId, final @DrawableRes int errorId, boolean isCached) {
 
@@ -32,10 +19,9 @@ public class ImageViewLoader {
         load(networkPolicy, imageView, url, placeholderId, errorId);
     }
 
-
     private void load(NetworkPolicy networkPolicy, final ImageView imageView, final String url, final @DrawableRes int placeholderId, final @DrawableRes int errorId) {
         Picasso
-                .with(context)
+                .with(imageView.getContext())
                 .load(url)
                 .networkPolicy(networkPolicy)
                 .placeholder(placeholderId)

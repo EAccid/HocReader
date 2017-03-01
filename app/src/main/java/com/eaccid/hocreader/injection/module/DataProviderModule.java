@@ -9,12 +9,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-@WordListScope
 public class DataProviderModule {
 
     @Provides
     @WordListScope
-    WordListManager provideWordListProvider(AppDatabaseManager databaseManager) {
+    WordListManager provideWordListManager(AppDatabaseManager databaseManager) {
         return new WordListManager(databaseManager);
     }
 

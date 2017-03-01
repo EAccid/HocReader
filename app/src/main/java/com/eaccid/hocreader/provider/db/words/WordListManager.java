@@ -29,11 +29,11 @@ public class WordListManager implements Callable<List<ItemDataProvider>> {
         this.dataManager = dataManager;
     }
 
-    List<ItemDataProvider> addAllFromDatabase(List<String> excludeWords) {
+    List<ItemDataProvider> addAllFromDatabase(@Nullable List<String> excludeWords) {
         return getWordItemByCurrentBookList(WordFilter.BY_BOOK_AND_EXCLUDED_WORD_COLLECTION, excludeWords);
     }
 
-    List<ItemDataProvider> getAllFromDatabase(List<String> words, boolean isFilteredByBook) {
+    List<ItemDataProvider> getAllFromDatabase(@Nullable List<String> words, boolean isFilteredByBook) {
         WordFilter filter = WordFilter.NONE;
         if (isFilteredByBook) {
             filter = WordFilter.BY_BOOK_AND_WORD_COLLECTION;
@@ -42,7 +42,7 @@ public class WordListManager implements Callable<List<ItemDataProvider>> {
     }
 
     List<ItemDataProvider> getAll() {
-        return getWordItemByCurrentBookList(WordFilter.BY_BOOK, null);
+        return getWordItemByCurrentBookList(WordFilter.NONE, null);
     }
 
     @Nullable

@@ -41,13 +41,10 @@ public class MainPresenter implements BasePresenter<MainActivity> {
     @Inject
     BookInteractor bookInteractor;
 
-    public MainPresenter() {
-        App.getAppComponent().inject(this);
-    }
-
     @Override
     public void attachView(MainActivity mainActivity) {
         mView = mainActivity;
+        App.get(mView).getAppComponent().inject(this);
         Log.i(LOG_TAG, "MainActivity has been attached.");
         PreferenceManager.setDefaultValues(mView.getApplicationContext(), R.xml.preferences, false);
         directories.setOnDirectoriesChangedListener(id -> {

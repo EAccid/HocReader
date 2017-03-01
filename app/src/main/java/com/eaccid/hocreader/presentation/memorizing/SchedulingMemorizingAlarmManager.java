@@ -5,19 +5,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.eaccid.hocreader.App;
-import com.eaccid.hocreader.injection.ApplicationContext;
-
-import javax.inject.Inject;
-
 public class SchedulingMemorizingAlarmManager {
+    private Context context;
 
-    @Inject
-    @ApplicationContext
-    Context context;
-
-    public SchedulingMemorizingAlarmManager() {
-        App.getAppComponent().inject(this);
+    public SchedulingMemorizingAlarmManager(Context context) {
+        this.context = context;
     }
 
     public void scheduleAlarm(long triggerAtMillis) {

@@ -51,6 +51,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
     private final View.OnClickListener mSwipeableViewContainerOnClickListener;
     private SparseBooleanArray mSelectedItemsIds;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
+
     @Inject
     WordListInteractor wordListInteractor;
 
@@ -66,7 +67,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     public SwipeOnLongPressRecyclerViewAdapter() {
-        App.getWordListComponent().inject(this);
         mItemViewOnClickListener = this::onItemViewClick;
         mSwipeableViewContainerOnClickListener = this::onSwipeableViewContainerClick;
         setHasStableIds(true);// have to implement the getItemId() method
@@ -114,6 +114,19 @@ public class SwipeOnLongPressRecyclerViewAdapter
     }
 
     @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        App.get(recyclerView.getContext())
+                .getWordListComponent()
+                .inject(this);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        compositeSubscription.unsubscribe();
+    }
+
+    @Override
     public WordsEditorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View v = inflater.inflate(R.layout.editor_word_item_fragment_1, parent, false);
@@ -130,9 +143,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         );
     }
 
-    //TODO refactor 'try RxJava' -> does not work correctly
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
-        Log.i(LOG_TAG, "Setting data to view from item: position " + position);
         if (holder.subscription != null && !holder.subscription.isUnsubscribed())
             compositeSubscription.remove(holder.subscription);
         holder.subscription = wordListInteractor
@@ -149,7 +160,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
                             wordItem.getPictureUrl(),
                             R.drawable.empty_picture_background,
                             R.drawable.empty_picture_background,
-                            new NetworkAvailablenessImpl().isNetworkAvailable()
+                            new NetworkAvailablenessImpl(holder.itemView.getContext()).isNetworkAvailable()
                     );
                     if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
                         holder.mediaPlayer.release();
@@ -171,6 +182,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
                     new ReaderExceptionHandlerImpl().handleError(e);
                 });
         compositeSubscription.add(holder.subscription);
+        Log.i(LOG_TAG, "Setting data to view from item: position " + position);
     }
 
     private void setListenersToViewFromItem(WordsEditorViewHolder holder, int position) {
@@ -202,11 +214,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.alreadyLearned.setOnClickListener(v -> {
             Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
         });
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        compositeSubscription.unsubscribe();
     }
 
     private void showSpeaker(ImageView iv, boolean isSpeaking) {

@@ -1,5 +1,6 @@
 package com.eaccid.hocreader.provider.db.words;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
@@ -15,8 +16,8 @@ public class BookOnReadProvider {
     @Inject
     AppDatabaseManager databaseManager;
 
-    public BookOnReadProvider() {
-        App.getAppComponent().inject(this);
+    public BookOnReadProvider(Context context) {
+        App.get(context).getAppComponent().inject(this);
     }
 
     public void storeCurrentBooksPage(int page) {

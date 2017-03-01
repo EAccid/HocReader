@@ -5,22 +5,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.eaccid.hocreader.App;
-import com.eaccid.hocreader.injection.ApplicationContext;
-
-import javax.inject.Inject;
 
 public class NetworkAvailablenessImpl implements NetworkAvailableness {
+    private Context context;
 
-    @Inject
-    @ApplicationContext
-    Context context;
-
-    public NetworkAvailablenessImpl() {
-        App.getAppComponent().inject(this);
+    public NetworkAvailablenessImpl(Context context) {
+        this.context = context;
     }
 
     @Override
     public boolean isNetworkAvailable() {
+        App.get(context).getAppComponent().inject(this);
         return isOnline();
     }
 

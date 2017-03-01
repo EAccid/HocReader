@@ -91,6 +91,7 @@ public class WordTrainingFragment extends Fragment {
         adapter = new WordCarouselRecyclerViewAdapter();
         WordCursorProvider wordCursorProvider = new WordCursorProvider();
         adapter = (WordCarouselRecyclerViewAdapter) wordCursorProvider.createAdapterWithCursor(
+                getContext(),
                 adapter,
                 getArguments().getBoolean("is_filter_by_book")
         );

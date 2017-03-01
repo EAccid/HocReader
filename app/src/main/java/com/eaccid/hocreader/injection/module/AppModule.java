@@ -6,13 +6,11 @@ import android.content.SharedPreferences;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.App;
-import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoriesPreferences;
 import com.eaccid.hocreader.presentation.settings.Preference;
 import com.eaccid.hocreader.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.provider.db.books.BookInteractorImpl;
-import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesImpl;
 
 import javax.inject.Singleton;
 
@@ -44,12 +42,6 @@ public class AppModule {
     @Singleton
     SharedPreferences provideSharedPreferences() {
         return appContext.getSharedPreferences(Preference.SHP_NAME_APP, Context.MODE_PRIVATE);
-    }
-
-    @Provides
-    @Singleton
-    LingualeoServiceCookies provideLingualeoServiceCookies() {
-        return new LingualeoServiceCookiesImpl();
     }
 
     //TODO activity scope

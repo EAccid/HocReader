@@ -3,6 +3,7 @@ package com.eaccid.hocreader.presentation.pager;
 import android.util.Log;
 
 import com.eaccid.hocreader.App;
+import com.eaccid.hocreader.injection.WordListScope;
 import com.eaccid.hocreader.provider.db.books.BookInteractor;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
@@ -25,19 +26,21 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     @Inject
     BookInteractor bookInteractor;
     @Inject
+    @WordListScope
     WordListInteractor wordListInteractor;
 
     @Override
     public void attachView(PagerActivity pagerActivity) {
-        App.getWordListComponent().inject(this);
         mView = pagerActivity;
+        App.get(mView).plusWordListComponent().inject(this);
         Log.i(LOG_TAG, "PagerActivity has been attached.");
     }
 
     @Override
     public void detachView() {
         Log.i(LOG_TAG, "PagerActivity has been detached.");
-        App.clearWordListComponent();
+        App.get(mView)
+                .clearWordListComponent();
         compositeSubscription.clear();
         mView = null;
     }

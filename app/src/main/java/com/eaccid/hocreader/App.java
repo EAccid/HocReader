@@ -1,35 +1,55 @@
 package com.eaccid.hocreader;
 
 import android.app.Application;
+import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
+import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 import com.eaccid.hocreader.injection.component.AppComponent;
 import com.eaccid.hocreader.injection.component.DaggerAppComponent;
 import com.eaccid.hocreader.injection.component.WordListComponent;
 import com.eaccid.hocreader.injection.module.AppModule;
 import com.eaccid.hocreader.injection.module.DataProviderModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
+import com.eaccid.hocreader.provider.translator.LingualeoServiceCookiesImpl;
 
 public class App extends Application {
-    private static AppComponent component;
-    private static WordListComponent wordListComponent;
+
+    private AppComponent component;
+    private WordListComponent wordListComponent;
+    //TODO take into component
+    private static LingualeoServiceCookies cookies;
 
     @Override
     public void onCreate() {
         super.onCreate();
         buildComponent();
+        cookies = new LingualeoServiceCookiesImpl(this);
     }
 
-    public static AppComponent getAppComponent() {
+    public static App get(Context context) {
+        return (App) context.getApplicationContext();
+    }
+
+    public static LingualeoServiceCookies getLeoCookies() {
+        return cookies;
+    }
+
+    public AppComponent getAppComponent() {
         return component;
     }
 
-    public static WordListComponent getWordListComponent() {
-        //TODO delete null check after adding Moxy:
-        //it's a temp solution, on rotate screen getWordListComponent() returns null
-        if (wordListComponent == null)
-            plusWordListComponent();
+    public WordListComponent getWordListComponent() {
         return wordListComponent;
+    }
+
+    public WordListComponent plusWordListComponent() {
+        wordListComponent = component.plusWordListComponent(new DataProviderModule());
+        return wordListComponent;
+    }
+
+    public void clearWordListComponent() {
+        wordListComponent = null;
     }
 
     private void buildComponent() {
@@ -41,19 +61,8 @@ public class App extends Application {
         }
     }
 
-    public static WordListComponent plusWordListComponent() {
-        if (wordListComponent == null) {
-            wordListComponent = component.plusWordListComponent(new DataProviderModule());
-        }
-        return wordListComponent;
-    }
-
-    public static void clearWordListComponent() {
-        wordListComponent = null;
-    }
-
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    public static void setComponent(AppComponent appComponent) {
+    public void setComponent(AppComponent appComponent) {
         component = appComponent;
     }
 

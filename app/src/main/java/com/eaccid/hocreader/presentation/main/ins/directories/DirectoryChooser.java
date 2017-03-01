@@ -60,7 +60,7 @@ public class DirectoryChooser {
     }
 
     private void startDirectoryDeleter(Activity context) {
-        App.getAppComponent().inject(this);
+        App.get(context).getAppComponent().inject(this);
         AlertDialog.Builder builderDialog = new AlertDialog.Builder(context);
         CharSequence[] dirs = customDirectories.getFiles();
         boolean[] isChecked = new boolean[dirs.length];

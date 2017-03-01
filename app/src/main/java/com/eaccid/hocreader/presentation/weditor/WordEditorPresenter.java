@@ -23,7 +23,7 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     @Override
     public void attachView(WordsEditorFragment wordsEditorFragment) {
         mView = wordsEditorFragment;
-        App.getWordListComponent().inject(this);
+        App.get(mView.getContext()).getWordListComponent().inject(this);
         Log.i(LOG_TAG, "WordsEditorFragment has been attached.");
     }
 
@@ -38,6 +38,10 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
     }
 
     public void onViewCreated() {
+        updateDataList();
+    }
+
+    public void onStartActionMode() {
         updateDataList();
     }
 
@@ -97,8 +101,5 @@ public class WordEditorPresenter implements BasePresenter<WordsEditorFragment> {
         mView.showToast("Under development: SET_TO_LEARN");
     }
 
-    public void onStartActionMode() {
-        updateDataList();
-    }
 }
 

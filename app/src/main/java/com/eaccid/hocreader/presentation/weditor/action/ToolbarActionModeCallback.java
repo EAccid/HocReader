@@ -1,19 +1,13 @@
 package com.eaccid.hocreader.presentation.weditor.action;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.App;
-import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.presentation.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
-import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 
 import android.support.v7.view.ActionMode;
-
-import javax.inject.Inject;
 
 public class ToolbarActionModeCallback implements ActionMode.Callback {
 
@@ -21,16 +15,8 @@ public class ToolbarActionModeCallback implements ActionMode.Callback {
     private final SwipeOnLongPressRecyclerViewAdapter recyclerView_adapter;
     private ToolbarActionModeListener actionModeListener;
 
-    @Inject
-    @ApplicationContext
-    Context context;
-    @Inject
-    WordListInteractor wordListInteractor;
-
-
     public ToolbarActionModeCallback(SwipeOnLongPressRecyclerViewAdapter recyclerView_adapter) {
         this.recyclerView_adapter = recyclerView_adapter;
-        App.plusWordListComponent().inject(this);
     }
 
     public void setToolbarActionModeListener(ToolbarActionModeListener listener) {

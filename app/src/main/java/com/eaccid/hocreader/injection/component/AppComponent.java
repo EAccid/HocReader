@@ -1,11 +1,7 @@
 package com.eaccid.hocreader.injection.component;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoDictionaryRx;
-import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 import com.eaccid.hocreader.injection.ApplicationContext;
 import com.eaccid.hocreader.injection.module.AppModule;
 import com.eaccid.hocreader.injection.module.DatabaseModule;
@@ -36,14 +32,6 @@ public interface AppComponent {
     @ApplicationContext
     Context context();
 
-    SharedPreferences sharedPreferences();
-
-    LingualeoServiceCookies lingualeoServiceCookies();
-
-    AppDatabaseManager appDatabaseManager();
-
-    DirectoriesPreferences directoriesPreferences();
-
     void inject(LingualeoServiceCookiesImpl leoCookies);
 
     void inject(LingualeoDictionaryRx dictionaryRx);
@@ -69,4 +57,5 @@ public interface AppComponent {
     void inject(DirectoriesPreferences customDirectories);
 
     void inject(DirectoryChooser directoryChooser);
+
 }

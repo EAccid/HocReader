@@ -21,8 +21,8 @@ public class MemorizingPresenter  implements BasePresenter<MemorizingService> {
 
     @Override
     public void attachView(MemorizingService memorizingService) {
-        App.getAppComponent().inject(this);
         mView = memorizingService;
+        App.get(mView).getAppComponent().inject(this);
         Log.i(logTAG, "MemorizingService has been attached.");
     }
 
@@ -55,6 +55,5 @@ public class MemorizingPresenter  implements BasePresenter<MemorizingService> {
 
         Log.i(logTAG, "Notification has been created.");
     }
-
 
 }

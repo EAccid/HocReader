@@ -16,17 +16,13 @@ public class CardWordPresenter implements BasePresenter<CardWordActivity> {
     private final String logTAG = "MainPresenter";
     private CardWordActivity mView;
 
-    //TODO inject provider instead of manager
     @Inject
     AppDatabaseManager databaseManager;
-
-    public CardWordPresenter() {
-        App.getAppComponent().inject(this);
-    }
 
     @Override
     public void attachView(CardWordActivity cardWordActivity) {
         mView = cardWordActivity;
+        App.get(mView).getAppComponent().inject(this);
         Log.i(logTAG, "CardWordActivity has been attached.");
     }
 

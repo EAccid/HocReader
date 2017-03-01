@@ -6,18 +6,14 @@ import com.eaccid.hocreader.data.remote.libtranslator.dictionary.DictionaryRx;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestHandler;
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.connection.RequestParameters;
 
-import javax.inject.Inject;
-
 import rx.Observable;
 import rx.Subscriber;
 
 public class LingualeoDictionaryRx implements DictionaryRx {
-
-    @Inject
-    LingualeoServiceCookies cookies;
+    private LingualeoServiceCookies cookies;
 
     public LingualeoDictionaryRx() {
-        App.getAppComponent().inject(this);
+        this.cookies = App.getLeoCookies();
     }
 
     @Override

@@ -36,19 +36,19 @@ public class BookPresenter implements BasePresenter<BookFragment> {
 
     public BookPresenter() {
         mPagesList = new ArrayList<>();
-        App.getAppComponent().inject(this);
     }
 
     @Override
     public void attachView(BookFragment bookFragment) {
         mView = bookFragment;
+        App.get(mView.getContext()).getAppComponent().inject(this);
         Log.i(logTAG, "BookFragment has been attached.");
     }
 
     @Override
     public void detachView() {
         Log.i(logTAG, "BookFragment has been detached.");
-        new BookOnReadProvider().storeCurrentBooksPage(mView.getCurrentPosition());
+        new BookOnReadProvider(mView.getContext()).storeCurrentBooksPage(mView.getCurrentPosition());
         compositeSubscription.clear();
         mView = null;
     }
@@ -73,7 +73,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
                     public void onCompleted() {
                         mView.dismissProgressDialog();
                         mView.notifyDataSetChanged();
-                        int position = max(new BookOnReadProvider().loadCurrentBooksPage(), mView.getSavedPage());
+                        int position = max(new BookOnReadProvider(mView.getContext()).loadCurrentBooksPage(), mView.getSavedPage());
                         mView.scrollToListPosition(position, 0);
                     }
 

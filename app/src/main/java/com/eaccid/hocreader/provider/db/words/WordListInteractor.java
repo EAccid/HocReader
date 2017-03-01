@@ -74,24 +74,24 @@ public class WordListInteractor extends DataListProvider {
         sessionWords = new ArrayList<>();
     }
 
-    public void fillSessionDataList(boolean isFilteredByBook) {
-        setDataList(getDataListByBookAndSessionWords(isFilteredByBook));
-    }
-
     public void updateSessionDataList(boolean isFilteredByBook) {
-        setDataList(getDataListByBookAndSessionWords(isFilteredByBook));
-        getDataList().addAll(addDataListByBookAndSessionWords());
+        if (isFilteredByBook) {
+            setDataList(getDataListByBookAndSessionWords());
+            getDataList().addAll(getDataListByBookWithExcludedSessionWords());
+            return;
+        }
+        populateDataList();
     }
 
     private List<ItemDataProvider> getWordList() {
         return wordListManager.getAll();
     }
 
-    private List<ItemDataProvider> getDataListByBookAndSessionWords(boolean isFilteredByBook) {
-        return wordListManager.getAllFromDatabase(sessionWords, isFilteredByBook);
+    private List<ItemDataProvider> getDataListByBookAndSessionWords() {
+        return wordListManager.getAllFromDatabase(sessionWords, true);
     }
 
-    private List<ItemDataProvider> addDataListByBookAndSessionWords() {
+    private List<ItemDataProvider> getDataListByBookWithExcludedSessionWords() {
         return wordListManager.addAllFromDatabase(sessionWords);
     }
 

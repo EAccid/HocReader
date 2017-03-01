@@ -81,7 +81,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
     }
 
     private void setDataToViewFromItem(WordCarouselRecyclerViewAdapter.ViewHolder holder, Word word) {
-        if (!new NetworkAvailablenessImpl().isNetworkAvailable()) {
+        if (!new NetworkAvailablenessImpl(holder.itemView.getContext()).isNetworkAvailable()) {
             holder.word.setText(word.getName());
             return;
         }
