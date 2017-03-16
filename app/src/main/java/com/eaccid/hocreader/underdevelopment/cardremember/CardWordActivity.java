@@ -142,7 +142,8 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mediaPlayer.release();
+        if (mediaPlayer != null)
+            mediaPlayer.release();
         mPresenter.detachView();
         finish();
     }
