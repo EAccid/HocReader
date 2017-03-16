@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.underdevelopment;
+package com.eaccid.hocreader.presentation;
 
 public interface Notifiable {
     void notifyDataChanged();

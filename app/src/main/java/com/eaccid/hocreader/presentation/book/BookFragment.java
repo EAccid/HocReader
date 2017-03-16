@@ -37,11 +37,9 @@ import butterknife.ButterKnife;
 
 public class BookFragment extends Fragment implements OnMenuItemClickListener, OnMenuItemLongClickListener, BookView {
     private BookPresenter mPresenter;
-
     private BookRecyclerViewAdapter mAdapter;
     private ContextMenuDialogFragment mMenuDialogFragment;
     private List<MenuObject> menuObjects;
-    private int page = 0;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.menu_more_vert_grey)
@@ -91,12 +89,13 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter.onViewCreated();
+        int page = 0;
         if (savedInstanceState != null) {
             boolean isSelectableText = savedInstanceState.getBoolean("is_selectable");
             setSelectableText(isSelectableText);
             page = savedInstanceState.getInt("page_number");
         }
+        mPresenter.onViewCreated(page);
     }
 
     @Override
@@ -193,13 +192,12 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
     @Override
     public void setSelectableText(boolean isSelectable) {
         mAdapter.setSelectableItemTextView(isSelectable);
-        mAdapter.notifyDataSetChanged();
-        String modeText = ""; // todo from @string
+        String modeText;
         if (isSelectable) {
-            modeText = "Hold a long press to select";
+            modeText = getString(R.string.selectable_mode);
             moreMenuImg.setImageResource(R.drawable.ic_done_all_24px);
         } else {
-            modeText = "Reader mode";
+            modeText =  getString(R.string.reader_mode);
             moreMenuImg.setImageResource(R.drawable.ic_more_vert_gray_24px);
         }
         Toast.makeText(getContext(), modeText, Toast.LENGTH_SHORT).show();
@@ -208,14 +206,6 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
     @Override
     public boolean isSelectableMode() {
         return mAdapter.isSelectableItemTextView();
-    }
-
-    private void initMenuFragment() {
-        MenuParams menuParams = new BookMenuParamsImpl().create(getContext());
-        mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
-        mMenuDialogFragment.setItemClickListener(this);
-        mMenuDialogFragment.setItemLongClickListener(this);
-        menuObjects = menuParams.getMenuObjects();
     }
 
     @Override
@@ -246,10 +236,6 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
         }
     }
 
-    public int getSavedPage() {
-        return page;
-    }
-
     private void onMoreMenuClicked() {
         mPresenter.onMoreMenuClicked();
     }
@@ -257,6 +243,14 @@ public class BookFragment extends Fragment implements OnMenuItemClickListener, O
     private void setAdapterToRecyclerView() {
         mAdapter = mPresenter.createRecyclerViewAdapter();
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void initMenuFragment() {
+        MenuParams menuParams = new BookMenuParamsImpl().create(getContext());
+        mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
+        mMenuDialogFragment.setItemClickListener(this);
+        mMenuDialogFragment.setItemLongClickListener(this);
+        menuObjects = menuParams.getMenuObjects();
     }
 
 }

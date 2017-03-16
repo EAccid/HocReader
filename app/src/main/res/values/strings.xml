@@ -106,4 +106,8 @@
     <string name="sign_out_succeed">Sign out succeed</string>
     <string name="sign_in_failed">Sign in failed</string>
 
+    <string name="selectable_mode">Hold a long press to select</string>
+    <string name="reader_mode">Reader mode</string>
+
+
 </resources>

@@ -1,7 +1,7 @@
 package com.eaccid.hocreader.presentation.translation;
 
 import com.eaccid.hocreader.presentation.BaseView;
-import com.eaccid.hocreader.underdevelopment.Notifiable;
+import com.eaccid.hocreader.presentation.Notifiable;
 
 import java.util.List;
 

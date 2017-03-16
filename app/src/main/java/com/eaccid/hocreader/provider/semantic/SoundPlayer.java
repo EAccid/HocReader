@@ -1,6 +1,6 @@
 package com.eaccid.hocreader.provider.semantic;
 
-import com.eaccid.hocreader.underdevelopment.Releasable;
+import com.eaccid.hocreader.provider.Releasable;
 
 import rx.Observable;
 

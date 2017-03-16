@@ -53,12 +53,12 @@ public class BookPresenter implements BasePresenter<BookFragment> {
         mView = null;
     }
 
-    public void onViewCreated() {
-        setDataToList();
+    public void onViewCreated(int page) {
+        setDataToList(page);
         mView.setSelectableText(mView.isSelectableMode());
     }
 
-    private void setDataToList() {
+    private void setDataToList(int currentItem) {
         TxtPagesFromFileProvider txtPagesFromFileProvider = new TxtPagesFromFileProvider(
                 new CharactersDefinerForFullScreenTextView(mView.getActivity())
         );
@@ -73,7 +73,7 @@ public class BookPresenter implements BasePresenter<BookFragment> {
                     public void onCompleted() {
                         mView.dismissProgressDialog();
                         mView.notifyDataSetChanged();
-                        int position = max(new BookOnReadProvider(mView.getContext()).loadCurrentBooksPage(), mView.getSavedPage());
+                        int position = max(new BookOnReadProvider(mView.getContext()).loadCurrentBooksPage(), currentItem);
                         mView.scrollToListPosition(position, 0);
                     }
 
