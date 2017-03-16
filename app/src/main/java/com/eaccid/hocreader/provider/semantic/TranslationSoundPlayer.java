@@ -19,6 +19,7 @@ public class TranslationSoundPlayer implements SoundPlayer<String> {
     @Override
     public void preparePlayerFromSource(final String url) {
         try {
+            mediaPlayer.reset();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(url);
             mediaPlayer.prepareAsync();
