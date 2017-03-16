@@ -44,7 +44,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         ImageView alreadyLearned;
         @BindView(R.id.transcription_speaker)
         ImageView transcriptionSpeaker;
-        SoundPlayer soundPlayer;
+        SoundPlayer<String> soundPlayer;
         @BindView(R.id.don_t_know)
         Button dontKnow;
         @BindView(R.id.remember)
@@ -54,6 +54,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         public ViewHolder(View drawerView) {
             super(drawerView);
             ButterKnife.bind(this, drawerView);
+            soundPlayer = new TranslationSoundPlayer();
         }
     }
 
@@ -72,8 +73,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
     @Override
     public void onViewDetachedFromWindow(WordCarouselRecyclerViewAdapter.ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
-        if (holder.soundPlayer != null)
-            holder.soundPlayer.release();
+        holder.soundPlayer.release();
     }
 
     public String getCurrentContext(int position) {
@@ -110,7 +110,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                                             new MemorizingCalculatorImpl(wordItem)
                                     )
                             );
-                            holder.soundPlayer = TranslationSoundPlayer.createAndPreparePlayerFromUrl(wordItem.getSoundUrl());
+                            holder.soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
                             //Temp:
                             holder.learnByHeart.setImageResource(
                                     new IconTogglesResourcesProvider().getLearnByHeartResId(

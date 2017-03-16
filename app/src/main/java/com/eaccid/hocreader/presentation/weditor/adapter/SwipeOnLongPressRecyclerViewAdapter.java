@@ -53,6 +53,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
     private SparseBooleanArray mSelectedItemsIds;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
+    public static int count = 0;
+
     @Inject
     WordListInteractor wordListInteractor;
 
@@ -99,20 +101,22 @@ public class SwipeOnLongPressRecyclerViewAdapter
         ImageView alreadyLearned;
         @BindView(R.id.transcription_speaker)
         ImageView transcriptionSpeaker;
-        SoundPlayer soundPlayer;
+        SoundPlayer<String> soundPlayer;
         boolean isSetToLearn;
         Subscription subscription;
 
         WordsEditorViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+            soundPlayer = new TranslationSoundPlayer();
         }
 
         @Override
         public View getSwipeableContainerView() {
             return container;
         }
-    }
+
+   }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -147,7 +151,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
     @Override
     public void onViewDetachedFromWindow(WordsEditorViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
-        if (holder.soundPlayer != null)
             holder.soundPlayer.release();
     }
 
@@ -170,7 +173,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
                             R.drawable.empty_picture_background,
                             new NetworkAvailablenessImpl(holder.itemView.getContext()).isNetworkAvailable()
                     );
-                    holder.soundPlayer = TranslationSoundPlayer.createAndPreparePlayerFromUrl(wordItem.getSoundUrl());
+                    holder.soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
                     holder.transcription.setText("[" + wordItem.getTranscription() + "]");
                     holder.alreadyLearned.setImageResource(
                             new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(
@@ -199,9 +202,10 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.transcriptionSpeaker.setOnClickListener(
                 speaker -> {
                     showSpeaker(holder.transcriptionSpeaker, true);
-                    holder.soundPlayer.play().subscribe(completed -> {
+                    Subscription sub = holder.soundPlayer.play().subscribe(completed -> {
                         showSpeaker(holder.transcriptionSpeaker, false);
                     });
+                    compositeSubscription.add(sub);
                 }
         );
         holder.showInPage.setOnClickListener(

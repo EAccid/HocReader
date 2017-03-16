@@ -5,10 +5,10 @@ import android.util.Log;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
 import com.eaccid.hocreader.provider.semantic.SoundPlayer;
-import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.provider.fromtext.WordFromTextImpl;
+import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
 import com.eaccid.hocreader.provider.translator.TranslatedWordImpl;
 import com.eaccid.hocreader.presentation.BasePresenter;
@@ -16,7 +16,6 @@ import com.eaccid.hocreader.presentation.BasePresenter;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class WordTranslationDialogPresenter implements BasePresenter<WordTranslationDialogFragment> {
@@ -24,7 +23,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     private WordTranslationDialogFragment mView;
 
     private TranslatedWordImpl mTranslatedWordImpl;
-    private SoundPlayer mSoundPlayer;
+    private SoundPlayer<String> mSoundPlayer;
     private String mNextWordToTranslate;
     private Subscription mTranslationSubscription;
 
@@ -43,6 +42,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     }
 
     public void onViewCreated() {
+        mSoundPlayer = new TranslationSoundPlayer();
         translateText(mView.getWordFromText());
     }
 
@@ -73,7 +73,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                         {
                             Log.i(LOG_TAG, "Text translated status: " + !textTranslation.isEmpty());
                             if (isNextWordToTranslateEmpty())
-                                setmNextWordToTranslate(textTranslation.getWord());
+                                setNextWordToTranslate(textTranslation.getWord());
                             showTranslationsData(textTranslation);
                             mTranslatedWordImpl = new TranslatedWordImpl(wordFromText.getText(), wordFromText.getSentence());
                         }
@@ -92,7 +92,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                         R.drawable.empty_picture_background,
                         false
                 );
-        mSoundPlayer = TranslationSoundPlayer.createAndPreparePlayerFromUrl(textTranslation.getSoundUrl());
+        mSoundPlayer.preparePlayerFromSource(textTranslation.getSoundUrl());
         mView.showWordTranscription(textTranslation.getTranscription());
         mView.showTranslations(textTranslation.getTranslates());
     }
@@ -107,7 +107,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     public void OnWordClicked() {
         String nextWord = getNextWordToTranslate();
         WordFromTextImpl currentWord = mView.getWordFromText();
-        setmNextWordToTranslate(currentWord.getText());
+        setNextWordToTranslate(currentWord.getText());
         currentWord.setText(nextWord);
         translateText(currentWord);
     }
@@ -119,7 +119,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
         mView.dismiss();
     }
 
-    private void setmNextWordToTranslate(String mNextWordToTranslate) {
+    private void setNextWordToTranslate(String mNextWordToTranslate) {
         this.mNextWordToTranslate = mNextWordToTranslate;
     }
 

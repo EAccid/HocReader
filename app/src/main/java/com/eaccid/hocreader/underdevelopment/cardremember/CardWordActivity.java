@@ -43,7 +43,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
     ImageView alreadyLearned;
     @BindView(R.id.transcription_speaker)
     ImageView transcriptionSpeaker;
-    SoundPlayer soundPlayer;
+    SoundPlayer<String> soundPlayer;
     @BindView(R.id.don_t_know)
     Button dontKnow;
     @BindView(R.id.remember)
@@ -62,6 +62,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
 
         /**TODO delete getting data from presenter, temp solution*/
         WordItem wordItem = mPresenter.getWordItem();
+        soundPlayer = new TranslationSoundPlayer();
         setDataToViewFromItem(wordItem);
         setListenersToViewFromItem();
     }
@@ -85,7 +86,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
                             )
                     );
                     soundPlayer.release();
-                    soundPlayer = TranslationSoundPlayer.createAndPreparePlayerFromUrl(wordItem.getSoundUrl());
+                    soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
                     //Temp:
                     learnByHeart.setImageResource(
                             new IconTogglesResourcesProvider().getLearnByHeartResId(
