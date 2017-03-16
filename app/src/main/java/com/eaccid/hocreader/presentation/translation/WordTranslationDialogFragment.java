@@ -1,7 +1,6 @@
 package com.eaccid.hocreader.presentation.translation;
 
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
-import com.eaccid.hocreader.provider.fromtext.WordFromTextImpl;
 import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
 
@@ -124,17 +122,18 @@ public class WordTranslationDialogFragment extends AppCompatDialogFragment imple
         mTranslations.setAdapter(mAdapter);
     }
 
+    @Override
+    public void notifyDataChanged() {
+        if (mAdapter != null)
+            mAdapter.notifyDataSetChanged();
+    }
+
+    public WordFromText getWordFromText() {
+        return (WordFromText) getArguments().getSerializable("wordFromText");
+    }
+
     public ImageView getWordPicture() {
         return mWordPicture;
     }
 
-    public WordFromTextImpl getWordFromText() {
-        return (WordFromTextImpl) getArguments().getSerializable("wordFromText");
-    }
-
-    public void notifyTranslationsChanged() {
-        if (mAdapter != null)
-            mAdapter.notifyDataSetChanged();
-    }
-    
 }
