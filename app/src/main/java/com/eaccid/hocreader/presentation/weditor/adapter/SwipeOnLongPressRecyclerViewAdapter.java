@@ -16,7 +16,8 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
-import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.semantic.SoundPlayer;
+import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.db.words.WordItemImpl;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.provider.db.words.listprovider.ItemDataProvider;
@@ -98,7 +99,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
         ImageView alreadyLearned;
         @BindView(R.id.transcription_speaker)
         ImageView transcriptionSpeaker;
-        MediaPlayer mediaPlayer;
+        SoundPlayer soundPlayer;
         boolean isSetToLearn;
         Subscription subscription;
 
@@ -143,6 +144,13 @@ public class SwipeOnLongPressRecyclerViewAdapter
         );
     }
 
+    @Override
+    public void onViewDetachedFromWindow(WordsEditorViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        if (holder.soundPlayer != null)
+            holder.soundPlayer.release();
+    }
+
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
         if (holder.subscription != null && !holder.subscription.isUnsubscribed())
             compositeSubscription.remove(holder.subscription);
@@ -162,9 +170,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
                             R.drawable.empty_picture_background,
                             new NetworkAvailablenessImpl(holder.itemView.getContext()).isNetworkAvailable()
                     );
-                    if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
-                        holder.mediaPlayer.release();
-                    holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());
+                    holder.soundPlayer = TranslationSoundPlayer.createAndPreparePlayerFromUrl(wordItem.getSoundUrl());
                     holder.transcription.setText("[" + wordItem.getTranscription() + "]");
                     holder.alreadyLearned.setImageResource(
                             new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(
@@ -192,11 +198,10 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.container.setOnClickListener(mSwipeableViewContainerOnClickListener);
         holder.transcriptionSpeaker.setOnClickListener(
                 speaker -> {
-                    if (holder.mediaPlayer == null) return;
                     showSpeaker(holder.transcriptionSpeaker, true);
-                    holder.mediaPlayer.setOnCompletionListener(mp ->
-                            showSpeaker(holder.transcriptionSpeaker, false));
-                    new MediaPlayerManager().play(holder.mediaPlayer);
+                    holder.soundPlayer.play().subscribe(completed -> {
+                        showSpeaker(holder.transcriptionSpeaker, false);
+                    });
                 }
         );
         holder.showInPage.setOnClickListener(

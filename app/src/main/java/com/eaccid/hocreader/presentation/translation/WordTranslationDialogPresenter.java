@@ -1,11 +1,11 @@
 package com.eaccid.hocreader.presentation.translation;
 
-import android.media.MediaPlayer;
 import android.util.Log;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
-import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.semantic.SoundPlayer;
+import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.provider.fromtext.WordFromTextImpl;
@@ -16,6 +16,7 @@ import com.eaccid.hocreader.presentation.BasePresenter;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class WordTranslationDialogPresenter implements BasePresenter<WordTranslationDialogFragment> {
@@ -23,7 +24,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     private WordTranslationDialogFragment mView;
 
     private TranslatedWordImpl mTranslatedWordImpl;
-    private MediaPlayer mMediaPlayer;
+    private SoundPlayer mSoundPlayer;
     private String mNextWordToTranslate;
     private Subscription mTranslationSubscription;
 
@@ -37,7 +38,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
     public void detachView() {
         Log.i(LOG_TAG, "TranslationPresenter has been detached.");
         mView = null;
-        if (mMediaPlayer != null) mMediaPlayer.release();
+        mSoundPlayer.release();
         if (mTranslationSubscription != null) mTranslationSubscription.unsubscribe();
     }
 
@@ -74,7 +75,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                             if (isNextWordToTranslateEmpty())
                                 setmNextWordToTranslate(textTranslation.getWord());
                             showTranslationsData(textTranslation);
-                            mTranslatedWordImpl = new TranslatedWordImpl(wordFromText.getText(),wordFromText.getSentence());
+                            mTranslatedWordImpl = new TranslatedWordImpl(wordFromText.getText(), wordFromText.getSentence());
                         }
                     }
                 });
@@ -91,17 +92,16 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                         R.drawable.empty_picture_background,
                         false
                 );
-        mMediaPlayer = new MediaPlayerManager()
-                .createAndPreparePlayerFromURL(textTranslation.getSoundUrl());
+        mSoundPlayer = TranslationSoundPlayer.createAndPreparePlayerFromUrl(textTranslation.getSoundUrl());
         mView.showWordTranscription(textTranslation.getTranscription());
         mView.showTranslations(textTranslation.getTranslates());
     }
 
     public void OnSpeakerClicked() {
-        if (mMediaPlayer == null) return;
-        new MediaPlayerManager().play(mMediaPlayer);
-        mMediaPlayer.setOnCompletionListener(mp -> mView.showSpeaker(false));
         mView.showSpeaker(true);
+        mSoundPlayer.play().subscribe(completed -> {
+            mView.showSpeaker(false);
+        });
     }
 
     public void OnWordClicked() {

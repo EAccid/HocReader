@@ -12,8 +12,10 @@ import android.widget.Toast;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
+import com.eaccid.hocreader.presentation.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
-import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.semantic.SoundPlayer;
+import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.db.words.WordItem;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
@@ -41,7 +43,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
     ImageView alreadyLearned;
     @BindView(R.id.transcription_speaker)
     ImageView transcriptionSpeaker;
-    MediaPlayer mediaPlayer;
+    SoundPlayer soundPlayer;
     @BindView(R.id.don_t_know)
     Button dontKnow;
     @BindView(R.id.remember)
@@ -82,9 +84,8 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
                                     new MemorizingCalculatorImpl(item)
                             )
                     );
-                    if (mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
-                        mediaPlayer.release();
-                    mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());
+                    soundPlayer.release();
+                    soundPlayer = TranslationSoundPlayer.createAndPreparePlayerFromUrl(wordItem.getSoundUrl());
                     //Temp:
                     learnByHeart.setImageResource(
                             new IconTogglesResourcesProvider().getLearnByHeartResId(
@@ -117,11 +118,10 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
         });
         transcriptionSpeaker.setOnClickListener(
                 speaker -> {
-                    if (mediaPlayer == null) return;
                     showSpeaker(transcriptionSpeaker, true);
-                    mediaPlayer.setOnCompletionListener(mp ->
-                            showSpeaker(transcriptionSpeaker, false));
-                    new MediaPlayerManager().play(mediaPlayer);
+                    soundPlayer.play().subscribe(completed -> {
+                        showSpeaker(transcriptionSpeaker, false);
+                    });
                 }
         );
     }
@@ -142,8 +142,7 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mediaPlayer != null)
-            mediaPlayer.release();
+        soundPlayer.release();
         mPresenter.detachView();
         finish();
     }
