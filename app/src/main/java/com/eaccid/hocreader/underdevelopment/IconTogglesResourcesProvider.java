@@ -1,15 +1,14 @@
-package com.eaccid.hocreader.presentation.weditor;
+package com.eaccid.hocreader.underdevelopment;
 
 import android.support.annotation.DrawableRes;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.underdevelopment.MemorizingCalculator;
 
-public class IconTogglesResourcesProvider {
+public class IconTogglesResourcesProvider implements IconTogglesResources {
 
-    public
+    @Override
     @DrawableRes
-    int getLearnByHeartResId(boolean isSetToLearn) {
+    public int getLearnByHeartResId(boolean isSetToLearn) {
         if (isSetToLearn) {
             return R.drawable.ic_learn_by_heart_green_24px;
         } else {
@@ -17,9 +16,9 @@ public class IconTogglesResourcesProvider {
         }
     }
 
-    public
+    @Override
     @DrawableRes
-    int getAlreadyLearnedWordResId(MemorizingCalculator memorizingCalculator) {
+    public int getAlreadyLearnedWordResId(MemorizingCalculator memorizingCalculator) {
         int result = MemorizingCalculator.LOW;
         switch (memorizingCalculator.getLevel()) {
             case MemorizingCalculator.LOW:
@@ -35,9 +34,9 @@ public class IconTogglesResourcesProvider {
         return result;
     }
 
-    public
+    @Override
     @DrawableRes
-    int getSpeakerResId(boolean isSpeaking) {
+    public int getSpeakerResId(boolean isSpeaking) {
         if (isSpeaking) {
             return R.drawable.ic_volume_up_accent_24px;
         } else {

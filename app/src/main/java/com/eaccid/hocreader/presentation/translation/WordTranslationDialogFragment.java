@@ -16,7 +16,7 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
 import com.eaccid.hocreader.provider.translator.TranslatedWord;
-import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
 
 import java.util.List;
 

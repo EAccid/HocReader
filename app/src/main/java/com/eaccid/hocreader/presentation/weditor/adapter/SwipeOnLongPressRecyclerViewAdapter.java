@@ -1,6 +1,5 @@
 package com.eaccid.hocreader.presentation.weditor.adapter;
 
-import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -23,7 +22,7 @@ import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.provider.db.words.listprovider.ItemDataProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
 import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
-import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
 import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
@@ -52,8 +51,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
     private final View.OnClickListener mSwipeableViewContainerOnClickListener;
     private SparseBooleanArray mSelectedItemsIds;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
-
-    public static int count = 0;
 
     @Inject
     WordListInteractor wordListInteractor;

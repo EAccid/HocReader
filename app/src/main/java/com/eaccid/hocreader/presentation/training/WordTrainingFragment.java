@@ -141,7 +141,7 @@ public class WordTrainingFragment extends Fragment {
     }
 
     private void showHint() {
-        String hintText = adapter.getCurrentContext(layoutManager.getCenterItemPosition());
+        String hintText = adapter.getCurrentWordContext(layoutManager.getCenterItemPosition());
         if (hintText.isEmpty()) {
             expandable_text.setTextColor(Color.parseColor("#757575"));
             hintText = "Sorry, there is no hint for this word :(";

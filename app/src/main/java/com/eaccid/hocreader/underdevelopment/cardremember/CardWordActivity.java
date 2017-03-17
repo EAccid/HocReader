@@ -1,7 +1,6 @@
 package com.eaccid.hocreader.underdevelopment.cardremember;
 
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -12,14 +11,13 @@ import android.widget.Toast;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.presentation.BaseView;
-import com.eaccid.hocreader.presentation.weditor.adapter.SwipeOnLongPressRecyclerViewAdapter;
 import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.semantic.SoundPlayer;
 import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.db.words.WordItem;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
-import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
+import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
 import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
 import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
 

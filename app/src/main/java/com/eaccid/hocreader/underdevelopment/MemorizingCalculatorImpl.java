@@ -6,8 +6,7 @@ import java.util.Random;
 
 public class MemorizingCalculatorImpl implements MemorizingCalculator {
 
-    public MemorizingCalculatorImpl(WordItem wordProvider) {
-
+    public MemorizingCalculatorImpl(WordItem wordItem) {
     }
 
     @Override
