@@ -2,14 +2,13 @@ package com.eaccid.hocreader.provider.translator;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.eaccid.hocreader.data.remote.libtranslator.lingualeo_impl.dictionary.LingualeoServiceCookies;
 import com.eaccid.hocreader.presentation.settings.Preference;
 
 public class LingualeoServiceCookiesImpl implements LingualeoServiceCookies {
-
     public static final String LINGUALEO_COOKIES = "lingualeo_cookies";
-
-    SharedPreferences sp;
+    private SharedPreferences sp;
 
     public LingualeoServiceCookiesImpl(Context context) {
         sp = context.getSharedPreferences(Preference.SHP_NAME_APP, Context.MODE_PRIVATE);

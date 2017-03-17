@@ -7,7 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
-import com.eaccid.hocreader.provider.fromtext.ins.TextViewManagetImpl;
+import com.eaccid.hocreader.provider.fromtext.ins.TextViewManagerImpl;
 
 public class SelectionToTranslateActionMode implements ActionMode.Callback {
     private final TextView textView;
@@ -40,7 +40,7 @@ public class SelectionToTranslateActionMode implements ActionMode.Callback {
                 boolean isTranslator = new GoogleTranslatorOnDevice()
                         .openAndTranslate(
                                 textView.getContext(),
-                                new TextViewManagetImpl().getSelectedText(textView)
+                                new TextViewManagerImpl().getSelectedText(textView)
                         );
                 if (!isTranslator)
                     Toast.makeText(textView.getContext(), "There is no installed Google Translate",

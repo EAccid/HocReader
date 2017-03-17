@@ -24,14 +24,14 @@ public enum FileExtensions {
         String ext2 = "";
         if (lastDot != -1)
             ext2 = file.getName().substring(lastDot + 1, file.getName().length());
-        if (isMatchExtension(FileExtensions.TXT, ext1, ext2))
+        if (isMatchedExtension(FileExtensions.TXT, ext1, ext2))
             return FileExtensions.TXT;
         if (ext1.equalsIgnoreCase(FileExtensions.PDF.name()) || ext2.equalsIgnoreCase(FileExtensions.PDF.name()))
             return FileExtensions.PDF;
         return null;
     }
 
-    private static boolean isMatchExtension(FileExtensions extension, String... exts) {
+    private static boolean isMatchedExtension(FileExtensions extension, String... exts) {
         boolean isMatchExtension = false;
         for (String ext : exts
                 ) {

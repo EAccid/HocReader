@@ -2,8 +2,7 @@ package com.eaccid.hocreader.provider.fromtext.ins;
 
 import android.widget.TextView;
 
-public class TextViewManagetImpl implements TextViewManager {
-
+public class TextViewManagerImpl implements TextViewManager {
     @Override
     public String getSelectedText(TextView tv) {
         final int selStart = tv.getSelectionStart();

@@ -6,7 +6,6 @@ import com.eaccid.hocreader.data.local.BookReaderMode;
 import java.util.List;
 
 public class BookInteractorImpl implements BookInteractor {
-
     private BookReaderMode dataManager;
 
     public BookInteractorImpl(AppDatabaseManager appDatabaseManager) {

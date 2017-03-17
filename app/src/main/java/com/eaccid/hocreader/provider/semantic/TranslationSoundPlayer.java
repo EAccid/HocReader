@@ -36,10 +36,10 @@ public class TranslationSoundPlayer implements SoundPlayer<String> {
     @Override
     public Observable<Boolean> play() {
         return Observable.create(subscriber -> {
-                    if (mediaPlayer.isPlaying()) {
-                        return;
-                    }
                     try {
+                        if (mediaPlayer.isPlaying()) {
+                            return;
+                        }
                         mediaPlayer.start();
                         mediaPlayer.setOnCompletionListener(mp -> {
                             subscriber.onNext(true);

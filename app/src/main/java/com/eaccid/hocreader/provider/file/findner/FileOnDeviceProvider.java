@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class FileOnDeviceProvider implements FileProvider {
-
     private List<File> fileList = new ArrayList<>();
 
     @Override

@@ -85,7 +85,6 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
                                     new MemorizingCalculatorImpl(item)
                             )
                     );
-                    soundPlayer.release();
                     soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
                     //Temp:
                     learnByHeart.setImageResource(

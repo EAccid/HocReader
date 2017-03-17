@@ -3,7 +3,6 @@ package com.eaccid.hocreader.provider.translator;
 import com.eaccid.hocreader.provider.fromtext.ins.TextManagerImpl;
 
 public class TranslatedWordImpl implements TranslatedWord {
-
     private final String word;
     private final String context;
     private String translation;

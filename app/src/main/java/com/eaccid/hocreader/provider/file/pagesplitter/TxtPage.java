@@ -1,7 +1,6 @@
 package com.eaccid.hocreader.provider.file.pagesplitter;
 
 public class TxtPage implements Page<String> {
-
     private String pageData;
     private int pageNumber;
 
@@ -15,11 +14,12 @@ public class TxtPage implements Page<String> {
         return pageNumber;
     }
 
-    public void setPageData(String pageData) {
+    void setPageData(String pageData) {
         this.pageData = pageData;
     }
 
-    public void setPageNumber(int pageNumber) {
+    void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
     }
+
 }
