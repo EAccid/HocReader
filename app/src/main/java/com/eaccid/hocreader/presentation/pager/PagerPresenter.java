@@ -33,12 +33,12 @@ public class PagerPresenter implements BasePresenter<PagerActivity> {
     public void attachView(PagerActivity pagerActivity) {
         mView = pagerActivity;
         App.get(mView).plusWordListComponent().inject(this);
-        Log.i(LOG_TAG, "PagerActivity has been attached.");
+        Log.i(LOG_TAG, mView.getClass().getName() + " has been attached.");
     }
 
     @Override
     public void detachView() {
-        Log.i(LOG_TAG, "PagerActivity has been detached.");
+        Log.i(LOG_TAG, mView.getClass().getName() + " has been detached.");
         App.get(mView)
                 .clearWordListComponent();
         compositeSubscription.clear();

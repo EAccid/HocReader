@@ -116,7 +116,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
             return container;
         }
 
-   }
+    }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -146,12 +146,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.setSwipeItemHorizontalSlideAmount(
                 getWordListItemProvider(position).isPinned() ? Swipeable.OUTSIDE_OF_THE_WINDOW_LEFT : 0
         );
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(WordsEditorViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-            holder.soundPlayer.release();
     }
 
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {

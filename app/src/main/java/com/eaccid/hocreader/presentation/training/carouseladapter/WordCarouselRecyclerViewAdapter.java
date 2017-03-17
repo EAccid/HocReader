@@ -70,12 +70,6 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         setListenersToViewFromItem(holder, word);
     }
 
-    @Override
-    public void onViewDetachedFromWindow(WordCarouselRecyclerViewAdapter.ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        holder.soundPlayer.release();
-    }
-
     public String getCurrentContext(int position) {
         String context = "";
         try {
@@ -100,6 +94,8 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                             new ImageViewLoader().loadPictureFromUrl(
                                     holder.wordImage,
                                     wordItem.getPictureUrl(),
+                                    R.drawable.empty_circle_background,
+                                    R.drawable.empty_circle_background,
                                     false);
                             holder.translation.setText("*?");
                             holder.transcription.setText("[" + wordItem.getTranscription() + "]");

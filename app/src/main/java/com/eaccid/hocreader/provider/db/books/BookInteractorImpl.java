@@ -37,6 +37,7 @@ public class BookInteractorImpl implements BookInteractor {
         dataManager.createOrUpdateBook(filePath, fileName);
     }
 
+    @Override
     public void setCurrentBookForAddingWord(String filePath) {
         dataManager.setCurrentBookForAddingWord(filePath);
     }
