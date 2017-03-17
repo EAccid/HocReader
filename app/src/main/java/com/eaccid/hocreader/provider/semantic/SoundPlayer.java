@@ -4,9 +4,7 @@ import com.eaccid.hocreader.provider.Releasable;
 
 import rx.Observable;
 
-
 public interface SoundPlayer<T> extends Releasable {
-
     void preparePlayerFromSource(T t);
 
     /**
