@@ -3,6 +3,8 @@ package com.eaccid.hocreader.provider.semantic;
 import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.eaccid.hocreader.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -17,6 +19,20 @@ public class ImageViewLoader {
             return;
         NetworkPolicy networkPolicy = isCached ? NetworkPolicy.OFFLINE : NetworkPolicy.NO_CACHE;
         load(networkPolicy, imageView, url, placeholderId, errorId);
+    }
+
+    /**
+     * placeholder ResId = default value  R.drawable.empty_picture_background
+     * error ResId = default value  R.drawable.empty_picture_background
+     */
+    public void loadPictureFromUrl(final ImageView imageView, final String url, boolean isCached) {
+        loadPictureFromUrl(
+                imageView,
+                url,
+                R.drawable.empty_picture_background,
+                R.drawable.empty_picture_background,
+                isCached
+        );
     }
 
     private void load(NetworkPolicy networkPolicy, final ImageView imageView, final String url, final @DrawableRes int placeholderId, final @DrawableRes int errorId) {

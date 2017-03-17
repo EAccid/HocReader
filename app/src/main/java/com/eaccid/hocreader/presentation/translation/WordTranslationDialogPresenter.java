@@ -1,15 +1,14 @@
 package com.eaccid.hocreader.presentation.translation;
 
-import android.media.MediaPlayer;
 import android.util.Log;
 
-import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.remote.libtranslator.translator.TextTranslation;
-import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.semantic.SoundPlayer;
 import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.fromtext.WordFromText;
-import com.eaccid.hocreader.provider.fromtext.WordFromTextImpl;
+import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.translator.HocTranslatorProvider;
+import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.provider.translator.TranslatedWordImpl;
 import com.eaccid.hocreader.presentation.BasePresenter;
 
@@ -21,9 +20,8 @@ import rx.schedulers.Schedulers;
 public class WordTranslationDialogPresenter implements BasePresenter<WordTranslationDialogFragment> {
     private final String LOG_TAG = "TranslationPresenter";
     private WordTranslationDialogFragment mView;
-
-    private TranslatedWordImpl mTranslatedWordImpl;
-    private MediaPlayer mMediaPlayer;
+    private TranslatedWord mTranslatedWord;
+    private SoundPlayer<String> mSoundPlayer;
     private String mNextWordToTranslate;
     private Subscription mTranslationSubscription;
 
@@ -35,21 +33,20 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
 
     @Override
     public void detachView() {
-        Log.i(LOG_TAG, "TranslationPresenter has been detached.");
         mView = null;
-        if (mMediaPlayer != null) mMediaPlayer.release();
+        mSoundPlayer.release();
         if (mTranslationSubscription != null) mTranslationSubscription.unsubscribe();
+        Log.i(LOG_TAG, "TranslationPresenter has been detached.");
     }
 
     public void onViewCreated() {
+        mSoundPlayer = new TranslationSoundPlayer();
         translateText(mView.getWordFromText());
     }
 
     private void translateText(WordFromText wordFromText) {
-        mView.showContextWord(wordFromText.getText());
-        if (mTranslationSubscription != null && !mTranslationSubscription.isUnsubscribed()) {
+        if (mTranslationSubscription != null && !mTranslationSubscription.isUnsubscribed())
             mTranslationSubscription.unsubscribe();
-        }
         mTranslationSubscription = new HocTranslatorProvider()
                 .translate(wordFromText.getText())
                 .subscribeOn(Schedulers.io())
@@ -57,7 +54,7 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                 .subscribe(new Subscriber<TextTranslation>() {
                     @Override
                     public void onCompleted() {
-                        mView.notifyTranslationsChanged();
+                        mView.notifyDataChanged();
                         unsubscribe();
                     }
 
@@ -72,54 +69,51 @@ public class WordTranslationDialogPresenter implements BasePresenter<WordTransla
                         {
                             Log.i(LOG_TAG, "Text translated status: " + !textTranslation.isEmpty());
                             if (isNextWordToTranslateEmpty())
-                                setmNextWordToTranslate(textTranslation.getWord());
+                                setNextWordToTranslate(textTranslation.getWord());
                             showTranslationsData(textTranslation);
-                            mTranslatedWordImpl = new TranslatedWordImpl(wordFromText.getText(),wordFromText.getSentence());
+                            mTranslatedWord = new TranslatedWordImpl(wordFromText.getText(), wordFromText.getSentence());
                         }
                     }
                 });
     }
 
     private void showTranslationsData(TextTranslation textTranslation) {
-        mView.showContextWord(mView.getWordFromText().getText());
-        mView.showBaseWord(mNextWordToTranslate);
+        mSoundPlayer.preparePlayerFromSource(textTranslation.getSoundUrl());
         new ImageViewLoader()
                 .loadPictureFromUrl(
                         mView.getWordPicture(),
                         textTranslation.getPicUrl(),
-                        R.drawable.empty_picture_background,
-                        R.drawable.empty_picture_background,
                         false
                 );
-        mMediaPlayer = new MediaPlayerManager()
-                .createAndPreparePlayerFromURL(textTranslation.getSoundUrl());
+        mView.showContextWord(mView.getWordFromText().getText());
+        mView.showBaseWord(mNextWordToTranslate);
         mView.showWordTranscription(textTranslation.getTranscription());
         mView.showTranslations(textTranslation.getTranslates());
     }
 
     public void OnSpeakerClicked() {
-        if (mMediaPlayer == null) return;
-        new MediaPlayerManager().play(mMediaPlayer);
-        mMediaPlayer.setOnCompletionListener(mp -> mView.showSpeaker(false));
         mView.showSpeaker(true);
+        mSoundPlayer.play().subscribe(completed -> {
+            mView.showSpeaker(false);
+        });
     }
 
     public void OnWordClicked() {
         String nextWord = getNextWordToTranslate();
-        WordFromTextImpl currentWord = mView.getWordFromText();
-        setmNextWordToTranslate(currentWord.getText());
+        WordFromText currentWord = mView.getWordFromText();
+        setNextWordToTranslate(currentWord.getText());
         currentWord.setText(nextWord);
         translateText(currentWord);
     }
 
     public void onTranslationClick(String text) {
-        mTranslatedWordImpl.addTranslation(text);
+        mTranslatedWord.addTranslation(text);
         ((WordTranslationDialogFragment.OnWordTranslationClickListener) mView.getContext())
-                .onWordTranslated(mTranslatedWordImpl);
+                .onWordTranslated(mTranslatedWord);
         mView.dismiss();
     }
 
-    private void setmNextWordToTranslate(String mNextWordToTranslate) {
+    private void setNextWordToTranslate(String mNextWordToTranslate) {
         this.mNextWordToTranslate = mNextWordToTranslate;
     }
 

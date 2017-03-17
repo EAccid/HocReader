@@ -1,7 +1,6 @@
 package com.eaccid.hocreader.presentation.training.carouseladapter;
 
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,8 @@ import android.widget.Toast;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
-import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.semantic.SoundPlayer;
+import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
@@ -44,7 +44,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         ImageView alreadyLearned;
         @BindView(R.id.transcription_speaker)
         ImageView transcriptionSpeaker;
-        MediaPlayer mediaPlayer;
+        SoundPlayer<String> soundPlayer;
         @BindView(R.id.don_t_know)
         Button dontKnow;
         @BindView(R.id.remember)
@@ -54,6 +54,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         public ViewHolder(View drawerView) {
             super(drawerView);
             ButterKnife.bind(this, drawerView);
+            soundPlayer = new TranslationSoundPlayer();
         }
     }
 
@@ -67,6 +68,12 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
     public void onBindViewHolder(ViewHolder holder, Word word) {
         setDataToViewFromItem(holder, word);
         setListenersToViewFromItem(holder, word);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(WordCarouselRecyclerViewAdapter.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.soundPlayer.release();
     }
 
     public String getCurrentContext(int position) {
@@ -103,10 +110,7 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
                                             new MemorizingCalculatorImpl(wordItem)
                                     )
                             );
-                            if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
-                                holder.mediaPlayer.release();
-                            holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());
-
+                            holder.soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
                             //Temp:
                             holder.learnByHeart.setImageResource(
                                     new IconTogglesResourcesProvider().getLearnByHeartResId(
@@ -144,11 +148,10 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         });
         holder.transcriptionSpeaker.setOnClickListener(
                 speaker -> {
-                    if (holder.mediaPlayer == null) return;
                     showSpeaker(holder.transcriptionSpeaker, true);
-                    holder.mediaPlayer.setOnCompletionListener(mp ->
-                            showSpeaker(holder.transcriptionSpeaker, false));
-                    new MediaPlayerManager().play(holder.mediaPlayer);
+                    holder.soundPlayer.play().subscribe(completed -> {
+                        showSpeaker(holder.transcriptionSpeaker, false);
+                    });
                 }
         );
         holder.alreadyLearned.setOnClickListener(v -> {

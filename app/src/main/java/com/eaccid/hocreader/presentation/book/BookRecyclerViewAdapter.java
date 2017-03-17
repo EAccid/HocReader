@@ -1,18 +1,21 @@
 package com.eaccid.hocreader.presentation.book;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.book.ins.OnWordFromPageViewTouchListener;
 import com.eaccid.hocreader.presentation.book.ins.SelectionToTranslateActionMode;
 import com.eaccid.hocreader.provider.file.pagesplitter.Page;
+
 import java.util.List;
 
 public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerViewAdapter.ViewHolder> {
-    private static final String LOG_TAG = "BookAdapter";
+    private static final String LOG_TAG = "BookRecyclerViewAdapter";
     private final List<Page<String>> mPagesList;
     private boolean isSelectableItemTextView;
 
@@ -57,6 +60,8 @@ public class BookRecyclerViewAdapter extends RecyclerView.Adapter<BookRecyclerVi
 
     public void setSelectableItemTextView(boolean isSelectable) {
         isSelectableItemTextView = isSelectable;
+        notifyDataSetChanged();
+        Log.i(LOG_TAG, "Set selectable mode to " + isSelectable);
     }
 
     public boolean isSelectableItemTextView() {

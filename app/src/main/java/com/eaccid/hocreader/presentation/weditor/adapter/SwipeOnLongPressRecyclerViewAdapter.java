@@ -16,7 +16,8 @@ import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.App;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
-import com.eaccid.hocreader.provider.semantic.MediaPlayerManager;
+import com.eaccid.hocreader.provider.semantic.SoundPlayer;
+import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.db.words.WordItemImpl;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.provider.db.words.listprovider.ItemDataProvider;
@@ -51,6 +52,8 @@ public class SwipeOnLongPressRecyclerViewAdapter
     private final View.OnClickListener mSwipeableViewContainerOnClickListener;
     private SparseBooleanArray mSelectedItemsIds;
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
+
+    public static int count = 0;
 
     @Inject
     WordListInteractor wordListInteractor;
@@ -98,20 +101,22 @@ public class SwipeOnLongPressRecyclerViewAdapter
         ImageView alreadyLearned;
         @BindView(R.id.transcription_speaker)
         ImageView transcriptionSpeaker;
-        MediaPlayer mediaPlayer;
+        SoundPlayer<String> soundPlayer;
         boolean isSetToLearn;
         Subscription subscription;
 
         WordsEditorViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+            soundPlayer = new TranslationSoundPlayer();
         }
 
         @Override
         public View getSwipeableContainerView() {
             return container;
         }
-    }
+
+   }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -143,6 +148,12 @@ public class SwipeOnLongPressRecyclerViewAdapter
         );
     }
 
+    @Override
+    public void onViewDetachedFromWindow(WordsEditorViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+            holder.soundPlayer.release();
+    }
+
     private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
         if (holder.subscription != null && !holder.subscription.isUnsubscribed())
             compositeSubscription.remove(holder.subscription);
@@ -162,9 +173,7 @@ public class SwipeOnLongPressRecyclerViewAdapter
                             R.drawable.empty_picture_background,
                             new NetworkAvailablenessImpl(holder.itemView.getContext()).isNetworkAvailable()
                     );
-                    if (holder.mediaPlayer != null) //delete, after todo release method in MediaPlayerManager
-                        holder.mediaPlayer.release();
-                    holder.mediaPlayer = new MediaPlayerManager().createAndPreparePlayerFromURL(wordItem.getSoundUrl());
+                    holder.soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
                     holder.transcription.setText("[" + wordItem.getTranscription() + "]");
                     holder.alreadyLearned.setImageResource(
                             new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(
@@ -192,11 +201,11 @@ public class SwipeOnLongPressRecyclerViewAdapter
         holder.container.setOnClickListener(mSwipeableViewContainerOnClickListener);
         holder.transcriptionSpeaker.setOnClickListener(
                 speaker -> {
-                    if (holder.mediaPlayer == null) return;
                     showSpeaker(holder.transcriptionSpeaker, true);
-                    holder.mediaPlayer.setOnCompletionListener(mp ->
-                            showSpeaker(holder.transcriptionSpeaker, false));
-                    new MediaPlayerManager().play(holder.mediaPlayer);
+                    Subscription sub = holder.soundPlayer.play().subscribe(completed -> {
+                        showSpeaker(holder.transcriptionSpeaker, false);
+                    });
+                    compositeSubscription.add(sub);
                 }
         );
         holder.showInPage.setOnClickListener(
