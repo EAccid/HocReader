@@ -169,8 +169,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
                     new ImageViewLoader().loadPictureFromUrl(
                             holder.wordImage,
                             wordItem.getPictureUrl(),
-                            R.drawable.empty_picture_background,
-                            R.drawable.empty_picture_background,
                             new NetworkAvailablenessImpl(holder.itemView.getContext()).isNetworkAvailable()
                     );
                     holder.soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
