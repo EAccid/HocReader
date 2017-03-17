@@ -9,21 +9,17 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.App;
-import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
-import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.semantic.SoundPlayer;
 import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.db.words.WordItemImpl;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.provider.db.words.listprovider.ItemDataProvider;
-import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
 import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
-import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
-import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
+import com.eaccid.hocreader.underdevelopment.WordViewElements;
+import com.eaccid.hocreader.underdevelopment.WordViewHandler;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
@@ -77,44 +73,6 @@ public class SwipeOnLongPressRecyclerViewAdapter
      * Work with view holder
      */
 
-    static class WordsEditorViewHolder extends AbstractSwipeableItemViewHolder {
-        @BindView(R.id.container)
-        FrameLayout container;
-        @BindView(R.id.word)
-        TextView word;
-        @BindView(R.id.word_transcription)
-        TextView transcription;
-        @BindView(R.id.translation)
-        TextView translation;
-        @BindView(R.id.expand_text_view)
-        ExpandableTextView context;
-        @BindView(R.id.word_image)
-        ImageView wordImage;
-        @BindView(R.id.show_in_page)
-        ImageView showInPage;
-        @BindView(R.id.learn_by_heart_false)
-        ImageView learnByHeart;
-        @BindView(R.id.already_learned)
-        ImageView alreadyLearned;
-        @BindView(R.id.transcription_speaker)
-        ImageView transcriptionSpeaker;
-        SoundPlayer<String> soundPlayer;
-        boolean isSetToLearn;
-        Subscription subscription;
-
-        WordsEditorViewHolder(View v) {
-            super(v);
-            ButterKnife.bind(this, v);
-            soundPlayer = new TranslationSoundPlayer();
-        }
-
-        @Override
-        public View getSwipeableContainerView() {
-            return container;
-        }
-
-    }
-
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
@@ -137,86 +95,25 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(WordsEditorViewHolder holder, int position) {
-        setDataToViewFromItem(holder, position);
-        setListenersToViewFromItem(holder, position);
-        setViewHoldersContainerBackGround(holder, position);
-        holder.setSwipeItemHorizontalSlideAmount(
-                getWordListItemProvider(position).isPinned() ? Swipeable.OUTSIDE_OF_THE_WINDOW_LEFT : 0
-        );
-    }
-
-    private void setDataToViewFromItem(WordsEditorViewHolder holder, int position) {
         if (holder.subscription != null && !holder.subscription.isUnsubscribed())
             compositeSubscription.remove(holder.subscription);
         holder.subscription = wordListInteractor
                 .getWordItem(position)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(wordItem -> {
-                    holder.word.setText(wordItem.getWordFromText());
-                    holder.translation.setText(wordItem.getTranslation());
-                    SparseBooleanArray collapsedPositions = new SparseBooleanArray();
-                    collapsedPositions.put(0, true);
-                    holder.context.setText(wordItem.getContext(), collapsedPositions, 0);
-                    new ImageViewLoader().loadPictureFromUrl(
-                            holder.wordImage,
-                            wordItem.getPictureUrl(),
-                            new NetworkAvailablenessImpl(holder.itemView.getContext()).isNetworkAvailable()
-                    );
-                    holder.soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
-                    holder.transcription.setText("[" + wordItem.getTranscription() + "]");
-                    holder.alreadyLearned.setImageResource(
-                            new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(
-                                    new MemorizingCalculatorImpl(wordItem)
-                            )
-                    );
-                    holder.learnByHeart.setImageResource(
-                            new IconTogglesResourcesProvider().getLearnByHeartResId(
-                                    getWordListItemProvider(position).isSetToLearn()
-                            )
-                    );
-                    //Temp:
-                    holder.isSetToLearn = getWordListItemProvider(position).isSetToLearn();
-                }, e -> {
-                    new ReaderExceptionHandlerImpl().handleError(e);
-                });
+                .subscribe(wordItem -> new WordViewHandler().loadDataToViewFromWordItem(holder, wordItem),
+                        e -> new ReaderExceptionHandlerImpl().handleError(e)
+                );
         compositeSubscription.add(holder.subscription);
-        Log.i(LOG_TAG, "Setting data to view from item: position " + position);
-    }
-
-    private void setListenersToViewFromItem(WordsEditorViewHolder holder, int position) {
         // if the item is 'pinned', click event comes to the itemView
         holder.itemView.setOnClickListener(mItemViewOnClickListener);
         // if the item is 'not pinned', click event comes to the container
         holder.container.setOnClickListener(mSwipeableViewContainerOnClickListener);
-        holder.transcriptionSpeaker.setOnClickListener(
-                speaker -> {
-                    showSpeaker(holder.transcriptionSpeaker, true);
-                    Subscription sub = holder.soundPlayer.play().subscribe(completed -> {
-                        showSpeaker(holder.transcriptionSpeaker, false);
-                    });
-                    compositeSubscription.add(sub);
-                }
-        );
         holder.showInPage.setOnClickListener(
                 new OnShowWordInBookPageClickListener(getWordListItemProvider(position))
         );
-        holder.learnByHeart.setOnClickListener(v -> {
-            holder.isSetToLearn = !holder.isSetToLearn;
-            holder.learnByHeart.setImageResource(
-                    new IconTogglesResourcesProvider().getLearnByHeartResId(
-                            holder.isSetToLearn //getWordListItemProvider(position).isSetToLearn()
-                    )
-            );
-            Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
-        });
-        holder.alreadyLearned.setOnClickListener(v -> {
-            Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void showSpeaker(ImageView iv, boolean isSpeaking) {
-        iv.setImageResource(
-                new IconTogglesResourcesProvider().getSpeakerResId(isSpeaking)
+        setViewHoldersContainerBackGround(holder, position);
+        holder.setSwipeItemHorizontalSlideAmount(
+                getWordListItemProvider(position).isPinned() ? Swipeable.OUTSIDE_OF_THE_WINDOW_LEFT : 0
         );
     }
 
@@ -441,6 +338,97 @@ public class SwipeOnLongPressRecyclerViewAdapter
 
     public SparseBooleanArray getSelectedIds() {
         return mSelectedItemsIds;
+    }
+
+    static class WordsEditorViewHolder extends AbstractSwipeableItemViewHolder implements WordViewElements {
+        @BindView(R.id.container)
+        FrameLayout container;
+        @BindView(R.id.word)
+        TextView word;
+        @BindView(R.id.word_transcription)
+        TextView transcription;
+        @BindView(R.id.translation)
+        TextView translation;
+        @BindView(R.id.expand_text_view)
+        ExpandableTextView context;
+        @BindView(R.id.word_image)
+        ImageView wordImage;
+        @BindView(R.id.show_in_page)
+        ImageView showInPage;
+        @BindView(R.id.learn_by_heart_false)
+        ImageView learnByHeart;
+        @BindView(R.id.already_learned)
+        ImageView alreadyLearned;
+        @BindView(R.id.transcription_speaker)
+        ImageView transcriptionSpeaker;
+        SoundPlayer<String> soundPlayer;
+        Subscription subscription;
+
+        WordsEditorViewHolder(View v) {
+            super(v);
+            ButterKnife.bind(this, v);
+            soundPlayer = new TranslationSoundPlayer();
+        }
+
+        @Override
+        public View getSwipeableContainerView() {
+            return container;
+        }
+
+        @Override
+        public TextView word() {
+            return word;
+        }
+
+        @Override
+        public TextView transcription() {
+            return transcription;
+        }
+
+        @Override
+        public TextView translation() {
+            return translation;
+        }
+
+        @Override
+        public ImageView wordImage() {
+            return wordImage;
+        }
+
+        @Override
+        public int defaultImageResId() {
+            return R.drawable.empty_picture_background;
+        }
+
+        @Override
+        public ImageView learnByHeart() {
+            return learnByHeart;
+        }
+
+        @Override
+        public ImageView alreadyLearned() {
+            return alreadyLearned;
+        }
+
+        @Override
+        public ImageView transcriptionSpeaker() {
+            return transcriptionSpeaker;
+        }
+
+        @Override
+        public SoundPlayer<String> soundPlayer() {
+            return soundPlayer;
+        }
+
+        @Override
+        public View container() {
+            return itemView;
+        }
+
+        @Override
+        public ExpandableTextView context() {
+            return context;
+        }
     }
 
 }

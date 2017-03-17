@@ -22,5 +22,4 @@ public interface WordItem {
 
     int getPage();
 
-    boolean isSetToLearn();
 }

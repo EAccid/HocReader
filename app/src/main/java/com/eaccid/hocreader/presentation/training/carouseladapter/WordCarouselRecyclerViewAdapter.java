@@ -8,23 +8,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.data.local.db.entity.Word;
-import com.eaccid.hocreader.provider.db.words.WordItem;
-import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.semantic.SoundPlayer;
 import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
-import com.eaccid.hocreader.underdevelopment.IconTogglesResources;
-import com.eaccid.hocreader.underdevelopment.Learning;
-import com.eaccid.hocreader.underdevelopment.LearningImpl;
-import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
 import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
-import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
-import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
+import com.eaccid.hocreader.underdevelopment.WordViewElements;
+import com.eaccid.hocreader.underdevelopment.WordViewHandler;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +29,7 @@ import rx.subscriptions.CompositeSubscription;
 public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAdapter<Word, WordCarouselRecyclerViewAdapter.ViewHolder> {
     private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder implements WordViewElements {
         @BindView(R.id.word)
         TextView word;
         @BindView(R.id.word_transcription)
@@ -62,6 +56,62 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
             ButterKnife.bind(this, drawerView);
             soundPlayer = new TranslationSoundPlayer();
         }
+
+        @Override
+        public TextView word() {
+            return word;
+        }
+
+        @Override
+        public TextView transcription() {
+            return transcription;
+        }
+
+        @Override
+        public TextView translation() {
+            return translation;
+        }
+
+        @Override
+        public ImageView wordImage() {
+            return wordImage;
+        }
+
+        @Override
+        public int defaultImageResId() {
+            return R.drawable.empty_circle_background;
+        }
+
+        @Override
+        public ImageView learnByHeart() {
+            return learnByHeart;
+        }
+
+        @Override
+        public ImageView alreadyLearned() {
+            return alreadyLearned;
+        }
+
+        @Override
+        public ImageView transcriptionSpeaker() {
+            return transcriptionSpeaker;
+        }
+
+        @Override
+        public SoundPlayer<String> soundPlayer() {
+            return soundPlayer;
+        }
+
+        @Override
+        public View container() {
+            return itemView;
+        }
+
+        @Override
+        public ExpandableTextView context() {
+            return null;
+        }
+
     }
 
     @Override
@@ -84,7 +134,18 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
         boolean isNetworkAvailable = new NetworkAvailablenessImpl(holder.itemView.getContext()).isNetworkAvailable();
         if (!isNetworkAvailable)
             return;
-        loadDataToViewFromWordItem(holder, word);
+        if (holder.subscription != null && !holder.subscription.isUnsubscribed())
+            compositeSubscription.remove(holder.subscription);
+        holder.subscription = new WordItemProvider()
+                .getWordItemWithTranslation(word)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(wordItem -> {
+                            new WordViewHandler().loadDataToViewFromWordItem(holder, wordItem);
+                            holder.translation.setText("*?");
+                        },
+                        e -> new ReaderExceptionHandlerImpl().handleError(e)
+                );
+        compositeSubscription.add(holder.subscription);
     }
 
     @Override
@@ -101,79 +162,6 @@ public class WordCarouselRecyclerViewAdapter extends OrmLiteCursorRecyclerViewAd
             e.printStackTrace();
         }
         return context;
-    }
-
-    private void loadDataToViewFromWordItem(WordCarouselRecyclerViewAdapter.ViewHolder holder, Word word) {
-        if (holder.subscription != null && !holder.subscription.isUnsubscribed())
-            compositeSubscription.remove(holder.subscription);
-        holder.subscription = new WordItemProvider()
-                .getWordItemWithTranslation(word)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(wordItem -> {
-                            holder.word.setText(wordItem.getWordFromText());
-                            holder.translation.setText("*?");
-                            holder.transcription.setText("[" + wordItem.getTranscription() + "]");
-                            new ImageViewLoader().loadPictureFromUrl(
-                                    holder.wordImage,
-                                    wordItem.getPictureUrl(),
-                                    R.drawable.empty_circle_background,
-                                    R.drawable.empty_circle_background,
-                                    false
-                            );
-                            holder.soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
-                            holder.transcriptionSpeaker.setOnClickListener(
-                                    speaker -> {
-                                        showSpeaker(holder.transcriptionSpeaker, true);
-                                        holder.soundPlayer.play().subscribe(completed -> {
-                                            showSpeaker(holder.transcriptionSpeaker, false);
-                                        });
-                                    }
-                            );
-                            handleLearningToggles(holder, wordItem);
-                        }, e -> new ReaderExceptionHandlerImpl().handleError(e)
-                );
-        compositeSubscription.add(holder.subscription);
-    }
-
-    private void handleLearningToggles(ViewHolder holder, WordItem wordItem) {
-        final Learning learning = getLearningHandler();
-        final IconTogglesResources togglesResources = getIconTogglesResources();
-        holder.alreadyLearned.setImageResource(
-                togglesResources.getAlreadyLearnedWordResId(
-                        new MemorizingCalculatorImpl(wordItem)
-                )
-        );
-        holder.alreadyLearned.setOnClickListener(v -> {
-            learning.isAlreadyLearned(wordItem);
-            Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
-        });
-        holder.learnByHeart.setImageResource(
-                togglesResources.getLearnByHeartResId(
-                        learning.isLearnByHart(wordItem)
-                )
-        );
-        holder.learnByHeart.setOnClickListener(v -> {
-            boolean learn = learning.isLearnByHart(wordItem);
-            learning.setToLearn(wordItem, !learn);
-            holder.learnByHeart.setImageResource(
-                    togglesResources.getLearnByHeartResId(!learn)
-            );
-            Toast.makeText(holder.itemView.getContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void showSpeaker(ImageView iv, boolean isSpeaking) {
-        iv.setImageResource(
-                getIconTogglesResources().getSpeakerResId(isSpeaking)
-        );
-    }
-
-    private Learning getLearningHandler() {
-        return new LearningImpl();
-    }
-
-    private IconTogglesResources getIconTogglesResources() {
-        return new IconTogglesResourcesProvider();
     }
 
 }

@@ -67,12 +67,6 @@ public class WordItemImpl extends ItemDataProviderImpl implements WordItem {
         return translation.getPicUrl();
     }
 
-    @Override
-    public boolean isSetToLearn() {
-        //test
-        return getItemId() % 2 != 0;
-    }
-
     private boolean isTranslationEmpty() {
         return translation == null;
     }

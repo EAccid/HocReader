@@ -3,6 +3,7 @@ package com.eaccid.hocreader.underdevelopment.cardremember;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,13 +21,16 @@ import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
 import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
 import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
 import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
+import com.eaccid.hocreader.underdevelopment.WordViewElements;
+import com.eaccid.hocreader.underdevelopment.WordViewHandler;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class CardWordActivity extends AppCompatActivity implements BaseView {
-
+public class CardWordActivity extends AppCompatActivity implements CardWordView, WordViewElements {
+    private CardWordPresenter mPresenter;
     @BindView(R.id.word)
     TextView word;
     @BindView(R.id.word_transcription)
@@ -46,8 +50,6 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
     Button dontKnow;
     @BindView(R.id.remember)
     Button remember;
-    boolean isSetToLearn;
-    private static CardWordPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,55 +59,8 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
         mPresenter.attachView(this);
         setFinishOnTouchOutside(true);
         ButterKnife.bind(this);
-
-        /**TODO delete getting data from presenter, temp solution*/
-        WordItem wordItem = mPresenter.getWordItem();
         soundPlayer = new TranslationSoundPlayer();
-        setDataToViewFromItem(wordItem);
-        setListenersToViewFromItem();
-    }
-
-    private void setDataToViewFromItem(WordItem wordItem) {
-        new WordItemProvider()
-                .getWordItemWithTranslation(wordItem)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(item -> {
-                    word.setText(item.getWordFromText());
-                    new ImageViewLoader().loadPictureFromUrl(
-                            wordImage,
-                            item.getPictureUrl(),
-                            R.drawable.empty_circle_background,
-                            R.drawable.empty_circle_background,
-                            false);
-                    transcription.setText("[" + item.getTranscription() + "]");
-                    alreadyLearned.setImageResource(
-                            new IconTogglesResourcesProvider().getAlreadyLearnedWordResId(
-                                    new MemorizingCalculatorImpl(item)
-                            )
-                    );
-                    soundPlayer.preparePlayerFromSource(wordItem.getSoundUrl());
-                    //Temp:
-                    learnByHeart.setImageResource(
-                            new IconTogglesResourcesProvider().getLearnByHeartResId(
-                                    true
-                            )
-                    );
-                    isSetToLearn = true;
-                }, e -> {
-                    new ReaderExceptionHandlerImpl().handleError(e);
-                });
-    }
-
-    private void setListenersToViewFromItem() {
-        learnByHeart.setOnClickListener(v -> {
-            isSetToLearn = !isSetToLearn;
-            learnByHeart.setImageResource(
-                    new IconTogglesResourcesProvider().getLearnByHeartResId(
-                            isSetToLearn
-                    )
-            );
-            Toast.makeText(getBaseContext(), UnderDevelopment.TEXT, Toast.LENGTH_SHORT).show();
-        });
+        mPresenter.onViewCreate();
         dontKnow.setOnClickListener(v -> {
             translation.setText(getTranslation());
             translation.setTextColor(Color.parseColor("#fff45f30"));
@@ -114,14 +69,6 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
             translation.setText(getTranslation());
             translation.setTextColor(Color.parseColor("#ff2f8b2a"));
         });
-        transcriptionSpeaker.setOnClickListener(
-                speaker -> {
-                    showSpeaker(transcriptionSpeaker, true);
-                    soundPlayer.play().subscribe(completed -> {
-                        showSpeaker(transcriptionSpeaker, false);
-                    });
-                }
-        );
     }
 
     public String getWord() {
@@ -145,11 +92,71 @@ public class CardWordActivity extends AppCompatActivity implements BaseView {
         finish();
     }
 
-    private void showSpeaker(ImageView iv, boolean isSpeaking) {
-        iv.setImageResource(
-                new IconTogglesResourcesProvider().getSpeakerResId(isSpeaking)
-        );
+    @Override
+    public TextView word() {
+        return word;
     }
 
+    @Override
+    public TextView transcription() {
+        return transcription;
+    }
 
+    @Override
+    public TextView translation() {
+        return translation;
+    }
+
+    @Override
+    public ImageView wordImage() {
+        return wordImage;
+    }
+
+    @Override
+    public int defaultImageResId() {
+        return R.drawable.empty_circle_background;
+    }
+
+    @Override
+    public ImageView learnByHeart() {
+        return learnByHeart;
+    }
+
+    @Override
+    public ImageView alreadyLearned() {
+        return alreadyLearned;
+    }
+
+    @Override
+    public ImageView transcriptionSpeaker() {
+        return transcriptionSpeaker;
+    }
+
+    @Override
+    public SoundPlayer<String> soundPlayer() {
+        return soundPlayer;
+    }
+
+    @Override
+    public View container() {
+        return findViewById(R.id.container);
+    }
+
+    @Override
+    public ExpandableTextView context() {
+        return null;
+    }
+
+    @Override
+    public void setDataToView(WordItem wordItem) {
+        new WordItemProvider()
+                .getWordItemWithTranslation(wordItem)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(item -> {
+                            new WordViewHandler().loadDataToViewFromWordItem(this, item);
+                            translation.setText("*?");
+                        },
+                        e -> new ReaderExceptionHandlerImpl().handleError(e)
+                );
+    }
 }
