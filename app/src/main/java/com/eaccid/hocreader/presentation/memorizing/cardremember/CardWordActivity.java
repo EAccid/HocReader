@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.underdevelopment.cardremember;
+package com.eaccid.hocreader.presentation.memorizing.cardremember;
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -7,20 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.presentation.BaseView;
-import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.provider.semantic.SoundPlayer;
 import com.eaccid.hocreader.provider.semantic.TranslationSoundPlayer;
 import com.eaccid.hocreader.provider.db.words.WordItem;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
-import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
-import com.eaccid.hocreader.underdevelopment.IconTogglesResourcesProvider;
 import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
-import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
 import com.eaccid.hocreader.underdevelopment.WordViewElements;
 import com.eaccid.hocreader.underdevelopment.WordViewHandler;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
@@ -93,6 +87,19 @@ public class CardWordActivity extends AppCompatActivity implements CardWordView,
     }
 
     @Override
+    public void setDataToView(WordItem wordItem) {
+        new WordItemProvider()
+                .getWordItemWithTranslation(wordItem)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(item -> {
+                            new WordViewHandler().loadDataToViewFromWordItem(this, item);
+                            translation.setText("*?");
+                        },
+                        e -> new ReaderExceptionHandlerImpl().handleError(e)
+                );
+    }
+
+    @Override
     public TextView word() {
         return word;
     }
@@ -147,16 +154,4 @@ public class CardWordActivity extends AppCompatActivity implements CardWordView,
         return null;
     }
 
-    @Override
-    public void setDataToView(WordItem wordItem) {
-        new WordItemProvider()
-                .getWordItemWithTranslation(wordItem)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(item -> {
-                            new WordViewHandler().loadDataToViewFromWordItem(this, item);
-                            translation.setText("*?");
-                        },
-                        e -> new ReaderExceptionHandlerImpl().handleError(e)
-                );
-    }
 }

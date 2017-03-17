@@ -10,7 +10,7 @@ import com.eaccid.hocreader.presentation.main.MainPresenter;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoriesPreferences;
 import com.eaccid.hocreader.presentation.main.ins.directories.DirectoryChooser;
 import com.eaccid.hocreader.provider.NetworkAvailablenessImpl;
-import com.eaccid.hocreader.underdevelopment.cardremember.CardWordPresenter;
+import com.eaccid.hocreader.presentation.memorizing.cardremember.CardWordPresenter;
 import com.eaccid.hocreader.presentation.book.BookPresenter;
 import com.eaccid.hocreader.provider.semantic.ImageViewLoader;
 import com.eaccid.hocreader.presentation.memorizing.MemorizingPresenter;

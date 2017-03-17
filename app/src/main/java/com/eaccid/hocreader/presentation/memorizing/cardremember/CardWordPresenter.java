@@ -1,20 +1,15 @@
-package com.eaccid.hocreader.underdevelopment.cardremember;
+package com.eaccid.hocreader.presentation.memorizing.cardremember;
 
 import android.util.Log;
 
 import com.eaccid.hocreader.data.local.AppDatabaseManager;
 import com.eaccid.hocreader.data.local.db.entity.Word;
 import com.eaccid.hocreader.App;
-import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
 import com.eaccid.hocreader.presentation.BasePresenter;
 import com.eaccid.hocreader.provider.db.words.WordItem;
 import com.eaccid.hocreader.provider.db.words.WordItemImpl;
-import com.eaccid.hocreader.provider.db.words.WordItemProvider;
-import com.eaccid.hocreader.underdevelopment.WordViewHandler;
 
 import javax.inject.Inject;
-
-import rx.android.schedulers.AndroidSchedulers;
 
 public class CardWordPresenter implements BasePresenter<CardWordActivity> {
     private final String logTAG = "CardWordPresenter";
