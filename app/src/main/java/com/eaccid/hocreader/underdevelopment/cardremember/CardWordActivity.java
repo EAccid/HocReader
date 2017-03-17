@@ -18,7 +18,7 @@ import com.eaccid.hocreader.provider.db.words.WordItem;
 import com.eaccid.hocreader.provider.db.words.WordItemProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
 import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
-import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
+import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
 import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
 
 import butterknife.BindView;

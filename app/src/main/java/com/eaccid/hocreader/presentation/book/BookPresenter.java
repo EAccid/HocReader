@@ -10,7 +10,7 @@ import com.eaccid.hocreader.provider.file.pagesplitter.CharactersDefinerForFullS
 import com.eaccid.hocreader.provider.file.pagesplitter.Page;
 import com.eaccid.hocreader.provider.file.pagesplitter.TxtPagesFromFileProvider;
 import com.eaccid.hocreader.presentation.BasePresenter;
-import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
+import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
 
 import java.util.ArrayList;
 import java.util.List;

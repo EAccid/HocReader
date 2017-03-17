@@ -20,7 +20,11 @@ public class BufferedReaderHandler {
     @Nullable
     public void openBufferedReader() {
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(baseFile.getFilePath()), baseFile.getCharsetName()));
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(baseFile.getPath()), baseFile.getCharsetName()
+                    )
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }

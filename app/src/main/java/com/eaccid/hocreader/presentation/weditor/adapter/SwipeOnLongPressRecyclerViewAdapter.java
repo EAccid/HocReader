@@ -21,7 +21,7 @@ import com.eaccid.hocreader.provider.db.words.WordItemImpl;
 import com.eaccid.hocreader.provider.db.words.WordListInteractor;
 import com.eaccid.hocreader.provider.db.words.listprovider.ItemDataProvider;
 import com.eaccid.hocreader.underdevelopment.MemorizingCalculatorImpl;
-import com.eaccid.hocreader.underdevelopment.ReaderExceptionHandlerImpl;
+import com.eaccid.hocreader.exceptions.ReaderExceptionHandlerImpl;
 import com.eaccid.hocreader.presentation.weditor.IconTogglesResourcesProvider;
 import com.eaccid.hocreader.underdevelopment.UnderDevelopment;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;

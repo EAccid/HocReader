@@ -10,18 +10,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class BookFileViaIntent {
+public class BookFileViaIntentFromIntentImpl implements BookFileFromIntent {
+    private String fileName = "";
+    private String filePath = "";
 
-    private String fileName;
-    private String filePath;
-
-    public boolean readFile(Activity context) {
+    //TODO extract reading file into background thread
+    @Override
+    public boolean read(Activity context) {
         Intent intent = context.getIntent();
         Uri uri = intent.getData();
         if (uri == null) {
             return readFromExtras(intent);
         }
         return readFromData(context);
+    }
+
+    @Override
+    public String getName() {
+        return fileName;
+    }
+
+    @Override
+    public String getPath() {
+        return filePath;
     }
 
     private boolean readFromExtras(Intent intent) {
@@ -44,11 +55,8 @@ public class BookFileViaIntent {
             e.printStackTrace();
             return false;
         }
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-        try {
-            inputStream = context.getContentResolver().openInputStream(uri);
-            outputStream = new FileOutputStream(outputFile);
+        try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
+             OutputStream outputStream = new FileOutputStream(outputFile)) {
             int read;
             byte[] bytes = new byte[1024];
             while ((read = inputStream.read(bytes)) != -1) {
@@ -57,25 +65,10 @@ public class BookFileViaIntent {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        } finally {
-            try {
-                inputStream.close();
-                outputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         setFilePath(outputFile.getPath());
         setFileName(outputFile.getName());
         return true;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public String getFilePath() {
-        return filePath;
     }
 
     private void setFileName(String fileName) {

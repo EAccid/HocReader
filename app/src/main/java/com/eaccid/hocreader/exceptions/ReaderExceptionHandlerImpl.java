@@ -1,4 +1,4 @@
-package com.eaccid.hocreader.underdevelopment;
+package com.eaccid.hocreader.exceptions;
 
 import android.util.Log;
 

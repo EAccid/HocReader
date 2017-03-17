@@ -19,7 +19,8 @@ import com.eaccid.hocreader.provider.translator.TranslatedWord;
 import com.eaccid.hocreader.presentation.FragmentTags;
 import com.eaccid.hocreader.R;
 import com.eaccid.hocreader.presentation.translation.WordTranslationDialogFragment;
-import com.eaccid.hocreader.underdevelopment.BookFileViaIntent;
+import com.eaccid.hocreader.underdevelopment.BookFileFromIntent;
+import com.eaccid.hocreader.underdevelopment.BookFileViaIntentFromIntentImpl;
 import com.viewpagerindicator.CirclePageIndicator;
 
 public class PagerActivity extends AppCompatActivity implements PagerView {
@@ -40,13 +41,13 @@ public class PagerActivity extends AppCompatActivity implements PagerView {
         if (addWordsEditorFragment()) return;
         if (addAboutFragment()) return;
 
-        //TODO delete after refactoring BookFileViaIntent
-        BookFileViaIntent book = new BookFileViaIntent();
-        if (!book.readFile(this)) {
+        //TODO delete after refactoring BookFileViaIntentFromIntentImpl
+        BookFileFromIntent book = new BookFileViaIntentFromIntentImpl();
+        if (!book.read(this)) {
             Toast.makeText(this, "The file can't be opened", Toast.LENGTH_SHORT).show();
             finish();
         }
-        mPresenter.createOrUpdateCurrentBook(book.getFileName(), book.getFilePath());
+        mPresenter.createOrUpdateCurrentBook(book.getName(), book.getPath());
         if (addBookFragment()) return;
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());

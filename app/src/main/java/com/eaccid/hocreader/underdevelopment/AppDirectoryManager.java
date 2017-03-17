@@ -1,8 +1,6 @@
 package com.eaccid.hocreader.underdevelopment;
 
-import com.eaccid.hocreader.underdevelopment.Directory;
 import com.eaccid.hocreader.data.local.db.service.DatabaseManager;
-import com.eaccid.hocreader.underdevelopment.DirectoryDaoService;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

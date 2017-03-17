@@ -12,7 +12,7 @@ public class BaseFileImpl implements BaseFile {
     }
 
     @Override
-    public String getFilePath() {
+    public String getPath() {
         return filePath;
     }
 
