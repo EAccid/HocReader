@@ -15,4 +15,6 @@ public interface TranslationView extends BaseView, Notifiable {
     void showSpeaker(boolean isSpeaking);
 
     void showTranslations(List<String> list);
+
+    void translateAndShowInputText();
 }

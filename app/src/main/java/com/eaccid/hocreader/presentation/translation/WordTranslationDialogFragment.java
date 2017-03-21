@@ -123,6 +123,11 @@ public class WordTranslationDialogFragment extends AppCompatDialogFragment imple
     }
 
     @Override
+    public void translateAndShowInputText() {
+        
+    }
+
+    @Override
     public void notifyDataChanged() {
         if (mAdapter != null)
             mAdapter.notifyDataSetChanged();
